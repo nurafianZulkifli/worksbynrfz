@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="57TuruPNu5wqSSia_cUehl5t9Gh1AbxrHNPcMiFx-aQ" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Statistics | Train Delays Tracker</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    <meta property="og:image" content="https://i.imgur.com/i8n9KYs.png" />
+
+    <link rel="icon" href="assets/icon-512.png">
+
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.0.0/css/all.css" />
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="css/style-tdt.css">
+    <link rel="stylesheet" href="../css/style-breakpoints.css">
+    <link rel="stylesheet" href="../css/dark-mode.css">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WN76281P3Q"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-WN76281P3Q');
+    </script>
+
+</head>
+
+<style>
+    #delays-bar-chart canvas {
+        height: 230px !important;
+        max-height: 230px;
+    }
+
+    #delays-bar-chart {
+        position: relative;
+    }
+
+    .chart-caplets {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        margin-top: -20px;
+        gap: 2px;
+    }
+
+    .chart-caplet {
+        flex: 0 1 auto;
+        display: inline-block;
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+        transform: rotate(180deg);
+        background: #e1251b;
+        color: #fff;
+        font-weight: bold;
+        border-radius: 13.6px / 8.2px;
+        padding: 6px 4px;
+        font-size: 15px;
+        letter-spacing: 1px;
+        border: 2px solid #fff;
+        font-family: 'Onest', sans-serif;
+    }
+
+    body.dark-mode .chart-caplet {
+        border: 2px solid #2e2e2e;
+    }
+
+    .chart-caplet.nsl {
+        background: #e1251b;
+    }
+
+    .chart-caplet.ewl {
+        background: #00953b;
+    }
+
+    .chart-caplet.ccl {
+        background: #ff9e18;
+        color: #000;
+    }
+
+    .chart-caplet.dtl {
+        background: #0055b8;
+    }
+
+    .chart-caplet.nel {
+        background: #9e28b5;
+    }
+
+    .chart-caplet.tel {
+        background: #9d5918;
+    }
+
+    .chart-caplet.lrt {
+        background: #718472;
+    }
+
+    .chart-container {
+        max-width: 600px;
+        width: 100%;
+        margin: 0 auto;
+        box-sizing: border-box;
+    }
+
+    .chart-container canvas {
+        max-width: 100%;
+        height: auto;
+        display: block;
+    }
+
+
+
+    @media (max-width: 994px) {
+        .chart-caplets {
+            gap: 2px;
+            margin-top: -10px;
+            margin-left: 26px;
+            margin-right: 26px;
+        }
+
+        .chart-caplet {
+            font-size: 10px !important;
+            flex: 0 1 auto;
+        }
+
+        #delays-bar-chart canvas,
+        #mkbf-line-chart-mrt canvas,
+        #mkbf-line-chart-lrt canvas {
+            height: auto !important;
+            min-height: 120px !important;
+            width: 100% !important;
+        }
+
+    }
+</style>
+
+<body>
+    <!-- Fixed Breadcrumb at very top (mobile/tablet only) -->
+    <div class="breadcrumb-fixed-placeholder">
+        <nav aria-label="breadcrumb" style="margin-bottom:0;">
+            <ol class="breadcrumb breadcrumb-fixed" id="floating-breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="../delays-tracker.html"><i class="fa-solid fa-house"></i>
+                    </a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="statistics.html"><i class="fa-solid fa-chart-bar"></i>
+                    </a>
+                </li>
+            </ol>
+        </nav>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar-container">
+        <div class="navbar">
+            <!-- Logo -->
+            <a href="../delays-tracker.html"><img src="assets/logo.png" alt="logo" class="logo" /></a>
+
+            <!-- Navigation Links -->
+            <ul class="navbar-nav" id="navbarNav">
+                <li class="nav-item">
+                    <a href="../delays-tracker.html" class="nav-link">
+                        <i class="fa-sharp fa-solid fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="history.html" class="nav-link">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                        <span>History</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="statistics.html" class="nav-link active">
+                        <i class="fa-solid fa-chart-bar"></i>
+                        <span>Statistics</span>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a href="menu.html" class="nav-link">
+                        <i class="fa-solid fa-bars"></i>
+                        <span>Menu</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+    </nav>
+
+    <!-- Mobile Bottom Navigation Bar -->
+    <nav class="mobile-bottom-nav">
+        <ul>
+            <li>
+                <a href="../delays-tracker.html">
+                    <span class="icon">
+                        <i class="fa-sharp fa-solid fa-home"></i>
+                    </span>
+                    <span class="label">Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="history.html">
+                    <span class="icon">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                    </span>
+                    <span class="label">History</span>
+                </a>
+            </li>
+            <li class="active">
+                <a href="statistics.html">
+                    <span class="icon">
+                        <i class="fa-solid fa-chart-bar"></i>
+                    </span>
+                    <span class="label">Statistics</span>
+                </a>
+            </li>
+            <li>
+                <a href="menu.html">
+                    <span class="icon">
+                        <i class="fa-solid fa-bars"></i>
+                    </span>
+                    <span class="label">Menu</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+
+
+    <!------------------------------------------------------------------------ Start of Sections ------------------------------------------------------------------------>
+
+    <!-- Title/Breadcrumbs -->
+    <section class="about-me-sum clearfix">
+        <div class="wbnrfz_eicw">
+            <div class="page-header-section">
+                <div class="container container-xxl container-mobile container-mobile-header">
+                    <div class="breadcrumb-wrapper">
+                        <nav aria-label="breadcrumb" class="breadcrumb-desktop" style="display:none;">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="../delays-tracker.html"><i class="fa-solid fa-house"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="statistics.html"><i class="fa-solid fa-chart-bar"></i>
+                                    </a>
+                                </li>
+                            </ol>
+                        </nav>
+                        <div class="page-title-wrapper">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                                <div>
+                                    <h1 class="page-title" id="filter-title">Statistics</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats">
+        <div class="container container-xxl container-mobile container-mobile-header">
+
+            <div class="stats-section">
+                <h2 style="margin-bottom:20px;">Incident Count by MRT Line</h2>
+                <div id="delays-bar-chart"></div>
+            </div>
+
+            <hr>
+
+            <div class="stats-section">
+                <h2 style="margin-top:50px;">Mean Distance Travelled between Delays &gt; 5 min (train-km - MRT)
+                </h2>
+                <div id="mkbf-line-chart-mrt"></div>
+            </div>
+
+            <div class="stats-section">
+                <h2 style="margin-top:50px;">Mean Distance Travelled between Delays &gt; 5 min (car-km - LRT)
+                </h2>
+                <div id="mkbf-line-chart-lrt"></div>
+            </div>
+
+            <hr>
+
+
+        </div>
+    </section>
+
+
+    <script type="text/javascript" id="cookiebanner" src="../js/cookies-banner.js" data-position="bottom"
+        data-bg="#f2f3e5" data-fg="#000" data-font-family="Onest, sans-serif" data-zindex="12345111111"
+        data-message="This website uses cookies to provide necessary site functionality and to improve your experience. By using this website, you agree to our use of cookies.">
+        </script>
+
+
+
+    <script src="js/mob-navtabs.js"></script>
+    <script src="tdt-subp.js"></script>
+    <script src="js/delays-bar-chart.js"></script>
+    <script src="js/mrt-mkbf-line-chart.js"></script>
+    <script src="js/lrt-mkbf-line-chart.js"></script>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/pw.bundle.js"></script>
+    <script src="../js/default-assets/active.js"></script>
+    <script src="../js/isotope.pkgd.min.js"></script>
+    <script src="../js/dstabs.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="js/hist.js"></script>
+
+</body>
+
+</html>

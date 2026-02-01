@@ -1,0 +1,51 @@
+[
+    
+    {
+        "type": "Disruption",
+        "title": "CCL Minor Delay - Bishan to Buona Vista",
+        "line": "CCL",
+        "from": "Bishan",
+        "to": "Buona Vista",
+        "start": "2026-01-13",
+        "end": "2026-01-14",
+        "status": "Resolved",
+        "tags": [
+            "Delay"
+        ]
+    },
+
+    {
+        "type": "Disruption",
+        "title": "NSL Minor delay - Ang Mo Kio to Woodlands",
+        "line": "NSL",
+        "from": "Ang Mo Kio",
+        "to": "Woodlands",
+        "start": "2025-12-26",
+        "end": "2025-12-26",
+        "status": "Resolved",
+        "tags": [
+            "Delay",
+            "Train Fault"
+        ]
+    },
+
+    {
+        "type": "Disruption",
+        "title": "CCL Delay - HarbourFront to Paya Lebar (Public Report)",
+        "line": "CCL",
+        "from": [
+            "Marina Bay",
+            "Dhoby Ghaut"
+        ],
+        "to": [
+            "HarbourFront",
+            "HarbourFront"
+        ],
+        "start": "2025-12-08",
+        "end": "2025-12-08",
+        "status": "Resolved",
+        "tags": [
+            "Delay"
+        ]
+    }
+]

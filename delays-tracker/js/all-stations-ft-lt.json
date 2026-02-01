@@ -1,0 +1,164 @@
+[
+  {
+    "station": "Admiralty",
+    "station_slug": "admiralty",
+    "directions": [
+      {
+        "description": "First/Last train service terminating at NS1 EW24 Jurong East",
+        "first_train": {
+          "monday_to_friday": "05:35",
+          "saturday": "05:35",
+          "sunday_public_holidays": "05:58",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "00:37",
+          "saturday": "00:37",
+          "sunday_public_holidays": "00:37",
+          "eve_of_public_holidays": "01:11"
+        }
+      },
+      {
+        "description": "Last train service terminating at NS7 Kranji",
+        "first_train": {
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "00:53",
+          "saturday": "00:53",
+          "sunday_public_holidays": "00:53",
+          "eve_of_public_holidays": "00:53"
+        }
+      },
+      {
+        "description": "Last train service terminating at NS19 Toa Payoh",
+        "first_train": {
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "23:53",
+          "saturday": "23:53",
+          "sunday_public_holidays": "23:53",
+          "eve_of_public_holidays": "23:53"
+        }
+      },
+      {
+        "description": "Last train service terminating at NS16 Ang Mo Kio",
+        "first_train": {
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "00:42",
+          "saturday": "00:42",
+          "sunday_public_holidays": "00:42",
+          "eve_of_public_holidays": "01:16"
+        }
+      }
+    ],
+    "scraped_at": "2026-02-01T13:14:21.590Z"
+  },
+  {
+    "station": "Aljunied",
+    "station_slug": "aljunied",
+    "directions": [
+      {
+        "description": "First/Last train service terminating at EW1 Pasir Ris",
+        "first_train": {
+          "monday_to_friday": "06:10",
+          "saturday": "06:10",
+          "sunday_public_holidays": "06:38",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "00:20",
+          "saturday": "00:20",
+          "sunday_public_holidays": "00:20",
+          "eve_of_public_holidays": "00:39"
+        }
+      }
+    ],
+    "scraped_at": "2026-02-01T13:14:22.731Z"
+  },
+  {
+    "station": "Ang Mo Kio",
+    "station_slug": "ang-mo-kio",
+    "directions": [
+      {
+        "description": "First/Last train service terminating at NS1 EW24 Jurong East",
+        "first_train": {
+          "monday_to_friday": "05:17",
+          "saturday": "05:17",
+          "sunday_public_holidays": "05:40",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "00:18",
+          "saturday": "00:18",
+          "sunday_public_holidays": "00:18",
+          "eve_of_public_holidays": "00:52"
+        }
+      },
+      {
+        "description": "First train service terminating at NS13 Yishun",
+        "first_train": {
+          "monday_to_friday": "05:07",
+          "saturday": "05:07",
+          "sunday_public_holidays": "05:40",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "00:18",
+          "saturday": "00:18",
+          "sunday_public_holidays": "00:18",
+          "eve_of_public_holidays": "00:18"
+        }
+      },
+      {
+        "description": "Last train service terminating at NS7 Kranji",
+        "first_train": {
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "00:33",
+          "saturday": "00:33",
+          "sunday_public_holidays": "00:33",
+          "eve_of_public_holidays": "00:13"
+        }
+      },
+      {
+        "description": "Last train service terminating at NS19 Toa Payoh",
+        "first_train": {
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "00:13",
+          "saturday": "00:13",
+          "sunday_public_holidays": "00:13",
+          "eve_of_public_holidays": "00:13"
+        }
+      }
+    ],
+    "scraped_at": "2026-02-01T13:14:23.706Z"
+  },
+  {
+    "station": "Bangkit",
+    "station_slug": "bangkit",
+    "directions": [],
+    "scraped_at": "2026-02-01T13:14:24.853Z"
+  }
+]

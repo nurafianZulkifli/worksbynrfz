@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="57TuruPNu5wqSSia_cUehl5t9Gh1AbxrHNPcMiFx-aQ" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Line Status | Train Delays Tracker</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    <meta property="og:image" content="https://i.imgur.com/i8n9KYs.png" />
+
+    <link rel="manifest" href="manifest-dt.json">
+    <meta name="theme-color" content="#007bff">
+
+    <link rel="icon" href="delays-tracker/assets/icon-512.png">
+
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.0.0/css/all.css" />
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="delays-tracker/css/style-tdt.css">
+    <link rel="stylesheet" href="css/style-breakpoints.css">
+    <link rel="stylesheet" href="css/dark-mode.css">
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WN76281P3Q"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-WN76281P3Q');
+    </script>
+
+</head>
+
+<style>
+    .container-mobile-header {
+        padding-right: 1em !important;
+        padding-left: 1em !important;
+    }
+
+    .custom-list-item {
+        display: flex;
+        align-items: center;
+        background: #fff;
+        border-radius: 40px;
+        padding: 12px 16px;
+        width: 100%;
+        margin: 24px 0;
+        box-sizing: border-box;
+        gap: 12px;
+        box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.04);
+        transition-duration: 800ms;
+    }
+
+    .custom-list-item:hover {
+        background-color: #d8e6f3;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    body.dark-mode .custom-list-item {
+        background-color: #2e2e2e;
+        color: #fff !important;
+        border: 1px solid #2b2b2b33;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    body.dark-mode .custom-list-item:hover {
+        background-color: #334250;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .line-label {
+        background: #ff3b3b;
+        color: #fff;
+        font-weight: bold;
+        border-radius: 13.6px / 19.2px;
+        padding: 5px 10px;
+        font-size: 15px;
+        letter-spacing: 1px;
+        margin-right: 0px;
+        border: 2px solid #fff;
+    }
+
+    .line-name {
+        font-weight: 600;
+        font-size: 18px;
+        color: #111;
+        flex: 1;
+    }
+
+    .status-icon {
+        background: #43b02a;
+        color: #fff;
+        border-radius: 50%;
+        width: 33px;
+        height: 33px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 15px;
+    }
+
+    .line-label.nsl {
+        background: #e1251b;
+    }
+
+    .line-label.ewl {
+        background: #00953b;
+    }
+
+    .line-label.ccl {
+        background: #ff9e18;
+        color: #000;
+    }
+
+    .line-label.dtl {
+        background: #0055b8;
+    }
+
+    .line-label.nel {
+        background: #9e28b5;
+    }
+
+    .line-label.tel {
+        background: #9d5918;
+    }
+
+    .line-label.lrt {
+        background: #718472;
+    }
+
+    .alert-message-content a {
+        color: #000;
+        text-decoration: underline;
+        font-weight: bold;
+    }
+
+    .pulse {
+        animation: pulse-animation 2s infinite;
+    }
+
+    @keyframes pulse-animation {
+        0% {
+            box-shadow: 0 0 0 0px rgba(148, 148, 148, 0.2);
+        }
+
+        100% {
+            box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
+        }
+    }
+
+    body.dark-mode .alert-message-content a {
+        color: #fff;
+        text-decoration: underline;
+        font-weight: bold;
+    }
+
+    .tsu {
+        padding: 7em 1em 3em 1em;
+    }
+
+    @media (max-width: 994px) {
+        .tsu {
+            padding: 3em 1em 7em 1em;
+        }
+    }
+</style>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar-container">
+        <div class="navbar">
+            <!-- Logo -->
+            <a href="delays-tracker.html"><img src="delays-tracker/assets/logo.png" alt="logo" class="logo" /></a>
+
+            <!-- Navigation Links -->
+            <ul class="navbar-nav" id="navbarNav">
+                <li class="nav-item">
+                    <a href="delays-tracker.html" class="nav-link active">
+                        <i class="fa-sharp fa-solid fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="delays-tracker/history.html" class="nav-link">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                        <span>History</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="delays-tracker/statistics.html" class="nav-link">
+                        <i class="fa-solid fa-chart-bar"></i>
+                        <span>Statistics</span>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a href="delays-tracker/menu.html" class="nav-link">
+                        <i class="fa-solid fa-bars"></i>
+                        <span>Menu</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+    </nav>
+
+    <!-- Mobile Bottom Navigation Bar -->
+    <nav class="mobile-bottom-nav">
+        <ul>
+            <li class="active">
+                <a href="delays-tracker.html">
+                    <span class="icon">
+                        <i class="fa-sharp fa-solid fa-home"></i>
+                    </span>
+                    <span class="label">Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="delays-tracker/history.html">
+                    <span class="icon">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                    </span>
+                    <span class="label">History</span>
+                </a>
+            </li>
+            <li>
+                <a href="delays-tracker/statistics.html">
+                    <span class="icon">
+                        <i class="fa-solid fa-chart-bar"></i>
+                    </span>
+                    <span class="label">Statistics</span>
+                </a>
+            </li>
+            <li>
+                <a href="delays-tracker/menu.html">
+                    <span class="icon">
+                        <i class="fa-solid fa-bars"></i>
+                    </span>
+                    <span class="label">Menu</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+
+
+    <!------------------------------------------------------------------------ Start of Sections ------------------------------------------------------------------------>
+
+    <section class="tsu">
+        <div class="container container-xxl container-mobile container-mobile-header">
+
+            <h2>Line Status</h2>
+            <div class='alert-last-updated' style='margin-top:12px;font-size:0.98em;color:#888;'></div>
+
+            <li class="custom-list-item">
+                <span class="line-label nsl">NSL</span>
+                <span class="line-name">North-South Line</span>
+                <span class="status-icon pulse"><i class="fa-solid fa-check"></i></span>
+            </li>
+            <hr>
+            <li class="custom-list-item">
+                <span class="line-label ewl">EWL</span>
+                <span class="line-name">East-West Line</span>
+                <span class="status-icon pulse"><i class="fa-solid fa-check"></i></span>
+            </li>
+            <hr>
+            <li class="custom-list-item">
+                <span class="line-label nel">NEL</span>
+                <span class="line-name">North East Line</span>
+                <span class="status-icon pulse"><i class="fa-solid fa-check"></i></span>
+            </li>
+            <hr>
+            <li class="custom-list-item">
+                <span class="line-label ccl">CCL</span>
+                <span class="line-name">Circle Line</span>
+                <span class="status-icon pulse"><i class="fa-solid fa-check"></i></span>
+            </li>
+            <hr>
+            <li class="custom-list-item">
+                <span class="line-label dtl">DTL</span>
+                <span class="line-name">Downtown Line</span>
+                <span class="status-icon pulse"><i class="fa-solid fa-check"></i></span>
+            </li>
+            <hr>
+            <li class="custom-list-item">
+                <span class="line-label tel">TEL</span>
+                <span class="line-name">Thomson-East Coast Line</span>
+                <span class="status-icon pulse"><i class="fa-solid fa-check"></i></span>
+            </li>
+            <hr>
+            <li class="custom-list-item">
+                <span class="line-label lrt">BP</span>
+                <span class="line-name">Bukit Panjang LRT</span>
+                <span class="status-icon pulse"><i class="fa-solid fa-check"></i></span>
+            </li>
+            <hr>
+            <li class="custom-list-item">
+                <span class="line-label lrt">SK</span>
+                <span class="line-name">Sengkang LRT</span>
+                <span class="status-icon pulse"><i class="fa-solid fa-check"></i></span>
+            </li>
+            <hr>
+            <li class="custom-list-item">
+                <span class="line-label lrt">PG</span>
+                <span class="line-name">Punggol LRT</span>
+                <span class="status-icon pulse"><i class="fa-solid fa-check"></i></span>
+            </li>
+        </div>
+    </section>
+
+
+    <script type="text/javascript" id="cookiebanner" src="../js/cookies-banner.js" data-position="bottom"
+        data-bg="#f2f3e5" data-fg="#000" data-font-family="Onest, sans-serif" data-zindex="12345111111"
+        data-message="This website uses cookies to provide necessary site functionality and to improve your experience. By using this website, you agree to our use of cookies.">
+        </script>
+
+    <script src="delays-tracker/js/mob-navtabs.js"></script>
+
+    <script src="delays-tracker/tdt-subp.js"></script>
+
+    <script src="../js/jquery.min.js"></script>
+
+    <script src="../js/popper.min.js"></script>
+
+    <script src="../js/bootstrap.min.js"></script>
+
+    <script src="../js/pw.bundle.js"></script>
+
+    <script src="../js/default-assets/active.js"></script>
+
+    <script src="../js/isotope.pkgd.min.js"></script>
+
+    <script src="../js/dstabs.js"></script>
+
+    <script src="../js/utils.js"></script>
+
+    <script src="delays-tracker/js/tsa.js"></script>
+
+</body>
+
+</html>

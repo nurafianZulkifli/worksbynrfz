@@ -1,0 +1,101 @@
+[
+    {
+        "line": "NSL",
+        "weekdays": {
+            "firstTrain": "04:59",
+            "lastTrain": "01:00"
+        },
+        "weekends": {
+            "firstTrain": "05:23",
+            "lastTrain": "01:00"
+        }
+    },
+    {
+        "line": "EWL",
+        "weekdays": {
+            "firstTrain": "04:59",
+            "lastTrain": "01:00"
+        },
+        "weekends": {
+            "firstTrain": "05:19",
+            "lastTrain": "01:00"
+        }
+    },
+        {
+        "line": "NEL",
+        "weekdays": {
+            "firstTrain": "05:39",
+            "lastTrain": "01:00"
+        },
+        "weekends": {
+            "firstTrain": "05:55",
+            "lastTrain": "01:00"
+        }
+    },
+        {
+        "line": "CCL",
+        "weekdays": {
+            "firstTrain": "04:59",
+            "lastTrain": "01:00"
+        },
+        "weekends": {
+            "firstTrain": "05:19",
+            "lastTrain": "01:00"
+        }
+    },
+        {
+        "line": "DTL",
+        "weekdays": {
+            "firstTrain": "04:59",
+            "lastTrain": "01:00"
+        },
+        "weekends": {
+            "firstTrain": "05:19",
+            "lastTrain": "01:00"
+        }
+    },
+        {
+        "line": "TEL",
+        "weekdays": {
+            "firstTrain": "05:36",
+            "lastTrain": "01:00"
+        },
+        "weekends": {
+            "firstTrain": "05:38",
+            "lastTrain": "01:00"
+        }
+    },
+    {
+        "line": "BP",
+        "weekdays": {
+            "firstTrain": "05:05",
+            "lastTrain": "23:40"
+        },
+        "weekends": {
+            "firstTrain": "05:29",
+            "lastTrain": "23:40"
+        }
+    },
+        {
+        "line": "SK",
+        "weekdays": {
+            "firstTrain": "05:18",
+            "lastTrain": "00:40"
+        },
+        "weekends": {
+            "firstTrain": "05:38",
+            "lastTrain": "00:40"
+        }
+    },
+        {
+        "line": "PG",
+        "weekdays": {
+            "firstTrain": "05:18",
+            "lastTrain": "00:40"
+        },
+        "weekends": {
+            "firstTrain": "05:38",
+            "lastTrain": "00:40"
+        }
+    }
+]

@@ -1,0 +1,50 @@
+{
+  "station": "Admiralty",
+  "first_last_train": [
+    {
+      "direction": "NS1 EW24 Jurong East",
+      "first_train": {
+        "monday_friday": "05:35",
+        "saturday": "05:35",
+        "sunday_public_holidays": "05:58",
+        "eve_public_holidays_last_train": "--"
+      },
+      "last_train": {
+        "monday_friday": "00:37",
+        "saturday": "00:37",
+        "sunday_public_holidays": "00:37",
+        "eve_public_holidays_last_train": "01:11"
+      }
+    },
+    {
+      "direction": "NS7 Kranji",
+      "first_train": {
+        "monday_friday": "--",
+        "saturday": "--",
+        "sunday_public_holidays": "--",
+        "eve_public_holidays_last_train": "--"
+      },
+      "last_train": {
+        "monday_friday": "00:53",
+        "saturday": "00:53",
+        "sunday_public_holidays": "00:53",
+        "eve_public_holidays_last_train": "00:53"
+      }
+    },
+    {
+      "direction": "NS19 Toa Payoh",
+      "first_train": {
+        "monday_friday": "--",
+        "saturday": "--",
+        "sunday_public_holidays": "--",
+        "eve_public_holidays_last_train": "--"
+      },
+      "last_train": {
+        "monday_friday": "23:53",
+        "saturday": "23:53",
+        "sunday_public_holidays": "23:53",
+        "eve_public_holidays_last_train": "23:53"
+      }
+    }
+  ]
+}
