@@ -7,12 +7,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Helper to show Instagram limitation message
     function showInstagramLimitationMessage() {
+        const currentUrl = window.location.href;
+        
         busStopsContainer.innerHTML = `
             <p class="pin-msg"><i class="fa-solid fa-triangle-exclamation"></i>Location access is not available in Instagram's in-app browser.</p>
-            <a href="${window.location.href}" id="open-default-browser-btn" class="btn btn-rfetch" style="display: inline-block; margin: 15px auto; text-decoration: none;">
+            <button id="open-default-browser-btn" class="btn btn-rfetch" style="display: block; margin: 15px auto;">
                 <i class="fa-solid fa-globe"></i> Open in Default Browser
-            </a>
+            </button>
         `;
+        
+        const openBtn = document.getElementById('open-default-browser-btn');
+        if (openBtn) {
+            openBtn.addEventListener('click', () => {
+                // Try multiple methods to break out of Instagram's browser
+                const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+                
+                if (isIOS) {
+                    // iOS: Try to use Safari schema and fallback to direct navigation
+                    window.location.href = 'safari-' + currentUrl;
+                    setTimeout(() => {
+                        window.location.href = currentUrl;
+                    }, 1000);
+                } else {
+                    // Android: Try Chrome Intent first, then direct navigation
+                    const encodedUrl = encodeURIComponent(currentUrl);
+                    window.location.href = 'intent://' + currentUrl.replace(/^https?:\/\//, '') + '#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=' + encodedUrl + ';end';
+                    setTimeout(() => {
+                        window.location.href = currentUrl;
+                    }, 1000);
+                }
+            });
+        }
     }
 
 
