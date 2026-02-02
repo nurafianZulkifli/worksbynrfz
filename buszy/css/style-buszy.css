@@ -741,13 +741,14 @@ table th {
     border-radius: 25px;
     padding-top: 0.5em;
     padding-bottom: 0.5em;
-    text-align: center;
+    text-align: left;
     display: flex;
     align-items: center;
     gap: 10px;
     margin-top: 1em;
     padding-left: 1em;
 }
+
 
 .pinned p {
     text-align: center;
@@ -923,10 +924,9 @@ body.dark-mode .pin-msg {
     border-radius: 25px;
     padding-top: 0.5em;
     padding-bottom: 0.5em;
-    text-align: center;
+    text-align: left;
     display: flex;
     align-items: center;
-    justify-content: center;
     gap: 10px;
 }
 
