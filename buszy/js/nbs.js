@@ -8,12 +8,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // Helper to show Instagram limitation message
     function showInstagramLimitationMessage() {
         busStopsContainer.innerHTML = `
-            <p class="pin-msg">
-                <i class="fa-solid fa-mobile"></i><br>
-                <strong>Instagram Browser Limitation</strong><br>
-                <span style="font-size: 13px; font-weight: normal;">Location access is not available in Instagram's in-app browser.</span>
-            </p>
+            <p class="pin-msg"><i class="fa-solid fa-triangle-exclamation"></i>Location access is not available in Instagram's in-app browser.</p>
+            <button id="open-default-browser-btn" class="btn btn-rfetch" style="display: block; margin: 15px auto;">
+                <i class="fa-solid fa-globe"></i> Open in Default Browser
+            </button>
         `;
+        
+        const openBtn = document.getElementById('open-default-browser-btn');
+        if (openBtn) {
+            openBtn.addEventListener('click', () => {
+                window.open(window.location.href, '_blank');
+            });
+        }
     }
 
 
