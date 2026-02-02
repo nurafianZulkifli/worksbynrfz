@@ -2,11 +2,11 @@
 <html lang="en">
 
 <head>
-    <meta name="description" content>
+    <meta name="description" content="Select app page for Works by NRFZ">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="57TuruPNu5wqSSia_cUehl5t9Gh1AbxrHNPcMiFx-aQ" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Home | Works by NRFZ</title>
+    <title>Select app | Works by NRFZ</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
     <meta property="og:image" content="https://i.imgur.com/i8n9KYs.png" />
@@ -22,7 +22,6 @@
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
     <link rel="stylesheet" href="css/carousel.css">
 
-
     <link rel="stylesheet" type="text/css"
         href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
 
@@ -36,14 +35,254 @@
         gtag('config', 'G-WN76281P3Q');
     </script>
 
+    <style>
+        .select-apps-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            min-height: calc(100vh - 300px);
+        }
+
+        .select-apps-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .select-apps-header h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .select-apps-header p {
+            font-size: 1rem;
+            color: #666;
+            line-height: 1.5;
+            max-width: 500px;
+        }
+
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .app-card {
+            background: #ffffff;
+            border-radius: 24px;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            height: 100%;            text-decoration: none;        }
+
+        .app-card:hover {
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+            transform: translateY(-6px);
+        }
+
+        .app-thumbnail {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            cursor: pointer;
+            display: block;
+        }
+
+        .app-thumbnail-link {
+            display: block;
+            overflow: hidden;
+            border-radius: 24px;
+            margin: 12px;
+        }
+
+        .app-content {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .app-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin: 0 0 12px 0;
+        }
+
+        .app-description {
+            font-size: 0.95rem;
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 16px;
+            flex: 1;
+        }
+
+        .app-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: space-between;
+            margin-top: auto;
+        }
+
+        .app-action-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 8px 16px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #1a1a1a;
+            color: white;
+            flex: 1;
+            text-decoration: none;
+        }
+
+        .app-action-btn:hover {
+            background: #333;
+        }
+
+        .app-action-btn.delete {
+            background: #f5f5f5;
+            color: #d32f2f;
+        }
+
+        .app-action-btn.delete:hover {
+            background: #ffe0e0;
+            color: #d32f2f;
+        }
+
+        .add-app-card {
+            background: #f5f7fb;
+            border-radius: 12px;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px dashed #ccc;
+            min-height: 200px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .add-app-card:hover {
+            border-color: #007bff;
+            background: #f0f7ff;
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.15);
+        }
+
+        .add-app-icon {
+            font-size: 3rem;
+            color: #ccc;
+            transition: all 0.3s ease;
+            font-weight: 300;
+        }
+
+        .add-app-card:hover .add-app-icon {
+            color: #007bff;
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            .select-apps-container {
+                padding: 40px 15px;
+                min-height: auto;
+            }
+
+            .select-apps-header h1 {
+                font-size: 2rem;
+            }
+
+            .apps-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .app-card,
+            .add-app-card {
+                min-height: auto;
+                padding: 20px 15px;
+            }
+        }
+
+        /* Dark mode support */
+        body.dark-mode .app-card {
+            background: #2a2a2a;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark-mode .app-card:hover {
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        body.dark-mode .app-name {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .app-description {
+            color: #a0a0a0;
+        }
+
+        body.dark-mode .app-action-btn {
+            background: #4a4a4a;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .app-action-btn:hover {
+            background: #555;
+        }
+
+        body.dark-mode .app-action-btn.delete {
+            background: #3a3a3a;
+            color: #ff6b6b;
+        }
+
+        body.dark-mode .add-app-card {
+            background: #2a2a2a;
+            border-color: #444;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark-mode .add-app-card:hover {
+            border-color: #4a90e2;
+            background: #1a2a3a;
+        }
+
+        body.dark-mode .select-apps-header h1 {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .select-apps-header p {
+            color: #a0a0a0;
+        }
+
+        body.dark-mode .add-app-icon {
+            color: #555;
+        }
+
+        body.dark-mode .add-app-card:hover .add-app-icon {
+            color: #4a90e2;
+        }
+    </style>
+
 </head>
 
-<style>
-   
 
-
-
-</style>
 
 <body>
 
@@ -125,83 +364,91 @@
 
     <!-- ============================================= Hero Section ============================================= -->
     <!-- Cover Header -->
-    <section class="breadcrumb-area-eicw-cover bg-img bg-overlay" id="hero">
+    <!-- <section class="breadcrumb-area-eicw-cover bg-img bg-overlay" id="hero">
         <div class="container h-100">
             <div class="row h-100 align-items-center">
                 <div class="col-12">
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
 
     <div class="main-content">
         <section class="wbnrfz-works">
             <div class="container">
-                <div class="section-heading text-center wow fadeIn" data-wow-delay="100ms">
-                    <h2>Web Apps</h2>
-                </div>
-                <div class="wbnrfz-grid wow fadeIn" data-wow-delay="300ms">
-                    <div class="card">
-                        <img src="https://i.imgur.com/TBlQxOJ.png" alt="Work 1">
-                        <div class="card-content">
-                            <h3>Buszy - Bus Arrival Timings</h3>
-                            <a href="buszy.html" class="pw-btn-small btn-2"><i class="fa-solid fa-arrow-right"></i></a>
+                    <div class="select-apps-container">
+                        
+                        <div class="apps-grid">
+                            <!-- app 1 -->
+                            <a href="buszy.html" class="app-card">
+                                <div class="app-thumbnail-link">
+                                    <img src="https://i.imgur.com/TBlQxOJ.png" alt="Buszy - Bus Arrival Timings" class="app-thumbnail">
+                                </div>
+                                <div class="app-content">
+                                    <h3 class="app-name">Buszy - Bus Arrival Timings</h3>
+                                    <div class="app-actions">
+                                    </div>
+                                </div>
+                            </a>
+
+                            <!-- app 2 -->
+                            <a href="delays-tracker.html" class="app-card">
+                                <div class="app-thumbnail-link">
+                                    <img src="https://i.imgur.com/Dlkjslp.png" alt="RailBuddy - Stay on track, always" class="app-thumbnail">
+                                </div>
+                                <div class="app-content">
+                                    <h3 class="app-name">RailBuddy - Stay on track, always</h3>
+                                    <div class="app-actions">
+                                    </div>
+                                </div>
+                            </a>
+
+                </section>
+
+                <!-- Footer -->
+                <footer class="footer">
+                    <div class="footer-content">
+                        <div class="footer-social">
+                            <a href="https://github.com/nurafianZulkifli" class="social-link">
+                                <i class="fa-brands fa-github" aria-hidden="true"></i>
+                            </a>
+                            <a href="https://twitter.com/nrfzlkf_" class="social-link">
+                                <i class="fa-brands fa-x-twitter" aria-hidden="true"></i>
+                            </a>
+                            <a href="https://www.facebook.com/Nrfnzlkf/" class="social-link">
+                                <i class="fa-brands fa-facebook" aria-hidden="true"></i>
+                            </a>
+                            <a href="https://www.instagram.com/nrfzlkf/" class="social-link">
+                                <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+                            </a>
                         </div>
                     </div>
-                    <div class="card">
-                        <img src="https://i.imgur.com/Dlkjslp.png" alt="Work 3">
-                        <div class="card-content">
-                            <h3>RailBuddy - Stay on track, always </h3>
-                            <a href="delays-tracker.html" class="pw-btn-small btn-2"><i class="fa-solid fa-arrow-right"></i></a>
-                        </div>
+
+                    <div class="footer-copy">
+                        © 2026 Nurafian Zulkifli
                     </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Footer -->
-        <footer class="footer">
-            <div class="footer-content">
-                <div class="footer-social">
-                    <a href="https://github.com/nurafianZulkifli" class="social-link">
-                        <i class="fa-brands fa-github" aria-hidden="true"></i>
-                    </a>
-                    <a href="https://twitter.com/nrfzlkf_" class="social-link">
-                        <i class="fa-brands fa-x-twitter" aria-hidden="true"></i>
-                    </a>
-                    <a href="https://www.facebook.com/Nrfnzlkf/" class="social-link">
-                        <i class="fa-brands fa-facebook" aria-hidden="true"></i>
-                    </a>
-                    <a href="https://www.instagram.com/nrfzlkf/" class="social-link">
-                        <i class="fa-brands fa-instagram" aria-hidden="true"></i>
-                    </a>
-                </div>
+                </footer>
             </div>
 
-            <div class="footer-copy">
-                © 2026 Nurafian Zulkifli
-            </div>
-        </footer>
-    </div>
 
-    <script type="text/javascript" id="cookiebanner" src="js/cookies-banner.js" data-position="bottom" data-bg="#f2f3e5"
-        data-fg="#000" data-font-family="Onest, sans-serif" data-zindex="12345111111"
-        data-message="This website uses cookies to provide necessary site functionality and to improve your experience. By using this website, you agree to our use of cookies.">
-        </script>
+            <script type="text/javascript" id="cookiebanner" src="js/cookies-banner.js" data-position="bottom"
+                data-bg="#f2f3e5" data-fg="#000" data-font-family="Onest, sans-serif" data-zindex="12345111111"
+                data-message="This website uses cookies to provide necessary site functionality and to improve your experience. By using this website, you agree to our use of cookies.">
+                </script>
 
-    <script src="js/navtabs.js"></script>
+            <script src="js/navtabs.js"></script>
 
-    <script src="js/theme-index.js"></script>
+            <script src="js/theme-index.js"></script>
 
-    <script src="js/jquery.min.js"></script>
+            <script src="js/jquery.min.js"></script>
 
-    <script src="js/popper.min.js"></script>
+            <script src="js/popper.min.js"></script>
 
-    <script src="js/bootstrap.min.js"></script>
+            <script src="js/bootstrap.min.js"></script>
 
-    <script src="js/pw.bundle.js"></script>
+            <script src="js/pw.bundle.js"></script>
 
-    <script src="js/default-assets/active.js"></script>
+            <script src="js/default-assets/active.js"></script>
 
 
 
