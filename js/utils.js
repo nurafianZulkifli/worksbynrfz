@@ -7,3 +7,23 @@ function getQueryParam(param) {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(param);
 }
+
+/**
+ * Detect if the current browser is Instagram's in-app browser
+ * @returns {boolean} - True if running in Instagram in-app browser
+ */
+function isInstagramInAppBrowser() {
+    const userAgent = navigator.userAgent;
+    return /Instagram/i.test(userAgent);
+}
+
+/**
+ * Detect if the current browser is a native mobile browser
+ * @returns {boolean} - True if running in a native browser (Safari, Chrome, Firefox, etc.)
+ */
+function isNativeBrowser() {
+    const userAgent = navigator.userAgent;
+    // Check for common in-app browsers
+    const inAppBrowsers = /Instagram|Facebook|LinkedIn|WeChat|QQ|Alipay|Messenger/i;
+    return !inAppBrowsers.test(userAgent);
+}
