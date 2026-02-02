@@ -22,8 +22,8 @@ function isInstagramInAppBrowser() {
  * @returns {boolean} - True if running in a native browser (Safari, Chrome, Firefox, etc.)
  */
 function isNativeBrowser() {
-    const userAgent = navigator.userAgent;
-    // Check for common in-app browsers
-    const inAppBrowsers = /Instagram|Facebook|LinkedIn|WeChat|QQ|Alipay|Messenger/i;
+    const userAgent = navigator.userAgent.toLowerCase();
+    // Check for common in-app browsers with more accurate patterns
+    const inAppBrowsers = /instagram|fb|fbav|\[fb|micromessenger|whatsapp|telegram|line\/|viber|tiktok|snapchat/i;
     return !inAppBrowsers.test(userAgent);
 }
