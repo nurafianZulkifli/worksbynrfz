@@ -11,27 +11,51 @@ document.addEventListener('DOMContentLoaded', () => {
         const encodedUrl = encodeURIComponent(currentUrl);
         
         busStopsContainer.innerHTML = `
-            <p class="pin-msg">
-                <i class="fa-solid fa-mobile"></i>
-                <strong>Instagram Browser Limitation</strong><br>
-                <small>Location access is not available in Instagram's in-app browser. Please open this page in your default browser:</small>
-            </p>
-            <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; padding: 10px;">
-                <a href="https://maps.apple.com?q=bus+stops" target="_blank" class="btn btn-rfetch" style="text-decoration: none;">
-                    <i class="fa-solid fa-safari"></i> Open in Safari
-                </a>
-                <a href="https://www.google.com/maps/search/bus+stops" target="_blank" class="btn btn-rfetch" style="text-decoration: none;">
-                    <i class="fa-solid fa-chrome"></i> Open in Chrome
-                </a>
+            <div style="padding: 20px 0;">
+                <p class="pin-msg" style="font-size: 16px; margin-bottom: 15px;">
+                    <i class="fa-solid fa-mobile"></i><br>
+                    <strong>Instagram Browser Limitation</strong><br>
+                    <span style="font-size: 13px; font-weight: normal;">Location access is not available in Instagram's in-app browser.</span>
+                </p>
+                <p style="text-align: center; margin: 15px 0; font-size: 13px;">Please choose an option:</p>
+                <div style="display: flex; flex-direction: column; gap: 8px; padding: 0 10px;">
+                    <a href="javascript:void(0)" id="safari-link" class="btn btn-rfetch" style="text-decoration: none; display: block; text-align: center;">
+                        <i class="fa-solid fa-globe"></i> Open in Safari
+                    </a>
+                    <a href="javascript:void(0)" id="chrome-link" class="btn btn-rfetch" style="text-decoration: none; display: block; text-align: center;">
+                        <i class="fa-solid fa-globe"></i> Open in Chrome
+                    </a>
+                    <button id="manual-location-btn" class="btn btn-rfetch" style="margin-top: 5px;">
+                        <i class="fa-solid fa-map-pin"></i> Manual Location Entry
+                    </button>
+                </div>
             </div>
-            <p style="text-align: center; margin-top: 15px; font-size: 12px;">
-                <button id="manual-location-btn" class="btn btn-rfetch">
-                    <i class="fa-solid fa-map-pin"></i> Manual Location
-                </button>
-            </p>
         `;
         
+        const safariLink = document.getElementById('safari-link');
+        const chromeLink = document.getElementById('chrome-link');
         const manualBtn = document.getElementById('manual-location-btn');
+        
+        if (safariLink) {
+            safariLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.location.href = 'safari-readerlists://';
+                setTimeout(() => {
+                    window.open(window.location.href, '_blank');
+                }, 1000);
+            });
+        }
+        
+        if (chromeLink) {
+            chromeLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.location.href = 'googlechrome://' + window.location.href.replace(/^https?:\/\//,'');
+                setTimeout(() => {
+                    window.open(window.location.href, '_blank');
+                }, 1000);
+            });
+        }
+        
         if (manualBtn) {
             manualBtn.addEventListener('click', () => {
                 showManualLocationInput();
@@ -42,15 +66,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // Helper to show manual location input
     function showManualLocationInput() {
         busStopsContainer.innerHTML = `
-            <p class="pin-msg">
-                <i class="fa-solid fa-map-location-dot"></i>
-                <strong>Enter Your Location</strong>
-            </p>
-            <div style="padding: 15px; text-align: center;">
-                <input type="text" id="manual-lat" placeholder="Latitude (e.g., 1.3521)" style="width: 100%; padding: 8px; margin: 5px 0; border: 1px solid #ddd; border-radius: 5px;">
-                <input type="text" id="manual-lon" placeholder="Longitude (e.g., 103.8198)" style="width: 100%; padding: 8px; margin: 5px 0; border: 1px solid #ddd; border-radius: 5px;">
-                <button id="submit-manual-location" class="btn btn-rfetch" style="margin-top: 10px; width: 100%;">Search</button>
-                <button id="cancel-manual-location" class="btn btn-rfetch" style="margin-top: 5px; width: 100%; background-color: #999;">Cancel</button>
+            <div style="padding: 20px 0;">
+                <p class="pin-msg" style="font-size: 16px; margin-bottom: 15px;">
+                    <i class="fa-solid fa-map-location-dot"></i><br>
+                    <strong>Enter Your Location</strong>
+                </p>
+                <div style="padding: 15px; max-width: 400px; margin: 0 auto;">
+                    <input type="text" id="manual-lat" placeholder="Latitude (e.g., 1.3521)" style="width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; font-size: 14px;">
+                    <input type="text" id="manual-lon" placeholder="Longitude (e.g., 103.8198)" style="width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; font-size: 14px;">
+                    <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 15px;">
+                        <button id="submit-manual-location" class="btn btn-rfetch" style="width: 100%;">Search Bus Stops</button>
+                        <button id="cancel-manual-location" class="btn btn-rfetch" style="width: 100%; background-color: #6c757d;">Cancel</button>
+                    </div>
+                </div>
             </div>
         `;
         
