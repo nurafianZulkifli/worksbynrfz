@@ -9,17 +9,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function showInstagramLimitationMessage() {
         busStopsContainer.innerHTML = `
             <p class="pin-msg"><i class="fa-solid fa-triangle-exclamation"></i>Location access is not available in Instagram's in-app browser.</p>
-            <button id="open-default-browser-btn" class="btn btn-rfetch" style="display: block; margin: 15px auto;">
+            <a href="${window.location.href}" id="open-default-browser-btn" class="btn btn-rfetch" style="display: inline-block; margin: 15px auto; text-decoration: none;">
                 <i class="fa-solid fa-globe"></i> Open in Default Browser
-            </button>
+            </a>
         `;
-        
-        const openBtn = document.getElementById('open-default-browser-btn');
-        if (openBtn) {
-            openBtn.addEventListener('click', () => {
-                window.open(window.location.href, '_blank');
-            });
-        }
     }
 
 
