@@ -43,14 +43,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Helper to show error only if nothing can be loaded
     function showLocationError() {
-        busStopsContainer.innerHTML = '<p class="pin-msg"><i class="fa-solid fa-triangle-exclamation"></i>Unable to retrieve your location.<br><button id="retry-location-btn" class="btn btn-rfetch">Retry</button></p>';
+        busStopsContainer.innerHTML = `
+            <p class="pin-msg"><i class="fa-solid fa-triangle-exclamation"></i>Unable to retrieve your location.</p>
+            <button id="retry-location-btn" class="btn btn-rfetch" style="display: block; margin: 15px auto;">
+                <i class="fa-solid fa-rotate"></i> Retry
+            </button>
+        `;
         const retryBtn = document.getElementById('retry-location-btn');
         if (retryBtn) {
             retryBtn.addEventListener('click', () => {
-                requestLocation();
+                requestLocation(true); // Force location prompt
             });
         }
     }
+
+
 
     function requestLocation(force = false) {
         // Check if running in Instagram in-app browser
