@@ -353,10 +353,10 @@ function formatArrivalTimeOrArr(isoString, now, isIncomingBus = false) {
 
     if (timeDifference === 0) {
         // Show "Arr" if the time difference is exactly 0
-        return `<span class="arrival-now">Arr</span>`;
+        return `Arr`;
     } else if (timeDifference < 0) {
         // Continue showing "Arr" if the time difference is -1 or more
-        return `<span class="arrival-now">Arr</span>`;
+        return `Arr`;
     }
 
     // Get the saved time format from localStorage
