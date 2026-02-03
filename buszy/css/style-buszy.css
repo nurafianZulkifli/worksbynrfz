@@ -199,7 +199,7 @@ body.dark-mode li.breadcrumb-item a {
     }
 
     .mobile-bottom-nav ul {
-        background: rgba(253, 253, 253, 0.935);
+        background: #ffffffb2;
         backdrop-filter: blur(25px);
         border-radius: 50px;
         box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
