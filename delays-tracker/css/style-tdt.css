@@ -1,13 +1,17 @@
-.distance-nearest {
-    color: #638f03 !important;
-    font-weight: bold;
-    text-decoration: underline;
+body.dark-mode {
+    background: #121521 !important;
 }
 
-body.dark-mode .distance-nearest {
-    color: #7db603 !important;
-    font-weight: bold;
-    text-decoration: underline;
+body.dark-mode .navbar {
+    background: #06070ca1 !important;
+}
+
+body.dark-mode .page-header-section {
+    background: #121521 !important;
+}
+
+.nav-link.active {
+    background: linear-gradient(84deg, rgba(81, 167, 190, 1) 0%, rgba(53, 64, 117, 1) 100%) !important;
 }
 
 .mobile-bottom-nav,
@@ -89,9 +93,13 @@ body.dark-mode li.breadcrumb-item a {
     text-align: left !important;
 }
 
+body.dark-mode .about-me-summ {
+    background-color: #121521 !important;
+    transition: all 0.5s ease;
+}
 
 body.dark-mode .list-group-item {
-    background-color: #2e2e2e;
+    background-color: #1c1f2b;
     color: #fff !important;
     border: 1px solid #2b2b2b33;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -191,7 +199,7 @@ body.dark-mode .list-group-item:hover {
     }
 
     body.dark-mode .breadcrumb.breadcrumb-fixed {
-        background: #292a2b;
+        background: #1f243bc9;
         backdrop-filter: blur(25px);
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
         position: fixed;
@@ -252,8 +260,9 @@ body.dark-mode .list-group-item:hover {
         pointer-events: auto;
     }
 
+
     body.dark-mode .mobile-bottom-nav ul {
-        background: #0e0e0e91;
+        background: #1f243bc9;
         backdrop-filter: blur(25px);
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
     }

@@ -109,7 +109,7 @@ function renderMkbfLineChart() {
   }));
 
   const isDark = document.body.classList.contains('dark-mode');
-  const canvasBg = isDark ? '#2e2e2e' : '#fff';
+  const canvasBg = isDark ? '#1c1f2b' : '#fff';
 
   const chartContainer = document.getElementById('mkbf-line-chart-mrt');
 
@@ -117,7 +117,7 @@ function renderMkbfLineChart() {
   const isMobile = window.innerWidth < 600;
   const chartHeight = isMobile ? 620 : 600;
   chartContainer.innerHTML = `
-    <div style="background:${canvasBg}; border-radius:12px; padding:24px 16px;">
+    <div style="background:${canvasBg}; border: 1px solid #2b2b2b33; padding:24px 16px; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1) ; border-radius:16px; margin-top:16px;">
       <canvas id="mkbfChart" width="600" height="${chartHeight}" style="max-width:100%; height:${chartHeight}px;"></canvas>
     </div>
   `;

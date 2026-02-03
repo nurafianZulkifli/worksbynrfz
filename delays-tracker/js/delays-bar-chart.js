@@ -47,12 +47,12 @@ async function renderDelaysBarChart() {
 
     // Detect dark mode
     const isDark = document.body.classList.contains('dark-mode');
-    const canvasBg = isDark ? '#2e2e2e' : '#fff';
+    const canvasBg = isDark ? '#1c1f2b' : '#fff';
 
     // Create chart container with dynamic canvas background
     const chartContainer = document.getElementById('delays-bar-chart');
     chartContainer.innerHTML = `
-        <div style="background:${canvasBg}; border-radius:12px; padding:24px 16px;">
+        <div style="background:${canvasBg}; border: 1px solid #2b2b2b33; padding:24px 16px; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1) ; border-radius:16px; margin-top:16px; padding:24px 16px;">
             <canvas id="delaysChart" width="420" height="90" style="max-width:100%;"></canvas>
             <div class="chart-caplets" id="chart-caplets"></div>
         </div>

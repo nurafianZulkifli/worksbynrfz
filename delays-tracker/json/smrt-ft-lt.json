@@ -1,0 +1,546 @@
+[
+  {
+    "station": "Admiralty",
+    "station_slug": "admiralty",
+    "directions": [
+      {
+        "description": "To NS1 EW24 Jurong East",
+        "first_train": {
+          "monday_to_friday": "05:35",
+          "saturday": "05:35",
+          "sunday_public_holidays": "05:58",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "00:37",
+          "saturday": "00:37",
+          "sunday_public_holidays": "00:37",
+          "eve_of_public_holidays": "01:11"
+        }
+      },
+      {
+        "description": "To NS7 Kranji",
+        "first_train": {
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "00:53",
+          "saturday": "00:53",
+          "sunday_public_holidays": "00:53",
+          "eve_of_public_holidays": "00:53"
+        }
+      },
+      {
+        "description": "To NS19 Toa Payoh",
+        "first_train": {
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "23:53",
+          "saturday": "23:53",
+          "sunday_public_holidays": "23:53",
+          "eve_of_public_holidays": "23:53"
+        }
+      },
+      {
+        "description": "To NS16 Ang Mo Kio",
+        "first_train": {
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "00:42",
+          "saturday": "00:42",
+          "sunday_public_holidays": "00:42",
+          "eve_of_public_holidays": "01:16"
+        }
+      },
+      {
+        "description": "To NS28 Marina South Pier",
+        "first_train": {
+          "monday_to_friday": "05:29",
+          "saturday": "05:29",
+          "sunday_public_holidays": "05:45",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "23:11",
+          "saturday": "23:11",
+          "sunday_public_holidays": "23:11",
+          "eve_of_public_holidays": "23:48"
+        }
+      }
+    ],
+    "scraped_at": "2026-02-02T14:35:26.334Z"
+  },
+  {
+    "station": "Aljunied",
+    "station_slug": "aljunied",
+    "directions": [
+      {
+        "description": "To EW33 Tuas Link",
+        "first_train": {
+          "monday_to_friday": "05:49",
+          "saturday": "05:49",
+          "sunday_public_holidays": "06:15",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "23:46",
+          "saturday": "23:46",
+          "sunday_public_holidays": "23:46",
+          "eve_of_public_holidays": "00:20"
+        }
+      },
+      {
+        "description": "To EW1 Pasir Ris",
+        "first_train": {
+          "monday_to_friday": "06:10",
+          "saturday": "06:10",
+          "sunday_public_holidays": "06:38",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "00:20",
+          "saturday": "00:20",
+          "sunday_public_holidays": "00:20",
+          "eve_of_public_holidays": "00:39"
+        }
+      },
+      {
+        "description": "To CG2 Changi Airport",
+        "first_train": {
+          "monday_to_friday": "06:10",
+          "saturday": "06:10",
+          "sunday_public_holidays": "06:38",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "23:36",
+          "saturday": "23:36",
+          "sunday_public_holidays": "23:36",
+          "eve_of_public_holidays": "23:36"
+        }
+      }
+    ],
+    "scraped_at": "2026-02-02T14:35:27.312Z"
+  },
+  {
+    "station": "Ang Mo Kio",
+    "station_slug": "ang-mo-kio",
+    "directions": [
+      {
+        "description": "To NS1 EW24 Jurong East",
+        "first_train": {
+          "monday_to_friday": "05:17",
+          "saturday": "05:17",
+          "sunday_public_holidays": "05:40",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "00:18",
+          "saturday": "00:18",
+          "sunday_public_holidays": "00:18",
+          "eve_of_public_holidays": "00:52"
+        }
+      },
+      {
+        "description": "To NS13 Yishun",
+        "first_train": {
+          "monday_to_friday": "05:07",
+          "saturday": "05:07",
+          "sunday_public_holidays": "05:40",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "00:18",
+          "saturday": "00:18",
+          "sunday_public_holidays": "00:18",
+          "eve_of_public_holidays": "00:18"
+        }
+      },
+      {
+        "description": "To NS7 Kranji",
+        "first_train": {
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "00:33",
+          "saturday": "00:33",
+          "sunday_public_holidays": "00:33",
+          "eve_of_public_holidays": "00:13"
+        }
+      },
+      {
+        "description": "To NS19 Toa Payoh",
+        "first_train": {
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "00:13",
+          "saturday": "00:13",
+          "sunday_public_holidays": "00:13",
+          "eve_of_public_holidays": "00:13"
+        }
+      },
+      {
+        "description": "To NS28 Marina South Pier",
+        "first_train": {
+          "monday_to_friday": "05:34",
+          "saturday": "05:34",
+          "sunday_public_holidays": "06:05",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "23:31",
+          "saturday": "23:31",
+          "sunday_public_holidays": "23:31",
+          "eve_of_public_holidays": "00:08"
+        }
+      }
+    ],
+    "scraped_at": "2026-02-02T14:35:28.298Z"
+  },
+  {
+    "station": "Bangkit",
+    "station_slug": "bangkit",
+    "directions": [
+      {
+        "description": "To BP6 Bukit Panjang Platform 1 (Platform 1)",
+        "first_train": {
+          "monday_to_friday": "05:09",
+          "saturday": "05:09",
+          "sunday_public_holidays": "--",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "23:41",
+          "saturday": "23:41",
+          "sunday_public_holidays": "22:41",
+          "eve_of_public_holidays": "23:41"
+        }
+      },
+      {
+        "description": "To BP6 Bukit Panjang Platform 2 (Platform 2)",
+        "first_train": {
+          "monday_to_friday": "05:06",
+          "saturday": "05:06",
+          "sunday_public_holidays": "--",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "23:26",
+          "saturday": "23:26",
+          "sunday_public_holidays": "22:26",
+          "eve_of_public_holidays": "23:26"
+        }
+      }
+    ],
+    "scraped_at": "2026-02-02T14:35:29.340Z"
+  },
+  {
+    "station": "Jurong East",
+    "station_slug": "jurong-east",
+    "directions": [
+      {
+        "description": "To NS19 Toa Payoh",
+        "first_train": {
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "23:28",
+          "saturday": "23:28",
+          "sunday_public_holidays": "23:28",
+          "eve_of_public_holidays": "23:28"
+        }
+      },
+      {
+        "description": "To NS16 Ang Mo Kio",
+        "first_train": {
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "00:17",
+          "saturday": "00:17",
+          "sunday_public_holidays": "00:17",
+          "eve_of_public_holidays": "00:51"
+        }
+      },
+      {
+        "description": "To EW33 Tuas Link",
+        "first_train": {
+          "monday_to_friday": "05:14",
+          "saturday": "05:14",
+          "sunday_public_holidays": "05:44",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "00:25",
+          "saturday": "00:25",
+          "sunday_public_holidays": "00:25",
+          "eve_of_public_holidays": "00:59"
+        }
+      },
+      {
+        "description": "To EW1 Pasir Ris",
+        "first_train": {
+          "monday_to_friday": "05:42",
+          "saturday": "05:42",
+          "sunday_public_holidays": "06:12",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "23:42",
+          "saturday": "23:42",
+          "sunday_public_holidays": "23:42",
+          "eve_of_public_holidays": "00:00"
+        }
+      },
+      {
+        "description": "To CG2 Changi Airport",
+        "first_train": {
+          "monday_to_friday": "05:42",
+          "saturday": "05:42",
+          "sunday_public_holidays": "06:12",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "22:57",
+          "saturday": "22:57",
+          "sunday_public_holidays": "22:57",
+          "eve_of_public_holidays": "22:57"
+        }
+      },
+      {
+        "description": "To NS28 Marina South Pier",
+        "first_train": {
+          "monday_to_friday": "05:16",
+          "saturday": "05:16",
+          "sunday_public_holidays": "05:35",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "22:46",
+          "saturday": "22:46",
+          "sunday_public_holidays": "22:46",
+          "eve_of_public_holidays": "23:23"
+        }
+      },
+      {
+        "description": "To NS7 Kranji",
+        "first_train": {
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
+          "eve_of_public_holidays": "--"
+        }
+      }
+    ],
+    "scraped_at": "2026-02-02T14:35:30.245Z"
+  },
+  {
+    "station": "Raffles Place",
+    "station_slug": "raffles-place",
+    "directions": [
+      {
+        "description": "To NS1 EW24 Jurong East",
+        "first_train": {
+          "monday_to_friday": "06:03",
+          "saturday": "06:03",
+          "sunday_public_holidays": "06:28",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "23:53",
+          "saturday": "23:53",
+          "sunday_public_holidays": "23:53",
+          "eve_of_public_holidays": "00:27"
+        }
+      },
+      {
+        "description": "To NS7 Kranji",
+        "first_train": {
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "00:08",
+          "saturday": "00:08",
+          "sunday_public_holidays": "00:08",
+          "eve_of_public_holidays": "--"
+        }
+      },
+      {
+        "description": "To EW33 Tuas Link",
+        "first_train": {
+          "monday_to_friday": "06:00",
+          "saturday": "06:00",
+          "sunday_public_holidays": "06:26",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "23:58",
+          "saturday": "23:58",
+          "sunday_public_holidays": "23:58",
+          "eve_of_public_holidays": "00:32"
+        }
+      },
+      {
+        "description": "To EW1 Pasir Ris",
+        "first_train": {
+          "monday_to_friday": "05:59",
+          "saturday": "05:59",
+          "sunday_public_holidays": "06:27",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "00:08",
+          "saturday": "00:08",
+          "sunday_public_holidays": "00:08",
+          "eve_of_public_holidays": "00:27"
+        }
+      },
+      {
+        "description": "To CG2 Changi Airport",
+        "first_train": {
+          "monday_to_friday": "05:59",
+          "saturday": "05:59",
+          "sunday_public_holidays": "06:27",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "23:24",
+          "saturday": "23:24",
+          "sunday_public_holidays": "23:24",
+          "eve_of_public_holidays": "23:24"
+        }
+      },
+      {
+        "description": "To NS28 Marina South Pier",
+        "first_train": {
+          "monday_to_friday": "05:56",
+          "saturday": "05:56",
+          "sunday_public_holidays": "06:21",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "23:55",
+          "saturday": "23:55",
+          "sunday_public_holidays": "23:55",
+          "eve_of_public_holidays": "00:32"
+        }
+      }
+    ],
+    "scraped_at": "2026-02-02T14:35:31.144Z"
+  },
+  {
+    "station": "Yew Tee",
+    "station_slug": "yew-tee",
+    "directions": [
+      {
+        "description": "To NS1 EW24 Jurong East",
+        "first_train": {
+          "monday_to_friday": "05:37",
+          "saturday": "05:37",
+          "sunday_public_holidays": "06:00",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "00:50",
+          "saturday": "00:50",
+          "sunday_public_holidays": "00:50",
+          "eve_of_public_holidays": "01:24"
+        }
+      },
+      {
+        "description": "To NS19 Toa Payoh",
+        "first_train": {
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "23:40",
+          "saturday": "23:40",
+          "sunday_public_holidays": "23:40",
+          "eve_of_public_holidays": "23:40"
+        }
+      },
+      {
+        "description": "To NS16 Ang Mo Kio",
+        "first_train": {
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "00:29",
+          "saturday": "00:29",
+          "sunday_public_holidays": "00:29",
+          "eve_of_public_holidays": "01:03"
+        }
+      },
+      {
+        "description": "To NS28 Marina South Pier",
+        "first_train": {
+          "monday_to_friday": "05:27",
+          "saturday": "05:27",
+          "sunday_public_holidays": "05:46",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "23:58",
+          "saturday": "23:58",
+          "sunday_public_holidays": "23:58",
+          "eve_of_public_holidays": "23:36"
+        }
+      },
+      {
+        "description": "To NS7 Kranji",
+        "first_train": {
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
+          "eve_of_public_holidays": "01:12"
+        }
+      }
+    ],
+    "scraped_at": "2026-02-02T14:35:32.078Z"
+  }
+]

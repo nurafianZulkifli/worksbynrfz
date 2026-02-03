@@ -96,9 +96,23 @@ function renderDisruptionsByMonth() {
     for (let i = 0; i < Math.max(fromArr.length, toArr.length); i++) {
       let from = fromArr[i] || '';
       let to = toArr[i] || '';
+      // Map line names to caplet filenames
+      const capletMap = {
+        'nsl': 'NSLCap.png',
+        'ewl': 'EWLCap.png',
+        'ccl': 'CCLCap.png',
+        'dtl': 'DTLCap.png',
+        'nel': 'NELCap.png',
+        'tel': 'TELCap.png',
+        'bp': 'BPCap.png',
+        'sk': 'SKCap.png',
+        'pg': 'PGCap.png'
+      };
+      const lineKey = item.line ? item.line.toLowerCase() : '';
+      const capletFile = capletMap[lineKey] || 'NSLCap.png';
       routeBadges += `
         <span class="route-badge">
-          <span class="line-badge line-label ${item.line ? item.line.toLowerCase() : ''}">${item.line}</span>
+          <img src="assets/caplets/${capletFile}" alt="${item.line}" style="height: 35px; width: auto;">
           <span class="route">${from} ⇄ ${to}</span>
         </span>
       `;
@@ -112,7 +126,7 @@ function renderDisruptionsByMonth() {
       <div class="card-title">${item.title}</div>
       <div class="card-details-multi">${routeBadges}</div>
       <div class="card-time">
-        ${new Date(item.start).toLocaleDateString()} - ${new Date(item.end).toLocaleDateString()}
+        ${new Date(item.start).toLocaleDateString('en-SG')} - ${new Date(item.end).toLocaleDateString('en-SG')}
       </div>
       <div class="card-tags">
         ${(item.tags || []).map(tag => `<span class="card-tag tag-${tag.toLowerCase().replace(/\s+/g, '-')}">${tag}</span>`).join(' ')}

@@ -150,7 +150,7 @@ document.addEventListener('DOMContentLoaded', function() {
       font-size: 1.08em;
       color: #222;
       box-shadow: 0 2px 8px 0 rgba(0,0,0,0.04);
-      max-width: 90vw;
+      max-width: 100vw;
       word-break: break-word;
     }
     .alert-message-content {
@@ -159,7 +159,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     body.dark-mode .alert-message-box {
-    background-color: #383838;
+    background-color: #252836;
     color: #fff !important;
     border: 1px solid #2b2b2b33;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);

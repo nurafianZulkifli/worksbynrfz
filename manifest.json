@@ -1,18 +1,18 @@
 {
-  "name": "Buszy",
-  "short_name": "Buszy",
-  "start_url": "buszy.html",
+  "name": "Works by NRFZ",
+  "short_name": "Works by NRFZ",
+  "start_url": "index.html",
   "display": "standalone",
   "background_color": "#18191a",
   "theme_color": "#007bff",
   "icons": [
     {
-      "src": "buszy/assets/icon-192.png",
+      "src": "img/core-img/icon-192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "buszy/assets/icon-512.png",
+      "src": "img/core-img/icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }

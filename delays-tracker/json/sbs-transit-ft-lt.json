@@ -1,0 +1,753 @@
+{
+  "operator": "SBS Transit",
+  "lines": [
+    {
+      "service": "To DT35 Expo",
+      "stations": [
+        {
+          "name": "DT1 Bukit Panjang",
+          "first_train_weekdays": "5:30",
+          "first_train_weekends": "5:50",
+          "last_train": "11:35"
+        },
+        {
+          "name": "DT2 Cashew",
+          "first_train_weekdays": "5:32",
+          "first_train_weekends": "5:52",
+          "last_train": "11:37"
+        },
+        {
+          "name": "DT3 Hillview",
+          "first_train_weekdays": "5:34",
+          "first_train_weekends": "5:54",
+          "last_train": "11:38"
+        },
+        {
+          "name": "DT4 Hume",
+          "first_train_weekdays": "5:35",
+          "first_train_weekends": "5:55",
+          "last_train": "11:40"
+        },
+        {
+          "name": "DT5 Beauty World",
+          "first_train_weekdays": "5:37",
+          "first_train_weekends": "5:57",
+          "last_train": "11:42"
+        },
+        {
+          "name": "DT6 King Albert Park",
+          "first_train_weekdays": "5:39",
+          "first_train_weekends": "5:59",
+          "last_train": "11:44"
+        },
+        {
+          "name": "DT7 Sixth Avenue",
+          "first_train_weekdays": "5:42",
+          "first_train_weekends": "6:02",
+          "last_train": "11:46"
+        },
+        {
+          "name": "DT8 Tan Kah Kee",
+          "first_train_weekdays": "5:44",
+          "first_train_weekends": "6:04",
+          "last_train": "11:48"
+        },
+        {
+          "name": "DT9 Botanic Gardens",
+          "first_train_weekdays": "5:46",
+          "first_train_weekends": "6:06",
+          "last_train": "11:50"
+        },
+        {
+          "name": "DT10 Stevens",
+          "first_train_weekdays": "5:48",
+          "first_train_weekends": "6:08",
+          "last_train": "11:53"
+        },
+        {
+          "name": "DT11 Newton",
+          "first_train_weekdays": "5:51",
+          "first_train_weekends": "6:11",
+          "last_train": "11:55"
+        },
+        {
+          "name": "DT12 Little India",
+          "first_train_weekdays": "5:53",
+          "first_train_weekends": "6:13",
+          "last_train": "11:58"
+        },
+        {
+          "name": "DT13 Rochor",
+          "first_train_weekdays": "5:55",
+          "first_train_weekends": "6:15",
+          "last_train": "11:59"
+        },
+        {
+          "name": "DT14 Bugis",
+          "first_train_weekdays": "5:57",
+          "first_train_weekends": "6:17",
+          "last_train": "12:01"
+        },
+        {
+          "name": "DT15 Promenade",
+          "first_train_weekdays": "6:00",
+          "first_train_weekends": "6:20",
+          "last_train": "12:03"
+        },
+        {
+          "name": "DT16 Bayfront",
+          "first_train_weekdays": "6:02",
+          "first_train_weekends": "6:22",
+          "last_train": "12:05"
+        },
+        {
+          "name": "DT17 Downtown",
+          "first_train_weekdays": "6:04",
+          "first_train_weekends": "6:24",
+          "last_train": "12:07"
+        },
+        {
+          "name": "DT18 Telok Ayer",
+          "first_train_weekdays": "6:06",
+          "first_train_weekends": "6:26",
+          "last_train": "12:08"
+        },
+        {
+          "name": "DT19 Chinatown",
+          "first_train_weekdays": "6:08",
+          "first_train_weekends": "6:28",
+          "last_train": "12:10"
+        },
+        {
+          "name": "DT20 Fort Canning",
+          "first_train_weekdays": "6:10",
+          "first_train_weekends": "6:30",
+          "last_train": "12:12"
+        },
+        {
+          "name": "DT21 Bencoolen",
+          "first_train_weekdays": "6:12",
+          "first_train_weekends": "6:31",
+          "last_train": "12:13"
+        },
+        {
+          "name": "DT22 Jalan Besar",
+          "first_train_weekdays": "6:13",
+          "first_train_weekends": "6:33",
+          "last_train": "12:15"
+        },
+        {
+          "name": "DT23 Bendemeer",
+          "first_train_weekdays": "6:15",
+          "first_train_weekends": "6:35",
+          "last_train": "12:17"
+        },
+        {
+          "name": "DT24 Geylang Bahru",
+          "first_train_weekdays": "5:59",
+          "first_train_weekends": "6:19",
+          "last_train": "12:19"
+        },
+        {
+          "name": "DT25 Mattar",
+          "first_train_weekdays": "6:01",
+          "first_train_weekends": "6:21",
+          "last_train": "12:22"
+        },
+        {
+          "name": "DT26 MacPherson",
+          "first_train_weekdays": "6:03",
+          "first_train_weekends": "6:23",
+          "last_train": "12:24"
+        },
+        {
+          "name": "DT27 Ubi",
+          "first_train_weekdays": "6:05",
+          "first_train_weekends": "6:25",
+          "last_train": "12:25"
+        },
+        {
+          "name": "DT28 Kaki Bukit",
+          "first_train_weekdays": "6:07",
+          "first_train_weekends": "6:27",
+          "last_train": "12:27"
+        },
+        {
+          "name": "DT29 Bedok North",
+          "first_train_weekdays": "6:09",
+          "first_train_weekends": "6:29",
+          "last_train": "12:29"
+        },
+        {
+          "name": "DT30 Bedok Reservoir",
+          "first_train_weekdays": "6:11",
+          "first_train_weekends": "6:31",
+          "last_train": "12:31"
+        },
+        {
+          "name": "DT31 Tampines West",
+          "first_train_weekdays": "6:13",
+          "first_train_weekends": "6:33",
+          "last_train": "12:34"
+        },
+        {
+          "name": "DT32 Tampines",
+          "first_train_weekdays": "6:16",
+          "first_train_weekends": "6:36",
+          "last_train": "12:36"
+        },
+        {
+          "name": "DT33 Tampines East",
+          "first_train_weekdays": "6:18",
+          "first_train_weekends": "6:38",
+          "last_train": "12:38"
+        },
+        {
+          "name": "DT34 Upper Changi",
+          "first_train_weekdays": "6:21",
+          "first_train_weekends": "6:41",
+          "last_train": "12:41"
+        },
+        {
+          "name": "DT35 Expo",
+          "first_train_weekdays": "-",
+          "first_train_weekends": "-",
+          "last_train": "-"
+        }
+      ]
+    },
+    {
+      "service": "To DT1 Bukit Panjang",
+      "stations": [
+        {
+          "name": "DT35 Expo",
+          "first_train_weekdays": "5:36",
+          "first_train_weekends": "5:54",
+          "last_train": "11:40"
+        },
+        {
+          "name": "DT34 Upper Changi",
+          "first_train_weekdays": "5:38",
+          "first_train_weekends": "5:56",
+          "last_train": "11:41"
+        },
+        {
+          "name": "DT33 Tampines East",
+          "first_train_weekdays": "5:41",
+          "first_train_weekends": "5:59",
+          "last_train": "11:45"
+        },
+        {
+          "name": "DT32 Tampines",
+          "first_train_weekdays": "5:43",
+          "first_train_weekends": "6:01",
+          "last_train": "11:47"
+        },
+        {
+          "name": "DT31 Tampines West",
+          "first_train_weekdays": "5:45",
+          "first_train_weekends": "6:03",
+          "last_train": "11:49"
+        },
+        {
+          "name": "DT30 Bedok Reservoir",
+          "first_train_weekdays": "5:48",
+          "first_train_weekends": "6:06",
+          "last_train": "11:51"
+        },
+        {
+          "name": "DT29 Bedok North",
+          "first_train_weekdays": "5:50",
+          "first_train_weekends": "6:08",
+          "last_train": "11:54"
+        },
+        {
+          "name": "DT28 Kaki Bukit",
+          "first_train_weekdays": "5:52",
+          "first_train_weekends": "6:10",
+          "last_train": "11:56"
+        },
+        {
+          "name": "DT27 Ubi",
+          "first_train_weekdays": "5:54",
+          "first_train_weekends": "6:12",
+          "last_train": "11:58"
+        },
+        {
+          "name": "DT26 MacPherson",
+          "first_train_weekdays": "5:56",
+          "first_train_weekends": "6:14",
+          "last_train": "12:00"
+        },
+        {
+          "name": "DT25 Mattar",
+          "first_train_weekdays": "5:58",
+          "first_train_weekends": "6:16",
+          "last_train": "12:02"
+        },
+        {
+          "name": "DT24 Geylang Bahru",
+          "first_train_weekdays": "6:00",
+          "first_train_weekends": "6:18",
+          "last_train": "12:04"
+        },
+        {
+          "name": "DT23 Bendemeer",
+          "first_train_weekdays": "6:02",
+          "first_train_weekends": "6:20",
+          "last_train": "12:06"
+        },
+        {
+          "name": "DT22 Jalan Besar",
+          "first_train_weekdays": "6:04",
+          "first_train_weekends": "6:22",
+          "last_train": "12:08"
+        },
+        {
+          "name": "DT21 Bencoolen",
+          "first_train_weekdays": "6:06",
+          "first_train_weekends": "6:24",
+          "last_train": "12:10"
+        },
+        {
+          "name": "DT20 Fort Canning",
+          "first_train_weekdays": "6:08",
+          "first_train_weekends": "6:26",
+          "last_train": "12:11"
+        },
+        {
+          "name": "DT19 Chinatown",
+          "first_train_weekdays": "6:10",
+          "first_train_weekends": "6:28",
+          "last_train": "12:14"
+        },
+        {
+          "name": "DT18 Telok Ayer",
+          "first_train_weekdays": "6:11",
+          "first_train_weekends": "6:29",
+          "last_train": "12:15"
+        },
+        {
+          "name": "DT17 Downtown",
+          "first_train_weekdays": "6:13",
+          "first_train_weekends": "6:31",
+          "last_train": "12:16"
+        },
+        {
+          "name": "DT16 Bayfront",
+          "first_train_weekdays": "6:15",
+          "first_train_weekends": "6:33",
+          "last_train": "12:18"
+        },
+        {
+          "name": "DT15 Promenade",
+          "first_train_weekdays": "6:17",
+          "first_train_weekends": "6:35",
+          "last_train": "12:20"
+        },
+        {
+          "name": "DT14 Bugis",
+          "first_train_weekdays": "6:03",
+          "first_train_weekends": "6:32",
+          "last_train": "12:22"
+        },
+        {
+          "name": "DT13 Rochor",
+          "first_train_weekdays": "6:05",
+          "first_train_weekends": "6:34",
+          "last_train": "12:24"
+        },
+        {
+          "name": "DT12 Little India",
+          "first_train_weekdays": "6:06",
+          "first_train_weekends": "6:30",
+          "last_train": "12:26"
+        },
+        {
+          "name": "DT11 Newton",
+          "first_train_weekdays": "5:56",
+          "first_train_weekends": "6:16",
+          "last_train": "12:28"
+        },
+        {
+          "name": "DT10 Stevens",
+          "first_train_weekdays": "5:58",
+          "first_train_weekends": "6:18",
+          "last_train": "12:30"
+        },
+        {
+          "name": "DT9 Botanic Gardens",
+          "first_train_weekdays": "6:00",
+          "first_train_weekends": "6:21",
+          "last_train": "12:32"
+        },
+        {
+          "name": "DT8 Tan Kah Kee",
+          "first_train_weekdays": "6:02",
+          "first_train_weekends": "6:23",
+          "last_train": "12:34"
+        },
+        {
+          "name": "DT7 Sixth Avenue",
+          "first_train_weekdays": "6:04",
+          "first_train_weekends": "6:24",
+          "last_train": "12:36"
+        },
+        {
+          "name": "DT6 King Albert Park",
+          "first_train_weekdays": "6:06",
+          "first_train_weekends": "6:27",
+          "last_train": "12:38"
+        },
+        {
+          "name": "DT5 Beauty World",
+          "first_train_weekdays": "6:08",
+          "first_train_weekends": "6:29",
+          "last_train": "12:40"
+        },
+        {
+          "name": "DT4 Hume",
+          "first_train_weekdays": "6:11",
+          "first_train_weekends": "6:31",
+          "last_train": "12:43"
+        },
+        {
+          "name": "DT3 Hillview",
+          "first_train_weekdays": "6:13",
+          "first_train_weekends": "6:33",
+          "last_train": "12:45"
+        },
+        {
+          "name": "DT2 Cashew",
+          "first_train_weekdays": "6:14",
+          "first_train_weekends": "6:35",
+          "last_train": "12:46"
+        },
+        {
+          "name": "DT1 Bukit Panjang",
+          "first_train_weekdays": "-",
+          "first_train_weekends": "-",
+          "last_train": "-"
+        }
+      ]
+    },
+    {
+      "service": "To NE1 HarbourFront",
+      "stations": [
+        {
+          "name": "NE18 Punggol Coast",
+          "first_train_weekdays": "5:39",
+          "first_train_saturdays": "5:39",
+          "first_train_sundays": "5:59",
+          "last_train_weekdays": "11:25",
+          "last_train_weekends": "11:25"
+        },
+        {
+          "name": "NE17 Punggol",
+          "first_train_weekdays": "5:42",
+          "first_train_saturdays": "5:42",
+          "first_train_sundays": "6:02",
+          "last_train_weekdays": "11:28",
+          "last_train_weekends": "11:28"
+        },
+        {
+          "name": "NE16 Sengkang",
+          "first_train_weekdays": "5:44",
+          "first_train_saturdays": "5:44",
+          "first_train_sundays": "6:04",
+          "last_train_weekdays": "11:30",
+          "last_train_weekends": "11:30"
+        },
+        {
+          "name": "NE15 Buangkok",
+          "first_train_weekdays": "5:46",
+          "first_train_saturdays": "5:46",
+          "first_train_sundays": "6:06",
+          "last_train_weekdays": "11:32",
+          "last_train_weekends": "11:32"
+        },
+        {
+          "name": "NE14 Hougang",
+          "first_train_weekdays": "5:49",
+          "first_train_saturdays": "5:49",
+          "first_train_sundays": "6:09",
+          "last_train_weekdays": "11:35",
+          "last_train_weekends": "11:35"
+        },
+        {
+          "name": "NE13 Kovan",
+          "first_train_weekdays": "5:51",
+          "first_train_saturdays": "5:51",
+          "first_train_sundays": "6:11",
+          "last_train_weekdays": "11:37",
+          "last_train_weekends": "11:37"
+        },
+        {
+          "name": "NE12 Serangoon",
+          "first_train_weekdays": "5:54",
+          "first_train_saturdays": "5:54",
+          "first_train_sundays": "6:14",
+          "last_train_weekdays": "11:40",
+          "last_train_weekends": "11:40"
+        },
+        {
+          "name": "NE11 Woodleigh",
+          "first_train_weekdays": "5:56",
+          "first_train_saturdays": "5:56",
+          "first_train_sundays": "6:16",
+          "last_train_weekdays": "11:42",
+          "last_train_weekends": "11:42"
+        },
+        {
+          "name": "NE10 Potong Pasir",
+          "first_train_weekdays": "5:58",
+          "first_train_saturdays": "5:58",
+          "first_train_sundays": "6:18",
+          "last_train_weekdays": "11:44",
+          "last_train_weekends": "11:44"
+        },
+        {
+          "name": "NE9 Boon Keng",
+          "first_train_weekdays": "6:00",
+          "first_train_saturdays": "6:00",
+          "first_train_sundays": "6:20",
+          "last_train_weekdays": "11:46",
+          "last_train_weekends": "11:46"
+        },
+        {
+          "name": "NE8 Farrer Park",
+          "first_train_weekdays": "6:02",
+          "first_train_saturdays": "6:02",
+          "first_train_sundays": "6:22",
+          "last_train_weekdays": "11:48",
+          "last_train_weekends": "11:48"
+        },
+        {
+          "name": "NE7 Little India",
+          "first_train_weekdays": "6:04",
+          "first_train_saturdays": "6:04",
+          "first_train_sundays": "6:24",
+          "last_train_weekdays": "11:50",
+          "last_train_weekends": "11:50"
+        },
+        {
+          "name": "NE6 Dhoby Ghaut",
+          "first_train_weekdays": "6:06",
+          "first_train_saturdays": "6:06",
+          "first_train_sundays": "6:26",
+          "last_train_weekdays": "11:52",
+          "last_train_weekends": "11:52"
+        },
+        {
+          "name": "NE5 Clarke Quay",
+          "first_train_weekdays": "6:08",
+          "first_train_saturdays": "6:08",
+          "first_train_sundays": "6:28",
+          "last_train_weekdays": "11:55",
+          "last_train_weekends": "11:55"
+        },
+        {
+          "name": "NE4 Chinatown",
+          "first_train_weekdays": "6:10",
+          "first_train_saturdays": "6:10",
+          "first_train_sundays": "6:30",
+          "last_train_weekdays": "11:56",
+          "last_train_weekends": "11:56"
+        },
+        {
+          "name": "NE3 Outram Park",
+          "first_train_weekdays": "6:12",
+          "first_train_saturdays": "6:12",
+          "first_train_sundays": "6:32",
+          "last_train_weekdays": "11:58",
+          "last_train_weekends": "11:58"
+        },
+        {
+          "name": "NE1 HarbourFront",
+          "first_train_weekdays": "-",
+          "first_train_saturdays": "-",
+          "first_train_sundays": "-",
+          "last_train_weekdays": "-",
+          "last_train_weekends": "-"
+        }
+      ]
+    },
+    {
+      "service": "To NE18 Punggol Coast",
+      "stations": [
+        {
+          "name": "NE1 HarbourFront",
+          "first_train_weekdays": "5:47",
+          "first_train_saturdays": "5:47",
+          "first_train_sundays": "6:07",
+          "last_train_weekdays": "11:55",
+          "last_train_weekends": "11:55"
+        },
+        {
+          "name": "NE3 Outram Park",
+          "first_train_weekdays": "5:48",
+          "first_train_saturdays": "5:48",
+          "first_train_sundays": "6:08",
+          "last_train_weekdays": "11:59",
+          "last_train_weekends": "11:59"
+        },
+        {
+          "name": "NE4 Chinatown",
+          "first_train_weekdays": "5:49",
+          "first_train_saturdays": "5:49",
+          "first_train_sundays": "6:09",
+          "last_train_weekdays": "12:01",
+          "last_train_weekends": "12:01"
+        },
+        {
+          "name": "NE5 Clarke Quay",
+          "first_train_weekdays": "5:51",
+          "first_train_saturdays": "5:51",
+          "first_train_sundays": "6:11",
+          "last_train_weekdays": "12:02",
+          "last_train_weekends": "12:02"
+        },
+        {
+          "name": "NE6 Dhoby Ghaut",
+          "first_train_weekdays": "5:53",
+          "first_train_saturdays": "5:53",
+          "first_train_sundays": "6:13",
+          "last_train_weekdays": "12:05",
+          "last_train_weekends": "12:05"
+        },
+        {
+          "name": "NE7 Little India",
+          "first_train_weekdays": "5:56",
+          "first_train_saturdays": "5:56",
+          "first_train_sundays": "6:16",
+          "last_train_weekdays": "12:07",
+          "last_train_weekends": "12:07"
+        },
+        {
+          "name": "NE8 Farrer Park",
+          "first_train_weekdays": "5:57",
+          "first_train_saturdays": "5:57",
+          "first_train_sundays": "6:17",
+          "last_train_weekdays": "12:09",
+          "last_train_weekends": "12:09"
+        },
+        {
+          "name": "NE9 Boon Keng",
+          "first_train_weekdays": "5:59",
+          "first_train_saturdays": "5:59",
+          "first_train_sundays": "6:19",
+          "last_train_weekdays": "12:11",
+          "last_train_weekends": "12:11"
+        },
+        {
+          "name": "NE10 Potong Pasir",
+          "first_train_weekdays": "6:02",
+          "first_train_saturdays": "6:02",
+          "first_train_sundays": "6:22",
+          "last_train_weekdays": "12:13",
+          "last_train_weekends": "12:13"
+        },
+        {
+          "name": "NE11 Woodleigh",
+          "first_train_weekdays": "6:04",
+          "first_train_saturdays": "6:04",
+          "first_train_sundays": "6:24",
+          "last_train_weekdays": "12:15",
+          "last_train_weekends": "12:15"
+        },
+        {
+          "name": "NE12 Serangoon",
+          "first_train_weekdays": "6:06",
+          "first_train_saturdays": "6:06",
+          "first_train_sundays": "6:26",
+          "last_train_weekdays": "12:17",
+          "last_train_weekends": "12:17"
+        },
+        {
+          "name": "NE13 Kovan",
+          "first_train_weekdays": "6:08",
+          "first_train_saturdays": "6:08",
+          "first_train_sundays": "6:28",
+          "last_train_weekdays": "12:20",
+          "last_train_weekends": "12:20"
+        },
+        {
+          "name": "NE14 Hougang",
+          "first_train_weekdays": "6:11",
+          "first_train_saturdays": "6:11",
+          "first_train_sundays": "6:31",
+          "last_train_weekdays": "12:23",
+          "last_train_weekends": "12:23"
+        },
+        {
+          "name": "NE15 Buangkok",
+          "first_train_weekdays": "6:13",
+          "first_train_saturdays": "6:13",
+          "first_train_sundays": "6:33",
+          "last_train_weekdays": "12:25",
+          "last_train_weekends": "12:25"
+        },
+        {
+          "name": "NE16 Sengkang",
+          "first_train_weekdays": "5:33",
+          "first_train_saturdays": "5:33",
+          "first_train_sundays": "5:53",
+          "last_train_weekdays": "12:27",
+          "last_train_weekends": "12:27"
+        },
+        {
+          "name": "NE17 Punggol",
+          "first_train_weekdays": "5:36",
+          "first_train_saturdays": "5:36",
+          "first_train_sundays": "5:56",
+          "last_train_weekdays": "12:30",
+          "last_train_weekends": "12:30"
+        },
+        {
+          "name": "NE18 Punggol Coast",
+          "first_train_weekdays": "-",
+          "first_train_saturdays": "-",
+          "first_train_sundays": "-",
+          "last_train_weekdays": "-",
+          "last_train_weekends": "-"
+        }
+      ]
+    },
+    {
+      "service": "Sengkang LRT - Departing from Sengkang Town Centre",
+      "stations": [
+        {
+          "name": "East Loop",
+          "first_train_weekdays": "5:25",
+          "first_train_weekends": "5:45",
+          "last_train": "12:35"
+        },
+        {
+          "name": "West Loop",
+          "first_train_weekdays": "5:18",
+          "first_train_weekends": "5:38",
+          "last_train": "12:37"
+        }
+      ]
+    },
+    {
+      "service": "Punggol LRT - Departing from Punggol Town Centre",
+      "stations": [
+        {
+          "name": "East Loop",
+          "first_train_weekdays": "5:20",
+          "first_train_weekends": "5:40",
+          "last_train": "12:38"
+        },
+        {
+          "name": "West Loop",
+          "first_train_weekdays": "5:18",
+          "first_train_weekends": "5:38",
+          "last_train": "12:40"
+        }
+      ]
+    }
+  ],
+  "page_url": "https://www.sbstransit.com.sg/first-train-last-train",
+  "scraped_at": "2026-02-01T14:59:55.348Z"
+}

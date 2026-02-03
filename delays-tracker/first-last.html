@@ -3,46 +3,37 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>First & Last Train Times | Train Delays Tracker</title>
+    <meta name="google-site-verification" content="57TuruPNu5wqSSia_cUehl5t9Gh1AbxrHNPcMiFx-aQ" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>System Map | Train Delays Tracker</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    <meta property="og:image" content="https://i.imgur.com/i8n9KYs.png" />
+
+    <link rel="icon" href="assets/icon-512.png">
+
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.0.0/css/all.css" />
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="css/style-tdt.css">
+    <link rel="stylesheet" href="../css/style-breakpoints.css">
+    <link rel="stylesheet" href="../css/dark-mode.css">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WN76281P3Q"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-WN76281P3Q');
+    </script>
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .header {
-            text-align: center;
-            color: white;
-            margin-bottom: 30px;
-        }
-
-        .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-        }
-
-        .header p {
-            font-size: 1rem;
-            opacity: 0.9;
-        }
-
         .selector-section {
-            background: white;
+            background: #fff;
             border-radius: 12px;
             padding: 20px;
             margin-bottom: 30px;
@@ -52,32 +43,39 @@
         .selector-section label {
             display: block;
             font-weight: 600;
+            margin-top: 3em;
             margin-bottom: 10px;
-            color: #333;
+            color: #000;
         }
 
         #stationDropdown {
+            display: block;
             width: 100%;
-            padding: 12px;
+            padding: 0.775rem 2.5rem 0.775rem 1.75rem;
+            margin-top: 5px;
             font-size: 1rem;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: border-color 0.3s;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #000;
+            appearance: none;
+            background-color: #ffffff;
+            background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23607d96" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"%3E%3Cpolyline points="6 9 12 15 18 9"%3E%3C/polyline%3E%3C/svg%3E');
+            background-position: right 0.75rem center;
+            background-repeat: no-repeat;
+            background-size: 1.2rem;
+            background-clip: padding-box;
+            border-radius: 25px;
+            transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+            border: 1px solid #2b2b2b33;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         #stationDropdown:hover {
-            border-color: #667eea;
-        }
-
-        #stationDropdown:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            border-color: #607d96;
         }
 
         .content-section {
-            background: white;
+            background: #fff;
             border-radius: 12px;
             padding: 30px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
@@ -113,20 +111,22 @@
             padding: 20px;
             background: #f9f9f9;
             transition: all 0.3s;
+            margin-bottom: 1em;
+            margin-top: 1em;
         }
 
         .direction-card:hover {
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            border-color: #667eea;
+            border-color: #607d96;
         }
 
         .direction-header {
             font-weight: 600;
             font-size: 1rem;
-            color: #667eea;
+            color: #607d96;
             margin-bottom: 15px;
             padding-bottom: 10px;
-            border-bottom: 2px solid #667eea;
+            border-bottom: 2px solid #607d96;
         }
 
         .time-row {
@@ -135,7 +135,6 @@
             gap: 10px;
             margin-bottom: 12px;
             padding-bottom: 10px;
-            border-bottom: 1px solid #eee;
         }
 
         .time-row:last-child {
@@ -150,11 +149,10 @@
         }
 
         .time-value {
-            background: white;
+            background: #fff;
             padding: 5px 8px;
             border-radius: 4px;
             text-align: center;
-            font-family: 'Courier New', monospace;
             font-weight: 600;
         }
 
@@ -174,7 +172,7 @@
 
         .loading {
             text-align: center;
-            color: #667eea;
+            color: #607d96;
             padding: 40px 20px;
         }
 
@@ -183,15 +181,313 @@
             width: 40px;
             height: 40px;
             border: 4px solid #f3f3f3;
-            border-top: 4px solid #667eea;
+            border-top: 4px solid #607d96;
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
+
+        .search-container {
+            position: relative;
+            margin-bottom: 15px;
+            height: 40px;
+        }
+
+        .search-input-wrapper {
+            position: relative;
+            height: 100%;
+        }
+
+        .search-input {
+            display: block;
+            width: 100%;
+            padding: 0.6rem 1.75rem 0.6rem 35px;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #d3d3d3;
+            appearance: none;
+            background-color: #ffffff;
+            background-clip: padding-box;
+            border-radius: 25px;
+            transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+            border: 1px solid #2b2b2b33;
+            box-sizing: border-box;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 12px rgba(0, 0, 0, 0.1);
+            height: 50px;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #607d96;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #cccccc;
+            pointer-events: none;
+            z-index: 1;
+            font-size: 1rem;
+        }
+
+        .clear-search {
+            position: absolute;
+            right: 12px;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            font-size: 35px;
+            top: 26px;
+            padding: 0;
+            display: none;
+            z-index: 10;
+        }
+
+        .clear-search:hover {
+            color: #607d96;
+        }
+
+        .clear-search.visible {
+            display: block;
+        }
+
+        .search-results-count {
+            font-size: 0.85rem;
+            color: #999;
+            margin-top: 1em;
+            display: block;
+            margin-left: 0;
+        }
+
+        .stations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .station-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            background: #f9f9f9;
+            transition: all 0.3s;
+        }
+
+        .station-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-color: #607d96;
+        }
+
+        .station-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #607d96;
+        }
+
+        .time-item {
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        .time-label {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .time-display {
+            background: #fff;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-weight: 600;
+            min-width: 70px;
+            text-align: center;
+        }
+
+        .time-display.first {
+            color: #27ae60;
+        }
+
+        .time-display.last {
+            color: #e74c3c;
+        }
+
+        body.dark-mode .selector-section {
+            background: #1c1f2b;
+            border: 1px solid #2b2b2b33;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        body.dark-mode .selector-section label {
+            color: #fff;
+        }
+
+        body.dark-mode #stationDropdown {
+            display: block;
+            width: 100%;
+            padding: 0.775rem 2.5rem 0.775rem 1.75rem;
+            color: #fff;
+            appearance: none;
+            background-color: #393e53;
+            background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%2391a5be" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"%3E%3Cpolyline points="6 9 12 15 18 9"%3E%3C/polyline%3E%3C/svg%3E');
+            background-position: right 0.75rem center;
+            background-repeat: no-repeat;
+            background-size: 1.2rem;
+            background-clip: padding-box;
+            border-radius: 25px;
+            transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+            border: 1px solid #2b2b2b33;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        body.dark-mode #stationDropdown:hover {
+            border-color: #91a5be;
+        }
+
+        body.dark-mode #stationDropdown:focus {
+            border-color: #91a5be;
+            box-shadow: 0 0 0 3px rgba(136, 153, 255, 0.1);
+        }
+
+        body.dark-mode .content-section {
+            background: #1c1f2b;
+            border: 1px solid #2b2b2b33;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        body.dark-mode .station-title {
+            color: #fff;
+        }
+
+        body.dark-mode .station-subtitle {
+            color: #bbb;
+        }
+
+        body.dark-mode .direction-card {
+            background: #2d3242;
+            border: 1px solid #2b2b2b33;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        body.dark-mode .direction-card:hover {
+            border-color: #91a5be;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        body.dark-mode .direction-header {
+            color: #91a5be;
+            border-bottom-color: #91a5be;
+        }
+
+        body.dark-mode .day-label {
+            color: #ccc;
+        }
+
+        body.dark-mode .no-data {
+            color: #777;
+        }
+
+        body.dark-mode .loading {
+            color: #91a5be;
+        }
+
+        body.dark-mode .search-input {
+            display: block;
+            width: 100%;
+            color: #fff;
+            appearance: none;
+            background: #393e53;
+            background-clip: padding-box;
+            border-radius: 25px;
+            transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+            border: 1px solid #2b2b2b33;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        body.dark-mode .search-input::placeholder {
+            color: #fff;
+        }
+
+        body.dark-mode .search-input:focus {
+            border-color: #91a5be;
+            box-shadow: 0 0 0 3px rgba(136, 153, 255, 0.1);
+        }
+
+        body.dark-mode .clear-search {
+            color: #bbb;
+        }
+
+        body.dark-mode .clear-search:hover {
+            color: #91a5be;
+        }
+
+        body.dark-mode .search-results-count {
+            color: #e4e4e4;
+        }
+
+        body.dark-mode .station-card {
+            background: #2d3242;
+            border: 1px solid #2b2b2b33;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        body.dark-mode .station-card:hover {
+            border-color: #91a5be;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        body.dark-mode .station-name {
+            color: #fff;
+            border-bottom-color: #91a5be;
+        }
+
+        body.dark-mode .time-label {
+            color: #ccc;
+        }
+
+        body.dark-mode .time-display {
+            background: #1c1f2b;
+            color: #fff;
+        }
+
+        body.dark-mode .time-display.first {
+            color: #27ae60;
+        }
+
+        body.dark-mode .time-display.last {
+            color: #e74c3c;
+        }
+
+        body.dark-mode .spinner {
+            border: 4px solid #3a3a3a;
+            border-top: 4px solid #91a5be;
+        }
+
+        body.dark-mode .time-value {
+            background: #1c1f2b;
+            border-radius: 15px;
+        }
+
 
         @media (max-width: 768px) {
             .header h1 {
@@ -199,6 +495,10 @@
             }
 
             .directions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stations-grid {
                 grid-template-columns: 1fr;
             }
 
@@ -215,140 +515,201 @@
 </head>
 
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🚇 First & Last Train Times</h1>
-            <p>Select a station to view train schedules</p>
-        </div>
-
-        <div class="selector-section">
-            <label for="stationDropdown">Select Station:</label>
-            <select id="stationDropdown">
-                <option value="">Loading stations...</option>
-            </select>
-        </div>
-
-        <div class="content-section" id="contentSection">
-            <div class="station-title" id="stationTitle">--</div>
-            <div class="station-subtitle" id="stationSubtitle">Select a station to begin</div>
-            <div id="directionsContainer"></div>
-        </div>
+    <!-- Fixed Breadcrumb at very top (mobile/tablet only) -->
+    <div class="breadcrumb-fixed-placeholder">
+        <nav aria-label="breadcrumb" style="margin-bottom:0;">
+            <ol class="breadcrumb breadcrumb-fixed" id="floating-breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="nbs.html"><i class="fa-solid fa-home"></i>
+                    </a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="abs.html"><i class="fa-solid fa-bars"></i>
+                    </a>
+                </li>
+            </ol>
+        </nav>
     </div>
 
-    <script>
-        let allStationsData = [];
+    <!-- Navigation Bar -->
+    <nav class="navbar-container">
+        <div class="navbar">
+            <!-- Logo -->
+            <a href="../delays-tracker.html"><img src="assets/logo.png" alt="logo" class="logo" /></a>
 
-        // Load the stations data on page load
-        async function loadStationsData() {
-            try {
-                const response = await fetch('js/all-stations-ft-lt.json');
-                allStationsData = await response.json();
-                populateDropdown();
-            } catch (error) {
-                console.error('Error loading stations data:', error);
-                alert('Failed to load station data. Please refresh the page.');
-            }
-        }
+            <!-- Navigation Links -->
+            <ul class="navbar-nav" id="navbarNav">
+                <li class="nav-item">
+                    <a href="../delays-tracker.html" class="nav-link">
+                        <i class="fa-sharp fa-solid fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="history.html" class="nav-link">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                        <span>History</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="first-last.html" class="nav-link active">
+                        <i class="fa-solid fa-clock"></i>
+                        <span>Timings</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="menu.html" class="nav-link">
+                        <i class="fa-solid fa-bars"></i>
+                        <span>Menu</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
 
-        // Populate the dropdown with stations
-        function populateDropdown() {
-            const dropdown = document.getElementById('stationDropdown');
-            dropdown.innerHTML = '<option value="">Select a station...</option>';
-            
-            allStationsData.forEach((stationData, index) => {
-                const option = document.createElement('option');
-                option.value = index;
-                option.textContent = stationData.station;
-                dropdown.appendChild(option);
-            });
-        }
+    </nav>
 
-        // Display data for selected station
-        function displayStationData(index) {
-            if (index === '') {
-                document.getElementById('contentSection').classList.remove('active');
-                return;
-            }
+    <!-- Mobile Bottom Navigation Bar -->
+    <nav class="mobile-bottom-nav">
+        <ul>
+            <li>
+                <a href="../delays-tracker.html">
+                    <span class="icon">
+                        <i class="fa-sharp fa-solid fa-home"></i>
+                    </span>
+                    <span class="label">Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="history.html">
+                    <span class="icon">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                    </span>
+                    <span class="label">History</span>
+                </a>
+            </li>
+            <li>
+                <a href="first-last.html">
+                    <span class="icon">
+                        <i class="fa-solid fa-clock"></i>
+                    </span>
+                    <span class="label">Timings</span>
+                </a>
+            </li>
+            <li class="active">
+                <a href="menu.html">
+                    <span class="icon">
+                        <i class="fa-solid fa-bars"></i>
+                    </span>
+                    <span class="label">Menu</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
 
-            const stationData = allStationsData[index];
-            const contentSection = document.getElementById('contentSection');
-            
-            document.getElementById('stationTitle').textContent = stationData.station;
-            document.getElementById('stationSubtitle').textContent = `Last updated: ${new Date(stationData.scraped_at).toLocaleDateString()}`;
 
-            const directionsContainer = document.getElementById('directionsContainer');
-            directionsContainer.innerHTML = '';
 
-            if (stationData.directions.length === 0) {
-                directionsContainer.innerHTML = '<div class="no-data">No train timing data available for this station.</div>';
-                contentSection.classList.add('active');
-                return;
-            }
+    <!------------------------------------------------------------------------ Start of Sections ------------------------------------------------------------------------>
 
-            stationData.directions.forEach((direction, idx) => {
-                const card = createDirectionCard(direction);
-                directionsContainer.appendChild(card);
-            });
 
-            contentSection.classList.add('active');
-        }
+    <!-- Title/Breadcrumbs -->
+    <section class="about-me-sum clearfix">
+        <div class="wbnrfz_eicw">
+            <div class="page-header-section">
+                <div class="container container-xxl container-mobile container-mobile-header">
+                    <div class="breadcrumb-wrapper">
+                        <nav aria-label="breadcrumb" class="breadcrumb-desktop" style="display:none;">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="../delays-tracker.html">
+                                        <i class="fa-solid fa-house"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="first-last.html"><i class="fa-solid fa-clock"></i>
+                                    </a>
+                                </li>
+                            </ol>
+                        </nav>
+                        <div class="page-title-wrapper">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                                <div>
+                                    <h1 class="page-title" id="filter-title">First & Last Trains</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            </div>
 
-        // Create a direction card
-        function createDirectionCard(direction) {
-            const card = document.createElement('div');
-            card.className = 'direction-card';
+        </div>
 
-            const header = document.createElement('div');
-            header.className = 'direction-header';
-            header.textContent = direction.description;
+    </section>
 
-            card.appendChild(header);
+    <!-- Section Contents -->
+    <section class="pdf-section">
+        <div class="container">
+            <div class="header">
+            </div>
 
-            // Get the keys in a specific order
-            const dayKeys = ['monday_to_friday', 'saturday', 'sunday_public_holidays', 'eve_of_public_holidays'];
-            const dayLabels = {
-                'monday_to_friday': 'Mon - Fri',
-                'saturday': 'Saturday',
-                'sunday_public_holidays': 'Sun / Holidays',
-                'eve_of_public_holidays': 'Eve of Holidays'
-            };
+            <div class="selector-section">
+                <div class="search-container">
+                    <div class="search-input-wrapper">
+                        <i class="fa-solid fa-search"
+                            style="position: absolute; left: 12px; top: 65%; transform: translateY(-65%); color: #cccccc; z-index: 1;"></i>
+                        <input type="text" id="stationSearch" class="search-input"
+                            placeholder="Type the station name or code" autocomplete="on">
+                        <button class="clear-search" id="clearSearch" title="Clear search">&times;</button>
+                    </div>
+                    <div class="search-results-count" id="resultsCount"></div>
+                </div>
 
-            dayKeys.forEach(dayKey => {
-                if (direction.first_train[dayKey] !== undefined || direction.last_train[dayKey] !== undefined) {
-                    const row = document.createElement('div');
-                    row.className = 'time-row';
+                <label for="stationDropdown">Station List:</label>
+                <select id="stationDropdown">
+                    <option value="">Loading stations...</option>
+                </select>
+            </div>
 
-                    const label = document.createElement('div');
-                    label.className = 'day-label';
-                    label.textContent = dayLabels[dayKey] || dayKey;
+            <div class="content-section" id="contentSection">
+                <div class="station-title" id="stationTitle">--</div>
+                <div class="station-subtitle" id="stationSubtitle">Select a station to begin</div>
+                <div id="directionsContainer"></div>
+            </div>
+        </div>
+    </section>
 
-                    const firstTimeEl = document.createElement('div');
-                    firstTimeEl.className = 'time-value first-train';
-                    firstTimeEl.textContent = 'First: ' + (direction.first_train[dayKey] || '--');
 
-                    const lastTimeEl = document.createElement('div');
-                    lastTimeEl.className = 'time-value last-train';
-                    lastTimeEl.textContent = 'Last: ' + (direction.last_train[dayKey] || '--');
+    <script type="text/javascript" id="cookiebanner" src="../js/cookies-banner.js" data-position="bottom"
+        data-bg="#f2f3e5" data-fg="#000" data-font-family="Onest, sans-serif" data-zindex="12345111111"
+        data-message="This website uses cookies to provide necessary site functionality and to improve your experience. By using this website, you agree to our use of cookies.">
+        </script>
 
-                    row.appendChild(label);
-                    row.appendChild(firstTimeEl);
-                    row.appendChild(lastTimeEl);
 
-                    card.appendChild(row);
-                }
-            });
 
-            return card;
-        }
+    <script src="js/mob-navtabs.js"></script>
 
-        // Event listener for dropdown
-        document.getElementById('stationDropdown').addEventListener('change', (e) => {
-            displayStationData(e.target.value);
-        });
+    <script src="tdt-subp.js"></script>
 
-        // Load data when page loads
-        window.addEventListener('load', loadStationsData);
-    </script>
+    <script src="../js/jquery.min.js"></script>
+
+    <script src="../js/popper.min.js"></script>
+
+    <script src="../js/bootstrap.min.js"></script>
+
+    <script src="../js/pw.bundle.js"></script>
+
+    <script src="../js/default-assets/active.js"></script>
+
+    <script src="../js/isotope.pkgd.min.js"></script>
+
+    <script src="../js/dstabs.js"></script>
+
+    <script src="../js/utils.js"></script>
+
+    <script src="js/ft-lt.js"></script>
+
+
 </body>
 
 </html>
