@@ -1,3 +1,24 @@
+body.dark-mode {
+    background: #121521 !important;
+}
+
+body.dark-mode .navbar {
+    background: #06070ca1 !important;
+}
+
+body.dark-mode .page-header-section {
+    background: #121521 !important;
+}
+
+.nav-link.active {
+    background: linear-gradient(84deg, rgba(81, 167, 190, 1) 0%, rgba(53, 64, 117, 1) 100%) !important;
+}
+
+.mobile-bottom-nav,
+body.dark-mode .mobile-bottom-nav {
+    display: none;
+}
+
 .distance-nearest {
     color: #638f03 !important;
     font-weight: bold;
@@ -130,7 +151,7 @@ body.dark-mode li.breadcrumb-item a {
     }
 
     body.dark-mode .breadcrumb.breadcrumb-fixed {
-        background: #292a2b;
+        background: #1f243bc9;
         backdrop-filter: blur(25px);
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
         position: fixed;
@@ -192,7 +213,7 @@ body.dark-mode li.breadcrumb-item a {
     }
 
     body.dark-mode .mobile-bottom-nav ul {
-        background: #0e0e0e91;
+        background: #1f243bc9;
         backdrop-filter: blur(25px);
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
     }
@@ -303,9 +324,9 @@ table th {
 
 .svcNumtd {
     text-align: center;
-    width: 85px;
+    width: 50px;
     white-space: nowrap;
-    margin-right: 3em;
+    margin-right: 1em;
 }
 
 .departure-spacing {
@@ -834,7 +855,7 @@ body.dark-mode .arrival-now {
 }
 
 body.dark-mode .bus-stop {
-    background-color: #2e2e2e;
+    background-color: #1c1f2b;
     color: #fff !important;
     border: 1px solid #2b2b2b33;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -900,7 +921,7 @@ body.dark-mode .card-bz:hover {
 }
 
 body.dark-mode .btn-toPin {
-    background-color: #494949;
+    background-color: #393e53;
     border: 1px solid #2b2b2b33;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(61, 61, 61, 0.384);
     color: #fff;
@@ -918,7 +939,7 @@ body.dark-mode .lg-date {
 }
 
 body.dark-mode .pin-msg {
-    background-color: #2e2e2e;
+    background-color: #1c1f2b;
     color: #fff !important;
     border: 1px solid #2b2b2b33;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -954,7 +975,7 @@ body.dark-mode .fleet-legend span {
     display: flex;
     align-items: center;
     gap: 8px;
-    background-color: #2e2e2e;
+    background-color: #1c1f2b;
     border: 1px solid #2b2b2b33;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
     padding: 0.5em;
@@ -968,4 +989,17 @@ body.dark-mode .btn-busloc:disabled {
     border: 1px solid #2b2b2b;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 12px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
+}
+
+body.dark-mode .about-me-summ {
+    background-color: #121521 !important;
+    transition: all 0.5s ease;
+}
+
+body.dark-mode .list-group-item {
+    background-color: #1c1f2b;
+}
+
+body.dark-mode .form-control {
+    background: #393e53 !important;
 }

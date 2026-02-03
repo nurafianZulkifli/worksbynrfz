@@ -1,4 +1,23 @@
 // ****************************
+// :: Initialize Default Preferences for First-Time Visitors
+// ****************************
+// Set default preferences if they don't exist
+function initializeDefaultPreferences() {
+    // Set default time format if not already set
+    if (!localStorage.getItem('timeFormat')) {
+        localStorage.setItem('timeFormat', '24-hour');
+    }
+    
+    // Set default dark mode preference if not already set
+    if (!localStorage.getItem('dark-mode')) {
+        localStorage.setItem('dark-mode', 'disabled');
+    }
+}
+
+// Initialize defaults on page load
+initializeDefaultPreferences();
+
+// ****************************
 // :: Time Format Change Handling
 // ****************************
 // Function to handle time format change

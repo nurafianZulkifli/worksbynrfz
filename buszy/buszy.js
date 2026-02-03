@@ -1,5 +1,21 @@
 /* Dark Mode Functionality for Individual Pages */
 
+// Initialize default preferences for first-time visitors
+function initializeDefaultPreferences() {
+    // Set default time format if not already set
+    if (!localStorage.getItem('timeFormat')) {
+        localStorage.setItem('timeFormat', '24-hour');
+    }
+    
+    // Set default dark mode preference if not already set
+    if (!localStorage.getItem('dark-mode')) {
+        localStorage.setItem('dark-mode', 'disabled');
+    }
+}
+
+// Initialize defaults immediately
+initializeDefaultPreferences();
+
 // Check localStorage for dark mode preference
 if (localStorage.getItem('dark-mode') === 'enabled') {
     document.body.classList.add('dark-mode');

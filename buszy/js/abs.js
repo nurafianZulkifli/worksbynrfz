@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const listGroup = document.querySelector('.list-group');
     const prevButton = document.getElementById('prev-button');
     const nextButton = document.getElementById('next-button');
+    const loadingMessageElement = document.getElementById('loading-message');
     const limit = 20;
     let allBusStops = [];
     let currentPage = 1;
@@ -146,16 +147,43 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // Load bus stops from localStorage or fetch from API
-    const cachedBusStops = localStorage.getItem('allBusStops');
-    if (cachedBusStops) {
-        allBusStops = JSON.parse(cachedBusStops);
-    } else {
-        allBusStops = await fetchAllBusStops();
+    // Show loading message immediately
+    if (loadingMessageElement) {
+        loadingMessageElement.style.display = 'flex';
+        loadingMessageElement.innerHTML = '<span class="spinner" role="status" style="margin-right: 1em;"></span>Loading Data...';
     }
 
-    totalPages = Math.ceil(allBusStops.length / limit);
-    displayBusStops(allBusStops, currentPage);
+    // Disable navigation while loading
+    const navbarContainer = document.querySelector('.navbar-container');
+    const mobileBottomNav = document.querySelector('.mobile-bottom-nav');
+    if (navbarContainer) navbarContainer.classList.add('nav-disabled');
+    if (mobileBottomNav) mobileBottomNav.classList.add('nav-disabled');
+
+    // Load bus stops from localStorage or fetch from API as soon as possible
+    (async function initBusStops() {
+        const cachedBusStops = localStorage.getItem('allBusStops');
+        if (cachedBusStops) {
+            allBusStops = JSON.parse(cachedBusStops);
+        } else {
+            allBusStops = await fetchAllBusStops();
+        }
+        totalPages = Math.ceil(allBusStops.length / limit);
+        displayBusStops(allBusStops, currentPage);
+        
+        // Show "Done!" message
+        if (loadingMessageElement) {
+            loadingMessageElement.innerHTML = '<span class="spinner" role="status" style="margin-right: 1em;"></span>Done!';
+        }
+        
+        // Wait 1 second then hide loading message and enable navigation
+        setTimeout(() => {
+            if (loadingMessageElement) {
+                loadingMessageElement.style.display = 'none';
+            }
+            if (navbarContainer) navbarContainer.classList.remove('nav-disabled');
+            if (mobileBottomNav) mobileBottomNav.classList.remove('nav-disabled');
+        }, 1000);
+    })();
 
     // Pagination
     prevButton.addEventListener('click', () => {

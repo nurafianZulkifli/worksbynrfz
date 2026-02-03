@@ -3,6 +3,8 @@
 // ****************************
 document.addEventListener('DOMContentLoaded', async () => {
     const bookmarksContainer = document.getElementById('bookmarks-container');
+    const loadingIndicator = document.getElementById('loading-indicator');
+    const loadingText = document.getElementById('loading-text');
 
     // Function to load bookmarks from localStorage
     async function loadBookmarks() {
@@ -114,8 +116,75 @@ document.addEventListener('DOMContentLoaded', async () => {
         alert('Bus Stop Unpinned.');
     }
 
-    // Load bookmarks on page load
-    loadBookmarks();
+    // Function to disable navigation during loading
+    function disableNavigation() {
+        const navbarContainer = document.querySelector('.navbar-container');
+        const mobileBottomNav = document.querySelector('.mobile-bottom-nav');
+        if (navbarContainer) navbarContainer.classList.add('nav-disabled');
+        if (mobileBottomNav) mobileBottomNav.classList.add('nav-disabled');
+    }
+
+    // Function to re-enable navigation
+    function enableNavigation() {
+        const navbarContainer = document.querySelector('.navbar-container');
+        const mobileBottomNav = document.querySelector('.mobile-bottom-nav');
+        if (navbarContainer) navbarContainer.classList.remove('nav-disabled');
+        if (mobileBottomNav) mobileBottomNav.classList.remove('nav-disabled');
+    }
+
+    // Show loading indicator and start fetching data immediately
+    if (loadingIndicator) {
+        loadingIndicator.style.display = 'flex';
+    }
+    disableNavigation();
+
+    // Pre-fetch bus stops data in background for new users
+    async function ensureBusStopsAreCached() {
+        let busStops = JSON.parse(localStorage.getItem('allBusStops')) || [];
+        
+        if (busStops.length === 0) {
+            if (loadingText) {
+                loadingText.textContent = 'Fetching Bus Stop Data...';
+            }
+            try {
+                let skip = 0;
+                let hasMoreData = true;
+
+                while (hasMoreData) {
+                    const response = await fetch(`https://bat-lta-9eb7bbf231a2.herokuapp.com/bus-stops?$skip=${skip}`);
+                    const data = await response.json();
+
+                    if (data.value.length === 0) {
+                        hasMoreData = false;
+                    } else {
+                        busStops = busStops.concat(data.value);
+                        skip += 500;
+                    }
+                }
+
+                localStorage.setItem('allBusStops', JSON.stringify(busStops));
+            } catch (error) {
+                console.error('Error pre-fetching bus stops:', error);
+            }
+        }
+    }
+
+    // Start fetching data immediately, then load bookmarks
+    ensureBusStopsAreCached().then(() => {
+        // Show "Done!" message
+        if (loadingText) {
+            loadingText.textContent = 'Done!';
+        }
+        
+        // Wait 1 second then hide loading indicator and enable navigation
+        setTimeout(() => {
+            loadBookmarks();
+            if (loadingIndicator) {
+                loadingIndicator.style.display = 'none';
+            }
+            enableNavigation();
+        }, 1000);
+    });
 });
 
 

@@ -135,6 +135,23 @@
             font-size: 17px;
         }
     }
+
+    .nav-disabled {
+        pointer-events: none !important;
+        opacity: 0.5 !important;
+    }
+
+    .nav-disabled a,
+    .nav-disabled button,
+    .nav-disabled li {
+        cursor: not-allowed !important;
+        pointer-events: none !important;
+    }
+
+    .nav-disabled a:hover,
+    .nav-disabled button:hover {
+        opacity: 0.5;
+    }
 </style>
 
 <body>
@@ -231,6 +248,10 @@
             <h2><i class="fa-solid fa-location-pin"></i>&nbsp;Pinned Bus Stops</h2>
             <!-- Section Contents -->
             <section class="about-me-summ clearfix" style="padding-bottom: 5em;">
+                <div id="loading-indicator" style="display: flex; align-items: center; justify-content: center; padding: 2em;">
+                    <span class="spinner" role="status" style="margin-right: 1em;"></span>
+                    <span id="loading-text">Loading Data...</span>
+                </div>
                 <div id="bookmarks-container" class="list-group"></div>
             </section>
         </div>

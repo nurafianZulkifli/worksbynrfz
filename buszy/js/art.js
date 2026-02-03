@@ -1,3 +1,19 @@
+// Initialize default preferences for first-time visitors
+function initializeDefaultPreferences() {
+    // Set default time format if not already set
+    if (!localStorage.getItem('timeFormat')) {
+        localStorage.setItem('timeFormat', '24-hour');
+    }
+    
+    // Set default dark mode preference if not already set
+    if (!localStorage.getItem('dark-mode')) {
+        localStorage.setItem('dark-mode', 'disabled');
+    }
+}
+
+// Initialize defaults immediately
+initializeDefaultPreferences();
+
 // ****************************
 // :: Bus Arrivals Fetching and Display
 // ****************************
@@ -9,7 +25,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const busStopCode = urlParams.get('BusStopCode');
 
-    if (busStopCode) {
+    // Only process if busStopCode is a non-empty string
+    if (busStopCode && busStopCode.trim() !== '') {
         searchInput.value = busStopCode;
 
         // Fetch the bus stop name from the /bus-stops endpoint
@@ -83,7 +100,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }, 300));
 
     // Refresh data every 5 seconds
-    setInterval(fetchBusArrivals, 5000);
+    setInterval(fetchBusArrivals, 55000);
 
     // Listen for changes in localStorage to update time format dynamically
     window.addEventListener('storage', (event) => {
@@ -150,13 +167,72 @@ async function fetchBusArrivals() {
 
         const now = new Date();
 
+        // Create a map of destination codes to names from cached bus stops
+        let destinationMap = {};
+        try {
+            const allBusStops = JSON.parse(localStorage.getItem('allBusStops')) || [];
+            allBusStops.forEach((stop) => {
+                destinationMap[stop.BusStopCode] = stop.Description;
+            });
+        } catch (error) {
+            console.error('Error creating destination map:', error);
+        }
+
+        // Function to get destination name
+        function getDestinationName(destinationCode) {
+            return destinationMap[destinationCode] || destinationCode;
+        }
+
+        // Prepare incoming buses data
+        const incomingBuses = [];
+        data.Services.forEach((service) => {
+            if (service.NextBus?.EstimatedArrival) {
+                incomingBuses.push({
+                    ServiceNo: service.ServiceNo,
+                    EstimatedArrival: new Date(service.NextBus.EstimatedArrival),
+                    TimeStr: formatArrivalTimeOrArr(service.NextBus.EstimatedArrival, now)
+                });
+            }
+            if (service.NextBus2?.EstimatedArrival) {
+                incomingBuses.push({
+                    ServiceNo: service.ServiceNo,
+                    EstimatedArrival: new Date(service.NextBus2.EstimatedArrival),
+                    TimeStr: formatArrivalTimeOrArr(service.NextBus2.EstimatedArrival, now)
+                });
+            }
+        });
+
+        // Sort by arrival time and take top 4
+        incomingBuses.sort((a, b) => a.EstimatedArrival - b.EstimatedArrival);
+        const topFourBuses = incomingBuses.slice(0, 4);
+
+        // Display incoming buses
+        const incomingSection = document.getElementById('incoming-buses-section');
+        const incomingGrid = document.getElementById('incoming-buses-grid');
+        if (topFourBuses.length > 0) {
+            incomingSection.style.display = 'block';
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            const bgColor = isDarkMode ? '#7db603' : '#94d40b';
+            incomingGrid.innerHTML = topFourBuses.map(bus => `
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+                    <div class="ib-time">${bus.TimeStr}</div>
+                    <div class="ib-svc" style="background-color: ${bgColor};" >${bus.ServiceNo}</div>
+                </div>
+            `).join('');
+        } else {
+            incomingSection.style.display = 'none';
+        }
+
         data.Services.forEach((service) => {
             const card = document.createElement('div');
             card.classList.add('col-12', 'col-md-4', 'col-xl-3', 'card-bt'); // Add col-sm-6 for 2 cards per row on small screens
             card.innerHTML = `
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
-                        <span class="service-no">${service.ServiceNo}</span>
+                        <div>
+                            <span class="service-no">${service.ServiceNo}</span>
+                            ${service.NextBus?.DestinationCode ? `<div class="destination-code">To ${getDestinationName(service.NextBus.DestinationCode)}</div>` : ''}
+                        </div>
                         ${service.Operator ? `<img src="assets/${service.Operator.toLowerCase()}.png" alt="${service.Operator}" class="img-fluid" style="width: 50px;">` : ''}
                     </div>
                     <div class="card-body">

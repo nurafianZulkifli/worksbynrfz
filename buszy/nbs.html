@@ -191,6 +191,23 @@
         }
 
     }
+
+    .nav-disabled {
+        pointer-events: none !important;
+        opacity: 0.5 !important;
+    }
+
+    .nav-disabled a,
+    .nav-disabled button,
+    .nav-disabled li {
+        cursor: not-allowed !important;
+        pointer-events: none !important;
+    }
+
+    .nav-disabled a:hover,
+    .nav-disabled button:hover {
+        opacity: 0.5;
+    }
 </style>
 
 <body>
