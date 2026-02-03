@@ -238,7 +238,7 @@ async function fetchBusArrivals() {
                     <div class="card-body">
                         <div class="card-content-art">
                             <div class="d-flex justify-content-between">
-                                <span class="bus-time">${service.NextBus.EstimatedArrival ? formatArrivalTimeOrArr(service.NextBus.EstimatedArrival, now) : 'N/A'}</span>
+                                <span class="bus-time">${service.NextBus.EstimatedArrival ? formatArrivalTimeOrArr(service.NextBus.EstimatedArrival, now) : '--'}</span>
                                 <span>
                                     ${service.NextBus.Type ? `<img src="assets/${service.NextBus.Type.toLowerCase()}.png" alt="${service.NextBus.Type}" class="img-fluid" style="width: 50px;">` : ''}
                                     ${service.NextBus.Load ? `<span class="load-indicator ${service.NextBus.Load.toLowerCase()}"> ${getLoadIcon(service.NextBus.Load)}</span>` : ''}
@@ -254,7 +254,7 @@ async function fetchBusArrivals() {
                                 </span>
                             </div>
                             <div class="d-flex justify-content-between mt-2">
-                                <span class="bus-time">${service.NextBus2?.EstimatedArrival ? formatArrivalTimeOrArr(service.NextBus2.EstimatedArrival, now) : 'N/A'}</span>
+                                <span class="bus-time">${service.NextBus2?.EstimatedArrival ? formatArrivalTimeOrArr(service.NextBus2.EstimatedArrival, now) : '--'}</span>
                                 <span>
                                     ${service.NextBus2?.Type ? `<img src="assets/${service.NextBus2.Type.toLowerCase()}.png" alt="${service.NextBus2.Type}" class="img-fluid" style="width: 50px;">` : ''}
                                     ${service.NextBus2?.Load ? `<span class="load-indicator ${service.NextBus2.Load.toLowerCase()}"> ${getLoadIcon(service.NextBus2.Load)}</span>` : ''}
@@ -309,7 +309,7 @@ async function fetchBusArrivals() {
 
                     marker.bindPopup(`
                                 <b>Bus ${busNumber}</b><br>
-                                ${eta || 'N/A'}
+                                ${eta || '--'}
                             `).openPopup();
                 } else {
                     alert('Bus location not available.');
