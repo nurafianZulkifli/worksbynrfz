@@ -190,14 +190,14 @@ async function fetchBusArrivals() {
                 incomingBuses.push({
                     ServiceNo: service.ServiceNo,
                     EstimatedArrival: new Date(service.NextBus.EstimatedArrival),
-                    TimeStr: formatArrivalTimeOrArr(service.NextBus.EstimatedArrival, now)
+                    TimeStr: formatArrivalTimeOrArr(service.NextBus.EstimatedArrival, now, true)
                 });
             }
             if (service.NextBus2?.EstimatedArrival) {
                 incomingBuses.push({
                     ServiceNo: service.ServiceNo,
                     EstimatedArrival: new Date(service.NextBus2.EstimatedArrival),
-                    TimeStr: formatArrivalTimeOrArr(service.NextBus2.EstimatedArrival, now)
+                    TimeStr: formatArrivalTimeOrArr(service.NextBus2.EstimatedArrival, now, true)
                 });
             }
         });
@@ -346,7 +346,7 @@ function getLoadIcon(load) {
 }
 
 // Function to format ISO string to hh:mm or show "Arrive" or greyed-out time
-function formatArrivalTimeOrArr(isoString, now) {
+function formatArrivalTimeOrArr(isoString, now, isIncomingBus = false) {
     const arrivalTime = new Date(isoString);
 
     const timeDifference = arrivalTime - now;
@@ -373,7 +373,17 @@ function formatArrivalTimeOrArr(isoString, now) {
         ? { hour: '2-digit', minute: '2-digit', hour12: false }
         : { hour: '2-digit', minute: '2-digit', hour12: true };
 
-    return arrivalTime.toLocaleTimeString('en-US', options);
+    const timeString = arrivalTime.toLocaleTimeString('en-US', options);
+    
+    // For 12-hour format with incoming buses, make AM/PM smaller
+    if (isIncomingBus && savedFormat === '12-hour') {
+        const parts = timeString.split(' ');
+        if (parts.length === 2) {
+            return `${parts[0]}<span style="font-size: 0.7em;">${parts[1]}</span>`;
+        }
+    }
+    
+    return timeString;
 }
 
 

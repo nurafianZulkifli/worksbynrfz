@@ -362,7 +362,7 @@
         .fleet-legend {
             display: flex;
             flex-wrap: wrap;
-            gap: 1rem;
+            gap: 0.4rem;
             justify-content: center;
             margin-top: 1em;
             padding-bottom: 1em;
@@ -405,6 +405,8 @@
 
         .ib-time {
             font-size: 18px;
+            margin-left: 5px;
+            margin-right: 5px;
         }
     }
 
@@ -428,6 +430,41 @@
             text-align: center;
             display: flex;
             align-items: center;
+        }
+    }
+
+    @media screen and (max-width: 417px) {
+        #incoming-buses-grid {
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.4rem;
+            padding: 0 0.25rem;
+        }
+
+        .ib-time {
+            font-size: 16px;
+            padding: 6px;
+            margin: 0;
+        }
+
+        .ib-svc {
+            font-size: 16px;
+            padding: 0.6rem 0.5rem;
+            margin: 0;
+        }
+
+        #incoming-buses-section {
+            padding: 0.8rem;
+            margin-bottom: 1.5em;
+        }
+
+        #incoming-buses-section h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        #incoming-buses-section p {
+            font-size: 0.8rem;
+            margin-bottom: 0.75rem;
         }
     }
 </style>
@@ -594,7 +631,7 @@
             <!-- Incoming Buses Section -->
             <div id="incoming-buses-section" style="display: none; margin-bottom: 2em;">
                 <h3 style="font-weight: bold; margin-bottom: 0.5rem;">Incoming Buses</h3>
-                <p style="font-size: 0.9rem; color: #999; margin-bottom: 1rem; text-align: left;">*buses might not
+                <p style="font-size: 0.9rem; color: #999; margin-bottom: 1rem; text-align: left;">*Buses might not
                     arrive in exact order</p>
                 <div id="incoming-buses-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;">
                     <!-- Incoming buses will be populated here -->
