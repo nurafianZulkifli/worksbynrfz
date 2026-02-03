@@ -1,5 +1,5 @@
 // Script to scrape first & last train info from SBS Transit
-// Usage: node delays-tracker/js/scrape-sbs-transit.js
+// Usage: node rail-buddy/js/scrape-sbs-transit.js
 
 const puppeteer = require('puppeteer');
 const cheerio = require('cheerio');

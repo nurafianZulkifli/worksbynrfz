@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="57TuruPNu5wqSSia_cUehl5t9Gh1AbxrHNPcMiFx-aQ" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Menu | Train Delays Tracker</title>
+    <title>Statistics | RailBuddy</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
     <meta property="og:image" content="https://i.imgur.com/i8n9KYs.png" />
@@ -34,57 +34,115 @@
 </head>
 
 <style>
-    html,
-    body {
-        margin: 0;
-        height: 100%;
-        overflow: hidden;
+    #delays-bar-chart canvas {
+        height: 230px !important;
+        max-height: 230px;
     }
 
-    #cv-bat-subp {
-        height: 10vh;
+    #delays-bar-chart {
+        position: relative;
     }
 
-    .alert-warning p {
+    .chart-caplets {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        margin-top: -20px;
+        gap: 2px;
+    }
+
+    .chart-caplet {
+        flex: 0 1 auto;
+        display: inline-block;
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+        transform: rotate(180deg);
+        background: #e1251b;
+        color: #fff;
+        font-weight: bold;
+        border-radius: 13.6px / 8.2px;
+        padding: 6px 4px;
+        font-size: 15px;
+        letter-spacing: 1px;
+        border: 2px solid #fff;
+        font-family: 'Onest', sans-serif;
+    }
+
+    body.dark-mode .chart-caplet {
+        border: 2px solid #2e2e2e;
+    }
+
+    .chart-caplet.nsl {
+        background: #e1251b;
+    }
+
+    .chart-caplet.ewl {
+        background: #00953b;
+    }
+
+    .chart-caplet.ccl {
+        background: #ff9e18;
         color: #000;
-        font-size: 16px;
-        overflow-wrap: break-word;
-        line-height: 1.7;
-        margin-bottom: 0rem !important;
     }
 
-    .breadcrumb.breadcrumb-fixed {
-        background: none;
-        backdrop-filter: none;
-        box-shadow: none;
+    .chart-caplet.dtl {
+        background: #0055b8;
     }
 
-    .list-group-item {
-        padding-top: 0.7em;
-        padding-bottom: 0.7em;
+    .chart-caplet.nel {
+        background: #9e28b5;
     }
 
-    body.dark-mode .breadcrumb.breadcrumb-fixed {
-        background: none;
-        backdrop-filter: none;
-        box-shadow: none;
+    .chart-caplet.tel {
+        background: #9d5918;
     }
 
-
-    body.dark-mode .alert-warning p {
-        color: #ffda6a;
-        font-size: 16px;
-        overflow-wrap: break-word;
-        line-height: 1.7;
-        margin-bottom: 0rem !important;
+    .chart-caplet.lrt {
+        background: #718472;
     }
 
+    .chart-container {
+        max-width: 600px;
+        width: 100%;
+        margin: 0 auto;
+        box-sizing: border-box;
+    }
 
-    .footer {
-        display: none;
+    .chart-container canvas {
+        max-width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    body.dark-mode .mkbf-line-chart-lrt,
+    body.dark-mode .mkbf-line-chart-mrt {
+        border: 1px solid #2b2b2b33 !important;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    @media (max-width: 994px) {
+        .chart-caplets {
+            gap: 2px;
+            margin-top: -10px;
+            margin-left: 26px;
+            margin-right: 26px;
+        }
+
+        .chart-caplet {
+            font-size: 10px !important;
+            flex: 0 1 auto;
+        }
+
+        #delays-bar-chart canvas,
+        #mkbf-line-chart-mrt canvas,
+        #mkbf-line-chart-lrt canvas {
+            height: auto !important;
+            min-height: 120px !important;
+            width: 100% !important;
+        }
+
     }
 </style>
-
 
 <body>
     <!-- Fixed Breadcrumb at very top (mobile/tablet only) -->
@@ -92,7 +150,7 @@
         <nav aria-label="breadcrumb" style="margin-bottom:0;">
             <ol class="breadcrumb breadcrumb-fixed" id="floating-breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="../delays-tracker.html"><i class="fa-solid fa-home"></i>
+                    <a href="../delays-tracker.html"><i class="fa-solid fa-house"></i>
                     </a>
                 </li>
                 <li class="breadcrumb-item">
@@ -107,12 +165,12 @@
     <nav class="navbar-container">
         <div class="navbar">
             <!-- Logo -->
-            <a href="../delays-tracker.html"><img src="assets/logo.png" alt="logo" class="logo" /></a>
+            <a href="../rail-buddy.html"><img src="assets/logo.png" alt="logo" class="logo" /></a>
 
             <!-- Navigation Links -->
             <ul class="navbar-nav" id="navbarNav">
                 <li class="nav-item">
-                    <a href="../delays-tracker.html" class="nav-link">
+                    <a href="../rail-buddy.html" class="nav-link">
                         <i class="fa-sharp fa-solid fa-home"></i>
                         <span>Home</span>
                     </a>
@@ -129,7 +187,7 @@
                         <span>Timings</span>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item ">
                     <a href="menu.html" class="nav-link active">
                         <i class="fa-solid fa-bars"></i>
                         <span>Menu</span>
@@ -159,7 +217,7 @@
                     <span class="label">History</span>
                 </a>
             </li>
-            <li>
+            <li class="active">
                 <a href="first-last.html">
                     <span class="icon">
                         <i class="fa-solid fa-clock"></i>
@@ -167,7 +225,7 @@
                     <span class="label">Timings</span>
                 </a>
             </li>
-            <li class="active">
+            <li>
                 <a href="menu.html">
                     <span class="icon">
                         <i class="fa-solid fa-bars"></i>
@@ -182,7 +240,6 @@
 
     <!------------------------------------------------------------------------ Start of Sections ------------------------------------------------------------------------>
 
-
     <!-- Title/Breadcrumbs -->
     <section class="about-me-sum clearfix">
         <div class="wbnrfz_eicw">
@@ -192,8 +249,7 @@
                         <nav aria-label="breadcrumb" class="breadcrumb-desktop" style="display:none;">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item">
-                                    <a href="../delays-tracker.html">
-                                        <i class="fa-solid fa-house"></i>
+                                    <a href="../rail-buddy.html"><i class="fa-solid fa-house"></i>
                                     </a>
                                 </li>
                                 <li class="breadcrumb-item">
@@ -206,7 +262,7 @@
                             <div
                                 style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
                                 <div>
-                                    <h1 class="page-title" id="filter-title">Menu</h1>
+                                    <h1 class="page-title" id="filter-title">Statistics</h1>
                                 </div>
                             </div>
                         </div>
@@ -214,61 +270,35 @@
                 </div>
                 <hr>
             </div>
-
         </div>
-
     </section>
 
-    <!-- Section Contents -->
-    <section class="about-me-summ clearfix" style="padding-bottom: 5em;">
-        <div class="container">
-            <div class="list-group">
-                <a href="statistics.html" class="list-group-item list-group-item-action flex-column align-items-start">
-                    <div class="d-flex">
-                        <div>
-                            <h5 class="lg-menu"><i class="fa-solid fa-bar-chart"></i> Statistics</h5>
-                        </div>
-                    </div>
-                </a>
+    <section class="stats">
+        <div class="container container-xxl container-mobile container-mobile-header">
 
-                <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-                    <div class="d-flex">
-                        <div>
-                            <h5 class="lg-menu"><i class="fa-solid fa-train"></i> Our Networks</h5>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="system-map.html" class="list-group-item list-group-item-action flex-column align-items-start">
-                    <div class="d-flex">
-                        <div>
-                            <h5 class="lg-menu"><i class="fa-solid fa-map"></i> System Map</h5>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="settings.html" class="list-group-item list-group-item-action flex-column align-items-start">
-                    <div class="d-flex">
-                        <div>
-                            <h5 class="lg-menu"><i class="fa-solid fa-gear"></i> Settings</h5>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="" class="list-group-item list-group-item-action flex-column align-items-start"
-                    id="dark-mode-toggle-desktop">
-                    <div class="d-flex">
-                        <div>
-                            <h5 class="lg-menu"><i class="fa-solid fa-sun-bright"></i> Display: Light</h5>
-                        </div>
-                    </div>
-                </a>
+            <div class="stats-section">
+                <h2 style="margin-bottom:20px;">Incident Count by MRT Line</h2>
+                <div id="delays-bar-chart"></div>
             </div>
+
             <hr>
 
-            <div style="text-align: center; color: gray; font-size: 14px; margin-top: 1em; margin-bottom: 2em;">
-                Version 4.0.1-DEV
+            <div class="stats-section">
+                <h2 style="margin-top:50px;">Mean Distance Travelled between Delays &gt; 5 min (train-km - MRT)
+                </h2>
+                <div id="mkbf-line-chart-mrt"></div>
             </div>
+
+            <div class="stats-section">
+                <h2 style="margin-top:50px;">Mean Distance Travelled between Delays &gt; 5 min (car-km - LRT)
+                </h2>
+                <div id="mkbf-line-chart-lrt"></div>
+            </div>
+
+            <hr>
+
+
+        </div>
     </section>
 
 
@@ -278,25 +308,21 @@
         </script>
 
 
+
+    <script src="js/mob-navtabs.js"></script>
     <script src="tdt-subp.js"></script>
-
+    <script src="js/delays-bar-chart.js"></script>
+    <script src="js/mrt-mkbf-line-chart.js"></script>
+    <script src="js/lrt-mkbf-line-chart.js"></script>
     <script src="../js/jquery.min.js"></script>
-
     <script src="../js/popper.min.js"></script>
-
     <script src="../js/bootstrap.min.js"></script>
-
     <script src="../js/pw.bundle.js"></script>
-
     <script src="../js/default-assets/active.js"></script>
-
     <script src="../js/isotope.pkgd.min.js"></script>
-
     <script src="../js/dstabs.js"></script>
-
     <script src="../js/utils.js"></script>
-
-    <script src="js/menu.js"></script>
+    <script src="js/hist.js"></script>
 
 </body>
 

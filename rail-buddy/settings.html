@@ -7,12 +7,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="57TuruPNu5wqSSia_cUehl5t9Gh1AbxrHNPcMiFx-aQ" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>System Map | Train Delays Tracker</title>
+    <title>Settings | RailBuddy</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
     <meta property="og:image" content="https://i.imgur.com/i8n9KYs.png" />
 
-    <link rel="icon" href="assets/icon-512.png">
+    <link rel="manifest" href="../manifest-dt.json">
+
+    <link rel="icon" href="../img/core-img/favicon.png">
+    <meta name="theme-color" content="#007bff">
 
     <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.0.0/css/all.css" />
 
@@ -31,12 +34,80 @@
         gtag('config', 'G-WN76281P3Q');
     </script>
 
-    <style>
-        .sys-map img {
-            border-radius: 25px;
-        }
-    </style>
 </head>
+
+<style>
+    #cv-bat-subp {
+        height: 10vh;
+    }
+
+    .footer {
+        display: none;
+    }
+
+    .btn-rfetch {
+        position: relative;
+        z-index: 1;
+        min-width: 50px;
+        width: 170px;
+        height: 46px;
+        line-height: 46px;
+        font-size: 14px;
+        font-weight: 500;
+        display: inline-block;
+        padding: 0 30px;
+        text-align: center;
+        text-transform: capitalize;
+        color: #fff;
+        border-radius: 60px;
+        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        border: none;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 12px rgba(0, 0, 0, 0.1);
+        background-color: #bb2d3b;
+    }
+
+    .btn-install {
+        position: relative;
+        z-index: 1;
+        min-width: 50px;
+        width: 170px;
+        height: 46px;
+        line-height: 46px;
+        font-size: 14px;
+        font-weight: 500;
+        display: inline-block;
+        padding: 0 30px;
+        text-align: center;
+        text-transform: capitalize;
+        color: #fff;
+        border-radius: 60px;
+        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        border: none;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 12px rgba(0, 0, 0, 0.1);
+        background-color: #1f84a2;
+    }
+
+    .btn-rfetch:focus,
+    .btn-rfetch:hover,
+    .btn-install:focus,
+    .btn-install:hover {
+        font-weight: 500;
+        background-color: #6d99c0 !important;
+        color: #fff;
+        transform: translateY(-2px);
+    }
+
+    .btn-install:disabled {
+        background-color: grey !important;
+        cursor: not-allowed;
+    }
+
+    .label-set {
+        padding-top: 0.5em !important;
+        padding-bottom: 0.5em !important;
+        font-size: 16px !important;
+    }
+</style>
 
 <body>
     <!-- Fixed Breadcrumb at very top (mobile/tablet only) -->
@@ -44,11 +115,12 @@
         <nav aria-label="breadcrumb" style="margin-bottom:0;">
             <ol class="breadcrumb breadcrumb-fixed" id="floating-breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="nbs.html"><i class="fa-solid fa-home"></i>
+                    <a href="../rail-buddy.html">
+                        <i class="fa-solid fa-house"></i>
                     </a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a href="abs.html"><i class="fa-solid fa-bars"></i>
+                    <a href="menu.html"><i class="fa-solid fa-bars"></i>
                     </a>
                 </li>
             </ol>
@@ -59,12 +131,12 @@
     <nav class="navbar-container">
         <div class="navbar">
             <!-- Logo -->
-            <a href="../delays-tracker.html"><img src="assets/logo.png" alt="logo" class="logo" /></a>
+            <a href="../buszy.html"><img src="../img/core-img/logo.png" alt="logo" class="logo" /></a>
 
             <!-- Navigation Links -->
             <ul class="navbar-nav" id="navbarNav">
                 <li class="nav-item">
-                    <a href="../delays-tracker.html" class="nav-link">
+                    <a href="../main.html" class="nav-link">
                         <i class="fa-sharp fa-solid fa-home"></i>
                         <span>Home</span>
                     </a>
@@ -112,11 +184,11 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="first-last.html">
                     <span class="icon">
-                        <i class="fa-solid fa-chart-bar"></i>
+                        <i class="fa-solid fa-clock"></i>
                     </span>
-                    <span class="label">Statistics</span>
+                    <span class="label">Timings</span>
                 </a>
             </li>
             <li class="active">
@@ -132,9 +204,8 @@
 
 
 
+
     <!------------------------------------------------------------------------ Start of Sections ------------------------------------------------------------------------>
-
-
     <!-- Title/Breadcrumbs -->
     <section class="about-me-sum clearfix">
         <div class="wbnrfz_eicw">
@@ -158,40 +229,43 @@
                             <div
                                 style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
                                 <div>
-                                    <h1 class="page-title" id="filter-title">System Map</h1>
+                                    <h1 class="page-title" id="filter-title">Settings</h1>
                                 </div>
+
                             </div>
                         </div>
                     </div>
                 </div>
                 <hr>
             </div>
-
         </div>
-
     </section>
 
     <!-- Section Contents -->
-    <section class="pdf-section">
-        <div class="container container-xxl container-mobile container-mobile-header">
-            <div class="sys-map">
-                <p><a href="assets/system-map-lta.pdf" target="_blank"><img
-                            data-light="assets/system-map-lta.png" data-dark="assets/system-map-lta-dark.png"
-                            data-light-alt="Light mode" data-dark-alt="Dark mode"></a></p>
-            </div>
-        </div>
-    </section>
+    <section class="about-me-summ clearfix" style="padding-bottom: 5em;">
 
+        <div class="container">
+            <h2 class="text-center" style="padding-top: 1em;">Install</h2>
+            <ul class="list-group">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <button id="install-btn" class="btn btn-install">Install App</button>
+                        </div>
+                        <p class="fetch">Install this web app on your device for a better experience.</p>
+                    </li>
+                </ul>
+        </div>
+
+    </section>
 
     <script type="text/javascript" id="cookiebanner" src="../js/cookies-banner.js" data-position="bottom"
         data-bg="#f2f3e5" data-fg="#000" data-font-family="Onest, sans-serif" data-zindex="12345111111"
         data-message="This website uses cookies to provide necessary site functionality and to improve your experience. By using this website, you agree to our use of cookies.">
         </script>
 
+    <script src="js/mob-navtabs.js"></script>
 
-
-    <!-- Dark mode image switching for map -->
-    <script src="js/sysMap.js"></script>
     <script src="tdt-subp.js"></script>
 
     <script src="../js/jquery.min.js"></script>
@@ -210,10 +284,7 @@
 
     <script src="../js/utils.js"></script>
 
-    <script src="js/menu.js"></script>
-
-    <script src="js/sysMap.js"></script>
-
+    <script src="js/settings.js"></script>
 
 </body>
 

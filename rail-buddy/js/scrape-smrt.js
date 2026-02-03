@@ -1,5 +1,5 @@
 // Script to scrape first & last train info for all SMRT stations
-// Usage: node delays-tracker/js/scrape-all-stations.js
+// Usage: node rail-buddy/js/scrape-all-stations.js
 
 const puppeteer = require('puppeteer');
 const cheerio = require('cheerio');
