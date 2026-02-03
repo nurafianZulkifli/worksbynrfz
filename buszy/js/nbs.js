@@ -1,21 +1,5 @@
 const apiUrl = 'https://bat-lta-9eb7bbf231a2.herokuapp.com/nearby-bus-stops';
 
-// Helper to enable navigation
-function enableNavigation() {
-    const navbarContainer = document.querySelector('.navbar-container');
-    const mobileBottomNav = document.querySelector('.mobile-bottom-nav');
-    if (navbarContainer) navbarContainer.classList.remove('nav-disabled');
-    if (mobileBottomNav) mobileBottomNav.classList.remove('nav-disabled');
-}
-
-// Helper to disable navigation
-function disableNavigation() {
-    const navbarContainer = document.querySelector('.navbar-container');
-    const mobileBottomNav = document.querySelector('.mobile-bottom-nav');
-    if (navbarContainer) navbarContainer.classList.add('nav-disabled');
-    if (mobileBottomNav) mobileBottomNav.classList.add('nav-disabled');
-}
-
 // Helper function to detect Instagram in-app browser
 function isInstagramInAppBrowser() {
     const userAgent = navigator.userAgent || navigator.vendor || window.opera;
@@ -29,7 +13,16 @@ document.addEventListener('DOMContentLoaded', () => {
     busStopsContainer.innerHTML = '<p class="pin-msg"><span class="spinner"></span>Searching for nearby bus stops...</p>';
 
     // Disable navigation while loading
-    disableNavigation();
+    const navbarContainer = document.querySelector('.navbar-container');
+    const mobileBottomNav = document.querySelector('.mobile-bottom-nav');
+    if (navbarContainer) navbarContainer.classList.add('nav-disabled');
+    if (mobileBottomNav) mobileBottomNav.classList.add('nav-disabled');
+
+    // Helper to enable navigation
+    function enableNavigation() {
+        if (navbarContainer) navbarContainer.classList.remove('nav-disabled');
+        if (mobileBottomNav) mobileBottomNav.classList.remove('nav-disabled');
+    }
 
     // Helper to show Instagram limitation message
     function showInstagramLimitationMessage() {
@@ -149,7 +142,6 @@ async function fetchNearbyBusStops(latitude, longitude, onError) {
             displayBusStops(busStops);
         } else {
             busStopsContainer.innerHTML = '<p class="pin-msg"><i class="fa-solid fa-circle-info"></i>No Bus Stops found nearby.</p>';
-            enableNavigation();
         }
     } catch (error) {
         console.error('Error:', error);
@@ -157,7 +149,6 @@ async function fetchNearbyBusStops(latitude, longitude, onError) {
             onError();
         } else {
             busStopsContainer.innerHTML = '<p class="pin-msg"><i class="fa-solid fa-triangle-exclamation"></i>Failed to fetch nearby bus stops. Please try again later.</p>';
-            enableNavigation();
         }
     }
 }
@@ -256,21 +247,6 @@ function displayBusStops(busStops) {
 
         busStopsContainer.appendChild(busStopElement);
     });
-
-    // Show "Done!" and enable navigation
-    const doneMessage = document.createElement('p');
-    doneMessage.className = 'pin-msg';
-    doneMessage.innerHTML = '<span class="spinner" role="status" style="margin-right: 1em;"></span>Done!';
-    busStopsContainer.appendChild(doneMessage);
-
-    // Enable navigation after a brief moment
-    setTimeout(() => {
-        busStopsContainer.removeChild(doneMessage);
-        const navbarContainer = document.querySelector('.navbar-container');
-        const mobileBottomNav = document.querySelector('.mobile-bottom-nav');
-        if (navbarContainer) navbarContainer.classList.remove('nav-disabled');
-        if (mobileBottomNav) mobileBottomNav.classList.remove('nav-disabled');
-    }, 1000);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
