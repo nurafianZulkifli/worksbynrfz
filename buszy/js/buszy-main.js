@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Check if there are no bookmarks
         if (bookmarks.length === 0) {
-            bookmarksContainer.innerHTML = '<p class="pin-msg">Your Pinned Bus Stops will appear here.</p>';
+            bookmarksContainer.innerHTML = '<p class="pin-msg">Your Pinned Bus Stops will appear here.<br><small style="font-size: 0.85em; opacity: 0.8;">Tip: You can <a href="buszy/settings.html" style="text-decoration: underline; color: inherit;">import data from Settings</a> if you have a backup.</small></p>';
             return;
         }
 
