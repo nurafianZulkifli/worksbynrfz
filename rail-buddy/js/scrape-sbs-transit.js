@@ -38,17 +38,36 @@ const fs = require('fs');
     
     const $ = cheerio.load(html);
     
-    // Normalize time format (e.g., "5.30am" or "11:35pm" to "05:35")
+    // Normalize time format (e.g., "5.30am" or "11:35pm" to "05:35" in 24-hour format)
     const normalizeTime = (timeStr) => {
       if (!timeStr || timeStr === '--') return '--';
-      const cleaned = timeStr.toLowerCase()
+      
+      const lowerStr = timeStr.toLowerCase();
+      const isPM = lowerStr.includes('pm');
+      const isAM = lowerStr.includes('am');
+      
+      const cleaned = lowerStr
         .replace(/am|pm/g, '')
         .replace(/\./g, ':')
         .trim();
-      // Pad hours with zero if needed
+      
       const parts = cleaned.split(':');
       if (parts.length === 2) {
-        return `${parts[0].padStart(2, '0')}:${parts[1]}`;
+        let hour = parseInt(parts[0]);
+        const minute = parts[1];
+        
+        // Convert to 24-hour format if AM/PM detected
+        if (isPM) {
+          if (hour !== 12) {
+            hour += 12;
+          }
+        } else if (isAM) {
+          if (hour === 12) {
+            hour = 0;
+          }
+        }
+        
+        return `${String(hour).padStart(2, '0')}:${minute}`;
       }
       return cleaned;
     };

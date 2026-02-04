@@ -4,7 +4,7 @@
     "station_slug": "east-loop",
     "directions": [
       {
-        "description": "Sengkang LRT",
+        "description": "Sengkang LRT First and Last Train Timings (Updated 2 June 2020)",
         "first_train": {
           "monday_to_friday": "05:25",
           "saturday": "05:45",
@@ -12,15 +12,15 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:35",
-          "saturday": "12:35",
-          "sunday_public_holidays": "12:35",
+          "monday_to_friday": "00:35",
+          "saturday": "00:35",
+          "sunday_public_holidays": "00:35",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
-        "description": "Punggol LRT",
+        "description": "Punggol LRT First and Last Train Timings (Updated 2 June 2020)",
         "first_train": {
           "monday_to_friday": "05:20",
           "saturday": "05:40",
@@ -28,12 +28,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:38",
-          "saturday": "12:38",
-          "sunday_public_holidays": "12:38",
+          "monday_to_friday": "00:38",
+          "saturday": "00:38",
+          "sunday_public_holidays": "00:38",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -50,12 +50,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:37",
-          "saturday": "12:37",
-          "sunday_public_holidays": "12:37",
+          "monday_to_friday": "00:37",
+          "saturday": "00:37",
+          "sunday_public_holidays": "00:37",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "Punggol LRT First and Last Train Timings (Updated 2 June 2020)",
@@ -66,12 +66,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:40",
-          "saturday": "12:40",
-          "sunday_public_holidays": "12:40",
+          "monday_to_friday": "00:40",
+          "saturday": "00:40",
+          "sunday_public_holidays": "00:40",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -88,12 +88,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:35",
-          "saturday": "11:35",
-          "sunday_public_holidays": "11:35",
+          "monday_to_friday": "23:35",
+          "saturday": "23:35",
+          "sunday_public_holidays": "23:35",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Bukit Panjang",
@@ -109,7 +109,7 @@
           "sunday_public_holidays": "-",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -131,7 +131,7 @@
           "sunday_public_holidays": "-",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Punggol Coast",
@@ -142,12 +142,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:55",
-          "saturday": "11:55",
-          "sunday_public_holidays": "11:55",
+          "monday_to_friday": "23:55",
+          "saturday": "23:55",
+          "sunday_public_holidays": "23:55",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -164,12 +164,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:37",
-          "saturday": "11:37",
-          "sunday_public_holidays": "11:37",
+          "monday_to_friday": "23:37",
+          "saturday": "23:37",
+          "sunday_public_holidays": "23:37",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Bukit Panjang",
@@ -180,12 +180,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:46",
-          "saturday": "12:46",
-          "sunday_public_holidays": "12:46",
+          "monday_to_friday": "00:46",
+          "saturday": "00:46",
+          "sunday_public_holidays": "00:46",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -202,12 +202,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:38",
-          "saturday": "11:38",
-          "sunday_public_holidays": "11:38",
+          "monday_to_friday": "23:38",
+          "saturday": "23:38",
+          "sunday_public_holidays": "23:38",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Bukit Panjang",
@@ -218,12 +218,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:45",
-          "saturday": "12:45",
-          "sunday_public_holidays": "12:45",
+          "monday_to_friday": "00:45",
+          "saturday": "00:45",
+          "sunday_public_holidays": "00:45",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -240,12 +240,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:58",
-          "saturday": "11:58",
-          "sunday_public_holidays": "11:58",
+          "monday_to_friday": "23:58",
+          "saturday": "23:58",
+          "sunday_public_holidays": "23:58",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Punggol Coast",
@@ -256,12 +256,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:59",
-          "saturday": "11:59",
-          "sunday_public_holidays": "11:59",
+          "monday_to_friday": "23:59",
+          "saturday": "23:59",
+          "sunday_public_holidays": "23:59",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -278,12 +278,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:40",
-          "saturday": "11:40",
-          "sunday_public_holidays": "11:40",
+          "monday_to_friday": "23:40",
+          "saturday": "23:40",
+          "sunday_public_holidays": "23:40",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Bukit Panjang",
@@ -294,12 +294,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:43",
-          "saturday": "12:43",
-          "sunday_public_holidays": "12:43",
+          "monday_to_friday": "00:43",
+          "saturday": "00:43",
+          "sunday_public_holidays": "00:43",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -316,12 +316,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:56",
-          "saturday": "11:56",
-          "sunday_public_holidays": "11:56",
+          "monday_to_friday": "23:56",
+          "saturday": "23:56",
+          "sunday_public_holidays": "23:56",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Punggol Coast",
@@ -332,12 +332,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:01",
-          "saturday": "12:01",
-          "sunday_public_holidays": "12:01",
+          "monday_to_friday": "00:01",
+          "saturday": "00:01",
+          "sunday_public_holidays": "00:01",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -354,12 +354,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:42",
-          "saturday": "11:42",
-          "sunday_public_holidays": "11:42",
+          "monday_to_friday": "23:42",
+          "saturday": "23:42",
+          "sunday_public_holidays": "23:42",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Bukit Panjang",
@@ -370,12 +370,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:40",
-          "saturday": "12:40",
-          "sunday_public_holidays": "12:40",
+          "monday_to_friday": "00:40",
+          "saturday": "00:40",
+          "sunday_public_holidays": "00:40",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -392,12 +392,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:55",
-          "saturday": "11:55",
-          "sunday_public_holidays": "11:55",
+          "monday_to_friday": "23:55",
+          "saturday": "23:55",
+          "sunday_public_holidays": "23:55",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Punggol Coast",
@@ -408,12 +408,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:02",
-          "saturday": "12:02",
-          "sunday_public_holidays": "12:02",
+          "monday_to_friday": "00:02",
+          "saturday": "00:02",
+          "sunday_public_holidays": "00:02",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -430,12 +430,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:44",
-          "saturday": "11:44",
-          "sunday_public_holidays": "11:44",
+          "monday_to_friday": "23:44",
+          "saturday": "23:44",
+          "sunday_public_holidays": "23:44",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Bukit Panjang",
@@ -446,12 +446,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:38",
-          "saturday": "12:38",
-          "sunday_public_holidays": "12:38",
+          "monday_to_friday": "00:38",
+          "saturday": "00:38",
+          "sunday_public_holidays": "00:38",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -468,12 +468,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:52",
-          "saturday": "11:52",
-          "sunday_public_holidays": "11:52",
+          "monday_to_friday": "23:52",
+          "saturday": "23:52",
+          "sunday_public_holidays": "23:52",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Punggol Coast",
@@ -484,12 +484,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:05",
-          "saturday": "12:05",
-          "sunday_public_holidays": "12:05",
+          "monday_to_friday": "00:05",
+          "saturday": "00:05",
+          "sunday_public_holidays": "00:05",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -506,12 +506,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:46",
-          "saturday": "11:46",
-          "sunday_public_holidays": "11:46",
+          "monday_to_friday": "23:46",
+          "saturday": "23:46",
+          "sunday_public_holidays": "23:46",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Bukit Panjang",
@@ -522,12 +522,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:36",
-          "saturday": "12:36",
-          "sunday_public_holidays": "12:36",
+          "monday_to_friday": "00:36",
+          "saturday": "00:36",
+          "sunday_public_holidays": "00:36",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -544,12 +544,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:50",
-          "saturday": "11:50",
-          "sunday_public_holidays": "11:50",
+          "monday_to_friday": "23:50",
+          "saturday": "23:50",
+          "sunday_public_holidays": "23:50",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Punggol Coast",
@@ -560,12 +560,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:07",
-          "saturday": "12:07",
-          "sunday_public_holidays": "12:07",
+          "monday_to_friday": "00:07",
+          "saturday": "00:07",
+          "sunday_public_holidays": "00:07",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -582,12 +582,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:48",
-          "saturday": "11:48",
-          "sunday_public_holidays": "11:48",
+          "monday_to_friday": "23:48",
+          "saturday": "23:48",
+          "sunday_public_holidays": "23:48",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Bukit Panjang",
@@ -598,12 +598,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:34",
-          "saturday": "12:34",
-          "sunday_public_holidays": "12:34",
+          "monday_to_friday": "00:34",
+          "saturday": "00:34",
+          "sunday_public_holidays": "00:34",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -620,12 +620,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:48",
-          "saturday": "11:48",
-          "sunday_public_holidays": "11:48",
+          "monday_to_friday": "23:48",
+          "saturday": "23:48",
+          "sunday_public_holidays": "23:48",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Punggol Coast",
@@ -636,12 +636,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:09",
-          "saturday": "12:09",
-          "sunday_public_holidays": "12:09",
+          "monday_to_friday": "00:09",
+          "saturday": "00:09",
+          "sunday_public_holidays": "00:09",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -658,12 +658,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:50",
-          "saturday": "11:50",
-          "sunday_public_holidays": "11:50",
+          "monday_to_friday": "23:50",
+          "saturday": "23:50",
+          "sunday_public_holidays": "23:50",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Bukit Panjang",
@@ -674,12 +674,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:32",
-          "saturday": "12:32",
-          "sunday_public_holidays": "12:32",
+          "monday_to_friday": "00:32",
+          "saturday": "00:32",
+          "sunday_public_holidays": "00:32",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -696,12 +696,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:46",
-          "saturday": "11:46",
-          "sunday_public_holidays": "11:46",
+          "monday_to_friday": "23:46",
+          "saturday": "23:46",
+          "sunday_public_holidays": "23:46",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Punggol Coast",
@@ -712,12 +712,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:11",
-          "saturday": "12:11",
-          "sunday_public_holidays": "12:11",
+          "monday_to_friday": "00:11",
+          "saturday": "00:11",
+          "sunday_public_holidays": "00:11",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -734,12 +734,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:53",
-          "saturday": "11:53",
-          "sunday_public_holidays": "11:53",
+          "monday_to_friday": "23:53",
+          "saturday": "23:53",
+          "sunday_public_holidays": "23:53",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Bukit Panjang",
@@ -750,12 +750,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:30",
-          "saturday": "12:30",
-          "sunday_public_holidays": "12:30",
+          "monday_to_friday": "00:30",
+          "saturday": "00:30",
+          "sunday_public_holidays": "00:30",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -772,12 +772,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:44",
-          "saturday": "11:44",
-          "sunday_public_holidays": "11:44",
+          "monday_to_friday": "23:44",
+          "saturday": "23:44",
+          "sunday_public_holidays": "23:44",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Punggol Coast",
@@ -788,12 +788,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:13",
-          "saturday": "12:13",
-          "sunday_public_holidays": "12:13",
+          "monday_to_friday": "00:13",
+          "saturday": "00:13",
+          "sunday_public_holidays": "00:13",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -810,12 +810,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:55",
-          "saturday": "11:55",
-          "sunday_public_holidays": "11:55",
+          "monday_to_friday": "23:55",
+          "saturday": "23:55",
+          "sunday_public_holidays": "23:55",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Bukit Panjang",
@@ -826,12 +826,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:28",
-          "saturday": "12:28",
-          "sunday_public_holidays": "12:28",
+          "monday_to_friday": "00:28",
+          "saturday": "00:28",
+          "sunday_public_holidays": "00:28",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -848,12 +848,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:42",
-          "saturday": "11:42",
-          "sunday_public_holidays": "11:42",
+          "monday_to_friday": "23:42",
+          "saturday": "23:42",
+          "sunday_public_holidays": "23:42",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Punggol Coast",
@@ -864,12 +864,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:15",
-          "saturday": "12:15",
-          "sunday_public_holidays": "12:15",
+          "monday_to_friday": "00:15",
+          "saturday": "00:15",
+          "sunday_public_holidays": "00:15",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -886,12 +886,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:58",
-          "saturday": "11:58",
-          "sunday_public_holidays": "11:58",
+          "monday_to_friday": "23:58",
+          "saturday": "23:58",
+          "sunday_public_holidays": "23:58",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Bukit Panjang",
@@ -902,12 +902,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:26",
-          "saturday": "12:26",
-          "sunday_public_holidays": "12:26",
+          "monday_to_friday": "00:26",
+          "saturday": "00:26",
+          "sunday_public_holidays": "00:26",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -924,12 +924,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:40",
-          "saturday": "11:40",
-          "sunday_public_holidays": "11:40",
+          "monday_to_friday": "23:40",
+          "saturday": "23:40",
+          "sunday_public_holidays": "23:40",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Punggol Coast",
@@ -940,12 +940,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:17",
-          "saturday": "12:17",
-          "sunday_public_holidays": "12:17",
+          "monday_to_friday": "00:17",
+          "saturday": "00:17",
+          "sunday_public_holidays": "00:17",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -962,12 +962,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:59",
-          "saturday": "11:59",
-          "sunday_public_holidays": "11:59",
+          "monday_to_friday": "23:59",
+          "saturday": "23:59",
+          "sunday_public_holidays": "23:59",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Bukit Panjang",
@@ -978,12 +978,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:24",
-          "saturday": "12:24",
-          "sunday_public_holidays": "12:24",
+          "monday_to_friday": "00:24",
+          "saturday": "00:24",
+          "sunday_public_holidays": "00:24",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -1000,12 +1000,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:37",
-          "saturday": "11:37",
-          "sunday_public_holidays": "11:37",
+          "monday_to_friday": "23:37",
+          "saturday": "23:37",
+          "sunday_public_holidays": "23:37",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Punggol Coast",
@@ -1016,12 +1016,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:20",
-          "saturday": "12:20",
-          "sunday_public_holidays": "12:20",
+          "monday_to_friday": "00:20",
+          "saturday": "00:20",
+          "sunday_public_holidays": "00:20",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -1038,12 +1038,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:01",
-          "saturday": "12:01",
-          "sunday_public_holidays": "12:01",
+          "monday_to_friday": "00:01",
+          "saturday": "00:01",
+          "sunday_public_holidays": "00:01",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Bukit Panjang",
@@ -1054,12 +1054,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:22",
-          "saturday": "12:22",
-          "sunday_public_holidays": "12:22",
+          "monday_to_friday": "00:22",
+          "saturday": "00:22",
+          "sunday_public_holidays": "00:22",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -1076,12 +1076,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:35",
-          "saturday": "11:35",
-          "sunday_public_holidays": "11:35",
+          "monday_to_friday": "23:35",
+          "saturday": "23:35",
+          "sunday_public_holidays": "23:35",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Punggol Coast",
@@ -1092,12 +1092,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:23",
-          "saturday": "12:23",
-          "sunday_public_holidays": "12:23",
+          "monday_to_friday": "00:23",
+          "saturday": "00:23",
+          "sunday_public_holidays": "00:23",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -1114,12 +1114,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:03",
-          "saturday": "12:03",
-          "sunday_public_holidays": "12:03",
+          "monday_to_friday": "00:03",
+          "saturday": "00:03",
+          "sunday_public_holidays": "00:03",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Bukit Panjang",
@@ -1130,12 +1130,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:20",
-          "saturday": "12:20",
-          "sunday_public_holidays": "12:20",
+          "monday_to_friday": "00:20",
+          "saturday": "00:20",
+          "sunday_public_holidays": "00:20",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -1152,12 +1152,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:32",
-          "saturday": "11:32",
-          "sunday_public_holidays": "11:32",
+          "monday_to_friday": "23:32",
+          "saturday": "23:32",
+          "sunday_public_holidays": "23:32",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Punggol Coast",
@@ -1168,12 +1168,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:25",
-          "saturday": "12:25",
-          "sunday_public_holidays": "12:25",
+          "monday_to_friday": "00:25",
+          "saturday": "00:25",
+          "sunday_public_holidays": "00:25",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -1190,12 +1190,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:05",
-          "saturday": "12:05",
-          "sunday_public_holidays": "12:05",
+          "monday_to_friday": "00:05",
+          "saturday": "00:05",
+          "sunday_public_holidays": "00:05",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Bukit Panjang",
@@ -1206,12 +1206,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:18",
-          "saturday": "12:18",
-          "sunday_public_holidays": "12:18",
+          "monday_to_friday": "00:18",
+          "saturday": "00:18",
+          "sunday_public_holidays": "00:18",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -1228,12 +1228,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:30",
-          "saturday": "11:30",
-          "sunday_public_holidays": "11:30",
+          "monday_to_friday": "23:30",
+          "saturday": "23:30",
+          "sunday_public_holidays": "23:30",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Punggol Coast",
@@ -1244,12 +1244,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:27",
-          "saturday": "12:27",
-          "sunday_public_holidays": "12:27",
+          "monday_to_friday": "00:27",
+          "saturday": "00:27",
+          "sunday_public_holidays": "00:27",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -1266,12 +1266,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:07",
-          "saturday": "12:07",
-          "sunday_public_holidays": "12:07",
+          "monday_to_friday": "00:07",
+          "saturday": "00:07",
+          "sunday_public_holidays": "00:07",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Bukit Panjang",
@@ -1282,12 +1282,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:16",
-          "saturday": "12:16",
-          "sunday_public_holidays": "12:16",
+          "monday_to_friday": "00:16",
+          "saturday": "00:16",
+          "sunday_public_holidays": "00:16",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -1304,12 +1304,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:28",
-          "saturday": "11:28",
-          "sunday_public_holidays": "11:28",
+          "monday_to_friday": "23:28",
+          "saturday": "23:28",
+          "sunday_public_holidays": "23:28",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Punggol Coast",
@@ -1320,12 +1320,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:30",
-          "saturday": "12:30",
-          "sunday_public_holidays": "12:30",
+          "monday_to_friday": "00:30",
+          "saturday": "00:30",
+          "sunday_public_holidays": "00:30",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -1342,12 +1342,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:08",
-          "saturday": "12:08",
-          "sunday_public_holidays": "12:08",
+          "monday_to_friday": "00:08",
+          "saturday": "00:08",
+          "sunday_public_holidays": "00:08",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Bukit Panjang",
@@ -1358,12 +1358,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:15",
-          "saturday": "12:15",
-          "sunday_public_holidays": "12:15",
+          "monday_to_friday": "00:15",
+          "saturday": "00:15",
+          "sunday_public_holidays": "00:15",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -1380,12 +1380,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:25",
-          "saturday": "11:25",
-          "sunday_public_holidays": "11:25",
+          "monday_to_friday": "23:25",
+          "saturday": "23:25",
+          "sunday_public_holidays": "23:25",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Punggol Coast",
@@ -1401,7 +1401,7 @@
           "sunday_public_holidays": "-",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -1418,12 +1418,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:10",
-          "saturday": "12:10",
-          "sunday_public_holidays": "12:10",
+          "monday_to_friday": "00:10",
+          "saturday": "00:10",
+          "sunday_public_holidays": "00:10",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Bukit Panjang",
@@ -1434,12 +1434,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:14",
-          "saturday": "12:14",
-          "sunday_public_holidays": "12:14",
+          "monday_to_friday": "00:14",
+          "saturday": "00:14",
+          "sunday_public_holidays": "00:14",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -1456,12 +1456,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:12",
-          "saturday": "12:12",
-          "sunday_public_holidays": "12:12",
+          "monday_to_friday": "00:12",
+          "saturday": "00:12",
+          "sunday_public_holidays": "00:12",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Bukit Panjang",
@@ -1472,12 +1472,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:11",
-          "saturday": "12:11",
-          "sunday_public_holidays": "12:11",
+          "monday_to_friday": "00:11",
+          "saturday": "00:11",
+          "sunday_public_holidays": "00:11",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -1494,12 +1494,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:13",
-          "saturday": "12:13",
-          "sunday_public_holidays": "12:13",
+          "monday_to_friday": "00:13",
+          "saturday": "00:13",
+          "sunday_public_holidays": "00:13",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Bukit Panjang",
@@ -1510,12 +1510,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:10",
-          "saturday": "12:10",
-          "sunday_public_holidays": "12:10",
+          "monday_to_friday": "00:10",
+          "saturday": "00:10",
+          "sunday_public_holidays": "00:10",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -1532,12 +1532,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:15",
-          "saturday": "12:15",
-          "sunday_public_holidays": "12:15",
+          "monday_to_friday": "00:15",
+          "saturday": "00:15",
+          "sunday_public_holidays": "00:15",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Bukit Panjang",
@@ -1548,12 +1548,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:08",
-          "saturday": "12:08",
-          "sunday_public_holidays": "12:08",
+          "monday_to_friday": "00:08",
+          "saturday": "00:08",
+          "sunday_public_holidays": "00:08",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -1570,12 +1570,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:17",
-          "saturday": "12:17",
-          "sunday_public_holidays": "12:17",
+          "monday_to_friday": "00:17",
+          "saturday": "00:17",
+          "sunday_public_holidays": "00:17",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Bukit Panjang",
@@ -1586,12 +1586,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:06",
-          "saturday": "12:06",
-          "sunday_public_holidays": "12:06",
+          "monday_to_friday": "00:06",
+          "saturday": "00:06",
+          "sunday_public_holidays": "00:06",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -1608,12 +1608,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:19",
-          "saturday": "12:19",
-          "sunday_public_holidays": "12:19",
+          "monday_to_friday": "00:19",
+          "saturday": "00:19",
+          "sunday_public_holidays": "00:19",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Bukit Panjang",
@@ -1624,12 +1624,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:04",
-          "saturday": "12:04",
-          "sunday_public_holidays": "12:04",
+          "monday_to_friday": "00:04",
+          "saturday": "00:04",
+          "sunday_public_holidays": "00:04",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -1646,12 +1646,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:22",
-          "saturday": "12:22",
-          "sunday_public_holidays": "12:22",
+          "monday_to_friday": "00:22",
+          "saturday": "00:22",
+          "sunday_public_holidays": "00:22",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Bukit Panjang",
@@ -1662,12 +1662,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:02",
-          "saturday": "12:02",
-          "sunday_public_holidays": "12:02",
+          "monday_to_friday": "00:02",
+          "saturday": "00:02",
+          "sunday_public_holidays": "00:02",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -1684,12 +1684,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:24",
-          "saturday": "12:24",
-          "sunday_public_holidays": "12:24",
+          "monday_to_friday": "00:24",
+          "saturday": "00:24",
+          "sunday_public_holidays": "00:24",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Bukit Panjang",
@@ -1700,12 +1700,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:00",
-          "saturday": "12:00",
-          "sunday_public_holidays": "12:00",
+          "monday_to_friday": "00:00",
+          "saturday": "00:00",
+          "sunday_public_holidays": "00:00",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -1722,12 +1722,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:25",
-          "saturday": "12:25",
-          "sunday_public_holidays": "12:25",
+          "monday_to_friday": "00:25",
+          "saturday": "00:25",
+          "sunday_public_holidays": "00:25",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Bukit Panjang",
@@ -1738,12 +1738,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:58",
-          "saturday": "11:58",
-          "sunday_public_holidays": "11:58",
+          "monday_to_friday": "23:58",
+          "saturday": "23:58",
+          "sunday_public_holidays": "23:58",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -1760,12 +1760,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:27",
-          "saturday": "12:27",
-          "sunday_public_holidays": "12:27",
+          "monday_to_friday": "00:27",
+          "saturday": "00:27",
+          "sunday_public_holidays": "00:27",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Bukit Panjang",
@@ -1776,12 +1776,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:56",
-          "saturday": "11:56",
-          "sunday_public_holidays": "11:56",
+          "monday_to_friday": "23:56",
+          "saturday": "23:56",
+          "sunday_public_holidays": "23:56",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -1798,12 +1798,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:29",
-          "saturday": "12:29",
-          "sunday_public_holidays": "12:29",
+          "monday_to_friday": "00:29",
+          "saturday": "00:29",
+          "sunday_public_holidays": "00:29",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Bukit Panjang",
@@ -1814,12 +1814,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:54",
-          "saturday": "11:54",
-          "sunday_public_holidays": "11:54",
+          "monday_to_friday": "23:54",
+          "saturday": "23:54",
+          "sunday_public_holidays": "23:54",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -1836,12 +1836,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:31",
-          "saturday": "12:31",
-          "sunday_public_holidays": "12:31",
+          "monday_to_friday": "00:31",
+          "saturday": "00:31",
+          "sunday_public_holidays": "00:31",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Bukit Panjang",
@@ -1852,12 +1852,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:51",
-          "saturday": "11:51",
-          "sunday_public_holidays": "11:51",
+          "monday_to_friday": "23:51",
+          "saturday": "23:51",
+          "sunday_public_holidays": "23:51",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -1874,12 +1874,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:34",
-          "saturday": "12:34",
-          "sunday_public_holidays": "12:34",
+          "monday_to_friday": "00:34",
+          "saturday": "00:34",
+          "sunday_public_holidays": "00:34",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Bukit Panjang",
@@ -1890,12 +1890,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:49",
-          "saturday": "11:49",
-          "sunday_public_holidays": "11:49",
+          "monday_to_friday": "23:49",
+          "saturday": "23:49",
+          "sunday_public_holidays": "23:49",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -1912,12 +1912,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:36",
-          "saturday": "12:36",
-          "sunday_public_holidays": "12:36",
+          "monday_to_friday": "00:36",
+          "saturday": "00:36",
+          "sunday_public_holidays": "00:36",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Bukit Panjang",
@@ -1928,12 +1928,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:47",
-          "saturday": "11:47",
-          "sunday_public_holidays": "11:47",
+          "monday_to_friday": "23:47",
+          "saturday": "23:47",
+          "sunday_public_holidays": "23:47",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -1950,12 +1950,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:38",
-          "saturday": "12:38",
-          "sunday_public_holidays": "12:38",
+          "monday_to_friday": "00:38",
+          "saturday": "00:38",
+          "sunday_public_holidays": "00:38",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Bukit Panjang",
@@ -1966,12 +1966,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:45",
-          "saturday": "11:45",
-          "sunday_public_holidays": "11:45",
+          "monday_to_friday": "23:45",
+          "saturday": "23:45",
+          "sunday_public_holidays": "23:45",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -1988,12 +1988,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:41",
-          "saturday": "12:41",
-          "sunday_public_holidays": "12:41",
+          "monday_to_friday": "00:41",
+          "saturday": "00:41",
+          "sunday_public_holidays": "00:41",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Bukit Panjang",
@@ -2004,12 +2004,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:41",
-          "saturday": "11:41",
-          "sunday_public_holidays": "11:41",
+          "monday_to_friday": "23:41",
+          "saturday": "23:41",
+          "sunday_public_holidays": "23:41",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   },
@@ -2031,7 +2031,7 @@
           "sunday_public_holidays": "-",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       },
       {
         "description": "To Bukit Panjang",
@@ -2042,12 +2042,12 @@
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:40",
-          "saturday": "11:40",
-          "sunday_public_holidays": "11:40",
+          "monday_to_friday": "23:40",
+          "saturday": "23:40",
+          "sunday_public_holidays": "23:40",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T15:14:12.223Z"
       }
     ]
   }
