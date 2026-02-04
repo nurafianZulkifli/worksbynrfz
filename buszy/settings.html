@@ -278,6 +278,16 @@
                     <button id="clear-cache-btn" class="btn btn-rfetch">Re-fetch data</button><br>
                     <p class="fetch">Clear cached bus stop data to ensure you have the latest information.</p>
                 </li>
+                <li class="list-group-item">
+                    <button id="export-data-btn" class="btn btn-install">Export Data</button><br>
+                    <p class="fetch">Download a backup of your pinned stops and preferences.</p>
+                </li>
+                <li class="list-group-item">
+                    <button id="import-data-btn" class="btn btn-install">Import Data</button><br>
+                    <p class="fetch">Restore your previously exported data or migrate from another device.</p>
+                    <input type="file" id="import-file-input" accept=".json" style="display: none;">
+                    <div id="import-message" style="margin-top: 1rem; display: none; padding: 0.75rem; border-radius: 5px; font-size: 14px;"></div>
+                </li>
             </ul>
 
             <h2 class="text-center" style="padding-top: 1em;">Install</h2>

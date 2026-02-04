@@ -73,6 +73,118 @@ clearCacheBtn.addEventListener('click', async () => {
 
 
 // ****************************
+// :: Import/Export Data Handling
+// ****************************
+// Define the keys to export/import
+const EXPORT_KEYS = ['dark-mode', 'timeFormat', 'bookmarkedBusStops'];
+
+// Export localStorage data as JSON file
+const exportDataBtn = document.getElementById('export-data-btn');
+if (exportDataBtn) {
+    exportDataBtn.addEventListener('click', () => {
+        try {
+            // Get only specific localStorage items
+            const data = {};
+            EXPORT_KEYS.forEach(key => {
+                const value = localStorage.getItem(key);
+                if (value !== null) {
+                    data[key] = value;
+                }
+            });
+            
+            // Create JSON string
+            const jsonString = JSON.stringify(data, null, 2);
+            
+            // Create blob and download
+            const blob = new Blob([jsonString], { type: 'application/json' });
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `buszy-data-backup-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            window.URL.revokeObjectURL(url);
+            
+            alert('✓ Data exported successfully!');
+        } catch (error) {
+            console.error('Error exporting data:', error);
+            alert('Error exporting data. Please try again.');
+        }
+    });
+}
+
+// Import localStorage data from file
+const importDataBtn = document.getElementById('import-data-btn');
+const importFileInput = document.getElementById('import-file-input');
+const importMessage = document.getElementById('import-message');
+
+if (importDataBtn) {
+    importDataBtn.addEventListener('click', () => {
+        importFileInput.click();
+    });
+}
+
+if (importFileInput) {
+    importFileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            try {
+                const data = JSON.parse(event.target.result);
+                
+                if (typeof data !== 'object' || data === null) {
+                    throw new Error('Invalid data format');
+                }
+                
+                // Validate that file contains only allowed keys
+                const invalidKeys = Object.keys(data).filter(key => !EXPORT_KEYS.includes(key));
+                if (invalidKeys.length > 0) {
+                    throw new Error(`Invalid keys in file: ${invalidKeys.join(', ')}`);
+                }
+                
+                // Ask for confirmation
+                const itemCount = Object.keys(data).length;
+                if (!confirm(`Import ${itemCount} ${itemCount === 1 ? 'item' : 'items'} from backup? This will merge with existing data.`)) {
+                    return;
+                }
+                
+                // Import data into localStorage
+                let importedCount = 0;
+                for (const [key, value] of Object.entries(data)) {
+                    if (EXPORT_KEYS.includes(key)) {
+                        localStorage.setItem(key, value);
+                        importedCount++;
+                    }
+                }
+                
+                // Show success message
+                importMessage.textContent = `✓ Successfully imported ${importedCount} ${importedCount === 1 ? 'item' : 'items'}! Refreshing...`;
+                importMessage.style.backgroundColor = '#c8e6c9';
+                importMessage.style.color = '#2e7d32';
+                importMessage.style.display = 'block';
+                
+                // Reload page to apply changes
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
+            } catch (error) {
+                console.error('Error importing data:', error);
+                importMessage.textContent = `✗ Error importing data: ${error.message}. Please check the file format.`;
+                importMessage.style.backgroundColor = '#ffcdd2';
+                importMessage.style.color = '#c62828';
+                importMessage.style.display = 'block';
+            }
+        };
+        reader.readAsText(file);
+        
+        // Reset input
+        e.target.value = '';
+    });
+}
+
+
+// ****************************
 // :: PWA Installation Handling
 // ****************************
 
