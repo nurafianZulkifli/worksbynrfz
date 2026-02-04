@@ -353,10 +353,10 @@ function formatArrivalTimeOrArr(isoString, now, isIncomingBus = false) {
 
     if (timeDifference === 0) {
         // Show "Arr" if the time difference is exactly 0
-        return `Arr`;
+        return `<span class="arrival-now">Arr</span>`;
     } else if (timeDifference < 0) {
         // Continue showing "Arr" if the time difference is -1 or more
-        return `Arr`;
+        return `<span class="arrival-now">Arr</span>`;
     }
 
     // Get the saved time format from localStorage
@@ -365,7 +365,11 @@ function formatArrivalTimeOrArr(isoString, now, isIncomingBus = false) {
     if (savedFormat === 'mins') {
         // Calculate the time difference in minutes
         const minutes = Math.ceil(timeDifference / (1000 * 60));
-        return `${minutes} min${minutes === 1 ? '' : 's'}`; // Singular/plural handling
+        const minText = minutes === 1 ? 'min' : 'mins';
+        if (isIncomingBus) {
+            return `${minutes}<span style="font-size: 0.7em;"> ${minText}</span>`;
+        }
+        return `${minutes} ${minText}`; // Singular/plural handling
     }
 
     // Format the time based on the saved format
