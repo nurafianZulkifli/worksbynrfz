@@ -1003,3 +1003,9 @@ body.dark-mode .list-group-item {
 body.dark-mode .form-control {
     background: #393e53 !important;
 }
+
+@media (max-width: 768px) {
+    .pin-msg {
+        flex-direction: column;
+    }
+}
