@@ -38,13 +38,24 @@ const fs = require('fs');
     
     const $ = cheerio.load(html);
     
-    // Extract LRT line data from SBS Transit
-    const masterData = {
-      operator: 'SBS Transit',
-      lines: [],
-      page_url: url,
-      scraped_at: new Date().toISOString()
+    // Normalize time format (e.g., "5.30am" or "11:35pm" to "05:35")
+    const normalizeTime = (timeStr) => {
+      if (!timeStr || timeStr === '--') return '--';
+      const cleaned = timeStr.toLowerCase()
+        .replace(/am|pm/g, '')
+        .replace(/\./g, ':')
+        .trim();
+      // Pad hours with zero if needed
+      const parts = cleaned.split(':');
+      if (parts.length === 2) {
+        return `${parts[0].padStart(2, '0')}:${parts[1]}`;
+      }
+      return cleaned;
     };
+
+    // Extract LRT line data from SBS Transit into SMRT-compatible format
+    const stationMap = new Map();
+    let serviceCount = 0;
     
     // SBS Transit organizes data in tabs with tables for each line
     // Look for tab panes containing timing data
@@ -58,6 +69,8 @@ const fs = require('fs');
       
       console.log(`\nProcessing: ${tabTitle.substring(0, 80)}`);
       
+      serviceCount++;
+      
       // Get all tables in this pane
       const tables = $pane.find('table');
       
@@ -68,8 +81,14 @@ const fs = require('fs');
         // Skip if less than 3 rows (header + at least 1 data row)
         if (rows.length < 3) return;
         
-        // Extract station/line names and timings
-        const stations = [];
+        let stationCount = 0;
+        let destination = tabTitle; // Default to tabTitle if no destination found
+        
+        // Try to extract destination from tabTitle as fallback
+        const destMatch = tabTitle.match(/(?:towards|to)\s+([^\(]+)/i);
+        if (destMatch) {
+          destination = `To ${destMatch[1].trim()}`;
+        }
         
         rows.each((rowIdx, row) => {
           const $row = $(row);
@@ -81,14 +100,33 @@ const fs = require('fs');
             return $(cell).text().trim().replace(/\s+/g, ' ');
           }).get();
           
-          // Skip header-like rows
-          if (cellTexts[0].toLowerCase().includes('towards') ||
-              cellTexts[0].toLowerCase().includes('mondays') ||
+          // Extract destination from "towards" row
+          if (cellTexts[0].toLowerCase().includes('towards')) {
+            const match = cellTexts[0].match(/towards\s+(.+)/i);
+            if (match) {
+              const extractedDest = match[1].trim();
+              // Ensure it looks like a station name (contains station code or name)
+              if (extractedDest.match(/[A-Z]{2}\d+|[A-Z]/)) {
+                destination = `To ${extractedDest}`;
+              }
+            }
+            return;
+          }
+          
+          // Skip other header-like rows and bad data
+          if (cellTexts[0].toLowerCase().includes('mondays') ||
               cellTexts[0].toLowerCase().includes('weekdays') ||
               cellTexts[0].toLowerCase().includes('saturdays') ||
               cellTexts[0].toLowerCase().includes('first trains') ||
               cellTexts[0].toLowerCase().includes('last trains') ||
-              cellTexts[0].toLowerCase().includes('sundays')) {
+              cellTexts[0].toLowerCase().includes('sundays') ||
+              cellTexts[0].toLowerCase().includes('departing')) {
+            return;
+          }
+          
+          // Skip rows where times are text headers instead of actual times
+          const timeValues = cellTexts.slice(1);
+          if (timeValues.some(val => val?.toLowerCase().includes('first') || val?.toLowerCase().includes('last'))) {
             return;
           }
           
@@ -97,48 +135,97 @@ const fs = require('fs');
             // This looks like a data row
             const stationName = cellTexts[0];
             
-            // Parse time format (e.g., "5.30am" or "11:35pm")
-            const normalizeTime = (timeStr) => {
-              if (!timeStr || timeStr === '--') return '--';
-              return timeStr.toLowerCase()
-                .replace(/am|pm/g, '')
-                .replace(/\./g, ':')
-                .trim();
-            };
+            // Initialize station if not exists
+            if (!stationMap.has(stationName)) {
+              stationMap.set(stationName, {
+                station: stationName,
+                station_slug: stationName.toLowerCase().replace(/\s+/g, '-'),
+                directions: []
+              });
+            }
             
-            // Determine structure based on number of columns
-            let stationData = { name: stationName };
+            // Build direction object based on column count
+            let direction = {
+              description: destination,
+              first_train: {},
+              last_train: {}
+            };
             
             if (cellTexts.length === 4) {
               // Format: Station | First (Mon-Sat) | First (Sun/Hol) | Last (unified)
-              stationData.first_train_weekdays = normalizeTime(cellTexts[1] || '--');
-              stationData.first_train_weekends = normalizeTime(cellTexts[2] || '--');
-              stationData.last_train = normalizeTime(cellTexts[3] || '--');
+              direction.first_train = {
+                monday_to_friday: normalizeTime(cellTexts[1] || '--'),
+                saturday: normalizeTime(cellTexts[2] || '--'),
+                sunday_public_holidays: normalizeTime(cellTexts[2] || '--'),
+                eve_of_public_holidays: '--'
+              };
+              direction.last_train = {
+                monday_to_friday: normalizeTime(cellTexts[3] || '--'),
+                saturday: normalizeTime(cellTexts[3] || '--'),
+                sunday_public_holidays: normalizeTime(cellTexts[3] || '--'),
+                eve_of_public_holidays: '--'
+              };
             } else if (cellTexts.length === 6) {
               // Format: Station | First (Weekdays) | First (Saturdays) | First (Sun/Hol) | Last (Weekdays) | Last (Weekends/Hol)
-              stationData.first_train_weekdays = normalizeTime(cellTexts[1] || '--');
-              stationData.first_train_saturdays = normalizeTime(cellTexts[2] || '--');
-              stationData.first_train_sundays = normalizeTime(cellTexts[3] || '--');
-              stationData.last_train_weekdays = normalizeTime(cellTexts[4] || '--');
-              stationData.last_train_weekends = normalizeTime(cellTexts[5] || '--');
+              direction.first_train = {
+                monday_to_friday: normalizeTime(cellTexts[1] || '--'),
+                saturday: normalizeTime(cellTexts[2] || '--'),
+                sunday_public_holidays: normalizeTime(cellTexts[3] || '--'),
+                eve_of_public_holidays: '--'
+              };
+              direction.last_train = {
+                monday_to_friday: normalizeTime(cellTexts[4] || '--'),
+                saturday: normalizeTime(cellTexts[5] || '--'),
+                sunday_public_holidays: normalizeTime(cellTexts[5] || '--'),
+                eve_of_public_holidays: '--'
+              };
             } else {
               // Fallback: use available columns
-              stationData.first_train_weekdays = normalizeTime(cellTexts[1] || '--');
-              if (cellTexts.length > 2) stationData.first_train_weekends = normalizeTime(cellTexts[2] || '--');
-              if (cellTexts.length > 3) stationData.last_train = normalizeTime(cellTexts[cellTexts.length - 1] || '--');
+              direction.first_train = {
+                monday_to_friday: normalizeTime(cellTexts[1] || '--'),
+                saturday: normalizeTime(cellTexts[cellTexts.length > 2 ? 2 : 1] || '--'),
+                sunday_public_holidays: normalizeTime(cellTexts[cellTexts.length > 2 ? 2 : 1] || '--'),
+                eve_of_public_holidays: '--'
+              };
+              direction.last_train = {
+                monday_to_friday: normalizeTime(cellTexts[cellTexts.length - 1] || '--'),
+                saturday: normalizeTime(cellTexts[cellTexts.length - 1] || '--'),
+                sunday_public_holidays: normalizeTime(cellTexts[cellTexts.length - 1] || '--'),
+                eve_of_public_holidays: '--'
+              };
             }
             
-            stations.push(stationData);
+            stationMap.get(stationName).directions.push(direction);
+            stationCount++;
           }
         });
         
-        if (stations.length > 0) {
-          masterData.lines.push({
-            service: tabTitle,
-            stations: stations
-          });
-          console.log(`  ✓ Found ${stations.length} stations`);
+        if (stationCount > 0) {
+          console.log(`  ✓ Found ${stationCount} stations`);
         }
+      });
+    });
+    
+    // Convert map to array and sort
+    const masterData = Array.from(stationMap.values()).sort((a, b) => {
+      // Extract number from station slug for better sorting
+      const getNumber = (str) => {
+        const match = str.match(/\d+/);
+        return match ? parseInt(match[0]) : 0;
+      };
+      
+      const numA = getNumber(a.station_slug);
+      const numB = getNumber(b.station_slug);
+      
+      if (numA !== numB) return numA - numB;
+      return a.station.localeCompare(b.station);
+    });
+    
+    // Add scraped_at to each direction
+    const timestamp = new Date().toISOString();
+    masterData.forEach(station => {
+      station.directions.forEach(direction => {
+        direction.scraped_at = timestamp;
       });
     });
     
@@ -148,13 +235,10 @@ const fs = require('fs');
     
     console.log(`\n✓ Scraping complete!`);
     console.log(`✓ Saved to ${outputPath}`);
-    console.log(`  - Operator: ${masterData.operator}`);
-    console.log(`  - Services found: ${masterData.lines.length}`);
-    if (masterData.lines.length > 0) {
-      const totalStations = masterData.lines.reduce((sum, line) => sum + (line.stations?.length || 0), 0);
-      console.log(`  - Total stations: ${totalStations}`);
-    }
-    console.log(`  - Scraped at: ${new Date(masterData.scraped_at).toLocaleString()}`);
+    console.log(`  - Total stations: ${masterData.length}`);
+    const totalDirections = masterData.reduce((sum, station) => sum + station.directions.length, 0);
+    console.log(`  - Total directions: ${totalDirections}`);
+    console.log(`  - Scraped at: ${new Date(timestamp).toLocaleString()}`);
     
   } catch (error) {
     console.error('Fatal error:', error.message);

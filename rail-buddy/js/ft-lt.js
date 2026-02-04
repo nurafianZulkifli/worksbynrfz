@@ -41,15 +41,12 @@
             });
 
             // Add all SBS stations
-            sbsData.lines.forEach((line, lineIdx) => {
-                line.stations.forEach((station, stationIdx) => {
-                    mergedData.push({
-                        name: station.name,
-                        value: `sbs-${lineIdx}-${stationIdx}`,
-                        operator: 'sbs',
-                        line: line.service.split('(')[0].trim(),
-                        data: { line: line, station: station, sbsData: sbsData }
-                    });
+            sbsData.forEach((stationData, index) => {
+                mergedData.push({
+                    name: stationData.station,
+                    value: `sbs-${index}`,
+                    operator: 'sbs',
+                    data: stationData
                 });
             });
 
@@ -78,26 +75,15 @@
             }
 
             if (sbsStations.length > 0) {
-                // Group SBS by line
-                const lineGroups = {};
+                const sbsGroup = document.createElement('optgroup');
+                sbsGroup.label = 'SBS Transit';
                 sbsStations.forEach(station => {
-                    if (!lineGroups[station.line]) {
-                        lineGroups[station.line] = [];
-                    }
-                    lineGroups[station.line].push(station);
+                    const option = document.createElement('option');
+                    option.value = station.value;
+                    option.textContent = station.name;
+                    sbsGroup.appendChild(option);
                 });
-
-                Object.keys(lineGroups).forEach(line => {
-                    const optgroup = document.createElement('optgroup');
-                    optgroup.label = `SBST - ${line}`;
-                    lineGroups[line].forEach(station => {
-                        const option = document.createElement('option');
-                        option.value = station.value;
-                        option.textContent = station.name;
-                        optgroup.appendChild(option);
-                    });
-                    dropdown.appendChild(optgroup);
-                });
+                dropdown.appendChild(sbsGroup);
             }
         }
 
@@ -144,15 +130,27 @@
         }
 
         // Display SBS LRT data
-        function displaySbsData(data) {
-            const { line, station, sbsData } = data;
-
-            document.getElementById('stationTitle').textContent = station.name;
-            document.getElementById('stationSubtitle').textContent = `${line.service.split('(')[0].trim()} - Last updated: ${new Date(sbsData.scraped_at).toLocaleDateString('en-SG')}`;
+        function displaySbsData(stationData) {
+            document.getElementById('stationTitle').textContent = stationData.station;
+            
+            // Get the latest scraped_at timestamp from directions
+            const latestTimestamp = stationData.directions.length > 0 
+                ? stationData.directions[0].scraped_at 
+                : new Date().toISOString();
+            
+            document.getElementById('stationSubtitle').textContent = `Last updated: ${new Date(latestTimestamp).toLocaleDateString('en-SG')}`;
 
             const directionsContainer = document.getElementById('directionsContainer');
-            const card = createSbsStationCard(station);
-            directionsContainer.appendChild(card);
+
+            if (stationData.directions.length === 0) {
+                directionsContainer.innerHTML = '<div class="no-data">No train timing data available for this station.</div>';
+                return;
+            }
+
+            stationData.directions.forEach((direction) => {
+                const card = createSbsDirectionCard(direction);
+                directionsContainer.appendChild(card);
+            });
         }
 
         // Create SMRT direction card
@@ -225,96 +223,47 @@
             return timeString;
         }
 
-        // Create SBS station card
-        function createSbsStationCard(station) {
+        // Create SBS direction card
+        function createSbsDirectionCard(direction) {
             const card = document.createElement('div');
-            card.className = 'station-card';
+            card.className = 'direction-card';
 
             const header = document.createElement('div');
-            header.className = 'station-name';
-            header.textContent = station.name;
+            header.className = 'direction-header';
+            header.textContent = direction.description;
             card.appendChild(header);
 
-            // Check which format this station uses
-            const hasExpandedFormat = station.first_train_saturdays !== undefined;
+            const dayKeys = ['monday_to_friday', 'saturday', 'sunday_public_holidays'];
+            const dayLabels = {
+                'monday_to_friday': 'Mon - Fri',
+                'saturday': 'Saturday',
+                'sunday_public_holidays': 'Sun / Holidays',
+                'eve_of_public_holidays': 'Eve of Holidays'
+            };
 
-            if (hasExpandedFormat) {
-              // Format 2: Weekdays | Saturdays | Sundays for First, Weekdays | Weekends for Last
-              
-              // First Train - Weekdays
-              const firstWeekday = document.createElement('div');
-              firstWeekday.className = 'time-item';
-              firstWeekday.innerHTML = `
-                <span class="time-label">First (Weekdays)</span>
-                <span class="time-display first">${convertTo24Hour(station.first_train_weekdays) || '--'}</span>
-              `;
-              card.appendChild(firstWeekday);
+            dayKeys.forEach(dayKey => {
+                if (direction.first_train[dayKey] !== undefined || direction.last_train[dayKey] !== undefined) {
+                    const row = document.createElement('div');
+                    row.className = 'time-row';
 
-              // First Train - Saturdays
-              const firstSat = document.createElement('div');
-              firstSat.className = 'time-item';
-              firstSat.innerHTML = `
-                <span class="time-label">First (Saturdays)</span>
-                <span class="time-display first">${convertTo24Hour(station.first_train_saturdays) || '--'}</span>
-              `;
-              card.appendChild(firstSat);
+                    const label = document.createElement('div');
+                    label.className = 'day-label';
+                    label.textContent = dayLabels[dayKey] || dayKey;
 
-              // First Train - Sundays
-              const firstSun = document.createElement('div');
-              firstSun.className = 'time-item';
-              firstSun.innerHTML = `
-                <span class="time-label">First (Sundays/Holidays)</span>
-                <span class="time-display first">${convertTo24Hour(station.first_train_sundays) || '--'}</span>
-              `;
-              card.appendChild(firstSun);
+                    const firstTimeEl = document.createElement('div');
+                    firstTimeEl.className = 'time-value first-train';
+                    firstTimeEl.textContent = (direction.first_train[dayKey] || '--');
 
-              // Last Train - Weekdays
-              const lastWeekdays = document.createElement('div');
-              lastWeekdays.className = 'time-item';
-              lastWeekdays.innerHTML = `
-                <span class="time-label">Last (Weekdays)</span>
-                <span class="time-display last">${convertTo24Hour(station.last_train_weekdays, true) || '--'}</span>
-              `;
-              card.appendChild(lastWeekdays);
+                    const lastTimeEl = document.createElement('div');
+                    lastTimeEl.className = 'time-value last-train';
+                    lastTimeEl.textContent = (direction.last_train[dayKey] || '--');
 
-              // Last Train - Weekends/Holidays
-              const lastWeekends = document.createElement('div');
-              lastWeekends.className = 'time-item';
-              lastWeekends.innerHTML = `
-                <span class="time-label">Last (Weekends/Holidays)</span>
-                <span class="time-display last">${convertTo24Hour(station.last_train_weekends, true) || '--'}</span>
-              `;
-              card.appendChild(lastWeekends);
-            } else {
-              // Format 1: Weekdays | Weekends for First, unified Last
-              
-              // First Train - Weekdays
-              const firstWeekday = document.createElement('div');
-              firstWeekday.className = 'time-item';
-              firstWeekday.innerHTML = `
-                <span class="time-label">First (Mon-Sat)</span>
-                <span class="time-display first">${convertTo24Hour(station.first_train_weekdays) || '--'}</span>
-              `;
-              card.appendChild(firstWeekday);
-
-              // First Train - Weekends
-              const firstWeekend = document.createElement('div');
-              firstWeekend.className = 'time-item';
-              firstWeekend.innerHTML = `
-                <span class="time-label">First (Sun/Holidays)</span>
-                <span class="time-display first">${convertTo24Hour(station.first_train_weekends) || '--'}</span>
-              `;
-              card.appendChild(firstWeekend);
-
-              // Last Train
-              const last = document.createElement('div');
-              last.className = 'time-item';
-              last.innerHTML = `
-                <span class="time-label">Last Train</span>
-                <span class="time-display last">${convertTo24Hour(station.last_train, true) || '--'}</span>
-              `;
-              card.appendChild(last);
-            }
+                    row.appendChild(label);
+                    row.appendChild(firstTimeEl);
+                    row.appendChild(lastTimeEl);
+                    card.appendChild(row);
+                }
+            });
 
             return card;
         }
@@ -396,26 +345,15 @@
             }
 
             if (sbsStations.length > 0) {
-                // Group SBS by line
-                const lineGroups = {};
+                const sbsGroup = document.createElement('optgroup');
+                sbsGroup.label = 'SBS Transit';
                 sbsStations.forEach(station => {
-                    if (!lineGroups[station.line]) {
-                        lineGroups[station.line] = [];
-                    }
-                    lineGroups[station.line].push(station);
+                    const option = document.createElement('option');
+                    option.value = station.value;
+                    option.textContent = station.name;
+                    sbsGroup.appendChild(option);
                 });
-
-                Object.keys(lineGroups).forEach(line => {
-                    const optgroup = document.createElement('optgroup');
-                    optgroup.label = `SBST - ${line}`;
-                    lineGroups[line].forEach(station => {
-                        const option = document.createElement('option');
-                        option.value = station.value;
-                        option.textContent = station.name;
-                        optgroup.appendChild(option);
-                    });
-                    dropdown.appendChild(optgroup);
-                });
+                dropdown.appendChild(sbsGroup);
             }
         }
 

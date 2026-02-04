@@ -46,66 +46,73 @@ const fs = require('fs');
 
 // Keep it short for now - test with common stations
 const testStations = [
-  'admiralty', 'aljunied', 'ang-mo-kio', 'bangkit', 'jurong-east', 'raffles-place', 'yew-tee'
+  'jurong-east', 'bukit-batok', 'bukit-gombak', 'choa-chu-kang', 'yew-tee', 'kranji', 'marsiling',
+  'woodlands', 'admiralty', 'sembawang', 'canberra', 'yishun', 'khatib', 'yio-chu-kang', 'ang-mo-kio',
+  'bishan', 'braddell', 'toa-payoh', 'novena', 'newton', 'orchard', 'somerset', 'dhoby-ghaut', 'city-hall',
+  'raffles-place', 'marina-bay', 'marina-south-pier', 'pasir-ris', 'tampines', 'simei', 'tanah-merah',
+  'bedok', 'kembangan', 'eunos', 'paya-lebar', 'aljunied', 'kallang', 'lavender', 'bugis', 'city-hall',
+  'raffles-place', 'tanjong-pagar', 'outram-park', 'tiong-bahru', 'redhill', 'queenstown', 'commonwealth',
+  'buona-vista', 'dover', 'clementi', 'jurong-west', 'boon-lay', 'pioneer', 'joo-koon', 'gul-circle', 'tuas-crescent',
+  'tuas-west-road', 'tuas-link'
 ];
 
 (async () => {
   let browser;
   const allStationData = [];
-  
+
   try {
     browser = await puppeteer.launch({ headless: 'new' });
-    
+
     for (let i = 0; i < testStations.length; i++) {
       const stationSlug = testStations[i];
       console.log(`\n[${i + 1}/${testStations.length}] Scraping ${stationSlug}...`);
-      
+
       try {
         const page = await browser.newPage();
         const url = `https://journey.smrt.com.sg/journey/station_info/${stationSlug}/first-and-last-train/`;
-        
+
         await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
         const html = await page.content();
         await page.close();
-        
+
         const $ = cheerio.load(html);
-        
+
         // Get station name from the page
         const stationName = $('h1#txtStationName').text().trim() || stationSlug;
-        
+
         // Extract first/last train data
         const directions = [];
         const containers = $('div.divTimesDescContainer');
-        
+
         containers.each((idx, container) => {
           const $container = $(container);
           const header = $container.find('div#divTimeHeader').text().trim();
-          
+
           // Skip empty headers
           if (!header || header.length === 0) {
             return;
           }
-          
+
           const table = $container.find('table');
           if (table.length === 0) return;
-          
+
           const directionData = {
             description: header,
             first_train: {},
             last_train: {}
           };
-          
+
           const rows = table.find('tbody tr');
           rows.each((rowIdx, row) => {
             if (rowIdx === 0) return; // Skip header
-            
+
             const $row = $(row);
             const cells = $row.find('td');
             if (cells.length >= 3) {
               const dayLabel = $(cells[0]).text().trim();
               const firstTime = $(cells[1]).text().trim().replace(/--:--/g, '--');
               const lastTime = $(cells[2]).text().trim().replace(/--:--/g, '--');
-              
+
               let dayKey = null;
               if (dayLabel.includes('Eve')) {
                 dayKey = 'eve_of_public_holidays';
@@ -116,38 +123,38 @@ const testStations = [
               } else if (dayLabel.includes('Sunday') || dayLabel.includes('Public')) {
                 dayKey = 'sunday_public_holidays';
               }
-              
+
               if (dayKey) {
                 directionData.first_train[dayKey] = firstTime;
                 directionData.last_train[dayKey] = lastTime;
               }
             }
           });
-          
+
           if (Object.keys(directionData.first_train).length > 0) {
             directions.push(directionData);
           }
         });
-        
+
         allStationData.push({
           station: stationName,
           station_slug: stationSlug,
           directions: directions,
           scraped_at: new Date().toISOString()
         });
-        
+
         console.log(`  ✓ Found ${directions.length} directions`);
-        
+
       } catch (error) {
         console.error(`  ✗ Error scraping ${stationSlug}: ${error.message}`);
       }
     }
-    
+
     // Save the data
     const outputPath = __dirname + '/../json/smrt-ft-lt.json';
     fs.writeFileSync(outputPath, JSON.stringify(allStationData, null, 2));
     console.log(`\n✓ Saved data for ${allStationData.length} stations to ${outputPath}`);
-    
+
   } catch (error) {
     console.error('Fatal error:', error.message);
   } finally {

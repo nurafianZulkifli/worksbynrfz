@@ -4,7 +4,7 @@
     "station_slug": "east-loop",
     "directions": [
       {
-        "description": "Sengkang LRT",
+        "description": "Sengkang LRT - Departing from Sengkang Town Centre",
         "first_train": {
           "monday_to_friday": "05:25",
           "saturday": "05:45",
@@ -17,10 +17,10 @@
           "sunday_public_holidays": "12:35",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "Punggol LRT",
+        "description": "Punggol LRT - Departing from Punggol Town Centre",
         "first_train": {
           "monday_to_friday": "05:20",
           "saturday": "05:40",
@@ -33,7 +33,7 @@
           "sunday_public_holidays": "12:38",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -42,7 +42,7 @@
     "station_slug": "west-loop",
     "directions": [
       {
-        "description": "Sengkang LRT First and Last Train Timings (Updated 2 June 2020)",
+        "description": "Sengkang LRT - Departing from Sengkang Town Centre",
         "first_train": {
           "monday_to_friday": "05:18",
           "saturday": "05:38",
@@ -55,10 +55,10 @@
           "sunday_public_holidays": "12:37",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "Punggol LRT First and Last Train Timings (Updated 2 June 2020)",
+        "description": "Punggol LRT - Departing from Punggol Town Centre",
         "first_train": {
           "monday_to_friday": "05:18",
           "saturday": "05:38",
@@ -71,7 +71,7 @@
           "sunday_public_holidays": "12:40",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -80,7 +80,7 @@
     "station_slug": "dt1-bukit-panjang",
     "directions": [
       {
-        "description": "To Expo",
+        "description": "To DT35 Expo",
         "first_train": {
           "monday_to_friday": "05:30",
           "saturday": "05:50",
@@ -93,10 +93,10 @@
           "sunday_public_holidays": "11:35",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Bukit Panjang",
+        "description": "To DT1 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "-",
           "saturday": "-",
@@ -109,7 +109,7 @@
           "sunday_public_holidays": "-",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -118,36 +118,36 @@
     "station_slug": "ne1-harbourfront",
     "directions": [
       {
-        "description": "To HarbourFront",
+        "description": "To NE1 HarbourFront",
         "first_train": {
           "monday_to_friday": "-",
-          "saturday": "-",
-          "sunday_public_holidays": "-",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "-",
-          "saturday": "-",
-          "sunday_public_holidays": "-",
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Punggol Coast",
+        "description": "To NE18 Punggol Coast",
         "first_train": {
           "monday_to_friday": "05:47",
-          "saturday": "05:47",
-          "sunday_public_holidays": "06:07",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:55",
-          "saturday": "11:55",
-          "sunday_public_holidays": "11:55",
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -156,7 +156,7 @@
     "station_slug": "dt2-cashew",
     "directions": [
       {
-        "description": "To Expo",
+        "description": "To DT35 Expo",
         "first_train": {
           "monday_to_friday": "05:32",
           "saturday": "05:52",
@@ -169,10 +169,10 @@
           "sunday_public_holidays": "11:37",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Bukit Panjang",
+        "description": "To DT1 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "06:14",
           "saturday": "06:35",
@@ -185,7 +185,7 @@
           "sunday_public_holidays": "12:46",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -194,7 +194,7 @@
     "station_slug": "dt3-hillview",
     "directions": [
       {
-        "description": "To Expo",
+        "description": "To DT35 Expo",
         "first_train": {
           "monday_to_friday": "05:34",
           "saturday": "05:54",
@@ -207,10 +207,10 @@
           "sunday_public_holidays": "11:38",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Bukit Panjang",
+        "description": "To DT1 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "06:13",
           "saturday": "06:33",
@@ -223,7 +223,7 @@
           "sunday_public_holidays": "12:45",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -232,36 +232,36 @@
     "station_slug": "ne3-outram-park",
     "directions": [
       {
-        "description": "To HarbourFront",
+        "description": "To NE1 HarbourFront",
         "first_train": {
           "monday_to_friday": "06:12",
-          "saturday": "06:12",
-          "sunday_public_holidays": "06:32",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:58",
-          "saturday": "11:58",
-          "sunday_public_holidays": "11:58",
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Punggol Coast",
+        "description": "To NE18 Punggol Coast",
         "first_train": {
           "monday_to_friday": "05:48",
-          "saturday": "05:48",
-          "sunday_public_holidays": "06:08",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:59",
-          "saturday": "11:59",
-          "sunday_public_holidays": "11:59",
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -270,7 +270,7 @@
     "station_slug": "dt4-hume",
     "directions": [
       {
-        "description": "To Expo",
+        "description": "To DT35 Expo",
         "first_train": {
           "monday_to_friday": "05:35",
           "saturday": "05:55",
@@ -283,10 +283,10 @@
           "sunday_public_holidays": "11:40",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Bukit Panjang",
+        "description": "To DT1 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "06:11",
           "saturday": "06:31",
@@ -299,7 +299,7 @@
           "sunday_public_holidays": "12:43",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -308,36 +308,36 @@
     "station_slug": "ne4-chinatown",
     "directions": [
       {
-        "description": "To HarbourFront",
+        "description": "To NE1 HarbourFront",
         "first_train": {
           "monday_to_friday": "06:10",
-          "saturday": "06:10",
-          "sunday_public_holidays": "06:30",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:56",
-          "saturday": "11:56",
-          "sunday_public_holidays": "11:56",
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Punggol Coast",
+        "description": "To NE18 Punggol Coast",
         "first_train": {
           "monday_to_friday": "05:49",
-          "saturday": "05:49",
-          "sunday_public_holidays": "06:09",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:01",
-          "saturday": "12:01",
-          "sunday_public_holidays": "12:01",
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -346,7 +346,7 @@
     "station_slug": "dt5-beauty-world",
     "directions": [
       {
-        "description": "To Expo",
+        "description": "To DT35 Expo",
         "first_train": {
           "monday_to_friday": "05:37",
           "saturday": "05:57",
@@ -359,10 +359,10 @@
           "sunday_public_holidays": "11:42",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Bukit Panjang",
+        "description": "To DT1 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "06:08",
           "saturday": "06:29",
@@ -375,7 +375,7 @@
           "sunday_public_holidays": "12:40",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -384,36 +384,36 @@
     "station_slug": "ne5-clarke-quay",
     "directions": [
       {
-        "description": "To HarbourFront",
+        "description": "To NE1 HarbourFront",
         "first_train": {
           "monday_to_friday": "06:08",
-          "saturday": "06:08",
-          "sunday_public_holidays": "06:28",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:55",
-          "saturday": "11:55",
-          "sunday_public_holidays": "11:55",
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Punggol Coast",
+        "description": "To NE18 Punggol Coast",
         "first_train": {
           "monday_to_friday": "05:51",
-          "saturday": "05:51",
-          "sunday_public_holidays": "06:11",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:02",
-          "saturday": "12:02",
-          "sunday_public_holidays": "12:02",
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -422,7 +422,7 @@
     "station_slug": "dt6-king-albert-park",
     "directions": [
       {
-        "description": "To Expo",
+        "description": "To DT35 Expo",
         "first_train": {
           "monday_to_friday": "05:39",
           "saturday": "05:59",
@@ -435,10 +435,10 @@
           "sunday_public_holidays": "11:44",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Bukit Panjang",
+        "description": "To DT1 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "06:06",
           "saturday": "06:27",
@@ -451,7 +451,7 @@
           "sunday_public_holidays": "12:38",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -460,36 +460,36 @@
     "station_slug": "ne6-dhoby-ghaut",
     "directions": [
       {
-        "description": "To HarbourFront",
+        "description": "To NE1 HarbourFront",
         "first_train": {
           "monday_to_friday": "06:06",
-          "saturday": "06:06",
-          "sunday_public_holidays": "06:26",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:52",
-          "saturday": "11:52",
-          "sunday_public_holidays": "11:52",
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Punggol Coast",
+        "description": "To NE18 Punggol Coast",
         "first_train": {
           "monday_to_friday": "05:53",
-          "saturday": "05:53",
-          "sunday_public_holidays": "06:13",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:05",
-          "saturday": "12:05",
-          "sunday_public_holidays": "12:05",
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -498,7 +498,7 @@
     "station_slug": "dt7-sixth-avenue",
     "directions": [
       {
-        "description": "To Expo",
+        "description": "To DT35 Expo",
         "first_train": {
           "monday_to_friday": "05:42",
           "saturday": "06:02",
@@ -511,10 +511,10 @@
           "sunday_public_holidays": "11:46",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Bukit Panjang",
+        "description": "To DT1 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "06:04",
           "saturday": "06:24",
@@ -527,7 +527,7 @@
           "sunday_public_holidays": "12:36",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -536,36 +536,36 @@
     "station_slug": "ne7-little-india",
     "directions": [
       {
-        "description": "To HarbourFront",
+        "description": "To NE1 HarbourFront",
         "first_train": {
           "monday_to_friday": "06:04",
-          "saturday": "06:04",
-          "sunday_public_holidays": "06:24",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:50",
-          "saturday": "11:50",
-          "sunday_public_holidays": "11:50",
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Punggol Coast",
+        "description": "To NE18 Punggol Coast",
         "first_train": {
           "monday_to_friday": "05:56",
-          "saturday": "05:56",
-          "sunday_public_holidays": "06:16",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:07",
-          "saturday": "12:07",
-          "sunday_public_holidays": "12:07",
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -574,7 +574,7 @@
     "station_slug": "dt8-tan-kah-kee",
     "directions": [
       {
-        "description": "To Expo",
+        "description": "To DT35 Expo",
         "first_train": {
           "monday_to_friday": "05:44",
           "saturday": "06:04",
@@ -587,10 +587,10 @@
           "sunday_public_holidays": "11:48",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Bukit Panjang",
+        "description": "To DT1 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "06:02",
           "saturday": "06:23",
@@ -603,7 +603,7 @@
           "sunday_public_holidays": "12:34",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -612,36 +612,36 @@
     "station_slug": "ne8-farrer-park",
     "directions": [
       {
-        "description": "To HarbourFront",
+        "description": "To NE1 HarbourFront",
         "first_train": {
           "monday_to_friday": "06:02",
-          "saturday": "06:02",
-          "sunday_public_holidays": "06:22",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:48",
-          "saturday": "11:48",
-          "sunday_public_holidays": "11:48",
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Punggol Coast",
+        "description": "To NE18 Punggol Coast",
         "first_train": {
           "monday_to_friday": "05:57",
-          "saturday": "05:57",
-          "sunday_public_holidays": "06:17",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:09",
-          "saturday": "12:09",
-          "sunday_public_holidays": "12:09",
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -650,7 +650,7 @@
     "station_slug": "dt9-botanic-gardens",
     "directions": [
       {
-        "description": "To Expo",
+        "description": "To DT35 Expo",
         "first_train": {
           "monday_to_friday": "05:46",
           "saturday": "06:06",
@@ -663,10 +663,10 @@
           "sunday_public_holidays": "11:50",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Bukit Panjang",
+        "description": "To DT1 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "06:00",
           "saturday": "06:21",
@@ -679,7 +679,7 @@
           "sunday_public_holidays": "12:32",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -688,36 +688,36 @@
     "station_slug": "ne9-boon-keng",
     "directions": [
       {
-        "description": "To HarbourFront",
+        "description": "To NE1 HarbourFront",
         "first_train": {
           "monday_to_friday": "06:00",
-          "saturday": "06:00",
-          "sunday_public_holidays": "06:20",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:46",
-          "saturday": "11:46",
-          "sunday_public_holidays": "11:46",
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Punggol Coast",
+        "description": "To NE18 Punggol Coast",
         "first_train": {
           "monday_to_friday": "05:59",
-          "saturday": "05:59",
-          "sunday_public_holidays": "06:19",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:11",
-          "saturday": "12:11",
-          "sunday_public_holidays": "12:11",
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -726,7 +726,7 @@
     "station_slug": "dt10-stevens",
     "directions": [
       {
-        "description": "To Expo",
+        "description": "To DT35 Expo",
         "first_train": {
           "monday_to_friday": "05:48",
           "saturday": "06:08",
@@ -739,10 +739,10 @@
           "sunday_public_holidays": "11:53",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Bukit Panjang",
+        "description": "To DT1 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "05:58",
           "saturday": "06:18",
@@ -755,7 +755,7 @@
           "sunday_public_holidays": "12:30",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -764,36 +764,36 @@
     "station_slug": "ne10-potong-pasir",
     "directions": [
       {
-        "description": "To HarbourFront",
+        "description": "To NE1 HarbourFront",
         "first_train": {
           "monday_to_friday": "05:58",
-          "saturday": "05:58",
-          "sunday_public_holidays": "06:18",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:44",
-          "saturday": "11:44",
-          "sunday_public_holidays": "11:44",
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Punggol Coast",
+        "description": "To NE18 Punggol Coast",
         "first_train": {
           "monday_to_friday": "06:02",
-          "saturday": "06:02",
-          "sunday_public_holidays": "06:22",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:13",
-          "saturday": "12:13",
-          "sunday_public_holidays": "12:13",
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -802,7 +802,7 @@
     "station_slug": "dt11-newton",
     "directions": [
       {
-        "description": "To Expo",
+        "description": "To DT35 Expo",
         "first_train": {
           "monday_to_friday": "05:51",
           "saturday": "06:11",
@@ -815,10 +815,10 @@
           "sunday_public_holidays": "11:55",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Bukit Panjang",
+        "description": "To DT1 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "05:56",
           "saturday": "06:16",
@@ -831,7 +831,7 @@
           "sunday_public_holidays": "12:28",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -840,36 +840,36 @@
     "station_slug": "ne11-woodleigh",
     "directions": [
       {
-        "description": "To HarbourFront",
+        "description": "To NE1 HarbourFront",
         "first_train": {
           "monday_to_friday": "05:56",
-          "saturday": "05:56",
-          "sunday_public_holidays": "06:16",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:42",
-          "saturday": "11:42",
-          "sunday_public_holidays": "11:42",
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Punggol Coast",
+        "description": "To NE18 Punggol Coast",
         "first_train": {
           "monday_to_friday": "06:04",
-          "saturday": "06:04",
-          "sunday_public_holidays": "06:24",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:15",
-          "saturday": "12:15",
-          "sunday_public_holidays": "12:15",
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -878,7 +878,7 @@
     "station_slug": "dt12-little-india",
     "directions": [
       {
-        "description": "To Expo",
+        "description": "To DT35 Expo",
         "first_train": {
           "monday_to_friday": "05:53",
           "saturday": "06:13",
@@ -891,10 +891,10 @@
           "sunday_public_holidays": "11:58",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Bukit Panjang",
+        "description": "To DT1 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "06:06",
           "saturday": "06:30",
@@ -907,7 +907,7 @@
           "sunday_public_holidays": "12:26",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -916,36 +916,36 @@
     "station_slug": "ne12-serangoon",
     "directions": [
       {
-        "description": "To HarbourFront",
+        "description": "To NE1 HarbourFront",
         "first_train": {
           "monday_to_friday": "05:54",
-          "saturday": "05:54",
-          "sunday_public_holidays": "06:14",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:40",
-          "saturday": "11:40",
-          "sunday_public_holidays": "11:40",
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Punggol Coast",
+        "description": "To NE18 Punggol Coast",
         "first_train": {
           "monday_to_friday": "06:06",
-          "saturday": "06:06",
-          "sunday_public_holidays": "06:26",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:17",
-          "saturday": "12:17",
-          "sunday_public_holidays": "12:17",
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -954,7 +954,7 @@
     "station_slug": "dt13-rochor",
     "directions": [
       {
-        "description": "To Expo",
+        "description": "To DT35 Expo",
         "first_train": {
           "monday_to_friday": "05:55",
           "saturday": "06:15",
@@ -967,10 +967,10 @@
           "sunday_public_holidays": "11:59",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Bukit Panjang",
+        "description": "To DT1 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "06:05",
           "saturday": "06:34",
@@ -983,7 +983,7 @@
           "sunday_public_holidays": "12:24",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -992,36 +992,36 @@
     "station_slug": "ne13-kovan",
     "directions": [
       {
-        "description": "To HarbourFront",
+        "description": "To NE1 HarbourFront",
         "first_train": {
           "monday_to_friday": "05:51",
-          "saturday": "05:51",
-          "sunday_public_holidays": "06:11",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:37",
-          "saturday": "11:37",
-          "sunday_public_holidays": "11:37",
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Punggol Coast",
+        "description": "To NE18 Punggol Coast",
         "first_train": {
           "monday_to_friday": "06:08",
-          "saturday": "06:08",
-          "sunday_public_holidays": "06:28",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:20",
-          "saturday": "12:20",
-          "sunday_public_holidays": "12:20",
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -1030,7 +1030,7 @@
     "station_slug": "dt14-bugis",
     "directions": [
       {
-        "description": "To Expo",
+        "description": "To DT35 Expo",
         "first_train": {
           "monday_to_friday": "05:57",
           "saturday": "06:17",
@@ -1043,10 +1043,10 @@
           "sunday_public_holidays": "12:01",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Bukit Panjang",
+        "description": "To DT1 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "06:03",
           "saturday": "06:32",
@@ -1059,7 +1059,7 @@
           "sunday_public_holidays": "12:22",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -1068,36 +1068,36 @@
     "station_slug": "ne14-hougang",
     "directions": [
       {
-        "description": "To HarbourFront",
+        "description": "To NE1 HarbourFront",
         "first_train": {
           "monday_to_friday": "05:49",
-          "saturday": "05:49",
-          "sunday_public_holidays": "06:09",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:35",
-          "saturday": "11:35",
-          "sunday_public_holidays": "11:35",
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Punggol Coast",
+        "description": "To NE18 Punggol Coast",
         "first_train": {
           "monday_to_friday": "06:11",
-          "saturday": "06:11",
-          "sunday_public_holidays": "06:31",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:23",
-          "saturday": "12:23",
-          "sunday_public_holidays": "12:23",
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -1106,7 +1106,7 @@
     "station_slug": "dt15-promenade",
     "directions": [
       {
-        "description": "To Expo",
+        "description": "To DT35 Expo",
         "first_train": {
           "monday_to_friday": "06:00",
           "saturday": "06:20",
@@ -1119,10 +1119,10 @@
           "sunday_public_holidays": "12:03",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Bukit Panjang",
+        "description": "To DT1 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "06:17",
           "saturday": "06:35",
@@ -1135,7 +1135,7 @@
           "sunday_public_holidays": "12:20",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -1144,36 +1144,36 @@
     "station_slug": "ne15-buangkok",
     "directions": [
       {
-        "description": "To HarbourFront",
+        "description": "To NE1 HarbourFront",
         "first_train": {
           "monday_to_friday": "05:46",
-          "saturday": "05:46",
-          "sunday_public_holidays": "06:06",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:32",
-          "saturday": "11:32",
-          "sunday_public_holidays": "11:32",
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Punggol Coast",
+        "description": "To NE18 Punggol Coast",
         "first_train": {
           "monday_to_friday": "06:13",
-          "saturday": "06:13",
-          "sunday_public_holidays": "06:33",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:25",
-          "saturday": "12:25",
-          "sunday_public_holidays": "12:25",
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -1182,7 +1182,7 @@
     "station_slug": "dt16-bayfront",
     "directions": [
       {
-        "description": "To Expo",
+        "description": "To DT35 Expo",
         "first_train": {
           "monday_to_friday": "06:02",
           "saturday": "06:22",
@@ -1195,10 +1195,10 @@
           "sunday_public_holidays": "12:05",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Bukit Panjang",
+        "description": "To DT1 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "06:15",
           "saturday": "06:33",
@@ -1211,7 +1211,7 @@
           "sunday_public_holidays": "12:18",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -1220,36 +1220,36 @@
     "station_slug": "ne16-sengkang",
     "directions": [
       {
-        "description": "To HarbourFront",
+        "description": "To NE1 HarbourFront",
         "first_train": {
           "monday_to_friday": "05:44",
-          "saturday": "05:44",
-          "sunday_public_holidays": "06:04",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:30",
-          "saturday": "11:30",
-          "sunday_public_holidays": "11:30",
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Punggol Coast",
+        "description": "To NE18 Punggol Coast",
         "first_train": {
           "monday_to_friday": "05:33",
-          "saturday": "05:33",
-          "sunday_public_holidays": "05:53",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:27",
-          "saturday": "12:27",
-          "sunday_public_holidays": "12:27",
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -1258,7 +1258,7 @@
     "station_slug": "dt17-downtown",
     "directions": [
       {
-        "description": "To Expo",
+        "description": "To DT35 Expo",
         "first_train": {
           "monday_to_friday": "06:04",
           "saturday": "06:24",
@@ -1271,10 +1271,10 @@
           "sunday_public_holidays": "12:07",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Bukit Panjang",
+        "description": "To DT1 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "06:13",
           "saturday": "06:31",
@@ -1287,7 +1287,7 @@
           "sunday_public_holidays": "12:16",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -1296,36 +1296,36 @@
     "station_slug": "ne17-punggol",
     "directions": [
       {
-        "description": "To HarbourFront",
+        "description": "To NE1 HarbourFront",
         "first_train": {
           "monday_to_friday": "05:42",
-          "saturday": "05:42",
-          "sunday_public_holidays": "06:02",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:28",
-          "saturday": "11:28",
-          "sunday_public_holidays": "11:28",
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Punggol Coast",
+        "description": "To NE18 Punggol Coast",
         "first_train": {
           "monday_to_friday": "05:36",
-          "saturday": "05:36",
-          "sunday_public_holidays": "05:56",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "12:30",
-          "saturday": "12:30",
-          "sunday_public_holidays": "12:30",
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -1334,7 +1334,7 @@
     "station_slug": "dt18-telok-ayer",
     "directions": [
       {
-        "description": "To Expo",
+        "description": "To DT35 Expo",
         "first_train": {
           "monday_to_friday": "06:06",
           "saturday": "06:26",
@@ -1347,10 +1347,10 @@
           "sunday_public_holidays": "12:08",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Bukit Panjang",
+        "description": "To DT1 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "06:11",
           "saturday": "06:29",
@@ -1363,7 +1363,7 @@
           "sunday_public_holidays": "12:15",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -1372,36 +1372,36 @@
     "station_slug": "ne18-punggol-coast",
     "directions": [
       {
-        "description": "To HarbourFront",
+        "description": "To NE1 HarbourFront",
         "first_train": {
           "monday_to_friday": "05:39",
-          "saturday": "05:39",
-          "sunday_public_holidays": "05:59",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "11:25",
-          "saturday": "11:25",
-          "sunday_public_holidays": "11:25",
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Punggol Coast",
+        "description": "To NE18 Punggol Coast",
         "first_train": {
           "monday_to_friday": "-",
-          "saturday": "-",
-          "sunday_public_holidays": "-",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
         "last_train": {
-          "monday_to_friday": "-",
-          "saturday": "-",
-          "sunday_public_holidays": "-",
+          "monday_to_friday": "--",
+          "saturday": "--",
+          "sunday_public_holidays": "--",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -1410,7 +1410,7 @@
     "station_slug": "dt19-chinatown",
     "directions": [
       {
-        "description": "To Expo",
+        "description": "To DT35 Expo",
         "first_train": {
           "monday_to_friday": "06:08",
           "saturday": "06:28",
@@ -1423,10 +1423,10 @@
           "sunday_public_holidays": "12:10",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Bukit Panjang",
+        "description": "To DT1 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "06:10",
           "saturday": "06:28",
@@ -1439,7 +1439,7 @@
           "sunday_public_holidays": "12:14",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -1448,7 +1448,7 @@
     "station_slug": "dt20-fort-canning",
     "directions": [
       {
-        "description": "To Expo",
+        "description": "To DT35 Expo",
         "first_train": {
           "monday_to_friday": "06:10",
           "saturday": "06:30",
@@ -1461,10 +1461,10 @@
           "sunday_public_holidays": "12:12",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Bukit Panjang",
+        "description": "To DT1 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "06:08",
           "saturday": "06:26",
@@ -1477,7 +1477,7 @@
           "sunday_public_holidays": "12:11",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -1486,7 +1486,7 @@
     "station_slug": "dt21-bencoolen",
     "directions": [
       {
-        "description": "To Expo",
+        "description": "To DT35 Expo",
         "first_train": {
           "monday_to_friday": "06:12",
           "saturday": "06:31",
@@ -1499,10 +1499,10 @@
           "sunday_public_holidays": "12:13",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Bukit Panjang",
+        "description": "To DT1 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "06:06",
           "saturday": "06:24",
@@ -1515,7 +1515,7 @@
           "sunday_public_holidays": "12:10",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -1524,7 +1524,7 @@
     "station_slug": "dt22-jalan-besar",
     "directions": [
       {
-        "description": "To Expo",
+        "description": "To DT35 Expo",
         "first_train": {
           "monday_to_friday": "06:13",
           "saturday": "06:33",
@@ -1537,10 +1537,10 @@
           "sunday_public_holidays": "12:15",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Bukit Panjang",
+        "description": "To DT1 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "06:04",
           "saturday": "06:22",
@@ -1553,7 +1553,7 @@
           "sunday_public_holidays": "12:08",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -1562,7 +1562,7 @@
     "station_slug": "dt23-bendemeer",
     "directions": [
       {
-        "description": "To Expo",
+        "description": "To DT35 Expo",
         "first_train": {
           "monday_to_friday": "06:15",
           "saturday": "06:35",
@@ -1575,10 +1575,10 @@
           "sunday_public_holidays": "12:17",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Bukit Panjang",
+        "description": "To DT1 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "06:02",
           "saturday": "06:20",
@@ -1591,7 +1591,7 @@
           "sunday_public_holidays": "12:06",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -1600,7 +1600,7 @@
     "station_slug": "dt24-geylang-bahru",
     "directions": [
       {
-        "description": "To Expo",
+        "description": "To DT35 Expo",
         "first_train": {
           "monday_to_friday": "05:59",
           "saturday": "06:19",
@@ -1613,10 +1613,10 @@
           "sunday_public_holidays": "12:19",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Bukit Panjang",
+        "description": "To DT1 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "06:00",
           "saturday": "06:18",
@@ -1629,7 +1629,7 @@
           "sunday_public_holidays": "12:04",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -1638,7 +1638,7 @@
     "station_slug": "dt25-mattar",
     "directions": [
       {
-        "description": "To Expo",
+        "description": "To DT35 Expo",
         "first_train": {
           "monday_to_friday": "06:01",
           "saturday": "06:21",
@@ -1651,10 +1651,10 @@
           "sunday_public_holidays": "12:22",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Bukit Panjang",
+        "description": "To DT1 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "05:58",
           "saturday": "06:16",
@@ -1667,7 +1667,7 @@
           "sunday_public_holidays": "12:02",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -1676,7 +1676,7 @@
     "station_slug": "dt26-macpherson",
     "directions": [
       {
-        "description": "To Expo",
+        "description": "To DT35 Expo",
         "first_train": {
           "monday_to_friday": "06:03",
           "saturday": "06:23",
@@ -1689,10 +1689,10 @@
           "sunday_public_holidays": "12:24",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Bukit Panjang",
+        "description": "To DT1 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "05:56",
           "saturday": "06:14",
@@ -1705,7 +1705,7 @@
           "sunday_public_holidays": "12:00",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -1714,7 +1714,7 @@
     "station_slug": "dt27-ubi",
     "directions": [
       {
-        "description": "To Expo",
+        "description": "To DT35 Expo",
         "first_train": {
           "monday_to_friday": "06:05",
           "saturday": "06:25",
@@ -1727,10 +1727,10 @@
           "sunday_public_holidays": "12:25",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Bukit Panjang",
+        "description": "To DT1 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "05:54",
           "saturday": "06:12",
@@ -1743,7 +1743,7 @@
           "sunday_public_holidays": "11:58",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -1752,7 +1752,7 @@
     "station_slug": "dt28-kaki-bukit",
     "directions": [
       {
-        "description": "To Expo",
+        "description": "To DT35 Expo",
         "first_train": {
           "monday_to_friday": "06:07",
           "saturday": "06:27",
@@ -1765,10 +1765,10 @@
           "sunday_public_holidays": "12:27",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Bukit Panjang",
+        "description": "To DT1 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "05:52",
           "saturday": "06:10",
@@ -1781,7 +1781,7 @@
           "sunday_public_holidays": "11:56",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -1790,7 +1790,7 @@
     "station_slug": "dt29-bedok-north",
     "directions": [
       {
-        "description": "To Expo",
+        "description": "To DT35 Expo",
         "first_train": {
           "monday_to_friday": "06:09",
           "saturday": "06:29",
@@ -1803,10 +1803,10 @@
           "sunday_public_holidays": "12:29",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Bukit Panjang",
+        "description": "To DT1 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "05:50",
           "saturday": "06:08",
@@ -1819,7 +1819,7 @@
           "sunday_public_holidays": "11:54",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -1828,7 +1828,7 @@
     "station_slug": "dt30-bedok-reservoir",
     "directions": [
       {
-        "description": "To Expo",
+        "description": "To DT35 Expo",
         "first_train": {
           "monday_to_friday": "06:11",
           "saturday": "06:31",
@@ -1841,10 +1841,10 @@
           "sunday_public_holidays": "12:31",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Bukit Panjang",
+        "description": "To DT1 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "05:48",
           "saturday": "06:06",
@@ -1857,7 +1857,7 @@
           "sunday_public_holidays": "11:51",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -1866,7 +1866,7 @@
     "station_slug": "dt31-tampines-west",
     "directions": [
       {
-        "description": "To Expo",
+        "description": "To DT35 Expo",
         "first_train": {
           "monday_to_friday": "06:13",
           "saturday": "06:33",
@@ -1879,10 +1879,10 @@
           "sunday_public_holidays": "12:34",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Bukit Panjang",
+        "description": "To DT1 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "05:45",
           "saturday": "06:03",
@@ -1895,7 +1895,7 @@
           "sunday_public_holidays": "11:49",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -1904,7 +1904,7 @@
     "station_slug": "dt32-tampines",
     "directions": [
       {
-        "description": "To Expo",
+        "description": "To DT35 Expo",
         "first_train": {
           "monday_to_friday": "06:16",
           "saturday": "06:36",
@@ -1917,10 +1917,10 @@
           "sunday_public_holidays": "12:36",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Bukit Panjang",
+        "description": "To DT1 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "05:43",
           "saturday": "06:01",
@@ -1933,7 +1933,7 @@
           "sunday_public_holidays": "11:47",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -1942,7 +1942,7 @@
     "station_slug": "dt33-tampines-east",
     "directions": [
       {
-        "description": "To Expo",
+        "description": "To DT35 Expo",
         "first_train": {
           "monday_to_friday": "06:18",
           "saturday": "06:38",
@@ -1955,10 +1955,10 @@
           "sunday_public_holidays": "12:38",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Bukit Panjang",
+        "description": "To DT1 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "05:41",
           "saturday": "05:59",
@@ -1971,7 +1971,7 @@
           "sunday_public_holidays": "11:45",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -1980,7 +1980,7 @@
     "station_slug": "dt34-upper-changi",
     "directions": [
       {
-        "description": "To Expo",
+        "description": "To DT35 Expo",
         "first_train": {
           "monday_to_friday": "06:21",
           "saturday": "06:41",
@@ -1993,10 +1993,10 @@
           "sunday_public_holidays": "12:41",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Bukit Panjang",
+        "description": "To DT1 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "05:38",
           "saturday": "05:56",
@@ -2009,7 +2009,7 @@
           "sunday_public_holidays": "11:41",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   },
@@ -2018,7 +2018,7 @@
     "station_slug": "dt35-expo",
     "directions": [
       {
-        "description": "To Expo",
+        "description": "To DT35 Expo",
         "first_train": {
           "monday_to_friday": "-",
           "saturday": "-",
@@ -2031,10 +2031,10 @@
           "sunday_public_holidays": "-",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       },
       {
-        "description": "To Bukit Panjang",
+        "description": "To DT1 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "05:36",
           "saturday": "05:54",
@@ -2047,7 +2047,7 @@
           "sunday_public_holidays": "11:40",
           "eve_of_public_holidays": "--"
         },
-        "scraped_at": "2026-02-04T14:41:47.072Z"
+        "scraped_at": "2026-02-04T14:29:26.566Z"
       }
     ]
   }
