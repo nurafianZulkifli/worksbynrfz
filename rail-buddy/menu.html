@@ -38,7 +38,7 @@
     body {
         margin: 0;
         height: 100%;
-        overflow: hidden;
+
     }
 
     #cv-bat-subp {
@@ -82,6 +82,106 @@
 
     .footer {
         display: none;
+    }
+
+    .apps-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 30px;
+        width: 100%;
+        max-width: 280px;
+    }
+
+    .app-card {
+        background: #ffffff;
+        border-radius: 24px;
+        display: flex;
+        flex-direction: column;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        height: 100%;
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .app-card:hover {
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        transform: translateY(-6px);
+    }
+
+    .app-thumbnail {
+        width: 100%;
+        height: 160px;
+        object-fit: cover;
+        cursor: pointer;
+        display: block;
+    }
+
+    .app-thumbnail-link {
+        display: block;
+        overflow: hidden;
+        border-radius: 24px;
+        margin: 12px;
+    }
+
+    .app-content {
+        padding: 24px;
+        padding-bottom: 10px;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+
+    .app-name {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin: 0 0 12px 0;
+    }
+
+    body.dark-mode .app-card {
+        background: #1c1f2b;
+        border: 1px solid #2b2b2b33;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    body.dark-mode .app-card:hover {
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    body.dark-mode .app-name {
+        color: #e0e0e0;
+    }
+
+    @media (max-width: 768px) {
+        .apps-grid {
+            max-width: 50%;
+        }
+
+        .app-thumbnail {
+            height: 120px;
+        }
+
+        .app-content {
+            padding: 16px;
+            padding-bottom: 10px;
+        }
+
+        .app-name {
+            font-size: 1rem;
+        }
+
+        .app-thumbnail-link {
+            margin: 8px;
+        }
+    }
+
+    @media (max-width: 380px) {
+        .apps-grid {
+            max-width: 100%;
+        }
     }
 </style>
 
@@ -264,6 +364,23 @@
                     </div>
                 </a>
             </div>
+            <hr>
+
+            <div style="margin-top: 2em; margin-bottom: 2em;">
+                <h5 style="font-size: 20px; margin-bottom: 1.5em; font-weight: 600;">Other Apps</h5>
+                <div class="apps-grid">
+                    <a href="../buszy.html" class="app-card">
+                        <div class="app-thumbnail-link">
+                            <img src="../img/bg-img/buszy-thumb.png" alt="Buszy - Bus Arrival Timings"
+                                class="app-thumbnail">
+                        </div>
+                        <div class="app-content">
+                            <h3 class="app-name">Buszy - Bus Arrival Timings</h3>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
             <hr>
 
             <div style="text-align: center; color: gray; font-size: 14px; margin-top: 1em; margin-bottom: 2em;">
