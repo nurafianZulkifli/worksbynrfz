@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="57TuruPNu5wqSSia_cUehl5t9Gh1AbxrHNPcMiFx-aQ" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>System Map | RailBuddy</title>
+    <title>First & Last Trains | RailBuddy</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
     <meta property="og:image" content="https://i.imgur.com/i8n9KYs.png" />
@@ -222,7 +222,7 @@
             transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
             border: 1px solid #2b2b2b33;
             box-sizing: border-box;
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 12px rgba(0, 0, 0, 0.1);
+            /* box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 12px rgba(0, 0, 0, 0.1); */
             height: 50px;
         }
 
@@ -416,16 +416,16 @@
             width: 100%;
             color: #fff;
             appearance: none;
-            background: #393e53;
+            background: #1c1f2b;
             background-clip: padding-box;
             border-radius: 25px;
             transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-            border: 1px solid #2b2b2b33;
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: 2px solid #393e53;
+            /* box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1); */
         }
 
         body.dark-mode .search-input::placeholder {
-            color: #fff;
+            color: #bbbbbb;
         }
 
         body.dark-mode .search-input:focus {
@@ -659,7 +659,7 @@
                         <i class="fa-solid fa-search"
                             style="position: absolute; left: 12px; top: 65%; transform: translateY(-65%); color: #cccccc; z-index: 1;"></i>
                         <input type="text" id="stationSearch" class="search-input"
-                            placeholder="Type the station name or code" autocomplete="on">
+                            placeholder="Type a station name, then select from the list" autocomplete="on">
                         <button class="clear-search" id="clearSearch" title="Clear search">&times;</button>
                     </div>
                     <div class="search-results-count" id="resultsCount"></div>

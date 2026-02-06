@@ -53,7 +53,10 @@ const testStations = [
   'bedok', 'kembangan', 'eunos', 'paya-lebar', 'aljunied', 'kallang', 'lavender', 'bugis', 'city-hall',
   'raffles-place', 'tanjong-pagar', 'outram-park', 'tiong-bahru', 'redhill', 'queenstown', 'commonwealth',
   'buona-vista', 'dover', 'clementi', 'jurong-west', 'boon-lay', 'pioneer', 'joo-koon', 'gul-circle', 'tuas-crescent',
-  'tuas-west-road', 'tuas-link'
+  'tuas-west-road', 'tuas-link', "bras-basah", "esplanade", "promenade", "nicoll-highway", "stadium", "mountbatten", "dakota",
+  "macpherson", "tai-seng", "bartley", "serangoon", "lorong-chuan", "marymount", "caldecott", "botanic-gardens", "farrer-road",
+  "holland-village", "one-north", "kent-ridge", "haw-par-villa", "pasir-panjang", "labrador-park", "telok-blangah", "harbourfront",
+  "woodlands-north", "woodlands", "woodlands-south", "springleaf"
 ];
 
 (async () => {
