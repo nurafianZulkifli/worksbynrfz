@@ -246,17 +246,17 @@ async function fetchBusArrivals() {
                     <div class="card-body">
                         <div class="card-content-art">
                             <div class="d-flex justify-content-between">
-                                <span class="bus-time">${service.NextBus.EstimatedArrival ? formatArrivalTimeOrArr(service.NextBus.EstimatedArrival, now) : '--'}</span>
+                                <span class="bus-time">${service.NextBus?.EstimatedArrival ? formatArrivalTimeOrArr(service.NextBus.EstimatedArrival, now) : '--'}</span>
                                 <span>
-                                    ${service.NextBus.Type ? `<img src="assets/${service.NextBus.Type.toLowerCase()}.png" alt="${service.NextBus.Type}" class="img-fluid" style="width: 50px;">` : ''}
-                                    ${service.NextBus.Load ? `<span class="load-indicator ${service.NextBus.Load.toLowerCase()}"> ${getLoadIcon(service.NextBus.Load)}</span>` : ''}
+                                    ${service.NextBus?.Type ? `<img src="assets/${service.NextBus.Type.toLowerCase()}.png" alt="${service.NextBus.Type}" class="img-fluid" style="width: 50px;">` : ''}
+                                    ${service.NextBus?.Load ? `<span class="load-indicator ${service.NextBus.Load.toLowerCase()}"> ${getLoadIcon(service.NextBus.Load)}</span>` : ''}
                                     <button class="btn btn-busloc btn-sm view-location-btn" 
-                                        data-lat="${service.NextBus.Latitude}" 
-                                        data-lng="${service.NextBus.Longitude}" 
+                                        data-lat="${service.NextBus?.Latitude || '0.0'}" 
+                                        data-lng="${service.NextBus?.Longitude || '0.0'}" 
                                         data-bus="${service.ServiceNo}" 
-                                        data-type="${service.NextBus.Type}" 
-                                        data-load="${service.NextBus.Load}"
-                                        ${service.NextBus.Latitude === "0.0" && service.NextBus.Longitude === "0.0" || !service.NextBus.EstimatedArrival ? 'disabled' : ''}> 
+                                        data-type="${service.NextBus?.Type || ''}" 
+                                        data-load="${service.NextBus?.Load || ''}"
+                                        ${!service.NextBus || service.NextBus.Latitude === "0.0" && service.NextBus.Longitude === "0.0" || !service.NextBus.EstimatedArrival ? 'disabled' : ''}> 
                                         <i class="fa-solid fa-location-dot"></i>
                                     </button>
                                 </span>
@@ -267,12 +267,12 @@ async function fetchBusArrivals() {
                                     ${service.NextBus2?.Type ? `<img src="assets/${service.NextBus2.Type.toLowerCase()}.png" alt="${service.NextBus2.Type}" class="img-fluid" style="width: 50px;">` : ''}
                                     ${service.NextBus2?.Load ? `<span class="load-indicator ${service.NextBus2.Load.toLowerCase()}"> ${getLoadIcon(service.NextBus2.Load)}</span>` : ''}
                                     <button class="btn btn-busloc btn-sm view-location-btn" 
-                                        data-lat="${service.NextBus2.Latitude}" 
-                                        data-lng="${service.NextBus2.Longitude}" 
+                                        data-lat="${service.NextBus2?.Latitude || '0.0'}" 
+                                        data-lng="${service.NextBus2?.Longitude || '0.0'}" 
                                         data-bus="${service.ServiceNo}" 
-                                        data-type="${service.NextBus2.Type}" 
-                                        data-load="${service.NextBus2.Load}"
-                                        ${service.NextBus2.Latitude === "0.0" && service.NextBus2.Longitude === "0.0" || !service.NextBus2.EstimatedArrival ? 'disabled' : ''}>
+                                        data-type="${service.NextBus2?.Type || ''}" 
+                                        data-load="${service.NextBus2?.Load || ''}"
+                                        ${!service.NextBus2 || service.NextBus2.Latitude === "0.0" && service.NextBus2.Longitude === "0.0" || !service.NextBus2.EstimatedArrival ? 'disabled' : ''}>
                                         <i class="fa-solid fa-location-dot"></i>
                                     </button>
                                 </span>
@@ -386,6 +386,10 @@ function checkMonitoredServices(services, now) {
                     notifiedServices[`${service.ServiceNo}-nextbus`] = true;
                     localStorage.setItem('notifiedServices', JSON.stringify(notifiedServices));
                 }
+            } else if (!service.NextBus) {
+                // Reset the notification flag if NextBus no longer exists (bus has departed)
+                delete notifiedServices[`${service.ServiceNo}-nextbus`];
+                localStorage.setItem('notifiedServices', JSON.stringify(notifiedServices));
             }
             
             // Check NextBus2 arrival
@@ -399,6 +403,10 @@ function checkMonitoredServices(services, now) {
                     notifiedServices[`${service.ServiceNo}-nextbus2`] = true;
                     localStorage.setItem('notifiedServices', JSON.stringify(notifiedServices));
                 }
+            } else if (!service.NextBus2) {
+                // Reset the notification flag if NextBus2 no longer exists (bus has departed)
+                delete notifiedServices[`${service.ServiceNo}-nextbus2`];
+                localStorage.setItem('notifiedServices', JSON.stringify(notifiedServices));
             }
         }
     });
