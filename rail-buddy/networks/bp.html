@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Bukit Panjang LRT | RailBuddy</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    <meta property="og:image" content="https://i.imgur.com/BUKPnjH.png" />
+
+    <link rel="icon" href="../assets/icon-512.png">
+
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.0.0/css/all.css" />
+    <link rel='stylesheet' href='https://unpkg.com/swiper@6.8.1/swiper-bundle.min.css'>
+
+
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../css/style-tdt.css">
+    <link rel="stylesheet" href="../../css/style-breakpoints.css">
+    <link rel="stylesheet" href="../../css/dark-mode.css">
+
+
+</head>
+
+<style>
+    .line-diagram {
+        flex: 1;
+        padding: 30px 20px;
+        transition-duration: 800ms;
+        background-color: #fff;
+        border-radius: 25px;
+        box-shadow: 3px 0 15px -1px rgba(0, 0, 0, 0.15);
+        margin-bottom: 40px;
+        padding-right: 4em;
+    }
+
+    .line-content-wrapper {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 40px;
+    }
+
+    .line-description {
+        flex: 1;
+        padding: 30px 20px;
+        transition-duration: 800ms;
+        background-color: #fff;
+        border-radius: 25px;
+        box-shadow: 3px 0 15px -1px rgba(0, 0, 0, 0.15);
+        margin-bottom: 40px;
+        height: fit-content;
+    }
+
+    .line-description h3 {
+        margin-top: 0;
+        margin-bottom: 16px;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .line-description p {
+        margin: 0 0 12px 0;
+        font-size: 14px;
+        line-height: 1.6;
+        color: #000;
+    }
+
+    .line-description ul {
+        margin: 12px 0;
+        padding-left: 20px;
+        list-style: disc;
+    }
+
+    .line-description li {
+        font-size: 14px;
+        line-height: 1.6;
+        color: #ccc;
+        margin-bottom: 8px;
+    }
+
+    .line-stat {
+        display: flex;
+        justify-content: space-between;
+        margin: 12px 0;
+        padding: 10px 0;
+        border-bottom: 1px solid #555;
+    }
+
+    .line-stat-label {
+        font-weight: 500;
+        color: #ccc;
+    }
+
+    .line-stat-value {
+        font-weight: 600;
+        color: #fff;
+    }
+
+    #hidden-stations {
+        display: none;
+        flex-direction: column;
+        gap: 0;
+        position: relative;
+        padding-left: 0px;
+        margin-top: 6px;
+    }
+
+    #hidden-stations-b {
+        display: none;
+        flex-direction: column;
+        gap: 0;
+        position: relative;
+        padding-left: 0px;
+        margin-top: 6px;
+    }
+
+    #hidden-stations.show {
+        display: flex;
+    }
+
+    #hidden-stations-b.show {
+        display: flex;
+    }
+
+    /* Adjust first station in hidden section */
+    #hidden-stations .station:first-child {
+        padding-top: 0;
+    }
+
+    #hidden-stations.show {
+        display: flex;
+    }
+
+    .show-more-button {
+        display: flex;
+        justify-content: center;
+        padding: 20px 0;
+    }
+
+    .show-more-button button {
+        background: #708472;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 24px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 14px;
+        transition: background 0.3s ease;
+        width: 100%;
+    }
+
+    .show-more-button button:hover {
+        background: #546456;
+    }
+
+    .line-controls {
+        margin-bottom: 25px;
+    }
+
+    .line-control-dropdown {
+        display: inline-block;
+        background: #3d4556;
+        border: 1px solid #555;
+        border-radius: 8px;
+        padding: 8px 15px;
+        color: white;
+        font-size: 14px;
+        cursor: pointer;
+        min-width: 200px;
+    }
+
+    .line-control-dropdown:hover {
+        background: #4a5264;
+    }
+
+    .line-status {
+        color: #4ade80;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+
+    .branch-selector {
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .branch-selector select {
+        padding: 8px 12px;
+        background: #393e53;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+    .branch-selector select:hover {
+        background: #334250;
+    }
+
+    .line-container.hidden {
+        display: none;
+    }
+
+    .line-container.show {
+        display: flex;
+    }
+
+    .line-container {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        position: relative;
+        padding-left: 30px;
+    }
+
+    /* Vertical line connecting all stations */
+    .line-container::before {
+        content: '';
+        position: absolute;
+        left: 6px;
+        top: 22px;
+        bottom: 99px;
+        width: 3px;
+        background: #708472;
+        z-index: 1;
+    }
+
+    .station {
+        display: flex;
+        align-items: center;
+        position: relative;
+        padding: 8px 0;
+        min-height: 45px;
+    }
+
+    .station-dot {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #fff;
+        border: 3px solid #708472;
+        position: absolute;
+        left: -31px;
+        z-index: 10;
+        flex-shrink: 0;
+    }
+
+
+    .station-content {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex: 1;
+    }
+
+    .station-codes {
+        display: flex;
+        gap: 0;
+        align-items: center;
+        flex-shrink: 0;
+    }
+
+    .station-code {
+        background: #708472;
+        color: #fff;
+        font-weight: bold;
+        border-radius: 13.6px / 19.2px;
+        padding: 5px 10px;
+        font-size: 11px;
+        letter-spacing: 1px;
+        margin-right: 0px;
+        border: 2px solid #fff;
+        cursor: default;
+    }
+
+    /* When station-code is followed by an interchange badge, flatten right side */
+    .station-code:has(~ .interchange-badge) {
+        border-radius: 13.6px 0 0 13.6px / 19.2px 0 0 19.2px;
+        border-right: none;
+    }
+
+    .interchange-badge {
+        font-size: 11px;
+        font-weight: bold;
+        padding: 5px 10px;
+        border-radius: 0;
+        white-space: nowrap;
+        color: white;
+        letter-spacing: 1px;
+        border: 2px solid #fff;
+        border-left: none;
+        cursor: default;
+    }
+
+    /* Last interchange badge gets rounded right side */
+    .interchange-badge:last-child {
+        border-radius: 0 13.6px 13.6px 0 / 0 19.2px 19.2px 0;
+    }
+
+    /* Solo station code (no interchange) keeps full rounding */
+    .station-code:only-child {
+        border-radius: 13.6px / 19.2px;
+        border-right: 2px solid #fff;
+    }
+
+    /* Newton connector style - separate capsules with connector */
+    .station-connector .station-code:has(~ .interchange-badge) {
+        border-radius: 13.6px / 19.2px;
+        border-right: 2px solid #fff;
+        position: relative;
+        z-index: 2;
+    }
+
+    /* Right-side connector nub from station-code */
+    .station-connector .station-code:has(~ .interchange-badge)::after {
+        content: '';
+        position: absolute;
+        right: -9px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 10px;
+        height: 10px;
+        background: #009645;
+        border-radius: 2px;
+        z-index: -1;
+    }
+
+    .station-connector .interchange-badge {
+        border-radius: 13.6px / 19.2px;
+        border: 2px solid #fff;
+        border-left: 2px solid #fff;
+        margin-left: 14px;
+        position: relative;
+        z-index: 2;
+    }
+
+    /* Left-side connector nub from interchange badge */
+    .station-connector .interchange-badge::before {
+        content: '';
+        position: absolute;
+        left: -9px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 19px;
+        height: 10px;
+        background: #005ec8;
+        border-radius: 2px;
+        z-index: -1;
+    }
+
+    /* Line colors for interchanges */
+    .mrt-nsl {
+        background: #c41e3a;
+    }
+
+    .mrt-ewl {
+        background: #009645;
+    }
+
+    .mrt-ccl {
+        background: #fa9e0d;
+    }
+
+    .mrt-tel {
+        background: #926437;
+    }
+
+    .mrt-dtl {
+        background: #005ec8;
+    }
+
+    .mrt-nel {
+        background: #9d27b5;
+    }
+
+    .mrt-lrt {
+        background: #708270;
+    }
+
+    .station-name {
+        font-size: 18px;
+        font-weight: 500;
+        color: #000;
+        white-space: nowrap;
+        cursor: default;
+    }
+
+    .logo-operator {
+        width: 100px;
+        margin-top: 10px;
+    }
+
+    .details-section {
+        padding-left: 2em;
+        padding-right: 2em;
+    }
+
+    .caplet {
+        height: 1.05em;
+        width: auto;
+        margin-right: 0.3em;
+        vertical-align: middle;
+    }
+
+    .filter-title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        cursor: pointer;
+    }
+
+    body.dark-mode .line-description {
+        flex: 1;
+        padding: 30px 20px;
+        background: #3d4556;
+        border-radius: 12px;
+        margin-bottom: 40px;
+        height: fit-content;
+    }
+
+    body.dark-mode .line-description h3 {
+        color: #fff;
+    }
+
+    body.dark-mode .line-description p {
+        color: #fff;
+    }
+
+    body.dark-mode .line-description li {
+        color: #ccc;
+    }
+
+    body.dark-mode .line-stat {
+        border-bottom-color: #555;
+    }
+
+    body.dark-mode .line-stat-label {
+        color: #ccc;
+    }
+
+    body.dark-mode .line-diagram {
+        transition: all 0.5s ease;
+        background-color: #1c1f2b;
+        border: 1px solid #2b2b2b33;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    body.dark-mode .line-description {
+        transition: all 0.5s ease;
+        background-color: #1c1f2b;
+        border: 1px solid #2b2b2b33;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    body.dark-mode .station-name {
+        color: #fff;
+    }
+
+    body.dark-mode .port-summary {
+        color: #fff;
+        transition: all 0.5s ease;
+        background-color: #1c1f2b;
+        border: 1px solid #2b2b2b33;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+        .line-content-wrapper {
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .line-diagram {
+            max-width: 100%;
+        }
+
+        .line-description {
+            max-width: 100%;
+        }
+
+        .details-section {
+            padding-left: 1em;
+            padding-right: 1em;
+        }
+
+        .station-code,
+        .interchange-badge {
+            font-size: 10px;
+        }
+    }
+</style>
+
+<body>
+
+    <!-- Fixed Breadcrumb at very top (mobile/tablet only) -->
+    <div class="breadcrumb-fixed-placeholder">
+        <nav aria-label="breadcrumb" style="margin-bottom:0;">
+            <ol class="breadcrumb breadcrumb-fixed" id="floating-breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="../../rail-buddy.html"><i class="fa-solid fa-house"></i>
+                    </a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="../menu.html"><i class="fa-solid fa-bars"></i>
+                    </a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="../our-networks.html"><i class="fa-solid fa-train"></i>
+                    </a>
+                </li>
+            </ol>
+        </nav>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar-container">
+        <div class="navbar">
+            <!-- Logo -->
+            <a href="../../rail-buddy.html"><img src="../assets/logo.png" alt="logo" class="logo" /></a>
+
+            <!-- Navigation Links -->
+            <ul class="navbar-nav" id="navbarNav">
+                <li class="nav-item">
+                    <a href="../../rail-buddy.html" class="nav-link">
+                        <i class="fa-sharp fa-solid fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="../history.html" class="nav-link">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                        <span>History</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="../first-last.html" class="nav-link">
+                        <i class="fa-solid fa-clock"></i>
+                        <span>Timings</span>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a href="../menu.html" class="nav-link active">
+                        <i class="fa-solid fa-bars"></i>
+                        <span>Menu</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+    </nav>
+
+    <!-- Mobile Bottom Navigation Bar -->
+    <nav class="mobile-bottom-nav">
+        <ul>
+            <li>
+                <a href="../../rail-buddy.html">
+                    <span class="icon">
+                        <i class="fa-sharp fa-solid fa-home"></i>
+                    </span>
+                    <span class="label">Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="../history.html">
+                    <span class="icon">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                    </span>
+                    <span class="label">History</span>
+                </a>
+            </li>
+            <li>
+                <a href="../first-last.html">
+                    <span class="icon">
+                        <i class="fa-solid fa-clock"></i>
+                    </span>
+                    <span class="label">Timings</span>
+                </a>
+            </li>
+            <li class="active">
+                <a href="../menu.html">
+                    <span class="icon">
+                        <i class="fa-solid fa-bars"></i>
+                    </span>
+                    <span class="label">Menu</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+
+    <!------------------------------------------------------------------------ Start of Sections ------------------------------------------------------------------------>
+
+    <!-- Title/Breadcrumbs -->
+    <section class="about-me-sum clearfix">
+        <div class="wbnrfz_eicw">
+            <div class="page-header-section">
+                <div class="container container-xxl container-mobile container-mobile-header">
+                    <div class="breadcrumb-wrapper">
+                        <nav aria-label="breadcrumb" class="breadcrumb-desktop" style="display:none;">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="../../rail-buddy.html"><i class="fa-solid fa-house"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="../menu.html"><i class="fa-solid fa-bars"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="../our-networks.html"><i class="fa-solid fa-train"></i>
+                                    </a>
+                                </li>
+                            </ol>
+                        </nav>
+                        <div class="page-title-wrapper">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                                <div>
+                                    <h1 class="filter-title" id="chimes"><img src="../assets/caplets/BPCap.png" alt="BP"
+                                            class="caplet"> Bukit Panjang LRT</h1></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            </div>
+        </div>
+    </section>
+
+    <!-- Audio Elements -->
+    <audio id="chimes-audio">
+        <source src="../assets/chimes/BP_Chime.wav" type="audio/wav">
+        Your browser does not support the audio element.
+    </audio>
+
+
+    <!-- Details/Contents Section -->
+    <section class="about-me-summ clearfix">
+        <div class="wbnrfz_details_section wow fadeIn" data-wow-delay="100ms" id="abt">
+            <div class="container-xxl container-mobile container-mobile-header">
+
+                <div class="col-lg-12">
+                    <!-- Summary -->
+                    <div class="container container-xxl container-mobile">
+                        <div class="row">
+              <div class="col-md-6 col-lg-4 box-indiv">
+                <div class="port-summary port-cat text-center mb-80 wow fadeIn" data-wow-delay="100ms">
+                  <div class="summ-icon">
+                    <i class="fa-solid fa-calendar"></i>
+                  </div>
+                  <h3 style="font-size: 18px; font-weight: bolder;">Opened</h3>
+                  <h4 style="font-size: 13px;">6 November 1999<br>(All stations)</h4>
+                </div>
+              </div>
+
+              <div class="col-md-6 col-lg-4 box-indiv">
+                <div class="port-summary port-year text-center mb-80 wow fadeIn" data-wow-delay="100ms">
+                  <div class="summ-icon">
+                    <i class="fa-regular fa-ruler-horizontal"></i>
+                  </div>
+                  <h3 style="font-size: 18px; font-weight: bolder;">Length</h3>
+                  <h4 style="font-size: 13px;">8 km <br>(with 13 stations)</h4>
+                </div>
+              </div>
+
+              <div class="col-md-6 col-lg-4 box-indiv">
+                <div class="port-summary port-share text-center mb-80 wow fadeIn" data-wow-delay="100ms">
+                  <div class="summ-icon">
+                    <i class="fa-solid fa-train-subway"></i>
+                  </div>
+                  <h3 style="font-size: 18px; font-weight: bolder;">Operated By</h3>
+                  <img class="logo-operator" src="../assets/stl.png" id="ops-smrt" alt="smrt" width="150px">
+                </div>
+              </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Line Diagram Section -->
+    <section class="details-section">
+        <div class="container container-xxl container-mobile wow fadeIn" data-wow-delay="100ms">
+            <div class="line-content-wrapper">
+
+                <!-- Line Description Box -->
+                <div class="line-description">
+                    <p> The Bukit Panjang Light Rapid Transit (BPLRT) was launched as the first light
+                        rail line in Singapore in 1999. <br><br>
+
+                        LRT in Bukit Panjang
+                        The fully automated 8km line connects residential estates within Bukit Panjang and Choa Chu Kang
+                        to the
+                        North-South and Downtown Lines, complementing existing feeder bus services. It is also the first
+                        driverless inter-town train feeder service. <br><br>
+
+                        To cater for the line’s proximity to homes, the trains have special privacy features such as
+                        windows that
+                        automatically dim. <br><br>
+
+                        Having served the residents for 20 years, the BPLRT is currently undergoing a renewal project to
+                        upgrade
+                        its trains, tracks and signalling system<br><br> (Source: <a class="hyperlink"
+                            href="https://www.lta.gov.sg/content/ltagov/en/getting_around/public_transport/rail_network/bukit_panjang_lrt.html">LTA</a>
+                        )
+                    </p>
+
+                </div>
+                <!-- Line Diagram -->
+                <div class="line-diagram">
+                    <div class="branch-selector">
+                        <label for="serviceSelect"><strong>Service:</strong></label>
+                        <select id="serviceSelect" onchange="switchService()">
+                            <option value="serviceA">Service A (via Senja)</option>
+                            <option value="serviceB">Service B (via Petir)</option>
+                        </select>
+                    </div>
+                    <div class="line-container show" id="serviceAContainer">
+                        <!-- BP 1 Choa Chu Kang -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">BP 1</span>
+                                    <span class="interchange-badge mrt-nsl">NS 4</span>
+                                </div>
+                                <div class="station-name">Choa Chu Kang</div>
+                            </div>
+                        </div>
+
+                        <!-- BP 2 South View -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes station-connector">
+                                    <span class="station-code">BP 2</span>
+                                </div>
+                                <div class="station-name">South View</div>
+                            </div>
+                        </div>
+
+                        <!-- BP 3 Keat Hong -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">BP 3</span>
+                                </div>
+                                <div class="station-name">Keat Hong</div>
+                            </div>
+                        </div>
+
+                        <!-- BP 4 Teck Whye-->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">BP 4</span>
+                                </div>
+                                <div class="station-name">Teck Whye</div>
+                            </div>
+                        </div>
+
+                        <!-- BP 5 Phoenix -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">BP 5</span>
+                                </div>
+                                <div class="station-name">Phoenix</div>
+                            </div>
+                        </div>
+
+                        <!-- BP 6 Bukit Panjang -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">BP 6</span>
+                                    <span class="interchange-badge mrt-dtl">DT 1</span>
+                                </div>
+                                <div class="station-name">Bukit Panjang</div>
+                            </div>
+                        </div>
+
+                        <!-- BP 13 Senja -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">BP 13</span>
+                                </div>
+                                <div class="station-name">Senja</div>
+                            </div>
+                        </div>
+
+                        <!-- BP 12 Jelapang -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">BP 12</span>
+                                </div>
+                                <div class="station-name">Jelapang</div>
+                            </div>
+                        </div>
+
+                        <div id="hidden-stations">
+                            <!-- BP 11 Segar -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">BP 11</span>
+                                    </div>
+                                    <div class="station-name">Segar</div>
+                                </div>
+                            </div>
+
+                            <!-- BP 10 Fajar -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">BP 10</span>
+                                    </div>
+                                    <div class="station-name">Fajar</div>
+                                </div>
+                            </div>
+
+                            <!-- BP 9 Bangkit -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">BP 9</span>
+                                    </div>
+                                    <div class="station-name">Bangkit</div>
+                                </div>
+                            </div>
+
+                            <!-- BP 8 Pending -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">BP 8</span>
+                                    </div>
+                                    <div class="station-name">Pending</div>
+                                </div>
+                            </div>
+
+                            <!-- BP 7 Petir -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">BP 7</span>
+                                    </div>
+                                    <div class="station-name">Petir</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="show-more-button">
+                            <button id="toggleBtn" onclick="toggleStations()">Show More</button>
+                        </div>
+                    </div>
+
+                    <!-- Service B Container -->
+                    <div class="line-container hidden" id="serviceBContainer">
+                        <!-- BP 1 Choa Chu Kang -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">BP 1</span>
+                                    <span class="interchange-badge mrt-nsl">NS 4</span>
+                                </div>
+                                <div class="station-name">Choa Chu Kang</div>
+                            </div>
+                        </div>
+
+                        <!-- BP 2 South View -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes station-connector">
+                                    <span class="station-code">BP 2</span>
+                                </div>
+                                <div class="station-name">South View</div>
+                            </div>
+                        </div>
+
+                        <!-- BP 3 Keat Hong -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">BP 3</span>
+                                </div>
+                                <div class="station-name">Keat Hong</div>
+                            </div>
+                        </div>
+
+                        <!-- BP 4 Teck Whye-->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">BP 4</span>
+                                </div>
+                                <div class="station-name">Teck Whye</div>
+                            </div>
+                        </div>
+
+                        <!-- BP 5 Phoenix -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">BP 5</span>
+                                </div>
+                                <div class="station-name">Phoenix</div>
+                            </div>
+                        </div>
+
+                        <!-- BP 6 Bukit Panjang -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">BP 6</span>
+                                    <span class="interchange-badge mrt-dtl">DT 1</span>
+                                </div>
+                                <div class="station-name">Bukit Panjang</div>
+                            </div>
+                        </div>
+
+                        <!-- BP 7 Petir -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">BP 7</span>
+                                </div>
+                                <div class="station-name">Petir</div>
+                            </div>
+                        </div>
+
+                        <!-- BP 8 Pending -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">BP 8</span>
+                                </div>
+                                <div class="station-name">Pending</div>
+                            </div>
+                        </div>
+
+                        <div id="hidden-stations-b">
+                            <!-- BP 9 Bangkit -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">BP 9</span>
+                                    </div>
+                                    <div class="station-name">Bangkit</div>
+                                </div>
+                            </div>
+
+                            <!-- BP 10 Fajar -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">BP 10</span>
+                                    </div>
+                                    <div class="station-name">Fajar</div>
+                                </div>
+                            </div>
+
+                            <!-- BP 11 Segar -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">BP 11</span>
+                                    </div>
+                                    <div class="station-name">Segar</div>
+                                </div>
+                            </div>
+
+                            <!-- BP 12 Jelapang -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">BP 12</span>
+                                    </div>
+                                    <div class="station-name">Jelapang</div>
+                                </div>
+                            </div>
+
+                            <!-- BP 13 Senja -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">BP 13</span>
+                                    </div>
+                                    <div class="station-name">Senja</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="show-more-button">
+                            <button id="toggleBtnB" onclick="toggleStationsB()">Show More</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+    </section>
+
+    <script type="text/javascript" id="cookiebanner" src="../../js/cookies-banner.js" data-position="bottom"
+        data-bg="#f2f3e5" data-fg="#000" data-font-family="Onest, sans-serif" data-zindex="12345111111"
+        data-message="This website uses cookies to provide necessary site functionality and to improve your experience. By using this website, you agree to our use of cookies.">
+        </script>
+
+
+    <script src="../js/mob-navtabs.js"></script>
+
+    <script src="../tdt-subp.js"></script>
+
+    <script src="../../js/jquery.min.js"></script>
+
+    <script src='https://unpkg.com/swiper@6.8.1/swiper-bundle.min.js'></script>
+
+    <script src="../../js/dstabs.js"></script>
+
+    <script src="../../js/popper.min.js"></script>
+
+    <script src="../../js/bootstrap.min.js"></script>
+
+    <script src="../../js/pw.bundle.js"></script>
+
+    <script src="../../js/default-assets/active.js"></script>
+
+    <script>
+        function switchService() {
+            const selector = document.getElementById('serviceSelect');
+            const serviceAContainer = document.getElementById('serviceAContainer');
+            const serviceBContainer = document.getElementById('serviceBContainer');
+            const hiddenStationsA = document.getElementById('hidden-stations');
+            const hiddenStationsB = document.getElementById('hidden-stations-b');
+            const toggleBtnA = document.getElementById('toggleBtn');
+            const toggleBtnB = document.getElementById('toggleBtnB');
+
+            if (selector.value === 'serviceA') {
+                serviceAContainer.classList.remove('hidden');
+                serviceAContainer.classList.add('show');
+                serviceBContainer.classList.add('hidden');
+                serviceBContainer.classList.remove('show');
+                // Reset hidden stations
+                hiddenStationsA.classList.remove('show');
+                hiddenStationsB.classList.remove('show');
+                toggleBtnA.innerHTML = '<i class="fa-solid fa-chevron-down"></i> Show More';
+                toggleBtnB.innerHTML = '<i class="fa-solid fa-chevron-down"></i> Show More';
+            } else {
+                serviceAContainer.classList.add('hidden');
+                serviceAContainer.classList.remove('show');
+                serviceBContainer.classList.remove('hidden');
+                serviceBContainer.classList.add('show');
+                // Reset hidden stations
+                hiddenStationsA.classList.remove('show');
+                hiddenStationsB.classList.remove('show');
+                toggleBtnA.innerHTML = '<i class="fa-solid fa-chevron-down"></i> Show More';
+                toggleBtnB.innerHTML = '<i class="fa-solid fa-chevron-down"></i> Show More';
+            }
+        }
+
+        function toggleStations() {
+            const hiddenStations = document.getElementById('hidden-stations');
+            const toggleBtn = document.getElementById('toggleBtn');
+
+            if (hiddenStations.classList.contains('show')) {
+                hiddenStations.classList.remove('show');
+                toggleBtn.innerHTML = '<i class="fa-solid fa-chevron-down"></i> Show More';
+            } else {
+                hiddenStations.classList.add('show');
+                toggleBtn.innerHTML = '<i class="fa-solid fa-chevron-up"></i> Show Less';
+            }
+        }
+
+        function toggleStationsB() {
+            const hiddenStations = document.getElementById('hidden-stations-b');
+            const toggleBtn = document.getElementById('toggleBtnB');
+
+            if (hiddenStations.classList.contains('show')) {
+                hiddenStations.classList.remove('show');
+                toggleBtn.innerHTML = '<i class="fa-solid fa-chevron-down"></i> Show More';
+            } else {
+                hiddenStations.classList.add('show');
+                toggleBtn.innerHTML = '<i class="fa-solid fa-chevron-up"></i> Show Less';
+            }
+        }
+    </script>
+
+    <script src="../assets/chimes/chimes.js"></script>
+
+</body>
+
+</html>

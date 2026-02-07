@@ -163,7 +163,7 @@
             header.textContent = direction.description;
             card.appendChild(header);
 
-            const dayKeys = ['monday_to_friday', 'saturday', 'sunday_public_holidays'];
+            const dayKeys = ['monday_to_friday', 'saturday', 'sunday_public_holidays', 'eve_of_public_holidays'];
             const dayLabels = {
                 'monday_to_friday': 'Mon - Fri',
                 'saturday': 'Saturday',
@@ -233,7 +233,7 @@
             header.textContent = direction.description;
             card.appendChild(header);
 
-            const dayKeys = ['monday_to_friday', 'saturday', 'sunday_public_holidays'];
+            const dayKeys = ['monday_to_friday', 'saturday', 'sunday_public_holidays','eve_of_public_holidays'];
             const dayLabels = {
                 'monday_to_friday': 'Mon - Fri',
                 'saturday': 'Saturday',

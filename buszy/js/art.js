@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }, 300));
 
     // Refresh data every 5 seconds
-    setInterval(fetchBusArrivals, 5000);
+    setInterval(fetchBusArrivals, 55000);
 
     // Listen for changes in localStorage to update time format dynamically
     window.addEventListener('storage', (event) => {
@@ -226,14 +226,22 @@ async function fetchBusArrivals() {
         data.Services.forEach((service) => {
             const card = document.createElement('div');
             card.classList.add('col-12', 'col-md-4', 'col-xl-3', 'card-bt'); // Add col-sm-6 for 2 cards per row on small screens
+            const isMonitored = JSON.parse(localStorage.getItem('monitoredServices') || '{}')[service.ServiceNo] || false;
             card.innerHTML = `
                 <div class="card">
-                    <div class="card-header d-flex justify-content-between">
+                    <div class="card-header d-flex justify-content-between align-items-center">
                         <div>
                             <span class="service-no">${service.ServiceNo}</span>
                             ${service.NextBus?.DestinationCode ? `<div class="destination-code">To ${getDestinationName(service.NextBus.DestinationCode)}</div>` : ''}
                         </div>
-                        ${service.Operator ? `<img src="assets/${service.Operator.toLowerCase()}.png" alt="${service.Operator}" class="img-fluid" style="width: 50px;">` : ''}
+                        <div style="display: flex; flex-direction: row; gap: 0.5rem; align-items: center;">
+                            <button class="btn btn-notify btn-sm notify-btn ${isMonitored ? 'active' : ''}" 
+                                data-service="${service.ServiceNo}"
+                                title="Get notified when bus arrives">
+                                <i class="fa-solid fa-bell"></i>
+                            </button>
+                            ${service.Operator ? `<img src="assets/${service.Operator.toLowerCase()}.png" alt="${service.Operator}" class="img-fluid" style="width: 50px;">` : ''}
+                        </div>
                     </div>
                     <div class="card-body">
                         <div class="card-content-art">
@@ -277,6 +285,9 @@ async function fetchBusArrivals() {
             container.appendChild(card);
         });
 
+        // Check for arrivals and send notifications
+        checkMonitoredServices(data.Services, now);
+
         // Add event listeners to "View Bus Location" buttons
         const viewLocationButtons = document.querySelectorAll('.view-location-btn');
         viewLocationButtons.forEach((button) => {
@@ -316,6 +327,25 @@ async function fetchBusArrivals() {
                 }
             });
         });
+
+        // Add event listeners to notify buttons
+        const notifyButtons = document.querySelectorAll('.notify-btn');
+        notifyButtons.forEach((button) => {
+            button.addEventListener('click', () => {
+                const serviceNo = button.getAttribute('data-service');
+                const monitoredServices = JSON.parse(localStorage.getItem('monitoredServices') || '{}');
+                
+                monitoredServices[serviceNo] = !monitoredServices[serviceNo];
+                localStorage.setItem('monitoredServices', JSON.stringify(monitoredServices));
+                
+                button.classList.toggle('active');
+                
+                // Request notification permission on first toggle
+                if (monitoredServices[serviceNo] && Notification.permission !== 'granted' && Notification.permission !== 'denied') {
+                    Notification.requestPermission();
+                }
+            });
+        });
     } catch (error) {
         console.error('Error fetching bus arrivals:', error);
         const container = document.getElementById('bus-arrivals-container');
@@ -328,6 +358,49 @@ async function fetchBusArrivals() {
                     </div>
                 </div>
             </div>`;
+    }
+}
+
+// Function to check monitored services and send notifications
+function checkMonitoredServices(services, now) {
+    const monitoredServices = JSON.parse(localStorage.getItem('monitoredServices') || '{}');
+    const notifiedServices = JSON.parse(localStorage.getItem('notifiedServices') || '{}');
+    
+    services.forEach((service) => {
+        if (monitoredServices[service.ServiceNo]) {
+            // Check NextBus arrival
+            if (service.NextBus?.EstimatedArrival) {
+                const timeDifference = new Date(service.NextBus.EstimatedArrival) - now;
+                if (timeDifference <= 0 && !notifiedServices[`${service.ServiceNo}-nextbus`]) {
+                    sendNotification(`Bus ${service.ServiceNo} Arrives Now!`, {
+                        body: 'Your monitored bus has arrived.',
+                        icon: 'assets/bus-icon.png'
+                    });
+                    notifiedServices[`${service.ServiceNo}-nextbus`] = true;
+                    localStorage.setItem('notifiedServices', JSON.stringify(notifiedServices));
+                }
+            }
+            
+            // Check NextBus2 arrival
+            if (service.NextBus2?.EstimatedArrival) {
+                const timeDifference = new Date(service.NextBus2.EstimatedArrival) - now;
+                if (timeDifference <= 0 && !notifiedServices[`${service.ServiceNo}-nextbus2`]) {
+                    sendNotification(`Bus ${service.ServiceNo} Arrives Now!`, {
+                        body: 'Your second monitored bus has arrived.',
+                        icon: 'assets/bus-icon.png'
+                    });
+                    notifiedServices[`${service.ServiceNo}-nextbus2`] = true;
+                    localStorage.setItem('notifiedServices', JSON.stringify(notifiedServices));
+                }
+            }
+        }
+    });
+}
+
+// Function to send notification
+function sendNotification(title, options = {}) {
+    if (Notification.permission === 'granted') {
+        new Notification(title, options);
     }
 }
 
