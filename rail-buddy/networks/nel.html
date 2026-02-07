@@ -30,9 +30,12 @@
     .line-diagram {
         flex: 1;
         padding: 30px 20px;
-        background: #3d4556;
-        border-radius: 12px;
+        transition-duration: 800ms;
+        background-color: #fff;
+        border-radius: 25px;
+        box-shadow: 3px 0 15px -1px rgba(0, 0, 0, 0.15);
         margin-bottom: 40px;
+        padding-right: 4em;
     }
 
     .line-content-wrapper {
@@ -44,8 +47,10 @@
     .line-description {
         flex: 1;
         padding: 30px 20px;
-        background: #3d4556;
-        border-radius: 12px;
+        transition-duration: 800ms;
+        background-color: #fff;
+        border-radius: 25px;
+        box-shadow: 3px 0 15px -1px rgba(0, 0, 0, 0.15);
         margin-bottom: 40px;
         height: fit-content;
     }
@@ -53,7 +58,7 @@
     .line-description h3 {
         margin-top: 0;
         margin-bottom: 16px;
-        color: #fff;
+        color: #000;
         font-size: 16px;
         font-weight: 600;
     }
@@ -62,7 +67,7 @@
         margin: 0 0 12px 0;
         font-size: 14px;
         line-height: 1.6;
-        color: #ccc;
+        color: #000;
     }
 
     .line-description ul {
@@ -74,7 +79,7 @@
     .line-description li {
         font-size: 14px;
         line-height: 1.6;
-        color: #ccc;
+        color: #000;
         margin-bottom: 8px;
     }
 
@@ -83,17 +88,17 @@
         justify-content: space-between;
         margin: 12px 0;
         padding: 10px 0;
-        border-bottom: 1px solid #555;
+        border-bottom: 1px solid #ddd;
     }
 
     .line-stat-label {
         font-weight: 500;
-        color: #ccc;
+        color: #666;
     }
 
     .line-stat-value {
         font-weight: 600;
-        color: #fff;
+        color: #000;
     }
 
     #hidden-stations {
@@ -101,21 +106,12 @@
         flex-direction: column;
         gap: 0;
         position: relative;
-        padding-left: 30px;
+        padding-left: 0px;
         margin-top: 6px;
     }
 
     /* Vertical line for hidden stations */
-    #hidden-stations::before {
-        content: '';
-        position: absolute;
-        left: 6px;
-        top: -23px;
-        bottom: 22px;
-        width: 3px;
-        background: #9d27b5;
-        z-index: 1;
-    }
+    /* REMOVED - using only .line-container::before */
 
     /* Adjust first station in hidden section */
     #hidden-stations .station:first-child {
@@ -189,7 +185,7 @@
         position: absolute;
         left: 6px;
         top: 22px;
-        bottom: 22px;
+        bottom: 99px;
         width: 3px;
         background: #9d27b5;
         z-index: 1;
