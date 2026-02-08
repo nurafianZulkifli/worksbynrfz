@@ -319,3 +319,35 @@ body.dark-mode .list-group-item:hover {
         color: #fff;
     }
 }
+
+/* Error state styling */
+#stationDropdown.error {
+    border-color: #f44336 !important;
+    background-color: #ffebee !important;
+}
+
+body.dark-mode #stationDropdown.error {
+    border-color: #f44336 !important;
+    background-color: #5a1a1a !important;
+}
+
+.error-message {
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+body.dark-mode .error-message {
+    background: #5a1a1a !important;
+    border-color: #c33 !important;
+    color: #ff6b6b !important;
+}

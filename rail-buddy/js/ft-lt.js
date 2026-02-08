@@ -4,14 +4,23 @@
         let currentData = [];
         let filteredStations = [];
         let allStations = [];
+        let loadAttempts = 0;
+        const maxRetries = 3;
+        
         // Load all data on page load
         async function loadData() {
             try {
+                loadAttempts++;
                 // Load both datasets in parallel
                 const [smrtResponse, sbsResponse] = await Promise.all([
                     fetch('json/smrt-ft-lt.json'),
                     fetch('json/sbs-transit-ft-lt.json')
                 ]);
+
+                // Check if responses are ok
+                if (!smrtResponse.ok || !sbsResponse.ok) {
+                    throw new Error(`HTTP Error: SMRT ${smrtResponse.status}, SBS ${sbsResponse.status}`);
+                }
 
                 smrtData = await smrtResponse.json();
                 sbsData = await sbsResponse.json();
@@ -20,9 +29,48 @@
                 mergeData();
                 populateDropdown();
                 initSearchFunctionality();
+                
+                // Clear any error messages on successful load
+                const dropdown = document.getElementById('stationDropdown');
+                if (dropdown) {
+                    dropdown.classList.remove('error');
+                }
             } catch (error) {
-                console.error('Error loading data:', error);
-                alert('Failed to load train data. Please refresh the page.');
+                console.error('Error loading data (attempt ' + loadAttempts + '):', error);
+                
+                // Show error message in UI instead of alert
+                showDataLoadError(error);
+                
+                // Retry after delay if we haven't exceeded max retries
+                if (loadAttempts < maxRetries) {
+                    const delay = 1000 * loadAttempts; // Exponential backoff
+                    setTimeout(() => {
+                        console.log('Retrying data load...');
+                        loadData();
+                    }, delay);
+                }
+            }
+        }
+        
+        // Display error message in the UI
+        function showDataLoadError(error) {
+            const dropdown = document.getElementById('stationDropdown');
+            const contentSection = document.getElementById('contentSection');
+            const directionsContainer = document.getElementById('directionsContainer');
+            
+            if (dropdown) {
+                dropdown.classList.add('error');
+                dropdown.innerHTML = '<option value="">Error loading data. Retrying...</option>';
+            }
+            
+            if (directionsContainer) {
+                directionsContainer.innerHTML = `
+                    <div class="error-message" style="padding: 20px; background: #fee; border: 1px solid #f99; border-radius: 8px; color: #c33; text-align: center;">
+                        <strong>Unable to load train data</strong>
+                        <p style="margin-top: 10px; font-size: 0.9em;">${error.message}</p>
+                        <p style="margin-top: 10px; font-size: 0.85em; opacity: 0.8;">The page will retry automatically...</p>
+                    </div>
+                `;
             }
         }
 
