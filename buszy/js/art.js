@@ -14,6 +14,27 @@ function initializeDefaultPreferences() {
 // Initialize defaults immediately
 initializeDefaultPreferences();
 
+// Register Service Worker for notifications
+function registerServiceWorker() {
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/service-worker.js')
+            .then(registration => {
+                console.log('Service Worker registered successfully:', registration);
+            })
+            .catch(error => {
+                console.warn('Service Worker registration failed:', error);
+                // This is not critical - notifications will still work with fallback
+            });
+    }
+}
+
+// Register service worker when page loads
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', registerServiceWorker);
+} else {
+    registerServiceWorker();
+}
+
 // ****************************
 // :: Bus Arrivals Fetching and Display
 // ****************************
@@ -119,14 +140,20 @@ function debounce(func, delay) {
     };
 }
 
+// Store previous content for comparison
+let previousContainerHTML = '';
+
 // Updated fetchBusArrivals function
 async function fetchBusArrivals() {
     try {
+        // Save current scroll position at the very start
+        const scrollPosition = window.scrollY || document.documentElement.scrollTop;
+        
         const searchInput = document.getElementById('bus-stop-search').value.trim();
         const container = document.getElementById('bus-arrivals-container');
 
         if (!searchInput) {
-            container.innerHTML = `
+            const noDataHTML = `
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">No Data</div>
@@ -135,6 +162,10 @@ async function fetchBusArrivals() {
                         </div>
                     </div>
                 </div>`;
+            // Only update if content has changed
+            if (container.innerHTML !== noDataHTML) {
+                container.innerHTML = noDataHTML;
+            }
             return;
         }
 
@@ -150,10 +181,8 @@ async function fetchBusArrivals() {
         const data = await response.json();
         // console.log('API Response:', data); // Debugging line to check API response
 
-        container.innerHTML = '';
-
         if (!data.Services || data.Services.length === 0) {
-            container.innerHTML = `
+            const noDataHTML = `
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">No Data Available</div>
@@ -162,6 +191,10 @@ async function fetchBusArrivals() {
                         </div>
                     </div>
                 </div>`;
+            // Only update if content has changed
+            if (container.innerHTML !== noDataHTML) {
+                container.innerHTML = noDataHTML;
+            }
             return;
         }
 
@@ -169,6 +202,18 @@ async function fetchBusArrivals() {
 
         // Create a map of destination codes to names from cached bus stops
         let destinationMap = {};
+        let customDestinationMap = {};
+        
+        // Load custom destination code mappings
+        try {
+            const response = await fetch('json/destination-codes.json');
+            if (response.ok) {
+                customDestinationMap = await response.json();
+            }
+        } catch (error) {
+            console.warn('Custom destination codes file not found or error loading:', error);
+        }
+        
         try {
             const allBusStops = JSON.parse(localStorage.getItem('allBusStops')) || [];
             allBusStops.forEach((stop) => {
@@ -180,7 +225,16 @@ async function fetchBusArrivals() {
 
         // Function to get destination name
         function getDestinationName(destinationCode) {
-            return destinationMap[destinationCode] || destinationCode;
+            // First try to find in bus stops map
+            if (destinationMap[destinationCode]) {
+                return destinationMap[destinationCode];
+            }
+            // Then try custom destination codes mapping
+            if (customDestinationMap[destinationCode]) {
+                return customDestinationMap[destinationCode];
+            }
+            // Finally return the code itself if not found
+            return destinationCode;
         }
 
         // Prepare incoming buses data
@@ -206,27 +260,34 @@ async function fetchBusArrivals() {
         incomingBuses.sort((a, b) => a.EstimatedArrival - b.EstimatedArrival);
         const topFourBuses = incomingBuses.slice(0, 4);
 
-        // Display incoming buses
+        // Display incoming buses - only update if content has changed
         const incomingSection = document.getElementById('incoming-buses-section');
         const incomingGrid = document.getElementById('incoming-buses-grid');
         if (topFourBuses.length > 0) {
             incomingSection.style.display = 'block';
             const isDarkMode = document.body.classList.contains('dark-mode');
             const bgColor = isDarkMode ? '#7db603' : '#94d40b';
-            incomingGrid.innerHTML = topFourBuses.map(bus => `
+            const newIncomingHTML = topFourBuses.map(bus => `
                 <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
                     <div class="ib-time">${bus.TimeStr}</div>
                     <div class="ib-svc" style="background-color: ${bgColor};" >${bus.ServiceNo}</div>
                 </div>
             `).join('');
+            // Only update if content has changed
+            if (incomingGrid.innerHTML !== newIncomingHTML) {
+                incomingGrid.innerHTML = newIncomingHTML;
+            }
         } else {
             incomingSection.style.display = 'none';
         }
 
+        // Build new content
+        const tempContainer = document.createElement('div');
+        
         data.Services.forEach((service) => {
             const card = document.createElement('div');
             card.classList.add('col-12', 'col-md-4', 'col-xl-3', 'card-bt'); // Add col-sm-6 for 2 cards per row on small screens
-            const isMonitored = JSON.parse(localStorage.getItem('monitoredServices') || '{}')[service.ServiceNo] || false;
+            const isMonitored = getNotificationPreference('monitoredServices')?.[service.ServiceNo] || false;
 
             // Safely check if NextBus exists and has required properties
             const hasNextBus = service.NextBus && typeof service.NextBus === 'object' && Object.keys(service.NextBus).length > 0;
@@ -290,150 +351,230 @@ async function fetchBusArrivals() {
                     </div>
                 </div>
             `;
-            container.appendChild(card);
+            tempContainer.appendChild(card);
         });
+
+        // Only update the DOM if the content has changed
+        const newHTML = tempContainer.innerHTML;
+        let didUpdate = false;
+        if (container.innerHTML !== newHTML) {
+            container.innerHTML = newHTML;
+            didUpdate = true;
+        }
 
         // Check for arrivals and send notifications
         const busStopCode = document.getElementById('bus-stop-search').value.trim();
         checkMonitoredServices(data.Services, now, busStopCode);
 
-        // Add event listeners to "View Bus Location" buttons
-        const viewLocationButtons = document.querySelectorAll('.view-location-btn');
-        viewLocationButtons.forEach((button) => {
-            button.addEventListener('click', (event) => {
-                const latitude = parseFloat(button.getAttribute('data-lat'));
-                const longitude = parseFloat(button.getAttribute('data-lng'));
-                const busNumber = button.getAttribute('data-bus');
-                const eta = button.parentElement.parentElement.querySelector('.bus-time').textContent;
+        // Only add event listeners if the DOM was updated
+        if (didUpdate) {
+            // Add event listeners to "View Bus Location" buttons
+            const viewLocationButtons = document.querySelectorAll('.view-location-btn');
+            viewLocationButtons.forEach((button) => {
+                button.addEventListener('click', (event) => {
+                    if (!map) {
+                        alert('Map is not available on this device. Please try on desktop.');
+                        return;
+                    }
+                    
+                    const latitude = parseFloat(button.getAttribute('data-lat'));
+                    const longitude = parseFloat(button.getAttribute('data-lng'));
+                    const busNumber = button.getAttribute('data-bus');
+                    const eta = button.parentElement.parentElement.querySelector('.bus-time').textContent;
 
-                if (!isNaN(latitude) && !isNaN(longitude)) {
-                    // Show the map section
-                    const mapSection = document.querySelector('.bus-location-section');
-                    mapSection.style.display = 'block';
+                    if (!isNaN(latitude) && !isNaN(longitude)) {
+                        // Show the map section
+                        const mapSection = document.querySelector('.bus-location-section');
+                        if (mapSection) {
+                            mapSection.style.display = 'block';
 
-                    // Invalidate the map size to fix grey areas
-                    setTimeout(() => {
-                        map.invalidateSize();
-                    }, 100); // Small delay to ensure the map container is fully visible
+                            // Invalidate the map size to fix grey areas
+                            setTimeout(() => {
+                                if (map && map.invalidateSize) {
+                                    map.invalidateSize();
+                                }
+                            }, 100); // Small delay to ensure the map container is fully visible
 
-                    // Clear all existing markers
-                    map.eachLayer((layer) => {
-                        if (layer instanceof L.Marker) {
-                            map.removeLayer(layer);
+                            // Clear all existing markers
+                            map.eachLayer((layer) => {
+                                if (layer instanceof L.Marker) {
+                                    map.removeLayer(layer);
+                                }
+                            });
+
+                            // Center the map on the selected bus location and add a marker
+                            map.setView([latitude, longitude], 15);
+                            const marker = L.marker([latitude, longitude]).addTo(map);
+
+                            marker.bindPopup(`
+                                        <b>Bus ${busNumber}</b><br>
+                                        ${eta || '--'}
+                                    `).openPopup();
                         }
-                    });
-
-                    // Center the map on the selected bus location and add a marker
-                    map.setView([latitude, longitude], 15);
-                    const marker = L.marker([latitude, longitude]).addTo(map);
-
-                    marker.bindPopup(`
-                                <b>Bus ${busNumber}</b><br>
-                                ${eta || '--'}
-                            `).openPopup();
-                } else {
-                    alert('Bus location not available.');
-                }
+                    } else {
+                        alert('Bus location not available.');
+                    }
+                });
             });
-        });
 
-        // Add event listeners to notify buttons
-        const notifyButtons = document.querySelectorAll('.notify-btn');
-        const busStopCodeForToast = document.getElementById('bus-stop-search').value.trim();
-        
-        // Get bus stop description for toast
-        let busStopDescriptionForToast = '';
-        try {
-            const allBusStops = JSON.parse(localStorage.getItem('allBusStops')) || [];
-            const busStop = allBusStops.find(stop => stop.BusStopCode === busStopCodeForToast);
-            if (busStop) {
-                busStopDescriptionForToast = busStop.Description;
+            // Add event listeners to notify buttons
+            const notifyButtons = document.querySelectorAll('.notify-btn');
+            const busStopCodeForToast = document.getElementById('bus-stop-search').value.trim();
+            
+            // Get bus stop description for toast
+            let busStopDescriptionForToast = '';
+            try {
+                const allBusStops = JSON.parse(localStorage.getItem('allBusStops')) || [];
+                const busStop = allBusStops.find(stop => stop.BusStopCode === busStopCodeForToast);
+                if (busStop) {
+                    busStopDescriptionForToast = busStop.Description;
+                }
+            } catch (error) {
+                console.error('Error fetching bus stop description:', error);
             }
-        } catch (error) {
-            console.error('Error fetching bus stop description:', error);
-        }
-        
-        notifyButtons.forEach((button) => {
-            button.addEventListener('click', () => {
-                const serviceNo = button.getAttribute('data-service');
-                const monitoredServices = JSON.parse(localStorage.getItem('monitoredServices') || '{}');
+            
+            notifyButtons.forEach((button) => {
+                button.addEventListener('click', () => {
+                    try {
+                        const serviceNo = button.getAttribute('data-service');
+                        const monitoredServices = getNotificationPreference('monitoredServices') || {};
 
-                monitoredServices[serviceNo] = !monitoredServices[serviceNo];
-                localStorage.setItem('monitoredServices', JSON.stringify(monitoredServices));
+                        monitoredServices[serviceNo] = !monitoredServices[serviceNo];
+                        saveNotificationPreference('monitoredServices', monitoredServices);
 
-                button.classList.toggle('active');
+                        button.classList.toggle('active');
 
-                // Show toast notification
-                const isActive = monitoredServices[serviceNo];
-                const busStopInfo = busStopDescriptionForToast ? ` at ${busStopDescriptionForToast}` : '';
-                const message = isActive
-                    ? `Notifications enabled for Bus ${serviceNo}${busStopInfo}`
-                    : `Notifications disabled for Bus ${serviceNo}${busStopInfo}`;
-                showToast(message, isActive ? 'success' : 'info');
+                        // Show toast notification
+                        const isActive = monitoredServices[serviceNo];
+                        const busStopInfo = busStopDescriptionForToast ? ` at ${busStopDescriptionForToast}` : '';
+                        const message = isActive
+                            ? `Notifications enabled for Bus ${serviceNo}${busStopInfo}`
+                            : `Notifications disabled for Bus ${serviceNo}${busStopInfo}`;
+                        showToast(message, isActive ? 'success' : 'info');
 
-                // Request notification permission on first toggle
-                if (monitoredServices[serviceNo] && Notification.permission !== 'granted' && Notification.permission !== 'denied') {
-                    Notification.requestPermission();
-                }
+                        // Request notification permission on enabling notifications
+                        if (isActive) {
+                            if (!('Notification' in window)) {
+                                showToast('Notifications not supported on this device.', 'info');
+                                return;
+                            }
+
+                            if (Notification.permission === 'default') {
+                                console.log('Requesting notification permission...');
+                                Notification.requestPermission()
+                                    .then(permission => {
+                                        console.log('Notification permission result:', permission);
+                                        if (permission === 'granted') {
+                                            console.log('Notifications permission granted for Bus service');
+                                        } else if (permission === 'denied') {
+                                            showToast('Notifications are blocked in your browser settings. Please enable them to receive alerts.', 'info');
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('Error requesting notification permission:', error);
+                                        showToast('Could not enable notifications on this device.', 'info');
+                                    });
+                            } else if (Notification.permission === 'granted') {
+                                console.log('Notifications permission already granted');
+                            } else if (Notification.permission === 'denied') {
+                                showToast('Notifications are blocked in your browser settings. Please enable them to receive alerts.', 'info');
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Error handling notification button click:', error);
+                        showToast('Error updating notification settings. Please try again.', 'error');
+                    }
+                });
             });
-        });
+        }
     } catch (error) {
         console.error('Error fetching bus arrivals:', error);
         const container = document.getElementById('bus-arrivals-container');
+        
+        // Determine error message based on error type
+        let errorMessage = 'Error loading data. Try Refreshing.';
+        let errorDetails = '';
+        
+        if (error instanceof TypeError && error.message.includes('fetch')) {
+            errorMessage = 'Network error. Check your connection.';
+            errorDetails = 'Unable to connect to the server. Please check your internet connection.';
+        } else if (error.message === 'Failed to fetch bus arrivals') {
+            errorMessage = 'Server error. Try again later.';
+            errorDetails = 'The server is temporarily unavailable. Please try again in a moment.';
+        } else if (error.message.includes('JSON')) {
+            errorMessage = 'Data error. Try Refreshing.';
+            errorDetails = 'The server sent invalid data. Please refresh the page.';
+        }
+        
         container.innerHTML = `
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">Error</div>
                     <div class="card-body">
-                        <p class="card-text">Error loading data. Try Refreshing.</p>
+                        <p class="card-text">${errorMessage}</p>
+                        ${errorDetails ? `<p class="card-text" style="font-size: 0.9em; color: #666;">${errorDetails}</p>` : ''}
                     </div>
                 </div>
             </div>`;
+        
+        // Show toast for mobile users
+        showToast(errorMessage, 'error');
     }
 }
 
 // Function to check monitored services and send notifications
 function checkMonitoredServices(services, now, busStopCode = '') {
-    const monitoredServices = JSON.parse(localStorage.getItem('monitoredServices') || '{}');
-    const notifiedServices = JSON.parse(localStorage.getItem('notifiedServices') || '{}');
-
-    // Get bus stop description
-    let busStopDescription = '';
-    if (busStopCode) {
-        try {
-            const allBusStops = JSON.parse(localStorage.getItem('allBusStops')) || [];
-            const busStop = allBusStops.find(stop => stop.BusStopCode === busStopCode);
-            if (busStop) {
-                busStopDescription = busStop.Description;
-            }
-        } catch (error) {
-            console.error('Error fetching bus stop description:', error);
-        }
+    // Skip if Notifications API is not available
+    if (!('Notification' in window)) {
+        return;
     }
 
-    services.forEach((service) => {
-        if (monitoredServices[service.ServiceNo]) {
+    try {
+        const monitoredServices = getNotificationPreference('monitoredServices') || {};
+        const notifiedServices = getNotificationPreference('notifiedServices') || {};
+
+        // Get bus stop description
+        let busStopDescription = '';
+        if (busStopCode) {
+            try {
+                const allBusStops = JSON.parse(localStorage.getItem('allBusStops')) || [];
+                const busStop = allBusStops.find(stop => stop.BusStopCode === busStopCode);
+                if (busStop) {
+                    busStopDescription = busStop.Description;
+                }
+            } catch (error) {
+                console.warn('Error fetching bus stop description:', error);
+            }
+        }
+
+        services.forEach((service) => {
+            if (!monitoredServices[service.ServiceNo]) {
+                return; // Skip if service is not monitored
+            }
+
             // Check NextBus arrival
             if (service.NextBus?.EstimatedArrival) {
                 const arrivalTime = new Date(service.NextBus.EstimatedArrival);
                 const timeDifference = arrivalTime - now;
                 
-                // Send notification when bus arrives within reasonable window (1 min before to 10 min after)
-                const shouldNotify = timeDifference <= 60000 && timeDifference > -600000;
+                // Send notification only when bus shows "Arr" status (time difference <= 0)
+                const shouldNotify = timeDifference <= 0;
+                const wasNotifiedBefore = notifiedServices[`${service.ServiceNo}-nextbus`];
                 
-                if (shouldNotify && !notifiedServices[`${service.ServiceNo}-nextbus`]) {
+                if (shouldNotify && !wasNotifiedBefore) {
                     console.log(`Bus ${service.ServiceNo} arrival detected. Time diff: ${timeDifference}ms. Permission: ${Notification.permission}`);
                     sendNotification(`Bus ${service.ServiceNo} Arrives Now!`, {
                         body: `At ${busStopDescription || busStopCode}\nYour monitored bus has arrived.`,
-                        icon: 'assets/bus-icon.png'
+                        icon: '/img/core-img/icon-192.png',
+                        requireInteraction: false
                     });
                     notifiedServices[`${service.ServiceNo}-nextbus`] = true;
-                    localStorage.setItem('notifiedServices', JSON.stringify(notifiedServices));
+                    saveNotificationPreference('notifiedServices', notifiedServices);
                 }
             } else if (!service.NextBus) {
-                // Reset the notification flag if NextBus no longer exists (bus has departed)
+                // Reset the notification flag if NextBus no longer exists
                 delete notifiedServices[`${service.ServiceNo}-nextbus`];
-                localStorage.setItem('notifiedServices', JSON.stringify(notifiedServices));
+                saveNotificationPreference('notifiedServices', notifiedServices);
             }
 
             // Check NextBus2 arrival
@@ -441,48 +582,123 @@ function checkMonitoredServices(services, now, busStopCode = '') {
                 const arrivalTime = new Date(service.NextBus2.EstimatedArrival);
                 const timeDifference = arrivalTime - now;
                 
-                // Send notification when bus arrives within reasonable window (1 min before to 10 min after)
-                const shouldNotify = timeDifference <= 60000 && timeDifference > -600000;
+                // Send notification only when bus shows "Arr" status (time difference <= 0)
+                const shouldNotify = timeDifference <= 0;
+                const wasNotifiedBefore = notifiedServices[`${service.ServiceNo}-nextbus2`];
                 
-                if (shouldNotify && !notifiedServices[`${service.ServiceNo}-nextbus2`]) {
+                if (shouldNotify && !wasNotifiedBefore) {
                     console.log(`Bus ${service.ServiceNo} (2nd) arrival detected. Time diff: ${timeDifference}ms. Permission: ${Notification.permission}`);
                     sendNotification(`Bus ${service.ServiceNo} Arrives Now!`, {
                         body: `At ${busStopDescription || busStopCode}\nYour second monitored bus has arrived.`,
-                        icon: 'assets/bus-icon.png'
+                        icon: '/img/core-img/icon-192.png',
+                        requireInteraction: false
                     });
                     notifiedServices[`${service.ServiceNo}-nextbus2`] = true;
-                    localStorage.setItem('notifiedServices', JSON.stringify(notifiedServices));
+                    saveNotificationPreference('notifiedServices', notifiedServices);
                 }
             } else if (!service.NextBus2) {
-                // Reset the notification flag if NextBus2 no longer exists (bus has departed)
+                // Reset the notification flag if NextBus2 no longer exists
                 delete notifiedServices[`${service.ServiceNo}-nextbus2`];
-                localStorage.setItem('notifiedServices', JSON.stringify(notifiedServices));
-            }
-        }
-    });
-}
-
-// Function to send notification
-function sendNotification(title, options = {}) {
-    if (Notification.permission === 'granted') {
-        new Notification(title, options);
-        console.log('Notification sent:', title);
-    } else if (Notification.permission === 'denied') {
-        console.warn('Notifications are blocked. Permission denied.');
-        // Show toast as fallback
-        showToast(`${title} - ${options.body}`, 'info');
-    } else if (Notification.permission === 'default') {
-        console.log('Notification permission is default, requesting permission...');
-        Notification.requestPermission().then(permission => {
-            if (permission === 'granted') {
-                new Notification(title, options);
-                console.log('Notification sent after permission granted:', title);
-            } else {
-                console.warn('Notification permission was not granted');
-                // Show toast as fallback
-                showToast(`${title} - ${options.body}`, 'info');
+                saveNotificationPreference('notifiedServices', notifiedServices);
             }
         });
+    } catch (error) {
+        console.error('Error in checkMonitoredServices:', error);
+    }
+}
+
+// Utility functions for notification preferences with fallback
+function getNotificationPreference(key) {
+    try {
+        const value = localStorage.getItem(key);
+        return value ? JSON.parse(value) : null;
+    } catch (error) {
+        console.warn(`Error reading notification preference '${key}':`, error);
+        // Return in-memory fallback if localStorage fails
+        return window['_notif_' + key] || null;
+    }
+}
+
+function saveNotificationPreference(key, value) {
+    try {
+        localStorage.setItem(key, JSON.stringify(value));
+        // Also save to in-memory fallback
+        window['_notif_' + key] = value;
+    } catch (error) {
+        console.warn(`Error saving notification preference '${key}':`, error);
+        // Fallback to in-memory storage
+        window['_notif_' + key] = value;
+    }
+}
+
+// Refactored notification sender with improved error handling
+function sendNotification(title, options = {}) {
+    // Always use toast as primary method on mobile
+    const isMobile = /mobile|android|iphone|ipad|phone/i.test(navigator.userAgent);
+    
+    // Check if Notifications API is supported
+    if (!('Notification' in window)) {
+        console.warn('Notifications API not supported on this browser');
+        showToast(`${title} - ${options.body || title}`, 'info');
+        return;
+    }
+
+    try {
+        // If permission is not granted, skip sending but don't error out
+        if (Notification.permission !== 'granted') {
+            console.log(`Notification permission is '${Notification.permission}', using toast fallback`);
+            showToast(`${title} - ${options.body || title}`, 'info');
+            return;
+        }
+
+        // Try to use Service Worker if available and registered
+        if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+            try {
+                navigator.serviceWorker.controller.postMessage({
+                    type: 'SHOW_NOTIFICATION',
+                    title: title,
+                    options: {
+                        icon: options.icon || '/img/core-img/icon-192.png',
+                        badge: options.badge || '/img/core-img/icon-192.png',
+                        tag: 'bus-notification',
+                        requireInteraction: false,
+                        ...options
+                    }
+                });
+                console.log('Notification sent via Service Worker:', title);
+            } catch (swError) {
+                console.warn('Service Worker notification failed, using direct API:', swError);
+                // Fallback to direct notification
+                try {
+                    new Notification(title, {
+                        icon: options.icon || '/img/core-img/icon-192.png',
+                        badge: options.badge || '/img/core-img/icon-192.png',
+                        ...options
+                    });
+                    console.log('Notification sent via direct API:', title);
+                } catch (directError) {
+                    console.error('Direct notification also failed:', directError);
+                    showToast(`${title} - ${options.body || title}`, 'info');
+                }
+            }
+        } else {
+            // No service worker available, use direct API
+            try {
+                new Notification(title, {
+                    icon: options.icon || '/img/core-img/icon-192.png',
+                    badge: options.badge || '/img/core-img/icon-192.png',
+                    ...options
+                });
+                console.log('Notification sent via direct API:', title);
+            } catch (error) {
+                console.error('Error sending notification:', error);
+                showToast(`${title} - ${options.body || title}`, 'info');
+            }
+        }
+    } catch (error) {
+        console.error('Unexpected error in sendNotification:', error);
+        // Always fallback to toast on any error
+        showToast(`${title} - ${options.body || title}`, 'info');
     }
 }
 
@@ -624,47 +840,74 @@ document.addEventListener('DOMContentLoaded', () => {
 // ****************************
 // :: Bus Location Map
 // ****************************
-// Initialize the map
-const map = L.map('bus-map').setView([1.3521, 103.8198], 12); // Default view (Singapore)
+// Initialize the map with error handling
+let map;
+try {
+    const mapContainer = document.getElementById('bus-map');
+    if (mapContainer) {
+        map = L.map('bus-map').setView([1.3521, 103.8198], 12); // Default view (Singapore)
+        
+        // Add a tile layer (OpenStreetMap)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+    }
+} catch (error) {
+    console.error('Error initializing map:', error);
+}
 
-// Add a tile layer (OpenStreetMap)
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 18,
-    attribution: '© OpenStreetMap contributors'
-}).addTo(map);
+// Add bus marker to the map
+function addBusMarker(lat, lng, serviceNo, type, load) {
+    const marker = L.marker([lat, lng]).addTo(map);
+    marker.bindPopup(`
+        <b>Bus ${serviceNo}</b><br>
+        Type: ${type || 'N/A'}<br>
+        Load: ${load || 'N/A'}
+    `);
+}
 
 // Add "Current Location" button functionality
 const currentLocationBtn = document.getElementById('current-location-btn');
-currentLocationBtn.addEventListener('click', () => {
-    map.locate({ setView: true, maxZoom: 15 });
+if (currentLocationBtn) {
+    currentLocationBtn.addEventListener('click', () => {
+        map.locate({ setView: true, maxZoom: 15 });
 
-    map.on('locationfound', (e) => {
-        const radius = e.accuracy;
+        map.on('locationfound', (e) => {
+            const radius = e.accuracy;
 
-        // Add a marker for the current location
-        L.marker(e.latlng).addTo(map)
-            .bindPopup(`You are within ${Math.round(radius)} meters from this point.`)
-            .openPopup();
+            // Add a marker for the current location
+            L.marker(e.latlng).addTo(map)
+                .bindPopup(`You are within ${Math.round(radius)} meters from this point.`)
+                .openPopup();
 
-        // Add a circle to show the accuracy radius
-        L.circle(e.latlng, radius).addTo(map);
+            // Add a circle to show the accuracy radius
+            L.circle(e.latlng, radius).addTo(map);
+        });
+
+        map.on('locationerror', () => {
+            alert('Unable to retrieve your location. Please ensure location services are enabled.');
+        });
     });
-
-    map.on('locationerror', () => {
-        alert('Unable to retrieve your location. Please ensure location services are enabled.');
-    });
-});
+}
 
 
 // Fetch bus locations and plot them on the map
 async function fetchBusLocations() {
     try {
+        if (!map) {
+            console.warn('Map not initialized');
+            return;
+        }
+
         const searchInput = document.getElementById('bus-stop-search').value.trim();
         const mapSection = document.querySelector('.bus-location-section'); // Map section container
 
         if (!searchInput) {
             console.warn('No Bus Stop Code provided.');
-            mapSection.style.display = 'none'; // Hide the map if no input is provided
+            if (mapSection) {
+                mapSection.style.display = 'none'; // Hide the map if no input is provided
+            }
             return;
         }
 
@@ -692,7 +935,7 @@ async function fetchBusLocations() {
             const { ServiceNo, NextBus, NextBus2 } = service;
 
             // Check NextBus location
-            if (NextBus.Latitude !== "0.0" && NextBus.Longitude !== "0.0") {
+            if (NextBus && NextBus.Latitude !== "0.0" && NextBus.Longitude !== "0.0") {
                 addBusMarker(
                     parseFloat(NextBus.Latitude),
                     parseFloat(NextBus.Longitude),
@@ -704,7 +947,7 @@ async function fetchBusLocations() {
             }
 
             // Check NextBus2 location
-            if (NextBus2.Latitude !== "0.0" && NextBus2.Longitude !== "0.0") {
+            if (NextBus2 && NextBus2.Latitude !== "0.0" && NextBus2.Longitude !== "0.0") {
                 addBusMarker(
                     parseFloat(NextBus2.Latitude),
                     parseFloat(NextBus2.Longitude),
@@ -720,7 +963,9 @@ async function fetchBusLocations() {
 
         // Force hide the map if no valid locations exist
         if (!hasValidLocation) {
-            mapSection.style.display = 'none'; // Hide the map section
+            if (mapSection) {
+                mapSection.style.display = 'none'; // Hide the map section
+            }
             console.warn('No valid bus locations available.');
             alert('No bus locations available for this stop.');
         } else {
@@ -728,10 +973,10 @@ async function fetchBusLocations() {
             const bounds = [];
             data.Services.forEach((service) => {
                 const { NextBus, NextBus2 } = service;
-                if (NextBus.Latitude !== "0.0" && NextBus.Longitude !== "0.0") {
+                if (NextBus && NextBus.Latitude !== "0.0" && NextBus.Longitude !== "0.0") {
                     bounds.push([parseFloat(NextBus.Latitude), parseFloat(NextBus.Longitude)]);
                 }
-                if (NextBus2.Latitude !== "0.0" && NextBus2.Longitude !== "0.0") {
+                if (NextBus2 && NextBus2.Latitude !== "0.0" && NextBus2.Longitude !== "0.0") {
                     bounds.push([parseFloat(NextBus2.Latitude), parseFloat(NextBus2.Longitude)]);
                 }
             });
@@ -740,20 +985,28 @@ async function fetchBusLocations() {
                 map.fitBounds(bounds);
             }
 
-            mapSection.style.display = 'block'; // Show the map section if valid locations exist
+            if (mapSection) {
+                mapSection.style.display = 'block'; // Show the map section if valid locations exist
+            }
             setTimeout(() => {
-                map.invalidateSize(); // Fix map rendering issues
+                if (map && map.invalidateSize) {
+                    map.invalidateSize(); // Fix map rendering issues
+                }
             }, 100); // Small delay to ensure the map container is fully visible
         }
     } catch (error) {
         console.error('Error fetching bus locations:', error);
         const mapSection = document.querySelector('.bus-location-section');
-        mapSection.style.display = 'none'; // Hide the map in case of an error
+        if (mapSection) {
+            mapSection.style.display = 'none'; // Hide the map in case of an error
+        }
     }
 }
 
 // Fetch bus locations every 10 seconds
-fetchBusLocations();
+if (map) {
+    fetchBusLocations();
+}
 
 
 // ****************************
