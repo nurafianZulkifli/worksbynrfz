@@ -11,8 +11,9 @@ class NotificationManager {
         this.notificationQueue = [];
         this.lastOnlineStatusChange = 0;
         this.lastErrorNotificationTime = 0;
-        this.errorNotificationCooldown = 5000; // 5 second cooldown for error notifications
-        this.onlineStatusDebounceTime = 1000; // 1 second debounce
+        this.errorNotificationCooldown = 30000; // 30 second cooldown for error notifications
+        this.onlineStatusDebounceTime = 2000; // 2 second debounce
+        this.connectionCheckInterval = null;
         this.permissions = {
             notification: Notification?.permission || 'default',
             audio: true,
@@ -76,12 +77,15 @@ class NotificationManager {
             this.registerServiceWorker();
         }
 
-        // Listen for online/offline events
-        window.addEventListener('online', () => this.handleOnline());
-        window.addEventListener('offline', () => this.handleOffline());
+        // Listen for online/offline events (but verify before acting)
+        window.addEventListener('online', () => this.handleOnlineEvent());
+        window.addEventListener('offline', () => this.handleOfflineEvent());
 
         // Listen for visibility changes (tab backgrounding)
         document.addEventListener('visibilitychange', () => this.handleVisibilityChange());
+
+        // Start connection monitoring
+        this.startConnectionMonitoring();
 
         // Request notification permission on init (silent)
         if ('Notification' in window && Notification.permission === 'default') {
@@ -90,18 +94,40 @@ class NotificationManager {
     }
 
     /**
-     * Handle visibility change (app tab backgrounded/restored)
+     * Start periodic connection monitoring
      */
-    handleVisibilityChange() {
-        if (document.hidden) {
-            this.logDebug('App backgrounded');
-        } else {
-            this.logDebug('App restored from background');
-            // Reset debounce timer on visibility restore to allow immediate reconnection check
-            this.lastOnlineStatusChange = 0;
-            // Re-check actual network status
-            if (navigator.onLine && !this.isOnline) {
-                this.handleOnline();
+    startConnectionMonitoring() {
+        // Only check every 30 seconds to avoid constant requests
+        this.connectionCheckInterval = setInterval(() => {
+            if (!document.hidden) {
+                this.verifyConnection();
+            }
+        }, 30000);
+
+        // Initial check
+        this.verifyConnection();
+    }
+
+    /**
+     * Verify actual connectivity by making a lightweight request
+     */
+    async verifyConnection() {
+        try {
+            // Use a HEAD request to a known endpoint (minimal bandwidth)
+            // Try to fetch a small resource with cache busting
+            const response = await fetch(window.location.origin, {
+                method: 'HEAD',
+                cache: 'no-store',
+                signal: AbortSignal.timeout(5000) // 5 second timeout
+            });
+            
+            if (!this.isOnline) {
+                this.setOnline(true);
+            }
+        } catch (error) {
+            // Connection actually failed
+            if (this.isOnline) {
+                this.setOffline(true); // true = from verification, not just event
             }
         }
     }
@@ -405,51 +431,84 @@ class NotificationManager {
     }
 
     /**
-     * Handle online event
+     * Handle visibility change (app tab backgrounded/restored)
      */
-    async handleOnline() {
-        // Debounce: prevent rapid successive online events
+    handleVisibilityChange() {
+        if (document.hidden) {
+            this.logDebug('App backgrounded');
+        } else {
+            this.logDebug('App restored from background');
+            // Immediately verify connection when app comes back to foreground
+            this.verifyConnection();
+        }
+    }
+
+    /**
+     * Handle online event from browser (may be unreliable on mobile)
+     */
+    handleOnlineEvent() {
         const now = Date.now();
         if (now - this.lastOnlineStatusChange < this.onlineStatusDebounceTime) {
             return;
         }
-        
-        if (this.isOnline) {
-            return; // Already online, ignore
-        }
+        this.logDebug('Browser online event received');
+        // Verify the connection before trusting it
+        this.verifyConnection();
+    }
 
+    /**
+     * Handle offline event from browser (may be unreliable on mobile)
+     */
+    handleOfflineEvent() {
+        const now = Date.now();
+        if (now - this.lastOnlineStatusChange < this.onlineStatusDebounceTime) {
+            return;
+        }
+        this.logDebug('Browser offline event received');
+        // Assume offline for now, but will be verified
+        this.setOffline(false);
+    }
+
+    /**
+     * Set online status - handles notifications
+     */
+    setOnline(wasOffline = false) {
+        if (this.isOnline) {
+            return; // Already online
+        }
+        
+        const now = Date.now();
         this.lastOnlineStatusChange = now;
         this.isOnline = true;
-        this.logDebug('App is online');
+        
+        this.logDebug('Connection restored');
+        if (wasOffline) {
+            this.notify('Connection restored', { duration: 2000 }, 'SUCCESS');
+        }
+        
         this.loadQueueFromStorage();
         this.processQueue();
     }
 
     /**
-     * Handle offline event
+     * Set offline status - handles notifications with cooldown
      */
-    handleOffline() {
-        // Debounce: prevent rapid successive offline events
-        const now = Date.now();
-        if (now - this.lastOnlineStatusChange < this.onlineStatusDebounceTime) {
-            return;
-        }
-
+    setOffline(fromVerification = false) {
         if (!this.isOnline) {
-            return; // Already offline, ignore
+            return; // Already offline
         }
 
-        // Check cooldown for error notifications
-        if (now - this.lastErrorNotificationTime < this.errorNotificationCooldown) {
-            this.logDebug('Network error notification on cooldown');
-        } else {
-            this.lastErrorNotificationTime = now;
-            this.notify('Network connection lost', { duration: 4000 }, 'ALERT');
-        }
-
+        const now = Date.now();
         this.lastOnlineStatusChange = now;
         this.isOnline = false;
-        this.logDebug('App is offline');
+
+        this.logDebug('Connection lost' + (fromVerification ? ' (verified)' : ' (event)'));
+
+        // Only show error toast if cooldown expired and not too spam-y
+        if (now - this.lastErrorNotificationTime >= this.errorNotificationCooldown) {
+            this.lastErrorNotificationTime = now;
+            this.notify('No internet connection', { duration: 4000 }, 'ALERT');
+        }
     }
 
     /**
