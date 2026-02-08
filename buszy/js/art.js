@@ -271,11 +271,12 @@ async function fetchBusArrivals() {
 
         // Build new content
         const tempContainer = document.createElement('div');
+        const busStopCode = document.getElementById('bus-stop-search').value.trim();
         
         data.Services.forEach((service) => {
             const card = document.createElement('div');
             card.classList.add('col-12', 'col-md-4', 'col-xl-3', 'card-bt'); // Add col-sm-6 for 2 cards per row on small screens
-            const isMonitored = getNotificationPreference('monitoredServices')?.[service.ServiceNo] || false;
+            const isMonitored = getNotificationPreference('monitoredServices', busStopCode)?.[service.ServiceNo] || false;
 
             // Safely check if NextBus exists and has required properties
             const hasNextBus = service.NextBus && typeof service.NextBus === 'object' && Object.keys(service.NextBus).length > 0;
@@ -351,8 +352,8 @@ async function fetchBusArrivals() {
         }
 
         // Check for arrivals and send notifications
-        const busStopCode = document.getElementById('bus-stop-search').value.trim();
-        checkMonitoredServices(data.Services, now, busStopCode);
+        const busStopCodeForChecking = document.getElementById('bus-stop-search').value.trim();
+        checkMonitoredServices(data.Services, now, busStopCodeForChecking);
 
         // Only add event listeners if the DOM was updated
         if (didUpdate) {
@@ -425,10 +426,11 @@ async function fetchBusArrivals() {
                 button.addEventListener('click', () => {
                     try {
                         const serviceNo = button.getAttribute('data-service');
-                        const monitoredServices = getNotificationPreference('monitoredServices') || {};
+                        const currentBusStopCode = document.getElementById('bus-stop-search').value.trim();
+                        const monitoredServices = getNotificationPreference('monitoredServices', currentBusStopCode) || {};
 
                         monitoredServices[serviceNo] = !monitoredServices[serviceNo];
-                        saveNotificationPreference('monitoredServices', monitoredServices);
+                        saveNotificationPreference('monitoredServices', monitoredServices, currentBusStopCode);
 
                         button.classList.toggle('active');
 
@@ -457,7 +459,7 @@ async function fetchBusArrivals() {
                                             showToast('Notifications are blocked in your browser settings. Please enable them to receive alerts.', 'warning');
                                             // Uncheck the bell if user denied
                                             monitoredServices[serviceNo] = false;
-                                            saveNotificationPreference('monitoredServices', monitoredServices);
+                                            saveNotificationPreference('monitoredServices', monitoredServices, currentBusStopCode);
                                             button.classList.remove('active');
                                         }
                                     })
@@ -471,7 +473,7 @@ async function fetchBusArrivals() {
                                 showToast('Notifications are blocked in your browser settings. Please enable them to receive alerts.', 'warning');
                                 // Uncheck the bell if notifications are blocked
                                 monitoredServices[serviceNo] = false;
-                                saveNotificationPreference('monitoredServices', monitoredServices);
+                                saveNotificationPreference('monitoredServices', monitoredServices, currentBusStopCode);
                                 button.classList.remove('active');
                             }
                         }
@@ -525,7 +527,7 @@ function checkMonitoredServices(services, now, busStopCode = '') {
     }
 
     try {
-        const monitoredServices = notificationManager.getPreference('monitoredServices') || {};
+        const monitoredServices = notificationManager.getPreference('monitoredServices', busStopCode) || {};
         const notifiedServices = notificationManager.getPreference('notifiedServices') || {};
 
         // Get bus stop description
@@ -641,16 +643,16 @@ function checkMonitoredServices(services, now, busStopCode = '') {
 }
 
 // Utility functions for notification preferences - now using NotificationManager
-function getNotificationPreference(key) {
+function getNotificationPreference(key, busStopCode = null) {
     if (typeof notificationManager !== 'undefined') {
-        return notificationManager.getPreference(key);
+        return notificationManager.getPreference(key, busStopCode);
     }
     return null;
 }
 
-function saveNotificationPreference(key, value) {
+function saveNotificationPreference(key, value, busStopCode = null) {
     if (typeof notificationManager !== 'undefined') {
-        notificationManager.savePreference(key, value);
+        notificationManager.savePreference(key, value, busStopCode);
     }
 }
 

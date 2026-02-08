@@ -466,25 +466,38 @@ class NotificationManager {
 
     /**
      * Get notification preferences
+     * @param {string} key - Preference key
+     * @param {string} busStopCode - Optional bus stop code for bus-stop-specific preferences
      */
-    getPreference(key) {
+    getPreference(key, busStopCode = null) {
         try {
-            const value = localStorage.getItem(`notif_${key}`);
+            // For monitoredServices, use bus-stop-specific storage if busStopCode is provided
+            const storageKey = (key === 'monitoredServices' && busStopCode) 
+                ? `notif_${key}_${busStopCode}`
+                : `notif_${key}`;
+            const value = localStorage.getItem(storageKey);
             return value ? JSON.parse(value) : null;
         } catch (error) {
-            console.warn(`Error reading preference '${key}':`, error);
+            console.warn(`Error reading preference '${key}' for busStop '${busStopCode}':`, error);
             return null;
         }
     }
 
     /**
      * Save notification preference
+     * @param {string} key - Preference key
+     * @param {*} value - Preference value
+     * @param {string} busStopCode - Optional bus stop code for bus-stop-specific preferences
      */
-    savePreference(key, value) {
+    savePreference(key, value, busStopCode = null) {
         try {
-            localStorage.setItem(`notif_${key}`, JSON.stringify(value));
+            // For monitoredServices, use bus-stop-specific storage if busStopCode is provided
+            const storageKey = (key === 'monitoredServices' && busStopCode) 
+                ? `notif_${key}_${busStopCode}`
+                : `notif_${key}`;
+            localStorage.setItem(storageKey, JSON.stringify(value));
         } catch (error) {
-            console.warn(`Error saving preference '${key}':`, error);
+            console.warn(`Error saving preference '${key}' for busStop '${busStopCode}':`, error);
         }
     }
 
