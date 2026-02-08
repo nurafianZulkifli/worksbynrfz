@@ -7,10 +7,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>North East Line | RailBuddy</title>
+    <title>Sengkang LRT | RailBuddy</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
-    <meta property="og:image" content="https://i.imgur.com/aNQTQtO.png" />
+    <meta property="og:image" content="https://i.imgur.com/BUKPnjH.png" />
 
     <link rel="icon" href="../assets/icon-512.png">
 
@@ -58,7 +58,7 @@
     .line-description h3 {
         margin-top: 0;
         margin-bottom: 16px;
-        color: #000;
+        color: #fff;
         font-size: 16px;
         font-weight: 600;
     }
@@ -79,7 +79,7 @@
     .line-description li {
         font-size: 14px;
         line-height: 1.6;
-        color: #000;
+        color: #ccc;
         margin-bottom: 8px;
     }
 
@@ -88,20 +88,20 @@
         justify-content: space-between;
         margin: 12px 0;
         padding: 10px 0;
-        border-bottom: 1px solid #ddd;
+        border-bottom: 1px solid #555;
     }
 
     .line-stat-label {
         font-weight: 500;
-        color: #666;
+        color: #ccc;
     }
 
     .line-stat-value {
         font-weight: 600;
-        color: #000;
+        color: #fff;
     }
 
-    #hidden-stations {
+    #hidden-stations-a {
         display: none;
         flex-direction: column;
         gap: 0;
@@ -110,16 +110,52 @@
         margin-top: 6px;
     }
 
-    /* Vertical line for hidden stations */
-    /* REMOVED - using only .line-container::before */
-
-    /* Adjust first station in hidden section */
-    #hidden-stations .station:first-child {
-        padding-top: 0;
+    #hidden-stations-b {
+        display: none;
+        flex-direction: column;
+        gap: 0;
+        position: relative;
+        padding-left: 0px;
+        margin-top: 6px;
     }
 
-    #hidden-stations.show {
+    #hidden-stations-c {
+        display: none;
+        flex-direction: column;
+        gap: 0;
+        position: relative;
+        padding-left: 0px;
+        margin-top: 6px;
+    }
+
+    #hidden-stations-d {
+        display: none;
+        flex-direction: column;
+        gap: 0;
+        position: relative;
+        padding-left: 0px;
+        margin-top: 6px;
+    }
+
+    #hidden-stations-a.show {
         display: flex;
+    }
+
+    #hidden-stations-b.show {
+        display: flex;
+    }
+
+    #hidden-stations-c.show {
+        display: flex;
+    }
+
+    #hidden-stations-d.show {
+        display: flex;
+    }
+
+    /* Adjust first station in hidden section */
+    #hidden-stations-a .station:first-child {
+        padding-top: 0;
     }
 
     .show-more-button {
@@ -129,7 +165,7 @@
     }
 
     .show-more-button button {
-        background: #9d27b5;
+        background: #708472;
         color: #fff;
         border: none;
         padding: 10px 20px;
@@ -142,7 +178,7 @@
     }
 
     .show-more-button button:hover {
-        background: #651675;
+        background: #546456;
     }
 
     .line-controls {
@@ -171,6 +207,36 @@
         margin-top: 5px;
     }
 
+    .branch-selector {
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .branch-selector select {
+        padding: 8px 12px;
+        background: #393e53;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+    .branch-selector select:hover {
+        background: #334250;
+    }
+
+    .line-container.hidden {
+        display: none;
+    }
+
+    .line-container.show {
+        display: flex;
+    }
+
     .line-container {
         display: flex;
         flex-direction: column;
@@ -187,7 +253,18 @@
         top: 22px;
         bottom: 99px;
         width: 3px;
-        background: #9d27b5;
+        background: #708472;
+        z-index: 1;
+    }
+
+    .noSM::before {
+        content: '';
+        position: absolute;
+        left: 6px;
+        top: 22px;
+        bottom: 30px;
+        width: 3px;
+        background: #708472;
         z-index: 1;
     }
 
@@ -204,7 +281,7 @@
         height: 18px;
         border-radius: 50%;
         background: #fff;
-        border: 3px solid #9d27b5;
+        border: 3px solid #708472;
         position: absolute;
         left: -31px;
         z-index: 10;
@@ -227,7 +304,7 @@
     }
 
     .station-code {
-        background: #9d27b5;
+        background: #708472;
         color: #fff;
         font-weight: bold;
         border-radius: 13.6px / 19.2px;
@@ -286,7 +363,7 @@
         transform: translateY(-50%);
         width: 10px;
         height: 10px;
-        background: #ff3b3b;
+        background: #009645;
         border-radius: 2px;
         z-index: -1;
     }
@@ -346,7 +423,7 @@
     .station-name {
         font-size: 18px;
         font-weight: 500;
-        color: #fff;
+        color: #000;
         white-space: nowrap;
         cursor: default;
     }
@@ -357,8 +434,8 @@
     }
 
     .details-section {
-        padding-left: 4em;
-        padding-right: 4em;
+        padding-left: 2em;
+        padding-right: 2em;
     }
 
     .caplet {
@@ -448,6 +525,11 @@
         .details-section {
             padding-left: 1em;
             padding-right: 1em;
+        }
+
+        .station-code,
+        .interchange-badge {
+            font-size: 10px;
         }
     }
 </style>
@@ -578,8 +660,8 @@
                             <div
                                 style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
                                 <div>
-                                    <h1 class="filter-title" id="chimes"><img src="../assets/caplets/NELCap.png"
-                                            alt="NEL" class="caplet"> North East Line</h1></a>
+                                    <h1 class="filter-title" id="chimes"><img src="../assets/caplets/SKCap.png" alt="SK"
+                                            class="caplet"> Sengkang LRT</h1></a>
                                 </div>
                             </div>
                         </div>
@@ -589,6 +671,7 @@
             </div>
         </div>
     </section>
+
 
     <!-- Details/Contents Section -->
     <section class="about-me-summ clearfix">
@@ -605,7 +688,7 @@
                                         <i class="fa-solid fa-calendar"></i>
                                     </div>
                                     <h3 style="font-size: 18px; font-weight: bolder;">Opened</h3>
-                                    <h4 style="font-size: 13px;">20 June 2003<br>(in Phases)</h4>
+                                    <h4 style="font-size: 13px;">18 January 2003<br>(All stations)</h4>
                                 </div>
                             </div>
 
@@ -615,7 +698,7 @@
                                         <i class="fa-regular fa-ruler-horizontal"></i>
                                     </div>
                                     <h3 style="font-size: 18px; font-weight: bolder;">Length</h3>
-                                    <h4 style="font-size: 13px;">22 km <br>(with 17 stations)</h4>
+                                    <h4 style="font-size: 13px;">10.7 km <br>(with 14 stations)</h4>
                                 </div>
                             </div>
 
@@ -645,230 +728,400 @@
 
                 <!-- Line Description Box -->
                 <div class="line-description">
-                    <p>Built using the latest technology and engineering techniques of its time, NEL heralded an era of
-                        automated and driverless mass rapid transit systems, an enhanced commuter experience and the
-                        beginning of our multi-modal, integrated public transport model. <br><br>
+                    <p> The fully driverless Sengkang and Punggol Light Rapid Transit (SPLRT) system serves two of the
+                        fastest-growing residential estates in Singapore. <br><br>
 
-                        Connecting residential areas in the north-east to Singapore’s heritage areas and the city
-                        fringe, its development was aimed at serving growing neighbourhoods in these regions. <br><br>
+                        Opened in 2003, the Sengkang LRT connects residents in the area to the town centre, Sengkang MRT
+                        station on the North East Line, and the Sengkang bus interchange. The line serves 14 stations
+                        across two loops. <br><br>
 
-                        The 22km line has 17 stations, and connects to six interchanges. <br><br>
-                        (Source: <a class="hyperlink"
-                            href="https://www.lta.gov.sg/content/ltagov/en/getting_around/public_transport/rail_network/north_south_line.html">LTA</a>
+                        The Punggol LRT was opened in 2005. It links commuters from the residential areas to Punggol MRT
+                        station on the North East Line and the Punggol bus interchange. The trains run along two loops
+                        and currently serve 14 stations. <br><br>
+
+                        Both LRT systems were upgraded from one-car to two-car operations in 2016. In the coming years,
+                        more of such two-car trains will be added to the SPLRT fleet to better serve the long term
+                        public transport needs of the communities in Sengkang and Punggol. To accomodate more two-car
+                        trains, the SPLRT depot will be expanded by 2027. <br><br> (Source: <a class="hyperlink"
+                            href="https://www.lta.gov.sg/content/ltagov/en/getting_around/public_transport/rail_network/sengkang_punggol_lrt.html">LTA</a>
                         )
                     </p>
 
                 </div>
                 <!-- Line Diagram -->
                 <div class="line-diagram">
-                    <div class="line-container">
-                        <!-- NS 1 Jurong East -->
+                    <div class="branch-selector">
+                        <label for="serviceSelect"><strong>Service:</strong></label>
+                        <select id="serviceSelect" onchange="switchService()">
+                            <option value="serviceA">West Loop (via Cheng Lim)</option>
+                            <option value="serviceB">West Loop (via Renjong)</option>
+                            <option value="serviceC">East Loop (via Compassvale)</option>
+                            <option value="serviceD">East Loop (via Ranggung)</option>
+                        </select>
+                    </div>
+                    <!-- Service A Container -->
+                    <div class="line-container show" id="serviceAContainer">
+                        <!-- STC Sengkang -->
                         <div class="station">
                             <div class="station-dot"></div>
                             <div class="station-content">
                                 <div class="station-codes">
-                                    <span class="station-code">NE 1</span>
-                                    <span class="interchange-badge mrt-ccl" style="color: #000;">CC 29</span>
-                                </div>
-                                <div class="station-name">HarbourFront</div>
-                            </div>
-                        </div>
-
-                        <!-- NE 3 Outram Park -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">NE 3</span>
-                                    <span class="interchange-badge mrt-ewl">EW 16</span>
-                                    <span class="interchange-badge mrt-tel">TE 17</span>
-                                </div>
-                                <div class="station-name">Outram Park</div>
-                            </div>
-                        </div>
-
-                        <!-- NE 4 Chinatown -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">NE 4</span>
-                                    <span class="interchange-badge mrt-dtl">DT 19</span>
-                                </div>
-                                <div class="station-name">Chinatown</div>
-                            </div>
-                        </div>
-
-                        <!-- NE 5 Clarke Quay -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">NE 5</span>
-                                </div>
-                                <div class="station-name">Clarke Quay</div>
-                            </div>
-                        </div>
-
-                        <!-- NE 6 Dhoby Ghaut -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">NE 6</span>
-                                    <span class="interchange-badge mrt-nsl">NS 24</span>
-                                    <span class="interchange-badge mrt-ccl" style="color: #000;">CC 1</span>
-                                </div>
-                                <div class="station-name">Dhoby Ghaut</div>
-                            </div>
-                        </div>
-
-                        <!-- NE 7 Little India -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">NE 7</span>
-                                    <span class="interchange-badge mrt-dtl">DT 12</span>
-                                </div>
-                                <div class="station-name">Little India</div>
-                            </div>
-                        </div>
-
-                        <!-- NE 8 Farrer Park -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">NE 8</span>
-                                </div>
-                                <div class="station-name">Farrer Park</div>
-                            </div>
-                        </div>
-
-                        <!-- NE 9 Boon Keng -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">NE 9</span>
-                                </div>
-                                <div class="station-name">Boon Keng</div>
-                            </div>
-                        </div>
-
-                    <div id="hidden-stations">
-                        <!-- NE 10 Potong Pasir -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">NE 10</span>
-                                </div>
-                                <div class="station-name">Potong Pasir</div>
-                            </div>
-                        </div>
-
-                        <!-- NE 11 Woodleigh -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">NE 11</span>
-                                </div>
-                                <div class="station-name">Woodleigh</div>
-                            </div>
-                        </div>
-
-                        <!-- NE 12 Serangoon -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">NE 12</span>
-                                    <span class="interchange-badge mrt-ccl" style="color: #000;">CC 15</span>
-                                </div>
-                                <div class="station-name">Serangoon</div>
-                            </div>
-                        </div>
-
-                        <!-- NE 13 Kovan -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">NE 13</span>
-                                </div>
-                                <div class="station-name">Kovan</div>
-                            </div>
-                        </div>
-
-                        <!-- NE 14 Hougang -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">NE 14</span>
-                                </div>
-                                <div class="station-name">Hougang</div>
-                            </div>
-                        </div>
-
-                        <!-- NE 15 Buangkok -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">NE 15</span>
-                                </div>
-                                <div class="station-name">Buangkok</div>
-                            </div>
-                        </div>
-
-                        <!-- NE 16 Sengkang -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">NE 16</span>
-                                    <span class="interchange-badge mrt-lrt">STC</span>
+                                    <span class="station-code">STC</span>
+                                    <span class="interchange-badge mrt-nel">NE 16</span>
                                 </div>
                                 <div class="station-name">Sengkang</div>
                             </div>
                         </div>
 
-                        <!-- NE 17 Bishan -->
+
+                        <!-- SW 1 Cheng Lim -->
                         <div class="station">
                             <div class="station-dot"></div>
                             <div class="station-content">
                                 <div class="station-codes">
-                                    <span class="station-code">NE 17</span>
-                                    <span class="interchange-badge mrt-lrt">PTC</span>
+                                    <span class="station-code">SW 1</span>
                                 </div>
-                                <div class="station-name">Punggol</div>
+                                <div class="station-name">Cheng Lim</div>
                             </div>
                         </div>
 
-                        <!-- NE 18 Punggol Coast -->
+                        <!-- SW 2 Farmway -->
                         <div class="station">
                             <div class="station-dot"></div>
                             <div class="station-content">
                                 <div class="station-codes">
-                                    <span class="station-code">NE 18</span>
+                                    <span class="station-code">SW 2</span>
                                 </div>
-                                <div class="station-name">Punggol Coast</div>
+                                <div class="station-name">Farmway</div>
                             </div>
                         </div>
 
-             
+                        <!-- SW 3 Kupang -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">SW 3</span>
+                                </div>
+                                <div class="station-name">Kupang</div>
+                            </div>
+                        </div>
+
+                        <!-- SW 4 Thanggam -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">SW 4</span>
+                                    <span class="interchange-badge mrt-dtl">DT 1</span>
+                                </div>
+                                <div class="station-name">Thanggam</div>
+                            </div>
+                        </div>
+
+                        <!-- SW 5 Fernvale -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">SW 5</span>
+                                </div>
+                                <div class="station-name">Fernvale</div>
+                            </div>
+                        </div>
+
+                        <div id="hidden-stations-a">
+                            <!-- SW 6 Layar -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">SW 6</span>
+                                    </div>
+                                    <div class="station-name">Layar</div>
+                                </div>
+                            </div>
+
+                            <!-- SW 7 Tongkang -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">SW 7</span>
+                                    </div>
+                                    <div class="station-name">Tongkang</div>
+                                </div>
+                            </div>
+
+                            <!-- SW 8 Renjong -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes station-connector">
+                                        <span class="station-code">SW 8</span>
+                                    </div>
+                                    <div class="station-name">Renjong</div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="show-more-button">
+                            <button id="toggleBtnA" onclick="toggleStationsA()">Show More</button>
+                        </div>
                     </div>
 
-                    <div class="show-more-button">
-                        <button id="toggleBtn" onclick="toggleStations()">Show More</button>
+                    <!-- Service B Container -->
+                    <div class="line-container hidden" id="serviceBContainer">
+                        <!-- STC Sengkang -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">STC</span>
+                                    <span class="interchange-badge mrt-nel">NE 16</span>
+                                </div>
+                                <div class="station-name">Sengkang</div>
+                            </div>
+                        </div>
+
+                        <!-- SW 8 Renjong -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes station-connector">
+                                    <span class="station-code">SW 8</span>
+                                </div>
+                                <div class="station-name">Renjong</div>
+                            </div>
+                        </div>
+
+                        <!-- SW 7 Tongkang -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">SW 7</span>
+                                </div>
+                                <div class="station-name">Tongkang</div>
+                            </div>
+                        </div>
+
+                        <!-- SW 6 Layar -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">SW 6</span>
+                                </div>
+                                <div class="station-name">Layar</div>
+                            </div>
+                        </div>
+
+                        <!-- SW 5 Fernvale -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">SW 5</span>
+                                </div>
+                                <div class="station-name">Fernvale</div>
+                            </div>
+                        </div>
+
+                        <!-- SW 4 Thanggam -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">SW 4</span>
+                                    <span class="interchange-badge mrt-dtl">DT 1</span>
+                                </div>
+                                <div class="station-name">Thanggam</div>
+                            </div>
+                        </div>
+
+                        <div id="hidden-stations-b">
+                            <!-- SW 3 Kupang -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">SW 3</span>
+                                    </div>
+                                    <div class="station-name">Kupang</div>
+                                </div>
+                            </div>
+
+                            <!-- SW 2 Farmway -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">SW 2</span>
+                                    </div>
+                                    <div class="station-name">Farmway</div>
+                                </div>
+                            </div>
+
+                            <!-- SW 1 Cheng Lim -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">SW 1</span>
+                                    </div>
+                                    <div class="station-name">Cheng Lim</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="show-more-button">
+                            <button id="toggleBtnB" onclick="toggleStationsB()">Show More</button>
+                        </div>
+                    </div>
+
+                    <!-- Service C Container -->
+                    <div class="line-container noSM hidden" id="serviceCContainer">
+                        <!-- STC Sengkang -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">STC</span>
+                                    <span class="interchange-badge mrt-nel">NE 16</span>
+                                </div>
+                                <div class="station-name">Sengkang</div>
+                            </div>
+                        </div>
+
+                        <!-- SE 1 Compassvale -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">SE 1</span>
+                                </div>
+                                <div class="station-name">Compassvale</div>
+                            </div>
+                        </div>
+
+                        <!-- SE 2 Rumbia -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">SE 2</span>
+                                </div>
+                                <div class="station-name">Rumbia</div>
+                            </div>
+                        </div>
+
+                        <!-- SE 3 Bakau-->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">SE 3</span>
+                                </div>
+                                <div class="station-name">Bakau</div>
+                            </div>
+                        </div>
+
+                        <!-- SE 4 Kangkar -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">SE 4</span>
+                                </div>
+                                <div class="station-name">Kangkar</div>
+                            </div>
+                        </div>
+
+                        <!-- SE 5 Ranggung -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes station-connector">
+                                    <span class="station-code">SE 5</span>
+                                </div>
+                                <div class="station-name">Ranggung</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Service D Container -->
+                    <div class="line-container noSM hidden" id="serviceDContainer">
+                        <!-- STC Sengkang -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">STC</span>
+                                    <span class="interchange-badge mrt-nel">NE 16</span>
+                                </div>
+                                <div class="station-name">Sengkang</div>
+                            </div>
+                        </div>
+
+                        <!-- SE 5 Ranggung -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes station-connector">
+                                    <span class="station-code">SE 5</span>
+                                </div>
+                                <div class="station-name">Ranggung</div>
+                            </div>
+                        </div>
+
+                        <!-- SE 4 Kangkar -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">SE 4</span>
+                                </div>
+                                <div class="station-name">Kangkar</div>
+                            </div>
+                        </div>
+
+                        <!-- SE 3 Bakau-->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">SE 3</span>
+                                </div>
+                                <div class="station-name">Bakau</div>
+                            </div>
+                        </div>
+
+                        <!-- SE 2 Rumbia -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">SE 2</span>
+                                </div>
+                                <div class="station-name">Rumbia</div>
+                            </div>
+                        </div>
+
+                        <!-- SE 1 Compassvale -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">SE 1</span>
+                                </div>
+                                <div class="station-name">Compassvale</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
 
     </section>
@@ -898,18 +1151,100 @@
     <script src="../../js/default-assets/active.js"></script>
 
     <script>
-        function toggleStations() {
-            const hiddenStations = document.getElementById('hidden-stations');
-            const toggleBtn = document.getElementById('toggleBtn');
+        function switchService() {
+            const selector = document.getElementById('serviceSelect');
+            const containers = {
+                serviceA: document.getElementById('serviceAContainer'),
+                serviceB: document.getElementById('serviceBContainer'),
+                serviceC: document.getElementById('serviceCContainer'),
+                serviceD: document.getElementById('serviceDContainer')
+            };
+            const hiddenStations = {
+                a: document.getElementById('hidden-stations-a'),
+                b: document.getElementById('hidden-stations-b'),
+                // c: document.getElementById('hidden-stations-c'),
+                // d: document.getElementById('hidden-stations-d')
+            };
+            const toggleBtns = {
+                A: document.getElementById('toggleBtnA'),
+                B: document.getElementById('toggleBtnB'),
+                C: document.getElementById('toggleBtnC'),
+                D: document.getElementById('toggleBtnD')
+            };
 
-            if (hiddenStations.classList.contains('show')) {
-                hiddenStations.classList.remove('show');
-                toggleBtn.innerHTML = '<i class="fa-solid fa-chevron-down"></i> Show More';
+            // Hide all containers
+            Object.values(containers).forEach(container => {
+                container.classList.add('hidden');
+                container.classList.remove('show');
+            });
+
+            // Show selected container
+            const selectedValue = selector.value;
+            if (containers[selectedValue]) {
+                containers[selectedValue].classList.remove('hidden');
+                containers[selectedValue].classList.add('show');
+            }
+
+            // Reset all hidden stations and buttons
+            Object.values(hiddenStations).forEach(station => {
+                if (station) station.classList.remove('show');
+            });
+            Object.values(toggleBtns).forEach(btn => {
+                if (btn) btn.innerHTML = '<i class="fa-solid fa-chevron-down"></i> Show More';
+            });
+        }
+
+        function toggleStationsA() {
+            const hiddenStationsA = document.getElementById('hidden-stations-a');
+            const toggleBtnA = document.getElementById('toggleBtnA');
+
+            if (hiddenStationsA.classList.contains('show')) {
+                hiddenStationsA.classList.remove('show');
+                toggleBtnA.innerHTML = '<i class="fa-solid fa-chevron-down"></i> Show More';
             } else {
-                hiddenStations.classList.add('show');
-                toggleBtn.innerHTML = '<i class="fa-solid fa-chevron-up"></i> Show Less';
+                hiddenStationsA.classList.add('show');
+                toggleBtnA.innerHTML = '<i class="fa-solid fa-chevron-up"></i> Show Less';
             }
         }
+
+        function toggleStationsB() {
+            const hiddenStationsB = document.getElementById('hidden-stations-b');
+            const toggleBtnB = document.getElementById('toggleBtnB');
+
+            if (hiddenStationsB.classList.contains('show')) {
+                hiddenStationsB.classList.remove('show');
+                toggleBtnB.innerHTML = '<i class="fa-solid fa-chevron-down"></i> Show More';
+            } else {
+                hiddenStationsB.classList.add('show');
+                toggleBtnB.innerHTML = '<i class="fa-solid fa-chevron-up"></i> Show Less';
+            }
+        }
+
+        // function toggleStationsC() {
+        //     const hiddenStationsC = document.getElementById('hidden-stations-c');
+        //     const toggleBtnC = document.getElementById('toggleBtnC');
+
+        //     if (hiddenStationsC.classList.contains('show')) {
+        //         hiddenStationsC.classList.remove('show');
+        //         toggleBtnC.innerHTML = '<i class="fa-solid fa-chevron-down"></i> Show More';
+        //     } else {
+        //         hiddenStationsC.classList.add('show');
+        //         toggleBtnC.innerHTML = '<i class="fa-solid fa-chevron-up"></i> Show Less';
+        //     }
+        // }
+
+        // function toggleStationsD() {
+        //     const hiddenStationsD = document.getElementById('hidden-stations-d');
+        //     const toggleBtnD = document.getElementById('toggleBtnD');
+
+        //     if (hiddenStationsD.classList.contains('show')) {
+        //         hiddenStationsD.classList.remove('show');
+        //         toggleBtnD.innerHTML = '<i class="fa-solid fa-chevron-down"></i> Show More';
+        //     } else {
+        //         hiddenStationsD.classList.add('show');
+        //         toggleBtnD.innerHTML = '<i class="fa-solid fa-chevron-up"></i> Show Less';
+        //     }
+        // }
     </script>
 
 </body>
