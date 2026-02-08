@@ -76,7 +76,7 @@ clearCacheBtn.addEventListener('click', async () => {
 // :: Import/Export Data Handling
 // ****************************
 // Define the keys to export/import
-const EXPORT_KEYS = ['dark-mode', 'timeFormat', 'bookmarkedBusStops'];
+const EXPORT_KEYS = ['dark-mode', 'timeFormat', 'bookmarkedBusStops', 'notif_monitoredServices'];
 
 // Export localStorage data as JSON file
 const exportDataBtn = document.getElementById('export-data-btn');

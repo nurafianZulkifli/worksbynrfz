@@ -562,7 +562,8 @@ function checkMonitoredServices(services, now, busStopCode = '') {
                 
                 // Send notification only when bus shows "Arr" status (time difference <= 0)
                 const shouldNotify = timeDifference <= 0;
-                const wasNotifiedBefore = notifiedServices[`${service.ServiceNo}-nextbus`];
+                const notificationKey = `${busStopCode}-${service.ServiceNo}-nextbus`;
+                const wasNotifiedBefore = notifiedServices[notificationKey];
                 
                 console.log(`Bus ${service.ServiceNo} (1st): timeDiff=${timeDifference}ms, shouldNotify=${shouldNotify}, alreadyNotified=${wasNotifiedBefore}`);
                 
@@ -576,7 +577,7 @@ function checkMonitoredServices(services, now, busStopCode = '') {
                     
                     notificationManager.notify(title, {
                         body: message,
-                        tag: `bus-${service.ServiceNo}`,
+                        tag: `bus-${busStopCode}-${service.ServiceNo}`,
                         data: {
                             busStopCode,
                             serviceNo: service.ServiceNo,
@@ -584,12 +585,13 @@ function checkMonitoredServices(services, now, busStopCode = '') {
                         }
                     }, 'ARRIVAL');
                     
-                    notifiedServices[`${service.ServiceNo}-nextbus`] = true;
+                    notifiedServices[notificationKey] = true;
                     notificationManager.savePreference('notifiedServices', notifiedServices);
                 }
             } else if (!service.NextBus) {
                 // Reset the notification flag if NextBus no longer exists
-                delete notifiedServices[`${service.ServiceNo}-nextbus`];
+                const notificationKey = `${busStopCode}-${service.ServiceNo}-nextbus`;
+                delete notifiedServices[notificationKey];
                 notificationManager.savePreference('notifiedServices', notifiedServices);
             }
 
@@ -600,7 +602,8 @@ function checkMonitoredServices(services, now, busStopCode = '') {
                 
                 // Send notification only when bus shows "Arr" status (time difference <= 0)
                 const shouldNotify = timeDifference <= 0;
-                const wasNotifiedBefore = notifiedServices[`${service.ServiceNo}-nextbus2`];
+                const notificationKey = `${busStopCode}-${service.ServiceNo}-nextbus2`;
+                const wasNotifiedBefore = notifiedServices[notificationKey];
                 
                 console.log(`Bus ${service.ServiceNo} (2nd): timeDiff=${timeDifference}ms, shouldNotify=${shouldNotify}, alreadyNotified=${wasNotifiedBefore}`);
                 
@@ -614,7 +617,7 @@ function checkMonitoredServices(services, now, busStopCode = '') {
                     
                     notificationManager.notify(title, {
                         body: message,
-                        tag: `bus-${service.ServiceNo}-2`,
+                        tag: `bus-${busStopCode}-${service.ServiceNo}-2`,
                         data: {
                             busStopCode,
                             serviceNo: service.ServiceNo,
@@ -622,12 +625,13 @@ function checkMonitoredServices(services, now, busStopCode = '') {
                         }
                     }, 'ARRIVAL');
                     
-                    notifiedServices[`${service.ServiceNo}-nextbus2`] = true;
+                    notifiedServices[notificationKey] = true;
                     notificationManager.savePreference('notifiedServices', notifiedServices);
                 }
             } else if (!service.NextBus2) {
                 // Reset the notification flag if NextBus2 no longer exists
-                delete notifiedServices[`${service.ServiceNo}-nextbus2`];
+                const notificationKey = `${busStopCode}-${service.ServiceNo}-nextbus2`;
+                delete notifiedServices[notificationKey];
                 notificationManager.savePreference('notifiedServices', notifiedServices);
             }
         });

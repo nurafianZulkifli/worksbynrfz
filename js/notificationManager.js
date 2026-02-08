@@ -9,6 +9,10 @@ class NotificationManager {
         this.isServiceWorkerReady = false;
         this.isOnline = navigator.onLine;
         this.notificationQueue = [];
+        this.lastOnlineStatusChange = 0;
+        this.lastErrorNotificationTime = 0;
+        this.errorNotificationCooldown = 5000; // 5 second cooldown for error notifications
+        this.onlineStatusDebounceTime = 1000; // 1 second debounce
         this.permissions = {
             notification: Notification?.permission || 'default',
             audio: true,
@@ -76,9 +80,29 @@ class NotificationManager {
         window.addEventListener('online', () => this.handleOnline());
         window.addEventListener('offline', () => this.handleOffline());
 
+        // Listen for visibility changes (tab backgrounding)
+        document.addEventListener('visibilitychange', () => this.handleVisibilityChange());
+
         // Request notification permission on init (silent)
         if ('Notification' in window && Notification.permission === 'default') {
             this.requestPermission();
+        }
+    }
+
+    /**
+     * Handle visibility change (app tab backgrounded/restored)
+     */
+    handleVisibilityChange() {
+        if (document.hidden) {
+            this.logDebug('App backgrounded');
+        } else {
+            this.logDebug('App restored from background');
+            // Reset debounce timer on visibility restore to allow immediate reconnection check
+            this.lastOnlineStatusChange = 0;
+            // Re-check actual network status
+            if (navigator.onLine && !this.isOnline) {
+                this.handleOnline();
+            }
         }
     }
 
@@ -384,6 +408,17 @@ class NotificationManager {
      * Handle online event
      */
     async handleOnline() {
+        // Debounce: prevent rapid successive online events
+        const now = Date.now();
+        if (now - this.lastOnlineStatusChange < this.onlineStatusDebounceTime) {
+            return;
+        }
+        
+        if (this.isOnline) {
+            return; // Already online, ignore
+        }
+
+        this.lastOnlineStatusChange = now;
         this.isOnline = true;
         this.logDebug('App is online');
         this.loadQueueFromStorage();
@@ -394,6 +429,25 @@ class NotificationManager {
      * Handle offline event
      */
     handleOffline() {
+        // Debounce: prevent rapid successive offline events
+        const now = Date.now();
+        if (now - this.lastOnlineStatusChange < this.onlineStatusDebounceTime) {
+            return;
+        }
+
+        if (!this.isOnline) {
+            return; // Already offline, ignore
+        }
+
+        // Check cooldown for error notifications
+        if (now - this.lastErrorNotificationTime < this.errorNotificationCooldown) {
+            this.logDebug('Network error notification on cooldown');
+        } else {
+            this.lastErrorNotificationTime = now;
+            this.notify('Network connection lost', { duration: 4000 }, 'ALERT');
+        }
+
+        this.lastOnlineStatusChange = now;
         this.isOnline = false;
         this.logDebug('App is offline');
     }
