@@ -589,12 +589,19 @@ function checkMonitoredServices(services, now, busStopCode = '') {
                     
                     notifiedServices[notificationKey] = true;
                     notificationManager.savePreference('notifiedServices', notifiedServices);
+                } else if (wasNotifiedBefore && timeDifference > 120000) {
+                    // Reset the flag if bus has moved more than 2 minutes into the future (past arrival window)
+                    console.log(`🔄 Resetting notification flag for Bus ${service.ServiceNo} (1st) - bus is no longer arriving`);
+                    delete notifiedServices[notificationKey];
+                    notificationManager.savePreference('notifiedServices', notifiedServices);
                 }
             } else if (!service.NextBus) {
                 // Reset the notification flag if NextBus no longer exists
                 const notificationKey = `${busStopCode}-${service.ServiceNo}-nextbus`;
-                delete notifiedServices[notificationKey];
-                notificationManager.savePreference('notifiedServices', notifiedServices);
+                if (notifiedServices[notificationKey]) {
+                    delete notifiedServices[notificationKey];
+                    notificationManager.savePreference('notifiedServices', notifiedServices);
+                }
             }
 
             // Check NextBus2 arrival
@@ -629,12 +636,19 @@ function checkMonitoredServices(services, now, busStopCode = '') {
                     
                     notifiedServices[notificationKey] = true;
                     notificationManager.savePreference('notifiedServices', notifiedServices);
+                } else if (wasNotifiedBefore && timeDifference > 120000) {
+                    // Reset the flag if bus has moved more than 2 minutes into the future (past arrival window)
+                    console.log(`🔄 Resetting notification flag for Bus ${service.ServiceNo} (2nd) - bus is no longer arriving`);
+                    delete notifiedServices[notificationKey];
+                    notificationManager.savePreference('notifiedServices', notifiedServices);
                 }
             } else if (!service.NextBus2) {
                 // Reset the notification flag if NextBus2 no longer exists
                 const notificationKey = `${busStopCode}-${service.ServiceNo}-nextbus2`;
-                delete notifiedServices[notificationKey];
-                notificationManager.savePreference('notifiedServices', notifiedServices);
+                if (notifiedServices[notificationKey]) {
+                    delete notifiedServices[notificationKey];
+                    notificationManager.savePreference('notifiedServices', notifiedServices);
+                }
             }
         });
     } catch (error) {
