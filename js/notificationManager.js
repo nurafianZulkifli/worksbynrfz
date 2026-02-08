@@ -221,7 +221,7 @@ class NotificationManager {
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
             font-size: 13px;
             font-weight: 500;
-            animation: notiSlideIn 0.3s ease;
+            animation: notiSlideIn 0.3s ease forwards;
             word-wrap: break-word;
             max-width: 320px;
             text-align: center;
