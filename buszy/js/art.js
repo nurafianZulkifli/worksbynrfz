@@ -513,9 +513,6 @@ async function fetchBusArrivals() {
                     </div>
                 </div>
             </div>`;
-        
-        // Show toast for mobile users
-        showToast(errorMessage, 'error');
     }
 }
 

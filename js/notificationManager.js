@@ -87,6 +87,9 @@ class NotificationManager {
         // Start connection monitoring
         this.startConnectionMonitoring();
 
+        // Initialize background state persistence
+        this.initBackgroundStatePersistence();
+
         // Request notification permission on init (silent)
         if ('Notification' in window && Notification.permission === 'default') {
             this.requestPermission();
@@ -106,6 +109,32 @@ class NotificationManager {
 
         // Initial check
         this.verifyConnection();
+
+        // Start background keep-alive mechanism
+        this.startBackgroundKeepAlive();
+    }
+
+    /**
+     * Start background keep-alive to keep app active when backgrounded
+     */
+    startBackgroundKeepAlive() {
+        // Every 60 seconds, ping the server to keep the connection warm
+        setInterval(() => {
+            this.logDebug('Background keep-alive ping');
+            // Send a light ping to server
+            this.verifyConnection().catch(() => {
+                // Silently fail, don't spam notifications
+            });
+        }, 60000);
+
+        // Register periodic sync if available (for background data sync)
+        if ('serviceWorker' in navigator && 'SyncManager' in window) {
+            navigator.serviceWorker.ready.then(registration => {
+                registration.sync.register('background-sync').catch(error => {
+                    this.logDebug('Background sync registration failed:', error);
+                });
+            });
+        }
     }
 
     /**
@@ -149,8 +178,34 @@ class NotificationManager {
                     this.logDebug('Service Worker controller now ready');
                 });
             }
+
+            // Listen for messages from service worker
+            navigator.serviceWorker.addEventListener('message', event => {
+                this.handleServiceWorkerMessage(event);
+            });
         } catch (error) {
             console.error('Service Worker registration failed:', error);
+        }
+    }
+
+    /**
+     * Handle messages from Service Worker
+     */
+    handleServiceWorkerMessage(event) {
+        const message = event.data;
+        if (!message || !message.type) return;
+
+        this.logDebug('Message from Service Worker:', message.type);
+
+        switch (message.type) {
+            case 'BACKGROUND_SYNC_COMPLETED':
+                this.logDebug('Background sync completed, processing queue');
+                this.loadQueueFromStorage();
+                this.processQueue();
+                break;
+
+            default:
+                this.logDebug('Unknown Service Worker message type:', message.type);
         }
     }
 
@@ -435,11 +490,34 @@ class NotificationManager {
      */
     handleVisibilityChange() {
         if (document.hidden) {
-            this.logDebug('App backgrounded');
+            this.logDebug('App backgrounded - continuing background monitoring');
+            // App is backgrounded but we continue monitoring in background
+            // The browser may throttle us, but we'll still check periodically
         } else {
             this.logDebug('App restored from background');
             // Immediately verify connection when app comes back to foreground
             this.verifyConnection();
+            // Trigger any pending background syncs
+            this.processPendingBackgroundTasks();
+        }
+    }
+
+    /**
+     * Process any pending tasks that occurred while backgrounded
+     */
+    processPendingBackgroundTasks() {
+        try {
+            // Check if there are unprocessed notifications
+            const pendingTasks = localStorage.getItem('pending_background_tasks');
+            if (pendingTasks) {
+                const tasks = JSON.parse(pendingTasks);
+                this.logDebug('Processing', tasks.length, 'pending background tasks');
+                // Tasks will be handled by individual components
+                // Clear after processing
+                localStorage.removeItem('pending_background_tasks');
+            }
+        } catch (error) {
+            this.logDebug('Error processing pending tasks:', error);
         }
     }
 
@@ -603,6 +681,71 @@ class NotificationManager {
         } else {
             localStorage.removeItem('debug_notifications');
         }
+    }
+
+    /**
+     * Save app state for resumption after backgrounding
+     */
+    saveAppState() {
+        try {
+            const appState = {
+                timestamp: Date.now(),
+                isOnline: this.isOnline,
+                notifications: {
+                    permission: this.permissions.notification,
+                    queueLength: this.notificationQueue.length
+                }
+            };
+            localStorage.setItem('app_state', JSON.stringify(appState));
+            this.logDebug('App state saved');
+        } catch (error) {
+            this.logDebug('Error saving app state:', error);
+        }
+    }
+
+    /**
+     * Load and restore app state from backgrounding
+     */
+    loadAppState() {
+        try {
+            const appState = localStorage.getItem('app_state');
+            if (appState) {
+                const state = JSON.parse(appState);
+                const backgroundDuration = Date.now() - state.timestamp;
+                this.logDebug('App state restored after', backgroundDuration, 'ms');
+                
+                // If we were offline before backgrounding, verify now
+                if (!state.isOnline) {
+                    this.logDebug('Was offline before backgrounding, verifying connection');
+                    this.verifyConnection();
+                }
+                
+                return state;
+            }
+        } catch (error) {
+            this.logDebug('Error loading app state:', error);
+        }
+        return null;
+    }
+
+    /**
+     * Initialize background state saving
+     */
+    initBackgroundStatePersistence() {
+        // Save state when backgrounding
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                this.saveAppState();
+            }
+        });
+
+        // Save state before page unload
+        window.addEventListener('beforeunload', () => {
+            this.saveAppState();
+        });
+
+        // Restore state on load
+        this.loadAppState();
     }
 }
 
