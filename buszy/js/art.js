@@ -15,11 +15,24 @@ function initializeDefaultPreferences() {
 initializeDefaultPreferences();
 
 // Register Service Worker for notifications
+let serviceWorkerReady = false;
+
 function registerServiceWorker() {
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/service-worker.js')
             .then(registration => {
                 console.log('Service Worker registered successfully:', registration);
+                // Wait for the controller to be ready
+                if (navigator.serviceWorker.controller) {
+                    serviceWorkerReady = true;
+                    console.log('Service Worker controller is ready');
+                } else {
+                    // Controller will be ready on next page load
+                    navigator.serviceWorker.addEventListener('controllerchange', () => {
+                        serviceWorkerReady = true;
+                        console.log('Service Worker controller is now ready');
+                    });
+                }
             })
             .catch(error => {
                 console.warn('Service Worker registration failed:', error);
@@ -459,15 +472,22 @@ async function fetchBusArrivals() {
                                 return;
                             }
 
+                            console.log(`Current notification permission: ${Notification.permission}`);
+
                             if (Notification.permission === 'default') {
-                                console.log('Requesting notification permission...');
+                                console.log('Requesting notification permission for Bus ' + serviceNo + '...');
                                 Notification.requestPermission()
                                     .then(permission => {
                                         console.log('Notification permission result:', permission);
                                         if (permission === 'granted') {
                                             console.log('Notifications permission granted for Bus service');
+                                            showToast(`Notifications setup complete for Bus ${serviceNo}. You'll get alerts when it arrives.`, 'success');
                                         } else if (permission === 'denied') {
                                             showToast('Notifications are blocked in your browser settings. Please enable them to receive alerts.', 'info');
+                                            // Uncheck the bell if user denied
+                                            monitoredServices[serviceNo] = false;
+                                            saveNotificationPreference('monitoredServices', monitoredServices);
+                                            button.classList.remove('active');
                                         }
                                     })
                                     .catch(error => {
@@ -476,8 +496,13 @@ async function fetchBusArrivals() {
                                     });
                             } else if (Notification.permission === 'granted') {
                                 console.log('Notifications permission already granted');
+                                showToast(`Notifications setup complete for Bus ${serviceNo}. You'll get alerts when it arrives.`, 'success');
                             } else if (Notification.permission === 'denied') {
                                 showToast('Notifications are blocked in your browser settings. Please enable them to receive alerts.', 'info');
+                                // Uncheck the bell if notifications are blocked
+                                monitoredServices[serviceNo] = false;
+                                saveNotificationPreference('monitoredServices', monitoredServices);
+                                button.classList.remove('active');
                             }
                         }
                     } catch (error) {
@@ -547,6 +572,14 @@ function checkMonitoredServices(services, now, busStopCode = '') {
             }
         }
 
+        // Check if there are any monitored services
+        const monitoredServiceNumbers = Object.keys(monitoredServices).filter(svc => monitoredServices[svc]);
+        if (monitoredServiceNumbers.length === 0) {
+            return; // No services being monitored
+        }
+
+        console.log(`Checking ${monitoredServiceNumbers.length} monitored services. Current time: ${now.toLocaleTimeString()}`);
+
         services.forEach((service) => {
             if (!monitoredServices[service.ServiceNo]) {
                 return; // Skip if service is not monitored
@@ -561,8 +594,10 @@ function checkMonitoredServices(services, now, busStopCode = '') {
                 const shouldNotify = timeDifference <= 0;
                 const wasNotifiedBefore = notifiedServices[`${service.ServiceNo}-nextbus`];
                 
+                console.log(`Bus ${service.ServiceNo} (1st): timeDiff=${timeDifference}ms, shouldNotify=${shouldNotify}, alreadyNotified=${wasNotifiedBefore}, permission=${Notification.permission}`);
+                
                 if (shouldNotify && !wasNotifiedBefore) {
-                    console.log(`Bus ${service.ServiceNo} arrival detected. Time diff: ${timeDifference}ms. Permission: ${Notification.permission}`);
+                    console.log(`🔔 Sending notification for Bus ${service.ServiceNo} (1st arrival)`);
                     sendNotification(`Bus ${service.ServiceNo} Arrives Now!`, {
                         body: `At ${busStopDescription || busStopCode}\nYour monitored bus has arrived.`,
                         icon: '/img/core-img/icon-192.png',
@@ -586,8 +621,10 @@ function checkMonitoredServices(services, now, busStopCode = '') {
                 const shouldNotify = timeDifference <= 0;
                 const wasNotifiedBefore = notifiedServices[`${service.ServiceNo}-nextbus2`];
                 
+                console.log(`Bus ${service.ServiceNo} (2nd): timeDiff=${timeDifference}ms, shouldNotify=${shouldNotify}, alreadyNotified=${wasNotifiedBefore}, permission=${Notification.permission}`);
+                
                 if (shouldNotify && !wasNotifiedBefore) {
-                    console.log(`Bus ${service.ServiceNo} (2nd) arrival detected. Time diff: ${timeDifference}ms. Permission: ${Notification.permission}`);
+                    console.log(`🔔 Sending notification for Bus ${service.ServiceNo} (2nd arrival)`);
                     sendNotification(`Bus ${service.ServiceNo} Arrives Now!`, {
                         body: `At ${busStopDescription || busStopCode}\nYour second monitored bus has arrived.`,
                         icon: '/img/core-img/icon-192.png',
@@ -631,12 +668,11 @@ function saveNotificationPreference(key, value) {
     }
 }
 
-// Refactored notification sender with improved error handling
+// Refactored notification sender with improved error handling for PWA
 function sendNotification(title, options = {}) {
     // Check if Notifications API is supported
     if (!('Notification' in window)) {
         console.warn('Notifications API not supported on this browser');
-        showToast(`${title} - ${options.body || title}`, 'info');
         return;
     }
 
@@ -649,13 +685,16 @@ function sendNotification(title, options = {}) {
 
         // If permission is default, request it
         if (Notification.permission === 'default') {
-            console.log('Requesting notification permission...');
+            console.log('Requesting notification permission for PWA...');
             Notification.requestPermission()
                 .then(permission => {
                     console.log('Notification permission result:', permission);
                     if (permission === 'granted') {
-                        // Recursively call sendNotification after permission is granted
-                        sendNotification(title, options);
+                        console.log('Permission granted, sending notification...');
+                        // Wait a moment for permission to be fully processed, then retry
+                        setTimeout(() => {
+                            sendNotificationNow(title, options);
+                        }, 100);
                     }
                 })
                 .catch(error => {
@@ -665,55 +704,51 @@ function sendNotification(title, options = {}) {
         }
 
         // If we reach here, permission should be 'granted'
-        if (Notification.permission !== 'granted') {
-            console.warn('Unexpected notification permission state:', Notification.permission);
-            return;
+        if (Notification.permission === 'granted') {
+            console.log('Permission already granted, sending notification...');
+            sendNotificationNow(title, options);
         }
+    } catch (error) {
+        console.error('Unexpected error in sendNotification:', error);
+    }
+}
 
-        // Try to use Service Worker if available and registered
-        if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+// Helper function to actually send the notification
+function sendNotificationNow(title, options = {}) {
+    try {
+        const notificationOptions = {
+            icon: options.icon || '/img/core-img/icon-192.png',
+            badge: options.badge || '/img/core-img/icon-192.png',
+            ...options
+        };
+
+        // Try Service Worker first if available and ready
+        if (serviceWorkerReady && 'serviceWorker' in navigator && navigator.serviceWorker.controller) {
             try {
+                console.log('Sending notification via Service Worker...');
                 navigator.serviceWorker.controller.postMessage({
                     type: 'SHOW_NOTIFICATION',
                     title: title,
                     options: {
-                        icon: options.icon || '/img/core-img/icon-192.png',
-                        badge: options.badge || '/img/core-img/icon-192.png',
+                        ...notificationOptions,
                         tag: 'bus-notification',
-                        requireInteraction: false,
-                        ...options
+                        requireInteraction: false
                     }
                 });
                 console.log('Notification sent via Service Worker:', title);
+                return;
             } catch (swError) {
-                console.warn('Service Worker notification failed, using direct API:', swError);
-                // Fallback to direct notification
-                try {
-                    new Notification(title, {
-                        icon: options.icon || '/img/core-img/icon-192.png',
-                        badge: options.badge || '/img/core-img/icon-192.png',
-                        ...options
-                    });
-                    console.log('Notification sent via direct API:', title);
-                } catch (directError) {
-                    console.error('Direct notification also failed:', directError);
-                }
-            }
-        } else {
-            // No service worker available, use direct API
-            try {
-                new Notification(title, {
-                    icon: options.icon || '/img/core-img/icon-192.png',
-                    badge: options.badge || '/img/core-img/icon-192.png',
-                    ...options
-                });
-                console.log('Notification sent via direct API:', title);
-            } catch (error) {
-                console.error('Error sending notification:', error);
+                console.warn('Service Worker notification failed:', swError);
             }
         }
+
+        // Fallback to direct Notification API (works in PWA)
+        console.log('Sending notification via direct API...');
+        new Notification(title, notificationOptions);
+        console.log('Notification sent via direct API:', title);
+
     } catch (error) {
-        console.error('Unexpected error in sendNotification:', error);
+        console.error('Error sending notification:', error);
     }
 }
 
