@@ -4,7 +4,7 @@ function initializeDefaultPreferences() {
     if (!localStorage.getItem('timeFormat')) {
         localStorage.setItem('timeFormat', '24-hour');
     }
-    
+
     // Set default dark mode preference if not already set
     if (!localStorage.getItem('dark-mode')) {
         localStorage.setItem('dark-mode', 'disabled');
@@ -227,27 +227,33 @@ async function fetchBusArrivals() {
             const card = document.createElement('div');
             card.classList.add('col-12', 'col-md-4', 'col-xl-3', 'card-bt'); // Add col-sm-6 for 2 cards per row on small screens
             const isMonitored = JSON.parse(localStorage.getItem('monitoredServices') || '{}')[service.ServiceNo] || false;
+
+            // Safely check if NextBus exists and has required properties
+            const hasNextBus = service.NextBus && typeof service.NextBus === 'object' && Object.keys(service.NextBus).length > 0;
+            const hasNextBus2 = service.NextBus2 && typeof service.NextBus2 === 'object' && Object.keys(service.NextBus2).length > 0;
+
             card.innerHTML = `
                 <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <div>
+                    <div class="card-header d-flex justify-content-between align-items-center" style="flex-wrap: wrap;">
+                        <div style="min-width: 0;">
                             <span class="service-no">${service.ServiceNo}</span>
-                            ${service.NextBus?.DestinationCode ? `<div class="destination-code">To ${getDestinationName(service.NextBus.DestinationCode)}</div>` : ''}
+                            ${hasNextBus && service.NextBus.DestinationCode ? `<div class="destination-code">To ${getDestinationName(service.NextBus.DestinationCode)}</div>` : ''}
                         </div>
-                        <div style="display: flex; flex-direction: row; gap: 0.5rem; align-items: center;">
-                            <button class="btn btn-notify btn-sm notify-btn ${isMonitored ? 'active' : ''}" 
+                        <div style="display: flex; flex-direction: row; gap: 0.5rem; align-items: center; flex-shrink: 0;">
+                            ${service.Operator ? `<img src="assets/${service.Operator.toLowerCase()}.png" alt="${service.Operator}" class="img-fluid" style="width: 50px; margin-left: auto;">` : ''}
+                                <button class="btn btn-notify btn-sm notify-btn ${isMonitored ? 'active' : ''}" 
                                 data-service="${service.ServiceNo}"
                                 title="Get notified when bus arrives">
                                 <i class="fa-solid fa-bell"></i>
                             </button>
-                            ${service.Operator ? `<img src="assets/${service.Operator.toLowerCase()}.png" alt="${service.Operator}" class="img-fluid" style="width: 50px;">` : ''}
-                        </div>
+                            </div>
                     </div>
                     <div class="card-body">
                         <div class="card-content-art">
-                            <div class="d-flex justify-content-between">
+                            ${hasNextBus ? `
+                            <div class="d-flex justify-content-between" style="flex-wrap: wrap; gap: 0.5rem;">
                                 <span class="bus-time">${service.NextBus?.EstimatedArrival ? formatArrivalTimeOrArr(service.NextBus.EstimatedArrival, now) : '--'}</span>
-                                <span>
+                                <span style="display: flex; align-items: center; gap: 0.3rem; flex-wrap: wrap;">
                                     ${service.NextBus?.Type ? `<img src="assets/${service.NextBus.Type.toLowerCase()}.png" alt="${service.NextBus.Type}" class="img-fluid" style="width: 50px;">` : ''}
                                     ${service.NextBus?.Load ? `<span class="load-indicator ${service.NextBus.Load.toLowerCase()}"> ${getLoadIcon(service.NextBus.Load)}</span>` : ''}
                                     <button class="btn btn-busloc btn-sm view-location-btn" 
@@ -261,9 +267,11 @@ async function fetchBusArrivals() {
                                     </button>
                                 </span>
                             </div>
-                            <div class="d-flex justify-content-between mt-2">
+                            ` : `<div style="padding: 0.5rem; color: #999; font-size: 0.9rem;">No arrival data</div>`}
+                            ${hasNextBus2 ? `
+                            <div class="d-flex justify-content-between" style="margin-top: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
                                 <span class="bus-time">${service.NextBus2?.EstimatedArrival ? formatArrivalTimeOrArr(service.NextBus2.EstimatedArrival, now) : '--'}</span>
-                                <span>
+                                <span style="display: flex; align-items: center; gap: 0.3rem; flex-wrap: wrap;">
                                     ${service.NextBus2?.Type ? `<img src="assets/${service.NextBus2.Type.toLowerCase()}.png" alt="${service.NextBus2.Type}" class="img-fluid" style="width: 50px;">` : ''}
                                     ${service.NextBus2?.Load ? `<span class="load-indicator ${service.NextBus2.Load.toLowerCase()}"> ${getLoadIcon(service.NextBus2.Load)}</span>` : ''}
                                     <button class="btn btn-busloc btn-sm view-location-btn" 
@@ -277,7 +285,7 @@ async function fetchBusArrivals() {
                                     </button>
                                 </span>
                             </div>
-
+                            ` : ''}
                         </div>
                     </div>
                 </div>
@@ -286,7 +294,8 @@ async function fetchBusArrivals() {
         });
 
         // Check for arrivals and send notifications
-        checkMonitoredServices(data.Services, now);
+        const busStopCode = document.getElementById('bus-stop-search').value.trim();
+        checkMonitoredServices(data.Services, now, busStopCode);
 
         // Add event listeners to "View Bus Location" buttons
         const viewLocationButtons = document.querySelectorAll('.view-location-btn');
@@ -330,23 +339,38 @@ async function fetchBusArrivals() {
 
         // Add event listeners to notify buttons
         const notifyButtons = document.querySelectorAll('.notify-btn');
+        const busStopCodeForToast = document.getElementById('bus-stop-search').value.trim();
+        
+        // Get bus stop description for toast
+        let busStopDescriptionForToast = '';
+        try {
+            const allBusStops = JSON.parse(localStorage.getItem('allBusStops')) || [];
+            const busStop = allBusStops.find(stop => stop.BusStopCode === busStopCodeForToast);
+            if (busStop) {
+                busStopDescriptionForToast = busStop.Description;
+            }
+        } catch (error) {
+            console.error('Error fetching bus stop description:', error);
+        }
+        
         notifyButtons.forEach((button) => {
             button.addEventListener('click', () => {
                 const serviceNo = button.getAttribute('data-service');
                 const monitoredServices = JSON.parse(localStorage.getItem('monitoredServices') || '{}');
-                
+
                 monitoredServices[serviceNo] = !monitoredServices[serviceNo];
                 localStorage.setItem('monitoredServices', JSON.stringify(monitoredServices));
-                
+
                 button.classList.toggle('active');
-                
+
                 // Show toast notification
                 const isActive = monitoredServices[serviceNo];
-                const message = isActive 
-                    ? `Notifications enabled for Bus ${serviceNo}` 
-                    : `Notifications disabled for Bus ${serviceNo}`;
+                const busStopInfo = busStopDescriptionForToast ? ` at ${busStopDescriptionForToast}` : '';
+                const message = isActive
+                    ? `Notifications enabled for Bus ${serviceNo}${busStopInfo}`
+                    : `Notifications disabled for Bus ${serviceNo}${busStopInfo}`;
                 showToast(message, isActive ? 'success' : 'info');
-                
+
                 // Request notification permission on first toggle
                 if (monitoredServices[serviceNo] && Notification.permission !== 'granted' && Notification.permission !== 'denied') {
                     Notification.requestPermission();
@@ -369,18 +393,38 @@ async function fetchBusArrivals() {
 }
 
 // Function to check monitored services and send notifications
-function checkMonitoredServices(services, now) {
+function checkMonitoredServices(services, now, busStopCode = '') {
     const monitoredServices = JSON.parse(localStorage.getItem('monitoredServices') || '{}');
     const notifiedServices = JSON.parse(localStorage.getItem('notifiedServices') || '{}');
-    
+
+    // Get bus stop description
+    let busStopDescription = '';
+    if (busStopCode) {
+        try {
+            const allBusStops = JSON.parse(localStorage.getItem('allBusStops')) || [];
+            const busStop = allBusStops.find(stop => stop.BusStopCode === busStopCode);
+            if (busStop) {
+                busStopDescription = busStop.Description;
+            }
+        } catch (error) {
+            console.error('Error fetching bus stop description:', error);
+        }
+    }
+
     services.forEach((service) => {
         if (monitoredServices[service.ServiceNo]) {
             // Check NextBus arrival
             if (service.NextBus?.EstimatedArrival) {
-                const timeDifference = new Date(service.NextBus.EstimatedArrival) - now;
-                if (timeDifference <= 0 && !notifiedServices[`${service.ServiceNo}-nextbus`]) {
+                const arrivalTime = new Date(service.NextBus.EstimatedArrival);
+                const timeDifference = arrivalTime - now;
+                
+                // Send notification when bus arrives within reasonable window (1 min before to 10 min after)
+                const shouldNotify = timeDifference <= 60000 && timeDifference > -600000;
+                
+                if (shouldNotify && !notifiedServices[`${service.ServiceNo}-nextbus`]) {
+                    console.log(`Bus ${service.ServiceNo} arrival detected. Time diff: ${timeDifference}ms. Permission: ${Notification.permission}`);
                     sendNotification(`Bus ${service.ServiceNo} Arrives Now!`, {
-                        body: 'Your monitored bus has arrived.',
+                        body: `At ${busStopDescription || busStopCode}\nYour monitored bus has arrived.`,
                         icon: 'assets/bus-icon.png'
                     });
                     notifiedServices[`${service.ServiceNo}-nextbus`] = true;
@@ -391,13 +435,19 @@ function checkMonitoredServices(services, now) {
                 delete notifiedServices[`${service.ServiceNo}-nextbus`];
                 localStorage.setItem('notifiedServices', JSON.stringify(notifiedServices));
             }
-            
+
             // Check NextBus2 arrival
             if (service.NextBus2?.EstimatedArrival) {
-                const timeDifference = new Date(service.NextBus2.EstimatedArrival) - now;
-                if (timeDifference <= 0 && !notifiedServices[`${service.ServiceNo}-nextbus2`]) {
+                const arrivalTime = new Date(service.NextBus2.EstimatedArrival);
+                const timeDifference = arrivalTime - now;
+                
+                // Send notification when bus arrives within reasonable window (1 min before to 10 min after)
+                const shouldNotify = timeDifference <= 60000 && timeDifference > -600000;
+                
+                if (shouldNotify && !notifiedServices[`${service.ServiceNo}-nextbus2`]) {
+                    console.log(`Bus ${service.ServiceNo} (2nd) arrival detected. Time diff: ${timeDifference}ms. Permission: ${Notification.permission}`);
                     sendNotification(`Bus ${service.ServiceNo} Arrives Now!`, {
-                        body: 'Your second monitored bus has arrived.',
+                        body: `At ${busStopDescription || busStopCode}\nYour second monitored bus has arrived.`,
                         icon: 'assets/bus-icon.png'
                     });
                     notifiedServices[`${service.ServiceNo}-nextbus2`] = true;
@@ -416,6 +466,23 @@ function checkMonitoredServices(services, now) {
 function sendNotification(title, options = {}) {
     if (Notification.permission === 'granted') {
         new Notification(title, options);
+        console.log('Notification sent:', title);
+    } else if (Notification.permission === 'denied') {
+        console.warn('Notifications are blocked. Permission denied.');
+        // Show toast as fallback
+        showToast(`${title} - ${options.body}`, 'info');
+    } else if (Notification.permission === 'default') {
+        console.log('Notification permission is default, requesting permission...');
+        Notification.requestPermission().then(permission => {
+            if (permission === 'granted') {
+                new Notification(title, options);
+                console.log('Notification sent after permission granted:', title);
+            } else {
+                console.warn('Notification permission was not granted');
+                // Show toast as fallback
+                showToast(`${title} - ${options.body}`, 'info');
+            }
+        });
     }
 }
 
@@ -525,7 +592,7 @@ function formatArrivalTimeOrArr(isoString, now, isIncomingBus = false) {
         : { hour: '2-digit', minute: '2-digit', hour12: true };
 
     const timeString = arrivalTime.toLocaleTimeString('en-US', options);
-    
+
     // For 12-hour format with incoming buses, make AM/PM smaller
     if (isIncomingBus && savedFormat === '12-hour') {
         const parts = timeString.split(' ');
@@ -533,7 +600,7 @@ function formatArrivalTimeOrArr(isoString, now, isIncomingBus = false) {
             return `${parts[0]}<span style="font-size: 0.7em;">${parts[1]}</span>`;
         }
     }
-    
+
     return timeString;
 }
 

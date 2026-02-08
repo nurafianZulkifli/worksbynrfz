@@ -1048,6 +1048,10 @@ body.dark-mode .form-control {
 
 @media (max-width: 768px) {
     .pin-msg {
-        flex-direction: column;
+        padding: 1em;
+    }
+
+    .lg-menu {
+        font-size: 18px;
     }
 }
