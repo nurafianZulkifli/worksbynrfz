@@ -48,6 +48,23 @@ if (document.readyState === 'loading') {
     registerServiceWorker();
 }
 
+// Check notification support and status on page load
+document.addEventListener('DOMContentLoaded', () => {
+    if ('Notification' in window) {
+        console.log('Notification API supported');
+        console.log('Current notification permission:', Notification.permission);
+        console.log('Service Worker ready:', serviceWorkerReady);
+        console.log('Service Worker available:', 'serviceWorker' in navigator);
+        
+        // Warn if notifications are disabled
+        if (Notification.permission === 'denied') {
+            console.warn('⚠️ Notifications are blocked for this app');
+        }
+    } else {
+        console.warn('Notification API not supported on this device');
+    }
+});
+
 // ****************************
 // :: Bus Arrivals Fetching and Display
 // ****************************
@@ -481,7 +498,6 @@ async function fetchBusArrivals() {
                                         console.log('Notification permission result:', permission);
                                         if (permission === 'granted') {
                                             console.log('Notifications permission granted for Bus service');
-                                            showToast(`Notifications setup complete for Bus ${serviceNo}. You'll get alerts when it arrives.`, 'success');
                                         } else if (permission === 'denied') {
                                             showToast('Notifications are blocked in your browser settings. Please enable them to receive alerts.', 'info');
                                             // Uncheck the bell if user denied
@@ -496,7 +512,6 @@ async function fetchBusArrivals() {
                                     });
                             } else if (Notification.permission === 'granted') {
                                 console.log('Notifications permission already granted');
-                                showToast(`Notifications setup complete for Bus ${serviceNo}. You'll get alerts when it arrives.`, 'success');
                             } else if (Notification.permission === 'denied') {
                                 showToast('Notifications are blocked in your browser settings. Please enable them to receive alerts.', 'info');
                                 // Uncheck the bell if notifications are blocked
@@ -598,11 +613,17 @@ function checkMonitoredServices(services, now, busStopCode = '') {
                 
                 if (shouldNotify && !wasNotifiedBefore) {
                     console.log(`🔔 Sending notification for Bus ${service.ServiceNo} (1st arrival)`);
+                    
+                    // Send push notification
                     sendNotification(`Bus ${service.ServiceNo} Arrives Now!`, {
                         body: `At ${busStopDescription || busStopCode}\nYour monitored bus has arrived.`,
                         icon: '/img/core-img/icon-192.png',
                         requireInteraction: false
                     });
+                    
+                    // Also show visual toast alert as fallback
+                    showToast(`🚌 Bus ${service.ServiceNo} has arrived at ${busStopDescription || busStopCode}!`, 'info');
+                    
                     notifiedServices[`${service.ServiceNo}-nextbus`] = true;
                     saveNotificationPreference('notifiedServices', notifiedServices);
                 }
@@ -625,11 +646,17 @@ function checkMonitoredServices(services, now, busStopCode = '') {
                 
                 if (shouldNotify && !wasNotifiedBefore) {
                     console.log(`🔔 Sending notification for Bus ${service.ServiceNo} (2nd arrival)`);
+                    
+                    // Send push notification
                     sendNotification(`Bus ${service.ServiceNo} Arrives Now!`, {
                         body: `At ${busStopDescription || busStopCode}\nYour second monitored bus has arrived.`,
                         icon: '/img/core-img/icon-192.png',
                         requireInteraction: false
                     });
+                    
+                    // Also show visual toast alert as fallback
+                    showToast(`🚌 Bus ${service.ServiceNo} has arrived at ${busStopDescription || busStopCode}!`, 'info');
+                    
                     notifiedServices[`${service.ServiceNo}-nextbus2`] = true;
                     saveNotificationPreference('notifiedServices', notifiedServices);
                 }
@@ -735,20 +762,27 @@ function sendNotificationNow(title, options = {}) {
                         requireInteraction: false
                     }
                 });
-                console.log('Notification sent via Service Worker:', title);
-                return;
+                console.log('✅ Notification sent via Service Worker:', title);
+                return true;
             } catch (swError) {
                 console.warn('Service Worker notification failed:', swError);
             }
         }
 
         // Fallback to direct Notification API (works in PWA)
-        console.log('Sending notification via direct API...');
-        new Notification(title, notificationOptions);
-        console.log('Notification sent via direct API:', title);
+        try {
+            console.log('Sending notification via direct API...');
+            new Notification(title, notificationOptions);
+            console.log('✅ Notification sent via direct API:', title);
+            return true;
+        } catch (directError) {
+            console.error('Direct notification failed:', directError);
+            return false;
+        }
 
     } catch (error) {
-        console.error('Error sending notification:', error);
+        console.error('Unexpected error sending notification:', error);
+        return false;
     }
 }
 
@@ -762,6 +796,7 @@ function showToast(message, type = 'info') {
         toastContainer.style.cssText = `
             position: fixed;
             top: 20px;
+            left: 20px;
             right: 20px;
             z-index: 9999;
             display: flex;
@@ -773,25 +808,35 @@ function showToast(message, type = 'info') {
 
     // Create toast element
     const toast = document.createElement('div');
-    const bgColor = type === 'success' ? '#4CAF50' : type === 'error' ? '#f44336' : '#2196F3';
+    let bgColor = type === 'success' ? '#4CAF50' : type === 'error' ? '#f44336' : '#2196F3';
+    let duration = 3000; // Default 3 seconds
+    
+    // Arrival alerts should be more noticeable and longer
+    if (message.includes('🚌') || message.includes('arrived')) {
+        bgColor = '#FF9800'; // Orange for arrival alerts
+        duration = 6000; // Show for 6 seconds
+    }
+    
     toast.style.cssText = `
         background-color: ${bgColor};
         color: white;
-        padding: 12px 20px;
+        padding: 16px 20px;
         border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        font-size: 14px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        font-size: 15px;
         font-weight: 500;
         animation: slideIn 0.3s ease;
+        word-wrap: break-word;
+        max-width: 100%;
     `;
     toast.textContent = message;
     toastContainer.appendChild(toast);
 
-    // Auto remove after 3 seconds
+    // Auto remove after duration
     setTimeout(() => {
         toast.style.animation = 'slideOut 0.3s ease';
         setTimeout(() => toast.remove(), 300);
-    }, 3000);
+    }, duration);
 }
 
 // Add toast animations to the page
