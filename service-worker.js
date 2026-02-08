@@ -1,3 +1,6 @@
+const CACHE_VERSION = 'v1';
+const CACHE_NAME = `nrfz-cache-${CACHE_VERSION}`;
+
 self.addEventListener('install', event => {
   self.skipWaiting();
 });
@@ -14,6 +17,8 @@ self.addEventListener('fetch', event => {
 self.addEventListener('message', event => {
     if (!event.data) return;
 
+    console.log('[Service Worker] Message received:', event.data.type);
+
     switch (event.data.type) {
         case 'SKIP_WAITING':
             self.skipWaiting();
@@ -23,17 +28,23 @@ self.addEventListener('message', event => {
             handleShowNotification(event.data);
             break;
 
+        case 'CLEAR_NOTIFICATIONS':
+            handleClearNotifications(event.data);
+            break;
+
         default:
-            console.log('Unknown message type:', event.data.type);
+            console.log('[Service Worker] Unknown message type:', event.data.type);
     }
 });
 
-// Handle showing notifications
+/**
+ * Handle showing notifications
+ */
 function handleShowNotification(data) {
     const { title, options = {} } = data;
 
     if (!title) {
-        console.error('Notification title is required');
+        console.error('[Service Worker] Notification title is required');
         return;
     }
 
@@ -41,51 +52,82 @@ function handleShowNotification(data) {
     const notificationOptions = {
         icon: options.icon || '/img/core-img/icon-192.png',
         badge: options.badge || '/img/core-img/icon-192.png',
-        tag: options.tag || 'bus-notification',
+        tag: options.tag || 'notification',
         requireInteraction: options.requireInteraction !== undefined ? options.requireInteraction : false,
+        data: {
+            url: options.url || '/buszy/art.html',
+            ...options.data
+        },
         ...options
     };
 
     // Show the notification
     self.registration.showNotification(title, notificationOptions)
+        .then(() => {
+            console.log('[Service Worker] Notification shown:', title);
+        })
         .catch(error => {
-            console.error('Error showing notification:', error);
+            console.error('[Service Worker] Error showing notification:', error);
         });
 }
 
-// Handle notification clicks
+/**
+ * Handle clearing notifications by tag
+ */
+function handleClearNotifications(data) {
+    const { tag } = data;
+
+    self.registration.getNotifications({ tag }).then(notifications => {
+        notifications.forEach(notification => {
+            notification.close();
+        });
+        console.log('[Service Worker] Cleared notifications with tag:', tag);
+    }).catch(error => {
+        console.error('[Service Worker] Error clearing notifications:', error);
+    });
+}
+
+/**
+ * Handle notification clicks
+ */
 self.addEventListener('notificationclick', event => {
-    console.log('Notification clicked:', event.notification.tag);
+    console.log('[Service Worker] Notification clicked:', event.notification.tag);
     event.notification.close();
+
+    const notificationData = event.notification.data || {};
+    const targetUrl = notificationData.url || '/buszy/art.html';
 
     // Handle notification click - focus existing window or open new one
     event.waitUntil(
         clients.matchAll({ type: 'window', includeUncontrolled: true })
             .then(clientList => {
-                console.log('Found ' + clientList.length + ' clients');
+                console.log('[Service Worker] Found ' + clientList.length + ' clients');
                 
                 // Check if a window with the app is already open
                 for (let client of clientList) {
-                    console.log('Client URL:', client.url);
-                    if (client.url.includes('/buszy/art.html') || client.url.includes('nrfz-dev')) {
-                        console.log('Focusing existing client');
+                    console.log('[Service Worker] Client URL:', client.url);
+                    if (client.url.includes(targetUrl) || client.url.includes('nrfz-dev')) {
+                        console.log('[Service Worker] Focusing existing client');
                         return client.focus();
                     }
                 }
                 
                 // If no window is open, open the app
-                console.log('Opening new window');
+                console.log('[Service Worker] Opening new window:', targetUrl);
                 if (clients.openWindow) {
-                    return clients.openWindow('/buszy/art.html');
+                    return clients.openWindow(targetUrl);
                 }
             })
             .catch(error => {
-                console.error('Error handling notification click:', error);
+                console.error('[Service Worker] Error handling notification click:', error);
             })
     );
 });
 
-// Handle notification close
+/**
+ * Handle notification close
+ */
 self.addEventListener('notificationclose', event => {
-    console.log('Notification closed:', event.notification.tag);
+    console.log('[Service Worker] Notification closed:', event.notification.tag);
+    // Could be used for analytics/tracking
 });
