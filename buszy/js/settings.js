@@ -75,8 +75,18 @@ clearCacheBtn.addEventListener('click', async () => {
 // ****************************
 // :: Import/Export Data Handling
 // ****************************
-// Define the keys to export/import
-const EXPORT_KEYS = ['dark-mode', 'timeFormat', 'bookmarkedBusStops', 'notif_monitoredServices'];
+// Define the keys to export/import (new NotificationManager system)
+const EXPORT_KEYS = [
+    'dark-mode',           // Theme preference
+    'timeFormat',          // Time display format
+    'bookmarkedBusStops',  // Saved bus stops
+    'allBusStops',         // Bus stop data cache
+    'notif_monitoredServices',  // Monitored bus services (NotificationManager)
+    'notif_notifiedServices'     // Notification history (NotificationManager)
+];
+
+// Additional keys to export that follow patterns (dynamically found)
+const DYNAMIC_EXPORT_PATTERNS = ['notif_monitoredServices_'];  // Matches notif_monitoredServices_<busStopCode>
 
 // Export localStorage data as JSON file
 const exportDataBtn = document.getElementById('export-data-btn');
@@ -85,10 +95,25 @@ if (exportDataBtn) {
         try {
             // Get only specific localStorage items
             const data = {};
+            
+            // Export static keys
             EXPORT_KEYS.forEach(key => {
                 const value = localStorage.getItem(key);
                 if (value !== null) {
                     data[key] = value;
+                }
+            });
+            
+            // Export dynamic keys matching patterns (e.g., notif_monitoredServices_<busStopCode>)
+            DYNAMIC_EXPORT_PATTERNS.forEach(pattern => {
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    if (key && key.startsWith(pattern)) {
+                        const value = localStorage.getItem(key);
+                        if (value !== null) {
+                            data[key] = value;
+                        }
+                    }
                 }
             });
             
@@ -110,6 +135,21 @@ if (exportDataBtn) {
             alert('Error exporting data. Please try again.');
         }
     });
+}
+
+// Helper function to check if a key is allowed for import
+function isAllowedKey(key) {
+    // Check static keys
+    if (EXPORT_KEYS.includes(key)) {
+        return true;
+    }
+    // Check dynamic patterns
+    for (const pattern of DYNAMIC_EXPORT_PATTERNS) {
+        if (key.startsWith(pattern)) {
+            return true;
+        }
+    }
+    return false;
 }
 
 // Import localStorage data from file
@@ -138,7 +178,7 @@ if (importFileInput) {
                 }
                 
                 // Validate that file contains only allowed keys
-                const invalidKeys = Object.keys(data).filter(key => !EXPORT_KEYS.includes(key));
+                const invalidKeys = Object.keys(data).filter(key => !isAllowedKey(key));
                 if (invalidKeys.length > 0) {
                     throw new Error(`Invalid keys in file: ${invalidKeys.join(', ')}`);
                 }
@@ -152,7 +192,7 @@ if (importFileInput) {
                 // Import data into localStorage
                 let importedCount = 0;
                 for (const [key, value] of Object.entries(data)) {
-                    if (EXPORT_KEYS.includes(key)) {
+                    if (isAllowedKey(key)) {
                         localStorage.setItem(key, value);
                         importedCount++;
                     }
