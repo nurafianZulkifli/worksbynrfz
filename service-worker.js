@@ -32,10 +32,43 @@ self.addEventListener('message', event => {
             handleClearNotifications(event.data);
             break;
 
+        case 'KEEP_ALIVE':
+            // Keep-alive ping from client, respond to keep connection warm
+            console.log('[Service Worker] Keep-alive ping received');
+            event.ports[0].postMessage({ received: true });
+            break;
+
         default:
             console.log('[Service Worker] Unknown message type:', event.data.type);
     }
 });
+
+/**
+ * Handle background sync events (runs when online after being offline)
+ */
+if ('sync' in self.registration) {
+    self.addEventListener('sync', event => {
+        console.log('[Service Worker] Background sync event:', event.tag);
+        
+        if (event.tag === 'background-sync') {
+            event.waitUntil(
+                // Notify all clients that background sync occurred
+                self.clients.matchAll().then(clients => {
+                    clients.forEach(client => {
+                        client.postMessage({
+                            type: 'BACKGROUND_SYNC_COMPLETED',
+                            timestamp: new Date().toISOString()
+                        });
+                    });
+                    console.log('[Service Worker] Background sync notification sent to clients');
+                }).catch(error => {
+                    console.log('[Service Worker] Background sync error:', error);
+                    throw error; // Retry on error
+                })
+            );
+        }
+    });
+}
 
 /**
  * Handle showing notifications

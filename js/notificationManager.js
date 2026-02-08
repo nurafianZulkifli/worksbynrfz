@@ -33,7 +33,7 @@ class NotificationManager {
                 duration: 6000,
                 sound: 'arrival.mp3',
                 vibration: [200, 100, 200],
-                color: '#FF9800'
+                color: '#0ea827'
             },
             ALERT: {
                 priority: 'high',
@@ -359,6 +359,7 @@ class NotificationManager {
             gap: 8px;
             pointer-events: none;
             align-items: center;
+            border-radius: 25px;
         `;
         document.body.appendChild(container);
 
