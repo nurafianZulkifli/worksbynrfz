@@ -633,9 +633,6 @@ function saveNotificationPreference(key, value) {
 
 // Refactored notification sender with improved error handling
 function sendNotification(title, options = {}) {
-    // Always use toast as primary method on mobile
-    const isMobile = /mobile|android|iphone|ipad|phone/i.test(navigator.userAgent);
-    
     // Check if Notifications API is supported
     if (!('Notification' in window)) {
         console.warn('Notifications API not supported on this browser');
@@ -644,10 +641,32 @@ function sendNotification(title, options = {}) {
     }
 
     try {
-        // If permission is not granted, skip sending but don't error out
+        // Handle permission states
+        if (Notification.permission === 'denied') {
+            console.warn('Notifications are blocked by user');
+            return; // Don't spam user if they explicitly denied
+        }
+
+        // If permission is default, request it
+        if (Notification.permission === 'default') {
+            console.log('Requesting notification permission...');
+            Notification.requestPermission()
+                .then(permission => {
+                    console.log('Notification permission result:', permission);
+                    if (permission === 'granted') {
+                        // Recursively call sendNotification after permission is granted
+                        sendNotification(title, options);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error requesting notification permission:', error);
+                });
+            return;
+        }
+
+        // If we reach here, permission should be 'granted'
         if (Notification.permission !== 'granted') {
-            console.log(`Notification permission is '${Notification.permission}', using toast fallback`);
-            showToast(`${title} - ${options.body || title}`, 'info');
+            console.warn('Unexpected notification permission state:', Notification.permission);
             return;
         }
 
@@ -678,7 +697,6 @@ function sendNotification(title, options = {}) {
                     console.log('Notification sent via direct API:', title);
                 } catch (directError) {
                     console.error('Direct notification also failed:', directError);
-                    showToast(`${title} - ${options.body || title}`, 'info');
                 }
             }
         } else {
@@ -692,13 +710,10 @@ function sendNotification(title, options = {}) {
                 console.log('Notification sent via direct API:', title);
             } catch (error) {
                 console.error('Error sending notification:', error);
-                showToast(`${title} - ${options.body || title}`, 'info');
             }
         }
     } catch (error) {
         console.error('Unexpected error in sendNotification:', error);
-        // Always fallback to toast on any error
-        showToast(`${title} - ${options.body || title}`, 'info');
     }
 }
 
