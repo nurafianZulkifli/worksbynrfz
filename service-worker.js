@@ -1,5 +1,7 @@
 const CACHE_VERSION = 'v1';
 const CACHE_NAME = `nrfz-cache-${CACHE_VERSION}`;
+const API_CACHE_NAME = `nrfz-api-${CACHE_VERSION}`;
+const RUNTIME_CACHE_NAME = `nrfz-runtime-${CACHE_VERSION}`;
 let lastKeepAliveTime = 0;
 
 self.addEventListener('install', event => {
@@ -7,26 +9,75 @@ self.addEventListener('install', event => {
 });
 
 self.addEventListener('activate', event => {
-  event.waitUntil(self.clients.claim());
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cacheName => {
+          // Keep only current caches
+          if (cacheName !== CACHE_NAME && 
+              cacheName !== API_CACHE_NAME && 
+              cacheName !== RUNTIME_CACHE_NAME) {
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    }).then(() => self.clients.claim())
+  );
 });
 
 self.addEventListener('fetch', event => {
-  // Intercept all requests to maintain keep-alive
   const url = new URL(event.request.url);
+  const method = event.request.method;
   
-  // Add keep-alive headers to outgoing requests
-  if (event.request.method === 'GET' || event.request.method === 'HEAD') {
-    // Let requests through with keep-alive maintained
-    event.respondWith(
-      fetch(event.request, {
-        keepalive: true
-      }).catch(error => {
-        console.log('[Service Worker] Fetch error:', error);
-        // Fall back to cache or network error response
-        return fetch(event.request);
-      })
-    );
+  // Only cache GET/HEAD requests
+  if (method !== 'GET' && method !== 'HEAD') {
+    event.respondWith(fetch(event.request));
+    return;
   }
+
+  // Cache API calls for offline access and background persistence
+  if (url.pathname.includes('/api/') || 
+      url.pathname.includes('.json') ||
+      url.pathname.includes('/arrivals')) {
+    
+    event.respondWith(
+      // Try network first, fallback to cache
+      fetch(event.request, { keepalive: true })
+        .then(response => {
+          // Cache successful responses
+          if (response.ok) {
+            const cacheResponse = response.clone();
+            caches.open(API_CACHE_NAME).then(cache => {
+              cache.put(event.request, cacheResponse);
+            });
+          }
+          return response;
+        })
+        .catch(error => {
+          // Network failed, try cache
+          return caches.match(event.request)
+            .then(cachedResponse => {
+              if (cachedResponse) {
+                console.log('[Service Worker] Serving from cache:', url.pathname);
+                return cachedResponse;
+              }
+              // No cache available
+              return new Response('Offline - no cached data', { status: 503 });
+            });
+        })
+    );
+    return;
+  }
+
+  // For other requests, use keepalive
+  event.respondWith(
+    fetch(event.request, { keepalive: true })
+      .catch(error => {
+        console.log('[Service Worker] Fetch error, trying cache:', url.pathname);
+        return caches.match(event.request)
+          .then(response => response || new Response('Offline', { status: 503 }));
+      })
+  );
 });
 
 // Handle messages from the client (main application)
@@ -56,6 +107,12 @@ self.addEventListener('message', event => {
             performKeepAlivePing();
             break;
 
+        case 'START_BACKGROUND_FETCH':
+            // Start a background fetch for monitored bus data
+            console.log('[Service Worker] Starting background fetch');
+            startBackgroundFetch(event.data);
+            break;
+
         default:
             console.log('[Service Worker] Unknown message type:', event.data.type);
     }
@@ -75,6 +132,59 @@ function performKeepAlivePing() {
     }).catch(error => {
         console.log('[Service Worker] Keep-alive ping failed:', error.message);
     });
+}
+
+/**
+ * Start a background fetch for critical data
+ */
+async function startBackgroundFetch(data) {
+    try {
+        if ('BackgroundFetchManager' in self.registration) {
+            const requests = data.urls || [self.location.origin];
+            
+            const bgFetch = await self.registration.backgroundFetch.fetch(
+                'bus-data-fetch',
+                requests,
+                {
+                    title: 'Syncing bus data',
+                    icons: [
+                        { src: '/img/core-img/icon-192.png', sizes: '192x192' }
+                    ],
+                    downloadTotal: 100000
+                }
+            );
+            
+            console.log('[Service Worker] Background fetch started:', bgFetch.id);
+        } else {
+            console.log('[Service Worker] Background Fetch API not supported');
+            // Fallback to regular sync
+            await self.registration.sync.register('background-data-sync');
+        }
+    } catch (error) {
+        console.error('[Service Worker] Error starting background fetch:', error);
+    }
+}
+
+/**
+ * Perform background sync
+ */
+async function performBackgroundSync() {
+    try {
+        console.log('[Service Worker] Performing background sync');
+        
+        // Notify all clients to process queued notifications
+        const clients = await self.clients.matchAll({ includeUncontrolled: true });
+        clients.forEach(client => {
+            client.postMessage({
+                type: 'PERFORM_BACKGROUND_SYNC',
+                timestamp: new Date().toISOString()
+            });
+        });
+        console.log('[Service Worker] Background sync completed');
+    } catch (error) {
+        console.error('[Service Worker] Background sync failed:', error);
+        throw error; // Ensures retry
+    }
 }
 
 /**
@@ -105,7 +215,7 @@ if ('sync' in self.registration) {
 }
 
 /**
- * Periodic background sync - attempt every 30 minutes
+ * Periodic background sync - attempt every 15 minutes
  */
 self.addEventListener('sync', event => {
     if (event.tag === 'periodic-background-sync') {
@@ -118,22 +228,52 @@ self.addEventListener('sync', event => {
 });
 
 /**
- * Perform background sync
+ * Handle background fetch completion (when app returns to foreground)
  */
-async function performBackgroundSync() {
+self.addEventListener('backgroundfetchsuccess', event => {
+    console.log('[Service Worker] Background fetch succeeded:', event.registration.tag);
+    event.waitUntil(
+        // Notify clients that background fetch completed
+        passMessageToClients({
+            type: 'BACKGROUND_FETCH_COMPLETE',
+            tag: event.registration.tag,
+            timestamp: new Date().toISOString()
+        })
+    );
+});
+
+/**
+ * Handle background fetch failure
+ */
+self.addEventListener('backgroundfetchfail', event => {
+    console.log('[Service Worker] Background fetch failed:', event.registration.tag);
+    event.waitUntil(
+        passMessageToClients({
+            type: 'BACKGROUND_FETCH_FAILED',
+            tag: event.registration.tag,
+            timestamp: new Date().toISOString()
+        })
+    );
+});
+
+/**
+ * Handle background fetch abort
+ */
+self.addEventListener('backgroundfetchabort', event => {
+    console.log('[Service Worker] Background fetch aborted:', event.registration.tag);
+});
+
+/**
+ * Pass message to all clients
+ */
+async function passMessageToClients(message) {
     try {
-        // Notify all clients to process queued notifications
-        const clients = await self.clients.matchAll();
+        const clients = await self.clients.matchAll({ includeUncontrolled: true });
         clients.forEach(client => {
-            client.postMessage({
-                type: 'PERFORM_BACKGROUND_SYNC',
-                timestamp: new Date().toISOString()
-            });
+            client.postMessage(message);
         });
-        console.log('[Service Worker] Background sync completed');
     } catch (error) {
-        console.error('[Service Worker] Background sync failed:', error);
-        throw error; // Ensures retry
+        console.error('[Service Worker] Error messaging clients:', error);
     }
 }
 
