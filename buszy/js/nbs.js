@@ -29,9 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentUrl = window.location.href;
         
         busStopsContainer.innerHTML = `
-            <p class="pin-msg"><i class="fa-solid fa-triangle-exclamation"></i>Location access is not available in Instagram's in-app browser.</p>
+            <p class="pin-msg"><i class="fa-regular fa-triangle-exclamation"></i>Location access is not available in Instagram's in-app browser.</p>
             <button id="open-default-browser-btn" class="btn btn-rfetch" style="display: block; margin: 15px auto;">
-                <i class="fa-solid fa-globe"></i> Open in Default Browser
+                <i class="fa-regular fa-globe"></i> Open in Default Browser
             </button>
         `;
         
@@ -65,9 +65,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Helper to show error only if nothing can be loaded
     function showLocationError() {
         busStopsContainer.innerHTML = `
-            <p class="pin-msg"><i class="fa-solid fa-triangle-exclamation"></i>Unable to retrieve your location.</p>
+            <p class="pin-msg"><i class="fa-regular fa-triangle-exclamation"></i>Unable to retrieve your location.</p>
             <button id="retry-location-btn" class="btn btn-rfetch" style="display: block; margin: 15px auto;">
-                <i class="fa-solid fa-rotate"></i> Retry
+                <i class="fa-regular fa-rotate"></i> Retry
             </button>
         `;
         enableNavigation();
@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Check if geolocation is available
         if (!navigator.geolocation) {
-            busStopsContainer.innerHTML = '<p class="pin-msg"><i class="fa-solid fa-circle-info"></i>Geolocation is not supported by your browser.</p>';
+            busStopsContainer.innerHTML = '<p class="pin-msg"><i class="fa-regular fa-circle-info"></i>Geolocation is not supported by your browser.</p>';
             enableNavigation();
             return;
         }
@@ -141,14 +141,14 @@ async function fetchNearbyBusStops(latitude, longitude, onError) {
         if (busStops && busStops.length > 0) {
             displayBusStops(busStops);
         } else {
-            busStopsContainer.innerHTML = '<p class="pin-msg"><i class="fa-solid fa-circle-info"></i>No Bus Stops found nearby.</p>';
+            busStopsContainer.innerHTML = '<p class="pin-msg"><i class="fa-regular fa-circle-info"></i>No Bus Stops found nearby.</p>';
         }
     } catch (error) {
         console.error('Error:', error);
         if (typeof onError === 'function') {
             onError();
         } else {
-            busStopsContainer.innerHTML = '<p class="pin-msg"><i class="fa-solid fa-triangle-exclamation"></i>Failed to fetch nearby bus stops. Please try again later.</p>';
+            busStopsContainer.innerHTML = '<p class="pin-msg"><i class="fa-regular fa-triangle-exclamation"></i>Failed to fetch nearby bus stops. Please try again later.</p>';
         }
     }
 }
@@ -182,7 +182,7 @@ function togglePinBusStop(busStop, pinButton) {
 
         // Update the button class and icon to "pin"
         pinButton.className = 'btn btn-unpin btn-nbs btn-sm';
-        pinButton.innerHTML = '<i class="fa-solid fa-thumbtack-angle-slash"></i>';
+        pinButton.innerHTML = '<i class="fa-regular fa-thumbtack-angle-slash"></i>';
     }
 }
 
@@ -192,7 +192,7 @@ function displayBusStops(busStops) {
     busStopsContainer.innerHTML = ''; // Clear previous results
 
     if (!busStops || busStops.length === 0) {
-        busStopsContainer.innerHTML = '<p class="pin-msg"><i class="fa-solid fa-circle-info"></i>No Bus Stops found nearby.</p>';
+        busStopsContainer.innerHTML = '<p class="pin-msg"><i class="fa-regular fa-circle-info"></i>No Bus Stops found nearby.</p>';
         
         // Enable navigation and show done
         const navbarContainer = document.querySelector('.navbar-container');
@@ -227,7 +227,7 @@ function displayBusStops(busStops) {
                 </div>
             </div>
             <button class="${isPinned ? 'btn btn-unpin btn-nbs btn-sm' : 'btn btn-toPin btn-nbs btn-sm'} pin-button">
-                <i class="${isPinned ? 'fa-solid fa-thumbtack-angle-slash' : 'fa-sharp fa-regular fa-thumbtack-angle'}"></i>
+                <i class="${isPinned ? 'fa-regular fa-thumbtack-angle-slash' : 'fa-sharp fa-regular fa-thumbtack-angle'}"></i>
             </button>
         `;
 

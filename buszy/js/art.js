@@ -298,7 +298,7 @@ async function fetchBusArrivals() {
                                         data-type="${service.NextBus?.Type || ''}" 
                                         data-load="${service.NextBus?.Load || ''}"
                                         ${!service.NextBus || service.NextBus.Latitude === "0.0" && service.NextBus.Longitude === "0.0" || !service.NextBus.EstimatedArrival ? 'disabled' : ''}> 
-                                        <i class="fa-solid fa-location-dot"></i>
+                                        <i class="fa-regular fa-location-dot"></i>
                                     </button>
                                 </span>
                             </div>
@@ -316,7 +316,7 @@ async function fetchBusArrivals() {
                                         data-type="${service.NextBus2?.Type || ''}" 
                                         data-load="${service.NextBus2?.Load || ''}"
                                         ${!service.NextBus2 || service.NextBus2.Latitude === "0.0" && service.NextBus2.Longitude === "0.0" || !service.NextBus2.EstimatedArrival ? 'disabled' : ''}>
-                                        <i class="fa-solid fa-location-dot"></i>
+                                        <i class="fa-regular fa-location-dot"></i>
                                     </button>
                                 </span>
                             </div>
@@ -429,11 +429,11 @@ async function fetchBusArrivals() {
 function getLoadIcon(load) {
     switch (load) {
         case 'SEA':
-            return '<i class="fa-solid fa-user" title="Seats Available"></i>'; // Icon for SEA
+            return '<i class="fa-regular fa-user" title="Seats Available"></i>'; // Icon for SEA
         case 'SDA':
-            return '<i class="fa-solid fa-user-group" title="Standing Available"></i>'; // Icon for SDA
+            return '<i class="fa-regular fa-user-group" title="Standing Available"></i>'; // Icon for SDA
         case 'LSD':
-            return '<i class="fa-solid fa-people-group" title="Limited Standing"></i>'; // Icon for LSD
+            return '<i class="fa-regular fa-people-group" title="Limited Standing"></i>'; // Icon for LSD
         default:
             return ''; // No icon for unknown load values
     }

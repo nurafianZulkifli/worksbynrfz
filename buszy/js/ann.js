@@ -35,14 +35,14 @@ async function fetchTrainServiceAlerts(retries = 7) {
                     return linked.replace(/\n/g, '<br>');
                 }
                 const alerts = data.value.Message.map(msg => linkify(msg.Content || 'No content available')).join('<br><br>');
-                alertBox.innerHTML = `<p><i class="fa-solid fa-bullhorn"></i> ${alerts}</p>`;
+                alertBox.innerHTML = `<p><i class="fa-regular fa-bullhorn"></i> ${alerts}</p>`;
             } else {
-                alertBox.innerHTML = `<p><i class="fa-solid fa-bullhorn"></i> No Active Alerts.</p>`;
+                alertBox.innerHTML = `<p><i class="fa-regular fa-bullhorn"></i> No Active Alerts.</p>`;
             }
             return; // Exit the function if successful
         } catch (error) {
             if (attempt === retries) {
-                alertBox.innerHTML = `<p><i class="fa-solid fa-bullhorn"></i> Unable to load Alerts after ${retries} attempts.</p>`;
+                alertBox.innerHTML = `<p><i class="fa-regular fa-bullhorn"></i> Unable to load Alerts after ${retries} attempts.</p>`;
             } else {
                 console.warn(`Attempt ${attempt} failed. Retrying...`);
             }

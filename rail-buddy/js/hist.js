@@ -73,13 +73,13 @@ function renderDisruptionsByMonth() {
     let statusIcon = '';
     let statusClass = '';
     if (item.title && item.title.toLowerCase().includes('major')) {
-      statusIcon = '<i class="fa-solid fa-diamond-exclamation"></i>';
+      statusIcon = '<i class="fa-regular fa-diamond-exclamation"></i>';
       statusClass = 'status-major';
     } else if (item.title && item.title.toLowerCase().includes('minor')) {
-      statusIcon = '<i class="fa-solid fa-triangle-exclamation"></i>';
+      statusIcon = '<i class="fa-regular fa-triangle-exclamation"></i>';
       statusClass = 'status-minor';
     } else {
-      statusIcon = '<i class="fa-solid fa-triangle-exclamation"></i>';
+      statusIcon = '<i class="fa-regular fa-triangle-exclamation"></i>';
       statusClass = 'status-minor';
     }
     // Status icon for resolved/ongoing
@@ -87,7 +87,7 @@ function renderDisruptionsByMonth() {
     if (item.status === 'Resolved') {
       resolvedIcon = '<i class="fa-regular fa-circle-check"></i>';
     } else {
-      resolvedIcon = '<i class="fa-solid fa-circle fa-beat"></i>';
+      resolvedIcon = '<i class="fa-regular fa-circle fa-beat"></i>';
     }
     // Prepare from-to pairs for multiple routes
     let fromArr = Array.isArray(item.from) ? item.from : [item.from];

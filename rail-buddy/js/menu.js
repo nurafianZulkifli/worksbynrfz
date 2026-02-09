@@ -7,9 +7,9 @@
         var isDark = document.body.classList.contains('dark-mode');
         if (h5 && icon) {
             if (isDark) {
-                h5.innerHTML = '<i class="fa-solid fa-moon"></i> Display: Dark';
+                h5.innerHTML = '<i class="fa-regular fa-moon"></i> Display: Dark';
             } else {
-                h5.innerHTML = '<i class="fa-solid fa-sun-bright"></i> Display: Light';
+                h5.innerHTML = '<i class="fa-regular fa-sun-bright"></i> Display: Light';
             }
         }
     }

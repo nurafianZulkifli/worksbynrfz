@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
               const icon = item.querySelector('.status-icon');
               if (icon) {
                 icon.style.background = '#888';
-                icon.innerHTML = '<i class="fa-solid fa-dash"></i>';
+                icon.innerHTML = '<i class="fa-regular fa-dash"></i>';
                 icon.style.color = '#fff';
               }
             }
@@ -119,11 +119,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (icon) {
                   if (alert.Status === 1) {
                     icon.style.background = '#ffb300'; // amber
-                    icon.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>'; // warning sign
+                    icon.innerHTML = '<i class="fa-regular fa-triangle-exclamation"></i>'; // warning sign
                     icon.style.color = '#000';
                   } else if (alert.Status === 2) {
                     icon.style.background = '#e53935'; // red
-                    icon.innerHTML = '<i class="fa-solid fa-diamond-exclamation"></i>'; // critical sign
+                    icon.innerHTML = '<i class="fa-regular fa-diamond-exclamation"></i>'; // critical sign
                     icon.style.color = '#fff';
                   }
                 }

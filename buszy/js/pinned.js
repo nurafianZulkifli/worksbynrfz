@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                     // Remove Bookmark button
                     const removeButton = document.createElement('button');
-                    removeButton.innerHTML = '<i class="fa-solid fa-thumbtack-angle-slash"></i>';
+                    removeButton.innerHTML = '<i class="fa-regular fa-thumbtack-angle-slash"></i>';
                     removeButton.className = 'btn btn-unpin btn-2';
                     removeButton.addEventListener('click', (event) => {
                         event.stopPropagation(); // Prevent the click from triggering the link

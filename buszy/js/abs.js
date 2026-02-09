@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         listGroup.innerHTML = '';
         if (busStops.length === 0) {
-            listGroup.innerHTML = '<p class="pin-msg"><i class="fa-solid fa-circle-info"></i>No bus stops found.</p>';
+            listGroup.innerHTML = '<p class="pin-msg"><i class="fa-regular fa-circle-info"></i>No bus stops found.</p>';
             prevButton.style.display = 'none';
             nextButton.style.display = 'none';
             return;
@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             if (isPinned) {
                 // If already bookmarked, show as bookmarked
-                bookmarkButton.innerHTML = '<i class="fa-solid fa-thumbtack-angle-slash"></i>'
+                bookmarkButton.innerHTML = '<i class="fa-regular fa-thumbtack-angle-slash"></i>'
                 bookmarkButton.className = 'btn btn-unpin btn-sm';
             } else {
                 // If not bookmarked, show as a regular bookmark button
@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             alert('Bus Stop Pinned.');
 
             // Update the button to indicate the bus stop is pinned
-            button.innerHTML = '<i class="fa-solid fa-thumbtack-angle-slash"></i>';
+            button.innerHTML = '<i class="fa-regular fa-thumbtack-angle-slash"></i>';
             button.classList.remove('btn-toPin');
             button.classList.add('btn-unpin');
         } else {
