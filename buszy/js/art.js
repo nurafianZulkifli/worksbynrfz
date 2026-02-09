@@ -14,15 +14,6 @@ function initializeDefaultPreferences() {
 // Initialize defaults immediately
 initializeDefaultPreferences();
 
-// Initialize notification manager
-document.addEventListener('DOMContentLoaded', async () => {
-    if (typeof notificationManager !== 'undefined') {
-        console.log('Notification Manager initialized');
-        const deviceInfo = notificationManager.getDeviceInfo();
-        console.log('Device Info:', deviceInfo);
-    }
-});
-
 // ****************************
 // :: Bus Arrivals Fetching and Display
 // ****************************
@@ -276,7 +267,6 @@ async function fetchBusArrivals() {
         data.Services.forEach((service) => {
             const card = document.createElement('div');
             card.classList.add('col-12', 'col-md-4', 'col-xl-3', 'card-bt'); // Add col-sm-6 for 2 cards per row on small screens
-            const isMonitored = getNotificationPreference('monitoredServices', busStopCode)?.[service.ServiceNo] || false;
 
             // Safely check if NextBus exists and has required properties
             const hasNextBus = service.NextBus && typeof service.NextBus === 'object' && Object.keys(service.NextBus).length > 0;
@@ -291,11 +281,6 @@ async function fetchBusArrivals() {
                         </div>
                         <div style="display: flex; flex-direction: row; gap: 0.5rem; align-items: center; flex-shrink: 0;">
                             ${service.Operator ? `<img src="assets/${service.Operator.toLowerCase()}.png" alt="${service.Operator}" class="img-fluid" style="width: 50px; margin-left: auto;">` : ''}
-                                <button class="btn btn-notify btn-sm notify-btn ${isMonitored ? 'active' : ''}" 
-                                data-service="${service.ServiceNo}"
-                                title="Get notified when bus arrives">
-                                <i class="fa-solid fa-bell"></i>
-                            </button>
                             </div>
                     </div>
                     <div class="card-body">
@@ -351,10 +336,6 @@ async function fetchBusArrivals() {
             didUpdate = true;
         }
 
-        // Check for arrivals and send notifications
-        const busStopCodeForChecking = document.getElementById('bus-stop-search').value.trim();
-        checkMonitoredServices(data.Services, now, busStopCodeForChecking);
-
         // Only add event listeners if the DOM was updated
         if (didUpdate) {
             // Add event listeners to "View Bus Location" buttons
@@ -405,84 +386,6 @@ async function fetchBusArrivals() {
                     }
                 });
             });
-
-            // Add event listeners to notify buttons
-            const notifyButtons = document.querySelectorAll('.notify-btn');
-            const busStopCodeForToast = document.getElementById('bus-stop-search').value.trim();
-            
-            // Get bus stop description for toast
-            let busStopDescriptionForToast = '';
-            try {
-                const allBusStops = JSON.parse(localStorage.getItem('allBusStops')) || [];
-                const busStop = allBusStops.find(stop => stop.BusStopCode === busStopCodeForToast);
-                if (busStop) {
-                    busStopDescriptionForToast = busStop.Description;
-                }
-            } catch (error) {
-                console.error('Error fetching bus stop description:', error);
-            }
-            
-            notifyButtons.forEach((button) => {
-                button.addEventListener('click', () => {
-                    try {
-                        const serviceNo = button.getAttribute('data-service');
-                        const currentBusStopCode = document.getElementById('bus-stop-search').value.trim();
-                        const monitoredServices = getNotificationPreference('monitoredServices', currentBusStopCode) || {};
-
-                        monitoredServices[serviceNo] = !monitoredServices[serviceNo];
-                        saveNotificationPreference('monitoredServices', monitoredServices, currentBusStopCode);
-
-                        button.classList.toggle('active');
-
-                        // Show toast notification
-                        const isActive = monitoredServices[serviceNo];
-                        const busStopInfo = busStopDescriptionForToast ? ` at ${busStopDescriptionForToast}` : '';
-                        const message = isActive
-                            ? `Notifications enabled for Bus ${serviceNo}${busStopInfo}`
-                            : `Notifications disabled for Bus ${serviceNo}${busStopInfo}`;
-                        showToast(message, isActive ? 'success' : 'info');
-
-                        // Request notification permission on enabling notifications
-                        if (isActive) {
-                            if (typeof notificationManager === 'undefined') {
-                                showToast('Notification system not available.', 'warning');
-                                return;
-                            }
-
-                            if (!notificationManager.permissions.notification || notificationManager.permissions.notification === 'default') {
-                                console.log('Requesting notification permission for Bus ' + serviceNo + '...');
-                                notificationManager.requestPermission()
-                                    .then(granted => {
-                                        if (granted) {
-                                            console.log('Notifications permission granted for Bus service');
-                                        } else {
-                                            showToast('Notifications are blocked in your browser settings. Please enable them to receive alerts.', 'warning');
-                                            // Uncheck the bell if user denied
-                                            monitoredServices[serviceNo] = false;
-                                            saveNotificationPreference('monitoredServices', monitoredServices, currentBusStopCode);
-                                            button.classList.remove('active');
-                                        }
-                                    })
-                                    .catch(error => {
-                                        console.error('Error requesting notification permission:', error);
-                                        showToast('Could not enable notifications on this device.', 'error');
-                                    });
-                            } else if (notificationManager.permissions.notification === 'granted') {
-                                console.log('Notifications permission already granted');
-                            } else if (notificationManager.permissions.notification === 'denied') {
-                                showToast('Notifications are blocked in your browser settings. Please enable them to receive alerts.', 'warning');
-                                // Uncheck the bell if notifications are blocked
-                                monitoredServices[serviceNo] = false;
-                                saveNotificationPreference('monitoredServices', monitoredServices, currentBusStopCode);
-                                button.classList.remove('active');
-                            }
-                        }
-                    } catch (error) {
-                        console.error('Error handling notification button click:', error);
-                        showToast('Error updating notification settings. Please try again.', 'error');
-                    }
-                });
-            });
         }
     } catch (error) {
         console.error('Error fetching bus arrivals:', error);
@@ -513,175 +416,6 @@ async function fetchBusArrivals() {
                     </div>
                 </div>
             </div>`;
-    }
-}
-
-// Function to check monitored services and send notifications
-function checkMonitoredServices(services, now, busStopCode = '') {
-    // Skip if notification manager is not available
-    if (typeof notificationManager === 'undefined') {
-        return;
-    }
-
-    try {
-        const monitoredServices = notificationManager.getPreference('monitoredServices', busStopCode) || {};
-        const notifiedServices = notificationManager.getPreference('notifiedServices') || {};
-
-        // Get bus stop description
-        let busStopDescription = '';
-        if (busStopCode) {
-            try {
-                const allBusStops = JSON.parse(localStorage.getItem('allBusStops')) || [];
-                const busStop = allBusStops.find(stop => stop.BusStopCode === busStopCode);
-                if (busStop) {
-                    busStopDescription = busStop.Description;
-                }
-            } catch (error) {
-                console.warn('Error fetching bus stop description:', error);
-            }
-        }
-
-        // Check if there are any monitored services
-        const monitoredServiceNumbers = Object.keys(monitoredServices).filter(svc => monitoredServices[svc]);
-        if (monitoredServiceNumbers.length === 0) {
-            return; // No services being monitored
-        }
-
-        console.log(`Checking ${monitoredServiceNumbers.length} monitored services. Current time: ${now.toLocaleTimeString()}`);
-
-        services.forEach((service) => {
-            if (!monitoredServices[service.ServiceNo]) {
-                return; // Skip if service is not monitored
-            }
-
-            // Check NextBus arrival
-            if (service.NextBus?.EstimatedArrival) {
-                const arrivalTime = new Date(service.NextBus.EstimatedArrival);
-                const timeDifference = arrivalTime - now;
-                
-                // Send notification only when bus shows "Arr" status (time difference <= 0)
-                const shouldNotify = timeDifference <= 0;
-                const notificationKey = `${busStopCode}-${service.ServiceNo}-nextbus`;
-                const wasNotifiedBefore = notifiedServices[notificationKey];
-                
-                console.log(`Bus ${service.ServiceNo} (1st): timeDiff=${timeDifference}ms, shouldNotify=${shouldNotify}, alreadyNotified=${wasNotifiedBefore}`);
-                
-                if (shouldNotify && !wasNotifiedBefore) {
-                    console.log(`🔔 Sending notification for Bus ${service.ServiceNo} (1st arrival)`);
-                    
-                    // Send notification using new manager
-                    const title = `Bus ${service.ServiceNo} Arrives Now!`;
-                    const busStopInfo = busStopDescription ? ` at ${busStopDescription}` : '';
-                    const message = `Your monitored bus has arrived${busStopInfo}`;
-                    
-                    notificationManager.notify(title, {
-                        body: message,
-                        tag: `bus-${busStopCode}-${service.ServiceNo}`,
-                        data: {
-                            busStopCode,
-                            serviceNo: service.ServiceNo,
-                            type: 'arrival'
-                        }
-                    }, 'ARRIVAL');
-                    
-                    notifiedServices[notificationKey] = true;
-                    notificationManager.savePreference('notifiedServices', notifiedServices);
-                } else if (wasNotifiedBefore && timeDifference > 120000) {
-                    // Reset the flag if bus has moved more than 2 minutes into the future (past arrival window)
-                    console.log(`🔄 Resetting notification flag for Bus ${service.ServiceNo} (1st) - bus is no longer arriving`);
-                    delete notifiedServices[notificationKey];
-                    notificationManager.savePreference('notifiedServices', notifiedServices);
-                }
-            } else if (!service.NextBus) {
-                // Reset the notification flag if NextBus no longer exists
-                const notificationKey = `${busStopCode}-${service.ServiceNo}-nextbus`;
-                if (notifiedServices[notificationKey]) {
-                    delete notifiedServices[notificationKey];
-                    notificationManager.savePreference('notifiedServices', notifiedServices);
-                }
-            }
-
-            // Check NextBus2 arrival
-            if (service.NextBus2?.EstimatedArrival) {
-                const arrivalTime = new Date(service.NextBus2.EstimatedArrival);
-                const timeDifference = arrivalTime - now;
-                
-                // Send notification only when bus shows "Arr" status (time difference <= 0)
-                const shouldNotify = timeDifference <= 0;
-                const notificationKey = `${busStopCode}-${service.ServiceNo}-nextbus2`;
-                const wasNotifiedBefore = notifiedServices[notificationKey];
-                
-                console.log(`Bus ${service.ServiceNo} (2nd): timeDiff=${timeDifference}ms, shouldNotify=${shouldNotify}, alreadyNotified=${wasNotifiedBefore}`);
-                
-                if (shouldNotify && !wasNotifiedBefore) {
-                    console.log(`🔔 Sending notification for Bus ${service.ServiceNo} (2nd arrival)`);
-                    
-                    // Send notification using new manager
-                    const title = `Bus ${service.ServiceNo} Arrives Now!`;
-                    const busStopInfo = busStopDescription ? ` at ${busStopDescription}` : '';
-                    const message = `Your second monitored bus has arrived${busStopInfo}`;
-                    
-                    notificationManager.notify(title, {
-                        body: message,
-                        tag: `bus-${busStopCode}-${service.ServiceNo}-2`,
-                        data: {
-                            busStopCode,
-                            serviceNo: service.ServiceNo,
-                            type: 'arrival'
-                        }
-                    }, 'ARRIVAL');
-                    
-                    notifiedServices[notificationKey] = true;
-                    notificationManager.savePreference('notifiedServices', notifiedServices);
-                } else if (wasNotifiedBefore && timeDifference > 120000) {
-                    // Reset the flag if bus has moved more than 2 minutes into the future (past arrival window)
-                    console.log(`🔄 Resetting notification flag for Bus ${service.ServiceNo} (2nd) - bus is no longer arriving`);
-                    delete notifiedServices[notificationKey];
-                    notificationManager.savePreference('notifiedServices', notifiedServices);
-                }
-            } else if (!service.NextBus2) {
-                // Reset the notification flag if NextBus2 no longer exists
-                const notificationKey = `${busStopCode}-${service.ServiceNo}-nextbus2`;
-                if (notifiedServices[notificationKey]) {
-                    delete notifiedServices[notificationKey];
-                    notificationManager.savePreference('notifiedServices', notifiedServices);
-                }
-            }
-        });
-    } catch (error) {
-        console.error('Error in checkMonitoredServices:', error);
-    }
-}
-
-// Utility functions for notification preferences - now using NotificationManager
-function getNotificationPreference(key, busStopCode = null) {
-    if (typeof notificationManager !== 'undefined') {
-        return notificationManager.getPreference(key, busStopCode);
-    }
-    return null;
-}
-
-function saveNotificationPreference(key, value, busStopCode = null) {
-    if (typeof notificationManager !== 'undefined') {
-        notificationManager.savePreference(key, value, busStopCode);
-    }
-}
-
-// Wrapper function for showToast using NotificationManager
-function showToast(message, type = 'info') {
-    if (typeof notificationManager !== 'undefined') {
-        // Map old toast types to new notification types
-        const typeMap = {
-            'success': 'SUCCESS',
-            'error': 'ALERT',
-            'info': 'INFO',
-            'warning': 'WARNING'
-        };
-        const notificationType = typeMap[type] || 'INFO';
-        notificationManager.showToast(message, notificationType);
-    } else {
-        // Fallback implementation
-        console.log(`Toast [${type}]: ${message}`);
     }
 }
 
