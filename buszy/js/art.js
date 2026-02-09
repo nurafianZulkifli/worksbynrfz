@@ -358,11 +358,11 @@ async function fetchBusArrivals() {
                         if (mapSection) {
                             mapSection.style.display = 'block';
 
-                            // Scroll to map section with offset for navbar (web only)
-                            const rect = mapSection.getBoundingClientRect();
-                            const navbarHeight = window.innerWidth > 768 ? 80 : 0; // Navbar height on web
-                            const scrollTop = window.scrollY + rect.top - navbarHeight;
-                            window.scrollTo({ top: scrollTop, behavior: 'smooth' });
+                            // Scroll to top of page
+                            window.scrollTo({
+                                top: 0,
+                                behavior: 'smooth'
+                            });
 
                             // Invalidate the map size to fix grey areas
                             setTimeout(() => {
