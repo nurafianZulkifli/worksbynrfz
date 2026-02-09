@@ -250,6 +250,25 @@ body.dark-mode .list-group-item:hover {
         pointer-events: none;
     }
 
+      .mobile-bottom-nav::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 120px;
+        background: linear-gradient(to top, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 100%);
+        -webkit-backdrop-filter: blur(20px);
+        backdrop-filter: blur(20px);
+        pointer-events: none;
+        -webkit-mask-image: linear-gradient(to top, black 0%, transparent 100%);
+        mask-image: linear-gradient(to top, black 0%, transparent 100%);
+    }
+
+    body.dark-mode .mobile-bottom-nav::before {
+        background: linear-gradient(to top, rgba(31, 36, 59, 0.7) 0%, rgba(31, 36, 59, 0) 100%);
+    }
+
     .mobile-bottom-nav ul {
         background: #ffffffb2;
         backdrop-filter: blur(25px);
