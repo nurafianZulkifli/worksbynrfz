@@ -1,5 +1,6 @@
 const CACHE_VERSION = 'v1';
 const CACHE_NAME = `nrfz-cache-${CACHE_VERSION}`;
+let lastKeepAliveTime = 0;
 
 self.addEventListener('install', event => {
   self.skipWaiting();
@@ -10,7 +11,22 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-  // Simple pass-through for now
+  // Intercept all requests to maintain keep-alive
+  const url = new URL(event.request.url);
+  
+  // Add keep-alive headers to outgoing requests
+  if (event.request.method === 'GET' || event.request.method === 'HEAD') {
+    // Let requests through with keep-alive maintained
+    event.respondWith(
+      fetch(event.request, {
+        keepalive: true
+      }).catch(error => {
+        console.log('[Service Worker] Fetch error:', error);
+        // Fall back to cache or network error response
+        return fetch(event.request);
+      })
+    );
+  }
 });
 
 // Handle messages from the client (main application)
@@ -33,15 +49,33 @@ self.addEventListener('message', event => {
             break;
 
         case 'KEEP_ALIVE':
-            // Keep-alive ping from client, respond to keep connection warm
-            console.log('[Service Worker] Keep-alive ping received');
-            event.ports[0].postMessage({ received: true });
+            // Keep-alive ping from client
+            lastKeepAliveTime = Date.now();
+            console.log('[Service Worker] Keep-alive ping received, maintaining network connections');
+            // Perform a network ping to keep connections alive
+            performKeepAlivePing();
             break;
 
         default:
             console.log('[Service Worker] Unknown message type:', event.data.type);
     }
 });
+
+/**
+ * Perform keep-alive ping to maintain network connectivity
+ */
+function performKeepAlivePing() {
+    // Use fetch with keepalive to maintain the connection pool
+    fetch(self.location.origin, {
+        method: 'HEAD',
+        cache: 'no-store',
+        keepalive: true
+    }).then(response => {
+        console.log('[Service Worker] Keep-alive ping successful');
+    }).catch(error => {
+        console.log('[Service Worker] Keep-alive ping failed:', error.message);
+    });
+}
 
 /**
  * Handle background sync events (runs when online after being offline)
@@ -68,6 +102,39 @@ if ('sync' in self.registration) {
             );
         }
     });
+}
+
+/**
+ * Periodic background sync - attempt every 30 minutes
+ */
+self.addEventListener('sync', event => {
+    if (event.tag === 'periodic-background-sync') {
+        console.log('[Service Worker] Periodic background sync triggered');
+        event.waitUntil(
+            // Perform any necessary background syncs
+            performBackgroundSync()
+        );
+    }
+});
+
+/**
+ * Perform background sync
+ */
+async function performBackgroundSync() {
+    try {
+        // Notify all clients to process queued notifications
+        const clients = await self.clients.matchAll();
+        clients.forEach(client => {
+            client.postMessage({
+                type: 'PERFORM_BACKGROUND_SYNC',
+                timestamp: new Date().toISOString()
+            });
+        });
+        console.log('[Service Worker] Background sync completed');
+    } catch (error) {
+        console.error('[Service Worker] Background sync failed:', error);
+        throw error; // Ensures retry
+    }
 }
 
 /**

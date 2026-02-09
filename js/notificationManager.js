@@ -14,6 +14,8 @@ class NotificationManager {
         this.errorNotificationCooldown = 30000; // 30 second cooldown for error notifications
         this.onlineStatusDebounceTime = 2000; // 2 second debounce
         this.connectionCheckInterval = null;
+        this.backgroundKeepAliveInterval = null;
+        this.wakeLocker = null;
         this.permissions = {
             notification: Notification?.permission || 'default',
             audio: true,
@@ -100,7 +102,7 @@ class NotificationManager {
      * Start periodic connection monitoring
      */
     startConnectionMonitoring() {
-        // Only check every 30 seconds to avoid constant requests
+        // Check every 30 seconds when visible
         this.connectionCheckInterval = setInterval(() => {
             if (!document.hidden) {
                 this.verifyConnection();
@@ -115,26 +117,131 @@ class NotificationManager {
     }
 
     /**
-     * Start background keep-alive to keep app active when backgrounded
+     * Start aggressive background keep-alive to prevent network drops
      */
     startBackgroundKeepAlive() {
-        // Every 60 seconds, ping the server to keep the connection warm
-        setInterval(() => {
+        // More aggressive keep-alive when backgrounded: every 15 seconds
+        this.backgroundKeepAliveInterval = setInterval(() => {
             this.logDebug('Background keep-alive ping');
-            // Send a light ping to server
-            this.verifyConnection().catch(() => {
-                // Silently fail, don't spam notifications
-            });
-        }, 60000);
+            
+            if (document.hidden) {
+                // App is backgrounded - use aggressive network maintenance
+                this.maintainBackgroundConnection();
+            }
+        }, 15000);
 
-        // Register periodic sync if available (for background data sync)
-        if ('serviceWorker' in navigator && 'SyncManager' in window) {
-            navigator.serviceWorker.ready.then(registration => {
-                registration.sync.register('background-sync').catch(error => {
-                    this.logDebug('Background sync registration failed:', error);
-                });
+        // Additional hidden state listener for immediate action
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                this.engageBackgroundMode();
+            } else {
+                this.disengageBackgroundMode();
+            }
+        });
+    }
+
+    /**
+     * Maintain network connection while backgrounded
+     */
+    async maintainBackgroundConnection() {
+        try {
+            // Use Request with keepalive flag to maintain connection
+            const response = await fetch(window.location.origin, {
+                method: 'HEAD',
+                cache: 'no-store',
+                keepalive: true, // Key: tells browser to keep this connection alive
+                signal: AbortSignal.timeout(10000) // 10 second timeout
             });
+            
+            if (!this.isOnline) {
+                this.setOnline(true);
+            }
+            
+            // Send keep-alive message to service worker
+            this.sendToServiceWorker('KEEP_ALIVE', { timestamp: Date.now() });
+        } catch (error) {
+            if (this.isOnline) {
+                this.setOffline(true);
+            }
         }
+    }
+
+    /**
+     * Engage aggressive background mode
+     */
+    async engageBackgroundMode() {
+        this.logDebug('Engaging background mode - maintaining network');
+        
+        // Try to acquire wake lock if available (prevents deep sleep)
+        if ('wakeLock' in navigator) {
+            try {
+                this.wakeLocker = await navigator.wakeLock.request('screen');
+                this.logDebug('Wake Lock acquired for background');
+                
+                this.wakeLocker.addEventListener('release', () => {
+                    this.logDebug('Wake Lock released');
+                });
+            } catch (error) {
+                this.logDebug('Wake Lock not available:', error.message);
+            }
+        }
+        
+        // Immediately do a connection check  
+        await this.verifyConnectionAggressive();
+    }
+
+    /**
+     * Disengage background mode when returning to foreground
+     */
+    disengageBackgroundMode() {
+        this.logDebug('Disengaging background mode');
+        
+        // Release wake lock when app is visible
+        if (this.wakeLocker) {
+            this.wakeLocker.release().catch(error => {
+                this.logDebug('Error releasing wake lock:', error);
+            });
+            this.wakeLocker = null;
+        }
+    }
+
+    /**
+     * Aggressive connection verification with multiple strategies
+     */
+    async verifyConnectionAggressive() {
+        // Try multiple endpoints to ensure real connectivity
+        const endpoints = [
+            window.location.origin,
+            window.location.origin + '/index.html',
+            'https://www.google.com/favicon.ico' // Fallback to external check
+        ];
+
+        for (const endpoint of endpoints) {
+            try {
+                const response = await fetch(endpoint, {
+                    method: 'HEAD',
+                    cache: 'no-store',
+                    keepalive: true,
+                    signal: AbortSignal.timeout(8000),
+                    credentials: 'omit'
+                });
+
+                if (response.ok || response.status === 0) {
+                    if (!this.isOnline) {
+                        this.setOnline(true);
+                    }
+                    return true;
+                }
+            } catch (error) {
+                // Continue to next endpoint
+            }
+        }
+
+        // All endpoints failed
+        if (this.isOnline) {
+            this.setOffline(true);
+        }
+        return false;
     }
 
     /**
@@ -143,10 +250,11 @@ class NotificationManager {
     async verifyConnection() {
         try {
             // Use a HEAD request to a known endpoint (minimal bandwidth)
-            // Try to fetch a small resource with cache busting
+            // with keepalive to prevent connection drops
             const response = await fetch(window.location.origin, {
                 method: 'HEAD',
                 cache: 'no-store',
+                keepalive: true, // Maintain connection even if tab is backgrounded
                 signal: AbortSignal.timeout(5000) // 5 second timeout
             });
             
@@ -199,9 +307,12 @@ class NotificationManager {
 
         switch (message.type) {
             case 'BACKGROUND_SYNC_COMPLETED':
-                this.logDebug('Background sync completed, processing queue');
+            case 'PERFORM_BACKGROUND_SYNC':
+                this.logDebug('Background sync signal received, processing queue');
                 this.loadQueueFromStorage();
                 this.processQueue();
+                // Re-verify connection status
+                this.verifyConnectionAggressive();
                 break;
 
             default:
@@ -491,13 +602,13 @@ class NotificationManager {
      */
     handleVisibilityChange() {
         if (document.hidden) {
-            this.logDebug('App backgrounded - continuing background monitoring');
-            // App is backgrounded but we continue monitoring in background
-            // The browser may throttle us, but we'll still check periodically
+            this.logDebug('App backgrounded - engaging aggressive keep-alive');
+            this.engageBackgroundMode();
         } else {
             this.logDebug('App restored from background');
+            this.disengageBackgroundMode();
             // Immediately verify connection when app comes back to foreground
-            this.verifyConnection();
+            this.verifyConnectionAggressive();
             // Trigger any pending background syncs
             this.processPendingBackgroundTasks();
         }
