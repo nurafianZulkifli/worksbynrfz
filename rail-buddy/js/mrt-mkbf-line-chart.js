@@ -91,6 +91,24 @@ const mkbfDataMrt = [
       { month: "Nov-25", value: 2788000 },
       { month: "Dec-25", value: 2787000 }
     ]
+  },
+    {
+    line: "TEL",
+    color: "#9d5918",
+    data: [
+      { month: "Jan-25", value: 417000 },
+      { month: "Feb-25", value: 406000 },
+      { month: "Mar-25", value: 398000 },
+      { month: "Apr-25", value: 439000 },
+      { month: "May-25", value: 429000 },
+      { month: "Jun-25", value: 439000 },
+      { month: "Jul-25", value: 373000 },
+      { month: "Aug-25", value: 311000 },
+      { month: "Sep-25", value: 287000 },
+      { month: "Oct-25", value: 299000 },
+      { month: "Nov-25", value: 2878000 },
+      { month: "Dec-25", value: 325000 }
+    ]
   }
 ];
 
