@@ -325,7 +325,7 @@
         }
       },
       {
-        "description": "To BP6 P1 (Platform 1)",
+        "description": "To BP6 Bukit Panjang Platform 1 (Platform 1)",
         "first_train": {
           "monday_to_friday": "05:13",
           "saturday": "05:13",
@@ -340,7 +340,7 @@
         }
       },
       {
-        "description": "To BP6 P1 (Platform 2)",
+        "description": "To BP6 Bukit Panjang Platform 1 (Platform 2)",
         "first_train": {
           "monday_to_friday": "05:13",
           "saturday": "05:13",
