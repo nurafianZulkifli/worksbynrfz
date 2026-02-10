@@ -345,7 +345,7 @@
     .station-name {
         font-size: 18px;
         font-weight: 500;
-        color: #fff;
+        color: #000;
         white-space: nowrap;
         cursor: default;
     }
@@ -755,118 +755,118 @@
                             </div>
                         </div>
 
-                    <div id="hidden-stations">
-                        <!-- NE 10 Potong Pasir -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">NE 10</span>
+                        <div id="hidden-stations">
+                            <!-- NE 10 Potong Pasir -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">NE 10</span>
+                                    </div>
+                                    <div class="station-name">Potong Pasir</div>
                                 </div>
-                                <div class="station-name">Potong Pasir</div>
                             </div>
+
+                            <!-- NE 11 Woodleigh -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">NE 11</span>
+                                    </div>
+                                    <div class="station-name">Woodleigh</div>
+                                </div>
+                            </div>
+
+                            <!-- NE 12 Serangoon -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">NE 12</span>
+                                        <span class="interchange-badge mrt-ccl" style="color: #000;">CC 15</span>
+                                    </div>
+                                    <div class="station-name">Serangoon</div>
+                                </div>
+                            </div>
+
+                            <!-- NE 13 Kovan -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">NE 13</span>
+                                    </div>
+                                    <div class="station-name">Kovan</div>
+                                </div>
+                            </div>
+
+                            <!-- NE 14 Hougang -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">NE 14</span>
+                                    </div>
+                                    <div class="station-name">Hougang</div>
+                                </div>
+                            </div>
+
+                            <!-- NE 15 Buangkok -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">NE 15</span>
+                                    </div>
+                                    <div class="station-name">Buangkok</div>
+                                </div>
+                            </div>
+
+                            <!-- NE 16 Sengkang -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">NE 16</span>
+                                        <span class="interchange-badge mrt-lrt">STC</span>
+                                    </div>
+                                    <div class="station-name">Sengkang</div>
+                                </div>
+                            </div>
+
+                            <!-- NE 17 Bishan -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">NE 17</span>
+                                        <span class="interchange-badge mrt-lrt">PTC</span>
+                                    </div>
+                                    <div class="station-name">Punggol</div>
+                                </div>
+                            </div>
+
+                            <!-- NE 18 Punggol Coast -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">NE 18</span>
+                                    </div>
+                                    <div class="station-name">Punggol Coast</div>
+                                </div>
+                            </div>
+
+
                         </div>
 
-                        <!-- NE 11 Woodleigh -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">NE 11</span>
-                                </div>
-                                <div class="station-name">Woodleigh</div>
-                            </div>
+                        <div class="show-more-button">
+                            <button id="toggleBtn" onclick="toggleStations()">Show More</button>
                         </div>
-
-                        <!-- NE 12 Serangoon -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">NE 12</span>
-                                    <span class="interchange-badge mrt-ccl" style="color: #000;">CC 15</span>
-                                </div>
-                                <div class="station-name">Serangoon</div>
-                            </div>
-                        </div>
-
-                        <!-- NE 13 Kovan -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">NE 13</span>
-                                </div>
-                                <div class="station-name">Kovan</div>
-                            </div>
-                        </div>
-
-                        <!-- NE 14 Hougang -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">NE 14</span>
-                                </div>
-                                <div class="station-name">Hougang</div>
-                            </div>
-                        </div>
-
-                        <!-- NE 15 Buangkok -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">NE 15</span>
-                                </div>
-                                <div class="station-name">Buangkok</div>
-                            </div>
-                        </div>
-
-                        <!-- NE 16 Sengkang -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">NE 16</span>
-                                    <span class="interchange-badge mrt-lrt">STC</span>
-                                </div>
-                                <div class="station-name">Sengkang</div>
-                            </div>
-                        </div>
-
-                        <!-- NE 17 Bishan -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">NE 17</span>
-                                    <span class="interchange-badge mrt-lrt">PTC</span>
-                                </div>
-                                <div class="station-name">Punggol</div>
-                            </div>
-                        </div>
-
-                        <!-- NE 18 Punggol Coast -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">NE 18</span>
-                                </div>
-                                <div class="station-name">Punggol Coast</div>
-                            </div>
-                        </div>
-
-             
-                    </div>
-
-                    <div class="show-more-button">
-                        <button id="toggleBtn" onclick="toggleStations()">Show More</button>
                     </div>
                 </div>
             </div>
-        </div>
 
 
     </section>
