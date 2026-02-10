@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>North East Line | RailBuddy</title>
+    <title>Circle Line | RailBuddy</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
     <meta property="og:image" content="https://i.imgur.com/aNQTQtO.png" />
@@ -58,7 +58,7 @@
     .line-description h3 {
         margin-top: 0;
         margin-bottom: 16px;
-        color: #000;
+        color: #fff;
         font-size: 16px;
         font-weight: 600;
     }
@@ -79,7 +79,7 @@
     .line-description li {
         font-size: 14px;
         line-height: 1.6;
-        color: #000;
+        color: #ccc;
         margin-bottom: 8px;
     }
 
@@ -88,17 +88,17 @@
         justify-content: space-between;
         margin: 12px 0;
         padding: 10px 0;
-        border-bottom: 1px solid #ddd;
+        border-bottom: 1px solid #555;
     }
 
     .line-stat-label {
         font-weight: 500;
-        color: #666;
+        color: #ccc;
     }
 
     .line-stat-value {
         font-weight: 600;
-        color: #000;
+        color: #fff;
     }
 
     #hidden-stations {
@@ -106,11 +106,21 @@
         flex-direction: column;
         gap: 0;
         position: relative;
-        padding-left: 0px;
+        padding-left: 30px;
         margin-top: 5px;
     }
 
-
+    /* Vertical line for hidden stations */
+    #hidden-stations::before {
+        content: '';
+        position: absolute;
+        left: 6px;
+        top: -23px;
+        bottom: 22px;
+        width: 3px;
+        background: #fa9e0d;
+        z-index: 1;
+    }
 
     /* Adjust first station in hidden section */
     #hidden-stations .station:first-child {
@@ -128,8 +138,8 @@
     }
 
     .show-more-button button {
-        background: #9d27b5;
-        color: #fff;
+        background: #fa9e0d;
+        color: #000;
         border: none;
         padding: 10px 20px;
         border-radius: 24px;
@@ -141,7 +151,8 @@
     }
 
     .show-more-button button:hover {
-        background: #651675;
+        background: #aa6b06;
+        color: #fff;
     }
 
     .line-controls {
@@ -170,6 +181,36 @@
         margin-top: 5px;
     }
 
+    .branch-selector {
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .branch-selector select {
+        padding: 8px 12px;
+        background: #393e53;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+    .branch-selector select:hover {
+        background: #334250;
+    }
+
+    .line-container.hidden {
+        display: none;
+    }
+
+    .line-container.show {
+        display: flex;
+    }
+
     .line-container {
         display: flex;
         flex-direction: column;
@@ -184,9 +225,9 @@
         position: absolute;
         left: 6px;
         top: 22px;
-        bottom: 99px;
+        bottom: 22px;
         width: 3px;
-        background: #9d27b5;
+        background: #fa9e0d;
         z-index: 1;
     }
 
@@ -203,7 +244,7 @@
         height: 18px;
         border-radius: 50%;
         background: #fff;
-        border: 3px solid #9d27b5;
+        border: 3px solid #fa9e0d;
         position: absolute;
         left: -31px;
         z-index: 10;
@@ -226,8 +267,8 @@
     }
 
     .station-code {
-        background: #9d27b5;
-        color: #fff;
+        background: #fa9e0d;
+        color: #000 !important;
         font-weight: bold;
         border-radius: 13.6px / 19.2px;
         padding: 5px 10px;
@@ -285,7 +326,7 @@
         transform: translateY(-50%);
         width: 10px;
         height: 10px;
-        background: #ff3b3b;
+        background: #fa9e0d;
         border-radius: 2px;
         z-index: -1;
     }
@@ -345,7 +386,7 @@
     .station-name {
         font-size: 18px;
         font-weight: 500;
-        color: #fff;
+        color: #000;
         white-space: nowrap;
         cursor: default;
     }
@@ -356,8 +397,8 @@
     }
 
     .details-section {
-        padding-left: 4em;
-        padding-right: 4em;
+        padding-left: 2em;
+        padding-right: 2em;
     }
 
     .caplet {
@@ -372,6 +413,7 @@
         align-items: center;
         justify-content: center;
         margin: 0;
+        cursor: pointer;
     }
 
     body.dark-mode .line-description {
@@ -447,6 +489,11 @@
         .details-section {
             padding-left: 1em;
             padding-right: 1em;
+        }
+
+        .station-code,
+        .interchange-badge {
+            font-size: 10px;
         }
     }
 </style>
@@ -577,8 +624,8 @@
                             <div
                                 style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
                                 <div>
-                                    <h1 class="filter-title" id="chimes"><img src="../assets/caplets/NELCap.png"
-                                            alt="NEL" class="caplet"> North East Line</h1></a>
+                                    <h1 class="filter-title" id="chimes"><img src="../assets/caplets/CCLCap.png"
+                                            alt="EWL" class="caplet"> Circle Line</h1></a>
                                 </div>
                             </div>
                         </div>
@@ -588,6 +635,16 @@
             </div>
         </div>
     </section>
+
+    <!-- Audio Elements -->
+    <audio id="chimes-audio">
+        <source src="../assets/chimes/CCL_Chime A_V2.wav" type="audio/wav">
+        Your browser does not support the audio element.
+    </audio>
+    <audio id="chimes-alt">
+        <source src="../assets/chimes/CCL_Chime B_V2.wav" type="audio/wav">
+        Your browser does not support the audio element.
+    </audio>
 
     <!-- Details/Contents Section -->
     <section class="about-me-summ clearfix">
@@ -604,7 +661,7 @@
                                         <i class="fa-regular fa-calendar"></i>
                                     </div>
                                     <h3 style="font-size: 18px; font-weight: bolder;">Opened</h3>
-                                    <h4 style="font-size: 13px;">20 June 2003<br>(in Phases)</h4>
+                                    <h4 style="font-size: 13px;">28 May 2009<br>(in Phases)</h4>
                                 </div>
                             </div>
 
@@ -614,7 +671,7 @@
                                         <i class="fa-regular fa-ruler-horizontal"></i>
                                     </div>
                                     <h3 style="font-size: 18px; font-weight: bolder;">Length</h3>
-                                    <h4 style="font-size: 13px;">22 km <br>(with 17 stations)</h4>
+                                    <h4 style="font-size: 13px;">35.7 km <br>(with 30 stations)</h4>
                                 </div>
                             </div>
 
@@ -625,7 +682,7 @@
                                         <i class="fa-regular fa-train-subway"></i>
                                     </div>
                                     <h3 style="font-size: 18px; font-weight: bolder;">Operated By</h3>
-                                    <img class="logo-operator" src="../assets/sbstl.png" id="ops-sbst" alt="sbst"
+                                    <img class="logo-operator" src="../assets/stl.png" id="ops-smrt" alt="smrt"
                                         width="150px">
                                 </div>
                             </div>
@@ -644,222 +701,392 @@
 
                 <!-- Line Description Box -->
                 <div class="line-description">
-                    <p>Built using the latest technology and engineering techniques of its time, NEL heralded an era of
-                        automated and driverless mass rapid transit systems, an enhanced commuter experience and the
-                        beginning of our multi-modal, integrated public transport model. <br><br>
+                    <p> Building the Circle Line (CCL) was a feat that required innovations in design, engineering and
+                        construction. It took place in challenging soil conditions, a maze of underground structures,
+                        and under a densely packed surface of roads, expressways and buildings. <br><br>
 
-                        Connecting residential areas in the north-east to Singapore’s heritage areas and the city
-                        fringe, its development was aimed at serving growing neighbourhoods in these regions. <br><br>
+                        Proposals for the line began in the 1990s, and plans for the CCL evolved to: <br><br>
 
-                        The 22km line has 17 stations, and connects to six interchanges. <br><br>
-                        (Source: <a class="hyperlink"
-                            href="https://www.lta.gov.sg/content/ltagov/en/getting_around/public_transport/rail_network/north_south_line.html">LTA</a>
+                        - cater to growing public transport demand, <br><br>
+                        - distribute commuter traffic away from busy interchanges, and <br><br>
+                        - create a greater number of connections and faster journeys. <br><br>
+                        As its name suggests, the 30-station CCL is a circular rail line linking the North-South,
+                        East-West and North East Lines to the city.<br><br> (Source: <a class="hyperlink"
+                            href="https://www.lta.gov.sg/content/ltagov/en/getting_around/public_transport/rail_network/circle_line.html">LTA</a>
                         )
                     </p>
 
                 </div>
                 <!-- Line Diagram -->
                 <div class="line-diagram">
-                    <div class="line-container">
-                        <!-- NS 1 Jurong East -->
+                    <div class="branch-selector">
+                        <label for="branchSelect"><strong>Branch:</strong></label>
+                        <select id="branchSelect" onchange="switchBranch()">
+                            <option value="main">Main Line</option>
+                            <option value="changi">Extension Branch</option>
+                        </select>
+                    </div>
+                    <div class="line-container show" id="mainBranch">
+                        <!-- CC 1 Dhoby Ghaut -->
                         <div class="station">
                             <div class="station-dot"></div>
                             <div class="station-content">
                                 <div class="station-codes">
-                                    <span class="station-code">NE 1</span>
-                                    <span class="interchange-badge mrt-ccl" style="color: #000;">CC 29</span>
-                                </div>
-                                <div class="station-name">HarbourFront</div>
-                            </div>
-                        </div>
-
-                        <!-- NE 3 Outram Park -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">NE 3</span>
-                                    <span class="interchange-badge mrt-ewl">EW 16</span>
-                                    <span class="interchange-badge mrt-tel">TE 17</span>
-                                </div>
-                                <div class="station-name">Outram Park</div>
-                            </div>
-                        </div>
-
-                        <!-- NE 4 Chinatown -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">NE 4</span>
-                                    <span class="interchange-badge mrt-dtl">DT 19</span>
-                                </div>
-                                <div class="station-name">Chinatown</div>
-                            </div>
-                        </div>
-
-                        <!-- NE 5 Clarke Quay -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">NE 5</span>
-                                </div>
-                                <div class="station-name">Clarke Quay</div>
-                            </div>
-                        </div>
-
-                        <!-- NE 6 Dhoby Ghaut -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">NE 6</span>
+                                    <span class="station-code">CC 1</span>
                                     <span class="interchange-badge mrt-nsl">NS 24</span>
-                                    <span class="interchange-badge mrt-ccl" style="color: #000;">CC 1</span>
+                                    <span class="interchange-badge mrt-nel">NE 6</span>
                                 </div>
                                 <div class="station-name">Dhoby Ghaut</div>
                             </div>
                         </div>
 
-                        <!-- NE 7 Little India -->
+                        <!-- CC 2 Bras Basah -->
                         <div class="station">
                             <div class="station-dot"></div>
                             <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">NE 7</span>
-                                    <span class="interchange-badge mrt-dtl">DT 12</span>
+                                <div class="station-codes station-connector">
+                                    <span class="station-code">CC 2</span>
                                 </div>
-                                <div class="station-name">Little India</div>
+                                <div class="station-name">Bras Basah</div>
                             </div>
                         </div>
 
-                        <!-- NE 8 Farrer Park -->
+                        <!-- CC 3 Esplanade -->
                         <div class="station">
                             <div class="station-dot"></div>
                             <div class="station-content">
                                 <div class="station-codes">
-                                    <span class="station-code">NE 8</span>
+                                    <span class="station-code">CC 3</span>
                                 </div>
-                                <div class="station-name">Farrer Park</div>
+                                <div class="station-name">Esplanade</div>
                             </div>
                         </div>
 
-                        <!-- NE 9 Boon Keng -->
+                        <!-- CC 4 Promenade -->
                         <div class="station">
                             <div class="station-dot"></div>
                             <div class="station-content">
                                 <div class="station-codes">
-                                    <span class="station-code">NE 9</span>
+                                    <span class="station-code">CC 4</span>
+                                    <span class="interchange-badge mrt-dtl">DT 15</span>
                                 </div>
-                                <div class="station-name">Boon Keng</div>
+                                <div class="station-name">Promenade</div>
                             </div>
                         </div>
+
+                        <!-- CC 5 Nicoll Highway -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">CC 5</span>
+                                </div>
+                                <div class="station-name">Nicoll Highway</div>
+                            </div>
+                        </div>
+
+                        <!-- CC 6 Stadium -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">CC 6</span>
+                                </div>
+                                <div class="station-name">Stadium</div>
+                            </div>
+                        </div>
+
+                        <!-- CC 7 Eunos -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">CC 7</span>
+                                </div>
+                                <div class="station-name">Mountbatten</div>
+                            </div>
+                        </div>
+
+                        <!-- CC 8 Dakota -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">CC 8</span>
+                                </div>
+                                <div class="station-name">Dakota</div>
+                            </div>
+                        </div>
+                    </div>
 
                     <div id="hidden-stations">
-                        <!-- NE 10 Potong Pasir -->
+                        <!-- CC 9 Paya Lebar -->
                         <div class="station">
                             <div class="station-dot"></div>
                             <div class="station-content">
                                 <div class="station-codes">
-                                    <span class="station-code">NE 10</span>
+                                    <span class="station-code">CC 9</span>
+                                    <span class="interchange-badge mrt-ewl">EW 8</span>
                                 </div>
-                                <div class="station-name">Potong Pasir</div>
+                                <div class="station-name">Paya Lebar</div>
                             </div>
                         </div>
 
-                        <!-- NE 11 Woodleigh -->
+                        <!-- CC 10 MacPherson -->
                         <div class="station">
                             <div class="station-dot"></div>
                             <div class="station-content">
                                 <div class="station-codes">
-                                    <span class="station-code">NE 11</span>
+                                    <span class="station-code">CC 10</span>
+                                    <span class="interchange-badge mrt-dtl">DT 26</span>
                                 </div>
-                                <div class="station-name">Woodleigh</div>
+                                <div class="station-name">MacPherson</div>
                             </div>
                         </div>
 
-                        <!-- NE 12 Serangoon -->
+                        <!-- CC 11 Tai Seng -->
                         <div class="station">
                             <div class="station-dot"></div>
                             <div class="station-content">
                                 <div class="station-codes">
-                                    <span class="station-code">NE 12</span>
-                                    <span class="interchange-badge mrt-ccl" style="color: #000;">CC 15</span>
+                                    <span class="station-code">CC 11</span>
+                                </div>
+                                <div class="station-name">Tai Seng</div>
+                            </div>
+                        </div>
+
+                        <!-- CC 12 Bartley -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">CC 12</span>
+                                </div>
+                                <div class="station-name">Bartley</div>
+                            </div>
+                        </div>
+
+                        <!-- CC 13 Serangoon -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">CC 13</span>
+                                    <span class="interchange-badge mrt-nel">NE 12</span>
                                 </div>
                                 <div class="station-name">Serangoon</div>
                             </div>
                         </div>
 
-                        <!-- NE 13 Kovan -->
+                        <!-- CC 14 Lorong Chuan -->
                         <div class="station">
                             <div class="station-dot"></div>
                             <div class="station-content">
                                 <div class="station-codes">
-                                    <span class="station-code">NE 13</span>
+                                    <span class="station-code">CC 14</span>
                                 </div>
-                                <div class="station-name">Kovan</div>
+                                <div class="station-name">Lorong Chuan</div>
                             </div>
                         </div>
 
-                        <!-- NE 14 Hougang -->
+                        <!-- CC 15 Bishan -->
                         <div class="station">
                             <div class="station-dot"></div>
                             <div class="station-content">
                                 <div class="station-codes">
-                                    <span class="station-code">NE 14</span>
+                                    <span class="station-code">CC 15</span>
+                                    <span class="interchange-badge mrt-nsl">NS 17</span>
                                 </div>
-                                <div class="station-name">Hougang</div>
+                                <div class="station-name">Bishan</div>
                             </div>
                         </div>
 
-                        <!-- NE 15 Buangkok -->
+                        <!-- CC 16 Marymount -->
                         <div class="station">
                             <div class="station-dot"></div>
                             <div class="station-content">
                                 <div class="station-codes">
-                                    <span class="station-code">NE 15</span>
+                                    <span class="station-code">CC 16</span>
                                 </div>
-                                <div class="station-name">Buangkok</div>
+                                <div class="station-name">Marymount</div>
                             </div>
                         </div>
 
-                        <!-- NE 16 Sengkang -->
+                        <!-- CC 17 Caldecott -->
                         <div class="station">
                             <div class="station-dot"></div>
                             <div class="station-content">
                                 <div class="station-codes">
-                                    <span class="station-code">NE 16</span>
-                                    <span class="interchange-badge mrt-lrt">STC</span>
+                                    <span class="station-code">CC 17</span>
+                                    <span class="interchange-badge mrt-tel">TE 9</span>
                                 </div>
-                                <div class="station-name">Sengkang</div>
+                                <div class="station-name">Caldecott</div>
                             </div>
                         </div>
 
-                        <!-- NE 17 Bishan -->
+                        <!-- CC 19 Botanic Gardens -->
                         <div class="station">
                             <div class="station-dot"></div>
                             <div class="station-content">
                                 <div class="station-codes">
-                                    <span class="station-code">NE 17</span>
-                                    <span class="interchange-badge mrt-lrt">PTC</span>
+                                    <span class="station-code">CC 19</span>
+                                    <span class="interchange-badge mrt-dtl">DT 9</span>
                                 </div>
-                                <div class="station-name">Punggol</div>
+                                <div class="station-name">Queenstown</div>
                             </div>
                         </div>
 
-                        <!-- NE 18 Punggol Coast -->
+                        <!-- CC 20 Farrer Road -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes station-connector">
+                                    <span class="station-code">CC 20</span>
+                                </div>
+                                <div class="station-name">Farrer Road</div>
+                            </div>
+                        </div>
+
+                        <!-- CC 21 Holland Village -->
                         <div class="station">
                             <div class="station-dot"></div>
                             <div class="station-content">
                                 <div class="station-codes">
-                                    <span class="station-code">NE 18</span>
+                                    <span class="station-code">CC 21</span>
                                 </div>
-                                <div class="station-name">Punggol Coast</div>
+                                <div class="station-name">Holland Village</div>
                             </div>
                         </div>
 
-             
+                        <!-- EW 22 Buona Vista -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">CC 22</span>
+                                    <span class="interchange-badge mrt-ewl">EW 21</span>
+                                </div>
+                                <div class="station-name">Buona Vista</div>
+                            </div>
+                        </div>
+
+                        <!-- CC 23 one-north -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">CC 23</span>
+                                </div>
+                                <div class="station-name">one-north</div>
+                            </div>
+                        </div>
+
+                        <!-- CC 24 Kent Ridge -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">CC 24</span>
+                                </div>
+                                <div class="station-name">Kent Ridge</div>
+                            </div>
+                        </div>
+
+                        <!-- CC 25 Haw Par Villa -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">CC 25</span>
+                                </div>
+                                <div class="station-name">Haw Par Villa</div>
+                            </div>
+                        </div>
+
+                        <!-- CC 26 Pasir Panjang -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">CC 26</span>
+                                </div>
+                                <div class="station-name">Pasir Panjang</div>
+                            </div>
+                        </div>
+
+                        <!-- CC 27 Labrador Park -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">CC 27</span>
+                                </div>
+                                <div class="station-name">Labrador Park</div>
+                            </div>
+                        </div>
+
+                        <!-- CC 28 Telok Blangah -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">CC 28</span>
+                                </div>
+                                <div class="station-name">Telok Blangah</div>
+                            </div>
+                        </div>
+
+                        <!-- CC 29 HarbourFront -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">CC 29</span>
+                                    <span class="interchange-badge mrt-nel">NE 1</span>
+                                </div>
+                                <div class="station-name">HarbourFront</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Extension Branch -->
+                    <div class="line-container hidden" id="extensionBranch">
+                        <!-- CC4 Promenade -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">CC 4</span>
+                                    <span class="interchange-badge mrt-dtl">DT 15</span>
+                                </div>
+                                <div class="station-name">Promenade</div>
+                            </div>
+                        </div>
+
+                        <!-- CE 1 Bayfront -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">CE 1</span>
+                                    <span class="interchange-badge mrt-dtl">DT 16</span>
+                                </div>
+                                <div class="station-name">Bayfront</div>
+                            </div>
+                        </div>
+
+                        <!-- CE 2 Marina Bay -->
+                        <div class="station">
+                            <div class="station-dot"></div>
+                            <div class="station-content">
+                                <div class="station-codes">
+                                    <span class="station-code">CE 2</span>
+                                    <span class="interchange-badge mrt-nsl">NS 27</span>
+                                    <span class="interchange-badge mrt-tel">TE 20</span>
+                                </div>
+                                <div class="station-name">Marina Bay</div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="show-more-button">
@@ -897,6 +1124,35 @@
     <script src="../../js/default-assets/active.js"></script>
 
     <script>
+        function switchBranch() {
+            const selector = document.getElementById('branchSelect');
+            const mainBranch = document.getElementById('mainBranch');
+            const changiBranch = document.getElementById('extensionBranch');
+            const showMoreButton = document.querySelector('.show-more-button');
+            const hiddenStations = document.getElementById('hidden-stations');
+            const toggleBtn = document.getElementById('toggleBtn');
+
+            if (selector.value === 'main') {
+                mainBranch.classList.remove('hidden');
+                mainBranch.classList.add('show');
+                changiBranch.classList.add('hidden');
+                changiBranch.classList.remove('show');
+                showMoreButton.style.display = 'block';
+                // Reset hidden stations
+                hiddenStations.classList.remove('show');
+                toggleBtn.innerHTML = '<i class="fa-regular fa-chevron-down"></i> Show More';
+            } else {
+                mainBranch.classList.add('hidden');
+                mainBranch.classList.remove('show');
+                changiBranch.classList.remove('hidden');
+                changiBranch.classList.add('show');
+                showMoreButton.style.display = 'none';
+                // Reset hidden stations
+                hiddenStations.classList.remove('show');
+                toggleBtn.innerHTML = '<i class="fa-regular fa-chevron-down"></i> Show More';
+            }
+        }
+
         function toggleStations() {
             const hiddenStations = document.getElementById('hidden-stations');
             const toggleBtn = document.getElementById('toggleBtn');
@@ -910,6 +1166,8 @@
             }
         }
     </script>
+
+    <script src="../assets/chimes/chimes.js"></script>
 
 </body>
 

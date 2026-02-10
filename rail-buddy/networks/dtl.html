@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>North East Line | RailBuddy</title>
+    <title>Downtown Line | RailBuddy</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
     <meta property="og:image" content="https://i.imgur.com/aNQTQtO.png" />
@@ -128,7 +128,7 @@
     }
 
     .show-more-button button {
-        background: #9d27b5;
+        background: #005ec8;
         color: #fff;
         border: none;
         padding: 10px 20px;
@@ -141,7 +141,7 @@
     }
 
     .show-more-button button:hover {
-        background: #651675;
+        background: #002c5c;
     }
 
     .line-controls {
@@ -186,7 +186,7 @@
         top: 22px;
         bottom: 99px;
         width: 3px;
-        background: #9d27b5;
+        background: #005ec8;
         z-index: 1;
     }
 
@@ -203,7 +203,7 @@
         height: 18px;
         border-radius: 50%;
         background: #fff;
-        border: 3px solid #9d27b5;
+        border: 3px solid #005ec8;
         position: absolute;
         left: -31px;
         z-index: 10;
@@ -226,7 +226,7 @@
     }
 
     .station-code {
-        background: #9d27b5;
+        background: #005ec8;
         color: #fff;
         font-weight: bold;
         border-radius: 13.6px / 19.2px;
@@ -285,7 +285,7 @@
         transform: translateY(-50%);
         width: 10px;
         height: 10px;
-        background: #ff3b3b;
+        background: #005ec8;
         border-radius: 2px;
         z-index: -1;
     }
@@ -308,7 +308,7 @@
         transform: translateY(-50%);
         width: 19px;
         height: 10px;
-        background: #005ec8;
+        background: #009645;
         border-radius: 2px;
         z-index: -1;
     }
@@ -577,8 +577,8 @@
                             <div
                                 style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
                                 <div>
-                                    <h1 class="filter-title" id="chimes"><img src="../assets/caplets/NELCap.png"
-                                            alt="NEL" class="caplet"> North East Line</h1></a>
+                                    <h1 class="filter-title" id="chimes"><img src="../assets/caplets/DTLCap.png"
+                                            alt="DTL" class="caplet"> Downtown Line</h1></a>
                                 </div>
                             </div>
                         </div>
@@ -614,7 +614,7 @@
                                         <i class="fa-regular fa-ruler-horizontal"></i>
                                     </div>
                                     <h3 style="font-size: 18px; font-weight: bolder;">Length</h3>
-                                    <h4 style="font-size: 13px;">22 km <br>(with 17 stations)</h4>
+                                    <h4 style="font-size: 13px;">42 km <br>(with 35 stations)</h4>
                                 </div>
                             </div>
 
@@ -644,16 +644,31 @@
 
                 <!-- Line Description Box -->
                 <div class="line-description">
-                    <p>Built using the latest technology and engineering techniques of its time, NEL heralded an era of
-                        automated and driverless mass rapid transit systems, an enhanced commuter experience and the
-                        beginning of our multi-modal, integrated public transport model. <br><br>
+                    <p>The Downtown Line (DTL) is Singapore’s fifth MRT line and a game changer for public transport in
+                        Singapore. <br><br>
 
-                        Connecting residential areas in the north-east to Singapore’s heritage areas and the city
-                        fringe, its development was aimed at serving growing neighbourhoods in these regions. <br><br>
+                        DTL reaches out to residential areas such as Bukit Panjang, Bukit Timah, MacPherson and Bedok
+                        Reservoir that were previously not served by the MRT. <br><br>
 
-                        The 22km line has 17 stations, and connects to six interchanges. <br><br>
+                        Catering to a growing city with growing transport needs, the existing 35 stations on the DTL
+                        offer an alternative commuting route, connecting people to the city and making travel within the
+                        city centre a breeze. <br><br>
+
+                        For those living in Bukit Panjang and Bukit Timah, the line offers a more direct route into the
+                        city and cuts travel time by up to 30 per cent. <br><br>
+
+                        For those in the east, it means fewer bus rides and faster commutes. Taking the train instead of
+                        a bus from Kaki Bukit to Tampines takes just 10 instead of 25 minutes. <br><br>
+
+                        The line also enhances connectivity within the Central Business District (CBD) area, taking you
+                        from Millenia Walk to Marina Bay Sands and the City Hall fringe more quickly. <br><br>
+
+                        The opening of the 21km DTL3 on 21 October 2017 provided a travel alternative to the east and
+                        direct connectivity to Tampines Regional Centre and Changi Business Park without the need for
+                        transfers via buses. With the introduction of DTL3, the DTL is now 42-km long. This makes it the
+                        longest underground and driverless MRT line in Singapore. <br><br>
                         (Source: <a class="hyperlink"
-                            href="https://www.lta.gov.sg/content/ltagov/en/getting_around/public_transport/rail_network/north_south_line.html">LTA</a>
+                            href="https://www.lta.gov.sg/content/ltagov/en/getting_around/public_transport/rail_network/downtown_line.html">LTA</a>
                         )
                     </p>
 
@@ -661,213 +676,425 @@
                 <!-- Line Diagram -->
                 <div class="line-diagram">
                     <div class="line-container">
-                        <!-- NS 1 Jurong East -->
+                        <!-- DT 1 Bukit Panjang -->
                         <div class="station">
                             <div class="station-dot"></div>
                             <div class="station-content">
                                 <div class="station-codes">
-                                    <span class="station-code">NE 1</span>
-                                    <span class="interchange-badge mrt-ccl" style="color: #000;">CC 29</span>
+                                    <span class="station-code">DT 1</span>
+                                    <span class="interchange-badge mrt-lrt">BP 1</span>
                                 </div>
-                                <div class="station-name">HarbourFront</div>
+                                <div class="station-name">Bukit Panjang</div>
                             </div>
                         </div>
 
-                        <!-- NE 3 Outram Park -->
+                        <!-- DT 2 Cashew -->
                         <div class="station">
                             <div class="station-dot"></div>
                             <div class="station-content">
                                 <div class="station-codes">
-                                    <span class="station-code">NE 3</span>
-                                    <span class="interchange-badge mrt-ewl">EW 16</span>
-                                    <span class="interchange-badge mrt-tel">TE 17</span>
+                                    <span class="station-code">DT 2</span>
                                 </div>
-                                <div class="station-name">Outram Park</div>
+                                <div class="station-name">Cashew</div>
                             </div>
                         </div>
 
-                        <!-- NE 4 Chinatown -->
+                        <!-- DT 3 Hillview -->
                         <div class="station">
                             <div class="station-dot"></div>
                             <div class="station-content">
                                 <div class="station-codes">
-                                    <span class="station-code">NE 4</span>
-                                    <span class="interchange-badge mrt-dtl">DT 19</span>
+                                    <span class="station-code">DT 3</span>
                                 </div>
-                                <div class="station-name">Chinatown</div>
+                                <div class="station-name">Hillview</div>
                             </div>
                         </div>
 
-                        <!-- NE 5 Clarke Quay -->
+                        <!-- DT 4 Hume -->
                         <div class="station">
                             <div class="station-dot"></div>
                             <div class="station-content">
                                 <div class="station-codes">
-                                    <span class="station-code">NE 5</span>
+                                    <span class="station-code">DT 4</span>
                                 </div>
-                                <div class="station-name">Clarke Quay</div>
+                                <div class="station-name">Hume</div>
                             </div>
                         </div>
 
-                        <!-- NE 6 Dhoby Ghaut -->
+                        <!-- DT 5 Beauty World -->
                         <div class="station">
                             <div class="station-dot"></div>
                             <div class="station-content">
                                 <div class="station-codes">
-                                    <span class="station-code">NE 6</span>
-                                    <span class="interchange-badge mrt-nsl">NS 24</span>
-                                    <span class="interchange-badge mrt-ccl" style="color: #000;">CC 1</span>
+                                    <span class="station-code">DT 5</span>
                                 </div>
-                                <div class="station-name">Dhoby Ghaut</div>
+                                <div class="station-name">Beauty World</div>
                             </div>
                         </div>
 
-                        <!-- NE 7 Little India -->
+                        <!-- DT 6 King Albert Park -->
                         <div class="station">
                             <div class="station-dot"></div>
                             <div class="station-content">
                                 <div class="station-codes">
-                                    <span class="station-code">NE 7</span>
-                                    <span class="interchange-badge mrt-dtl">DT 12</span>
+                                    <span class="station-code">DT 6</span>
                                 </div>
-                                <div class="station-name">Little India</div>
+                                <div class="station-name">King Albert Park</div>
                             </div>
                         </div>
 
-                        <!-- NE 8 Farrer Park -->
+                        <!-- DT 7 Sixth Avenue -->
                         <div class="station">
                             <div class="station-dot"></div>
                             <div class="station-content">
                                 <div class="station-codes">
-                                    <span class="station-code">NE 8</span>
+                                    <span class="station-code">DT 7</span>
                                 </div>
-                                <div class="station-name">Farrer Park</div>
+                                <div class="station-name">Sixth Avenue</div>
                             </div>
                         </div>
 
-                        <!-- NE 9 Boon Keng -->
+                        <!-- DT 8 Tan Kah Kee -->
                         <div class="station">
                             <div class="station-dot"></div>
                             <div class="station-content">
                                 <div class="station-codes">
-                                    <span class="station-code">NE 9</span>
+                                    <span class="station-code">DT 8</span>
                                 </div>
-                                <div class="station-name">Boon Keng</div>
+                                <div class="station-name">Tan Kah Kee</div>
                             </div>
                         </div>
 
-                    <div id="hidden-stations">
-                        <!-- NE 10 Potong Pasir -->
+
+                        <!-- DT 9 Botanic Gardens -->
                         <div class="station">
                             <div class="station-dot"></div>
                             <div class="station-content">
                                 <div class="station-codes">
-                                    <span class="station-code">NE 10</span>
+                                    <span class="station-code">DT 9</span>
+                                    <span class="interchange-badge mrt-ccl" style="color: #000;">CC 19</span>
                                 </div>
-                                <div class="station-name">Potong Pasir</div>
+                                <div class="station-name">Botanic Gardens</div>
                             </div>
                         </div>
 
-                        <!-- NE 11 Woodleigh -->
+                        <!-- DT 10 Stevens -->
                         <div class="station">
                             <div class="station-dot"></div>
                             <div class="station-content">
                                 <div class="station-codes">
-                                    <span class="station-code">NE 11</span>
+                                    <span class="station-code">DT 10</span>
+                                    <span class="interchange-badge mrt-tel">TE 11</span>
                                 </div>
-                                <div class="station-name">Woodleigh</div>
+                                <div class="station-name">Stevens</div>
                             </div>
                         </div>
 
-                        <!-- NE 12 Serangoon -->
+                        <!--DT 11 Newton -->
                         <div class="station">
                             <div class="station-dot"></div>
                             <div class="station-content">
                                 <div class="station-codes">
-                                    <span class="station-code">NE 12</span>
-                                    <span class="interchange-badge mrt-ccl" style="color: #000;">CC 15</span>
+                                    <span class="station-code">DT 11</span>
+                                    <span class="interchange-badge mrt-nsl">NS 21</span>
                                 </div>
-                                <div class="station-name">Serangoon</div>
+                                <div class="station-name">Newton</div>
                             </div>
                         </div>
 
-                        <!-- NE 13 Kovan -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">NE 13</span>
+                        <div id="hidden-stations">
+                            <!-- DT 12 Little India -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">DT 12</span>
+                                        <span class="interchange-badge mrt-nel">NE 7</span>
+                                    </div>
+                                    <div class="station-name">Little India</div>
                                 </div>
-                                <div class="station-name">Kovan</div>
                             </div>
+
+                            <!-- DT 13 Rochor -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">DT 13</span>
+                                    </div>
+                                    <div class="station-name">Rochor</div>
+                                </div>
+                            </div>
+
+                            <!-- DT 14 Bugis -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">DT 14</span>
+                                        <span class="interchange-badge mrt-ewl">EW 12</span>
+                                    </div>
+                                    <div class="station-name">Bugis</div>
+                                </div>
+                            </div>
+
+                            <!-- DT 15 Promenade -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">DT 15</span>
+                                        <span class="interchange-badge mrt-ccl" style="color: #000;">CC 4</span>
+                                    </div>
+                                    <div class="station-name">Promenade</div>
+                                </div>
+                            </div>
+
+                            <!-- DT 16 Bayfront -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">DT 16</span>
+                                        <span class="interchange-badge mrt-ccl" style="color: #000;">CE 1</span>
+                                    </div>
+                                    <div class="station-name">Bayfront</div>
+                                </div>
+                            </div>
+
+                            <!-- DT 17 Downtown -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">DT 17</span>
+                                    </div>
+                                    <div class="station-name">Downtown</div>
+                                </div>
+                            </div>
+
+                            <!-- DT 18 Telok Ayer -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">DT 18</span>
+                                    </div>
+                                    <div class="station-name">Telok Ayer</div>
+                                </div>
+                            </div>
+
+                            <!-- DT 19 Chinatown -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">DT 19</span>
+                                        <span class="interchange-badge mrt-nsl">NE 4</span>
+                                    </div>
+                                    <div class="station-name">Chinatown</div>
+                                </div>
+                            </div>
+
+                            <!-- DT 20 Fort Canning -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">DT 20</span>
+                                    </div>
+                                    <div class="station-name">Fort Canning</div>
+                                </div>
+                            </div>
+
+                            <!-- DT 21 Bencoolen -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">DT 21</span>
+                                    </div>
+                                    <div class="station-name">Bencoolen</div>
+                                </div>
+                            </div>
+
+                            <!-- DT 22 Jalan Besar -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">DT 22</span>
+                                    </div>
+                                    <div class="station-name">Jalan Besar</div>
+                                </div>
+                            </div>
+
+                            <!-- DT 23 Rochor -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">DT 23</span>
+                                    </div>
+                                    <div class="station-name">Bendemeer</div>
+                                </div>
+                            </div>
+
+                            <!-- DT 24 Geylang Bahru -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">DT 24</span>
+                                    </div>
+                                    <div class="station-name">Geylang Bahru</div>
+                                </div>
+                            </div>
+
+                            <!-- DT 25 Mattar -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">DT 25</span>
+                                    </div>
+                                    <div class="station-name">Mattar</div>
+                                </div>
+                            </div>
+
+                            <!-- DT 26 MacPherson -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">DT 26</span>
+                                        <span class="interchange-badge mrt-ccl" style="color: #000;">CC 10</span>
+                                    </div>
+                                    <div class="station-name">MacPherson</div>
+                                </div>
+                            </div>
+
+                            <!-- DT 27 Ubi -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">DT 27</span>
+                                    </div>
+                                    <div class="station-name">Ubi</div>
+                                </div>
+                            </div>
+
+                            <!-- DT 28 Kaki Bukit -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">DT 28</span>
+                                    </div>
+                                    <div class="station-name">Kaki Bukit</div>
+                                </div>
+                            </div>
+
+                            <!-- DT 29 Bedok Reservoir -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">DT 29</span>
+                                    </div>
+                                    <div class="station-name">Bedok Reservoir</div>
+                                </div>
+                            </div>
+
+                            <!-- DT 30 Tampines West -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">DT 30</span>
+                                    </div>
+                                    <div class="station-name">Tampines West</div>
+                                </div>
+                            </div>
+
+                            <!-- DT 31 Tampines -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes station-connector">
+                                        <span class="station-code">DT 32</span>
+                                        <span class="interchange-badge mrt-ewl">EW 2</span>
+                                    </div>
+                                    <div class="station-name">Tampines</div>
+                                </div>
+                            </div>
+
+                            <!-- DT 33 Tampines East -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">DT 33</span>
+                                    </div>
+                                    <div class="station-name">Tampines East</div>
+                                </div>
+                            </div>
+
+                            <!-- DT 34 Upper Changi -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">DT 34</span>
+                                    </div>
+                                    <div class="station-name">Upper Changi</div>
+                                </div>
+                            </div>
+
+                            <!-- DT 35 Expo -->
+                            <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">DT 35</span>
+                                        <span class="interchange-badge mrt-ewl">CG 1</span>
+                                    </div>
+                                    <div class="station-name">Expo</div>
+                                </div>
+                            </div>
+
+                            <!-- DT 36 Xilin -->
+                            <!-- <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">DT 36</span>
+                                    </div>
+                                    <div class="station-name">Xilin</div>
+                                </div>
+                            </div> -->
+
+                            <!-- DT 37 Sungei Bedok -->
+                            <!-- <div class="station">
+                                <div class="station-dot"></div>
+                                <div class="station-content">
+                                    <div class="station-codes">
+                                        <span class="station-code">DT 37</span>
+                                        <span class="interchange-badge mrt-tel">TE 31</span>
+                                    </div>
+                                    <div class="station-name">Sungei Bedok</div>
+                                </div>
+                            </div> -->
+
                         </div>
 
-                        <!-- NE 14 Hougang -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">NE 14</span>
-                                </div>
-                                <div class="station-name">Hougang</div>
-                            </div>
+                        <div class="show-more-button">
+                            <button id="toggleBtn" onclick="toggleStations()">Show More</button>
                         </div>
-
-                        <!-- NE 15 Buangkok -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">NE 15</span>
-                                </div>
-                                <div class="station-name">Buangkok</div>
-                            </div>
-                        </div>
-
-                        <!-- NE 16 Sengkang -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">NE 16</span>
-                                    <span class="interchange-badge mrt-lrt">STC</span>
-                                </div>
-                                <div class="station-name">Sengkang</div>
-                            </div>
-                        </div>
-
-                        <!-- NE 17 Bishan -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">NE 17</span>
-                                    <span class="interchange-badge mrt-lrt">PTC</span>
-                                </div>
-                                <div class="station-name">Punggol</div>
-                            </div>
-                        </div>
-
-                        <!-- NE 18 Punggol Coast -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">NE 18</span>
-                                </div>
-                                <div class="station-name">Punggol Coast</div>
-                            </div>
-                        </div>
-
-             
-                    </div>
-
-                    <div class="show-more-button">
-                        <button id="toggleBtn" onclick="toggleStations()">Show More</button>
                     </div>
                 </div>
             </div>
-        </div>
 
 
     </section>
