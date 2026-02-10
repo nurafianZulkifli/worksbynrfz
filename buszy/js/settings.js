@@ -203,6 +203,7 @@ if (importFileInput) {
                 importMessage.style.backgroundColor = '#c8e6c9';
                 importMessage.style.color = '#2e7d32';
                 importMessage.style.display = 'block';
+                importMessage.style.borderRadius = '24px';
                 
                 // Reload page to apply changes
                 setTimeout(() => {
@@ -214,6 +215,7 @@ if (importFileInput) {
                 importMessage.style.backgroundColor = '#ffcdd2';
                 importMessage.style.color = '#c62828';
                 importMessage.style.display = 'block';
+                importMessage.style.borderRadius = '24px';
             }
         };
         reader.readAsText(file);
