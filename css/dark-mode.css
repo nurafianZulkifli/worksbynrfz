@@ -20,6 +20,10 @@
 
 /* ------------------------------------------ General ------------------------------------------ */
 
+html.dark-mode {
+    background: #121521;
+}
+
 body.dark-mode {
     visibility: visible;
     opacity: 1;
