@@ -1,4 +1,5 @@
 // Dark Mode Image Switching
+(function() {
 function updateImagesForDarkMode() {
   const isDarkMode = document.body.classList.contains('dark-mode');
   
@@ -44,3 +45,4 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+})();
