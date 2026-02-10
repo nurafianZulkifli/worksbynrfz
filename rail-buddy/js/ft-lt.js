@@ -1,5 +1,6 @@
      let smrtData = [];
         let sbsData = [];
+        let smrtStationCodes = {};
         let mergedData = [];
         let currentData = [];
         let filteredStations = [];
@@ -12,9 +13,10 @@
             try {
                 loadAttempts++;
                 // Load both datasets in parallel
-                const [smrtResponse, sbsResponse] = await Promise.all([
+                const [smrtResponse, sbsResponse, codesResponse] = await Promise.all([
                     fetch('json/smrt-ft-lt.json'),
-                    fetch('json/sbs-transit-ft-lt.json')
+                    fetch('json/sbs-transit-ft-lt.json'),
+                    fetch('json/smrt-station-codes.json')
                 ]);
 
                 // Check if responses are ok
@@ -24,6 +26,9 @@
 
                 smrtData = await smrtResponse.json();
                 sbsData = await sbsResponse.json();
+                if (codesResponse.ok) {
+                    smrtStationCodes = await codesResponse.json();
+                }
 
                 // Merge both datasets
                 mergeData();
@@ -116,7 +121,8 @@
                 smrtStations.forEach(station => {
                     const option = document.createElement('option');
                     option.value = station.value;
-                    option.textContent = station.name;
+                    const code = smrtStationCodes[station.name];
+                    option.textContent = code ? `${code} ${station.name}` : station.name;
                     smrtGroup.appendChild(option);
                 });
                 dropdown.appendChild(smrtGroup);
@@ -160,8 +166,8 @@
 
         // Display SMRT MRT data
         function displaySmrtData(stationData) {
-            
-            document.getElementById('stationTitle').textContent = stationData.station;
+            const code = smrtStationCodes[stationData.station];
+            document.getElementById('stationTitle').textContent = code ? `${code} ${stationData.station}` : stationData.station;
             document.getElementById('stationSubtitle').textContent = `Last updated: ${new Date(stationData.scraped_at).toLocaleDateString('en-SG')}`;
 
             const directionsContainer = document.getElementById('directionsContainer');
@@ -366,9 +372,12 @@
 
         // Filter stations based on search query
         function filterStations(query) {
-            filteredStations = allStations.filter(station =>
-                station.name.toLowerCase().includes(query)
-            );
+            filteredStations = allStations.filter(station => {
+                if (station.name.toLowerCase().includes(query)) return true;
+                const code = smrtStationCodes[station.name];
+                if (code && code.toLowerCase().includes(query)) return true;
+                return false;
+            });
         }
 
         // Update dropdown to show only filtered stations
@@ -386,7 +395,8 @@
                 smrtStations.forEach(station => {
                     const option = document.createElement('option');
                     option.value = station.value;
-                    option.textContent = station.name;
+                    const code = smrtStationCodes[station.name];
+                    option.textContent = code ? `${code} ${station.name}` : station.name;
                     smrtGroup.appendChild(option);
                 });
                 dropdown.appendChild(smrtGroup);
