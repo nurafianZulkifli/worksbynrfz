@@ -109,7 +109,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:12.183Z"
+    "scraped_at": "2026-02-12T13:21:43.641Z"
   },
   {
     "station": "Bukit Batok",
@@ -191,7 +191,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:13.160Z"
+    "scraped_at": "2026-02-12T13:21:44.690Z"
   },
   {
     "station": "Bukit Gombak",
@@ -273,7 +273,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:14.123Z"
+    "scraped_at": "2026-02-12T13:21:45.749Z"
   },
   {
     "station": "Choa Chu Kang",
@@ -325,7 +325,7 @@
         }
       },
       {
-        "description": "To BP6 Bukit Panjang Platform 1 (Platform 1)",
+        "description": "To BP6 Bukit Panjang P1 (Platform 1)",
         "first_train": {
           "monday_to_friday": "05:13",
           "saturday": "05:13",
@@ -340,7 +340,7 @@
         }
       },
       {
-        "description": "To BP6 Bukit Panjang Platform 1 (Platform 2)",
+        "description": "To BP6 Bukit Panjang P1 (Platform 2)",
         "first_train": {
           "monday_to_friday": "05:13",
           "saturday": "05:13",
@@ -385,7 +385,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:15.023Z"
+    "scraped_at": "2026-02-12T13:21:46.734Z"
   },
   {
     "station": "Yew Tee",
@@ -467,7 +467,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:15.922Z"
+    "scraped_at": "2026-02-12T13:21:47.699Z"
   },
   {
     "station": "Kranji",
@@ -534,7 +534,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:16.821Z"
+    "scraped_at": "2026-02-12T13:21:48.622Z"
   },
   {
     "station": "Marsiling",
@@ -616,7 +616,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:17.722Z"
+    "scraped_at": "2026-02-12T13:21:49.522Z"
   },
   {
     "station": "Woodlands",
@@ -803,7 +803,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:18.636Z"
+    "scraped_at": "2026-02-12T13:21:50.475Z"
   },
   {
     "station": "Admiralty",
@@ -885,7 +885,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:19.573Z"
+    "scraped_at": "2026-02-12T13:21:51.489Z"
   },
   {
     "station": "Sembawang",
@@ -967,7 +967,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:20.501Z"
+    "scraped_at": "2026-02-12T13:21:52.411Z"
   },
   {
     "station": "Canberra",
@@ -1049,7 +1049,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:21.436Z"
+    "scraped_at": "2026-02-12T13:21:53.408Z"
   },
   {
     "station": "Yishun",
@@ -1131,7 +1131,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:22.337Z"
+    "scraped_at": "2026-02-12T13:21:54.319Z"
   },
   {
     "station": "Khatib",
@@ -1153,7 +1153,7 @@
         }
       },
       {
-        "description": "To NS13 Yishun",
+        "description": "First train service terminating at NS13 Yishun",
         "first_train": {
           "monday_to_friday": "05:14",
           "saturday": "05:14",
@@ -1228,7 +1228,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:23.288Z"
+    "scraped_at": "2026-02-12T13:21:55.238Z"
   },
   {
     "station": "Yio Chu Kang",
@@ -1250,7 +1250,7 @@
         }
       },
       {
-        "description": "To NS13 Yishun",
+        "description": "First train service terminating at NS13 Yishun",
         "first_train": {
           "monday_to_friday": "05:09",
           "saturday": "05:09",
@@ -1325,7 +1325,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:24.214Z"
+    "scraped_at": "2026-02-12T13:21:56.129Z"
   },
   {
     "station": "Ang Mo Kio",
@@ -1347,7 +1347,7 @@
         }
       },
       {
-        "description": "To NS13 Yishun",
+        "description": "First train service terminating at NS13 Yishun",
         "first_train": {
           "monday_to_friday": "05:07",
           "saturday": "05:07",
@@ -1407,7 +1407,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:25.114Z"
+    "scraped_at": "2026-02-12T13:21:57.065Z"
   },
   {
     "station": "Bishan",
@@ -1579,7 +1579,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:26.062Z"
+    "scraped_at": "2026-02-12T13:21:57.981Z"
   },
   {
     "station": "Braddell",
@@ -1646,7 +1646,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:26.954Z"
+    "scraped_at": "2026-02-12T13:21:58.890Z"
   },
   {
     "station": "Toa Payoh",
@@ -1698,7 +1698,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:27.922Z"
+    "scraped_at": "2026-02-12T13:21:59.766Z"
   },
   {
     "station": "Novena",
@@ -1750,7 +1750,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:28.788Z"
+    "scraped_at": "2026-02-12T13:22:00.670Z"
   },
   {
     "station": "Newton",
@@ -1802,7 +1802,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:29.654Z"
+    "scraped_at": "2026-02-12T13:22:01.611Z"
   },
   {
     "station": "Orchard",
@@ -1989,7 +1989,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:30.555Z"
+    "scraped_at": "2026-02-12T13:22:02.572Z"
   },
   {
     "station": "Somerset",
@@ -2041,7 +2041,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:31.471Z"
+    "scraped_at": "2026-02-12T13:22:03.579Z"
   },
   {
     "station": "Dhoby Ghaut",
@@ -2168,7 +2168,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:32.371Z"
+    "scraped_at": "2026-02-12T13:22:04.549Z"
   },
   {
     "station": "City Hall",
@@ -2265,7 +2265,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:33.307Z"
+    "scraped_at": "2026-02-12T13:22:05.480Z"
   },
   {
     "station": "Raffles Place",
@@ -2362,7 +2362,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:34.264Z"
+    "scraped_at": "2026-02-12T13:22:06.438Z"
   },
   {
     "station": "Marina Bay",
@@ -2534,7 +2534,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:35.182Z"
+    "scraped_at": "2026-02-12T13:22:07.380Z"
   },
   {
     "station": "Marina South Pier",
@@ -2571,7 +2571,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:36.093Z"
+    "scraped_at": "2026-02-12T13:22:08.284Z"
   },
   {
     "station": "Pasir Ris",
@@ -2608,7 +2608,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:37.008Z"
+    "scraped_at": "2026-02-12T13:22:09.345Z"
   },
   {
     "station": "Tampines",
@@ -2660,7 +2660,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:37.927Z"
+    "scraped_at": "2026-02-12T13:22:10.265Z"
   },
   {
     "station": "Simei",
@@ -2712,7 +2712,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:38.841Z"
+    "scraped_at": "2026-02-12T13:22:11.236Z"
   },
   {
     "station": "Tanah Merah",
@@ -2764,7 +2764,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:39.736Z"
+    "scraped_at": "2026-02-12T13:22:12.168Z"
   },
   {
     "station": "Bedok",
@@ -2816,7 +2816,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:40.642Z"
+    "scraped_at": "2026-02-12T13:22:13.106Z"
   },
   {
     "station": "Kembangan",
@@ -2868,7 +2868,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:41.560Z"
+    "scraped_at": "2026-02-12T13:22:14.015Z"
   },
   {
     "station": "Eunos",
@@ -2920,7 +2920,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:42.470Z"
+    "scraped_at": "2026-02-12T13:22:14.890Z"
   },
   {
     "station": "Paya Lebar",
@@ -3077,7 +3077,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:43.389Z"
+    "scraped_at": "2026-02-12T13:22:15.785Z"
   },
   {
     "station": "Aljunied",
@@ -3129,7 +3129,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:44.303Z"
+    "scraped_at": "2026-02-12T13:22:16.716Z"
   },
   {
     "station": "Kallang",
@@ -3181,7 +3181,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:45.210Z"
+    "scraped_at": "2026-02-12T13:22:17.640Z"
   },
   {
     "station": "Lavender",
@@ -3233,7 +3233,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:46.122Z"
+    "scraped_at": "2026-02-12T13:22:18.568Z"
   },
   {
     "station": "Bugis",
@@ -3285,7 +3285,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:47.039Z"
+    "scraped_at": "2026-02-12T13:22:19.469Z"
   },
   {
     "station": "City Hall",
@@ -3382,7 +3382,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:47.958Z"
+    "scraped_at": "2026-02-12T13:22:20.384Z"
   },
   {
     "station": "Raffles Place",
@@ -3479,7 +3479,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:48.887Z"
+    "scraped_at": "2026-02-12T13:22:21.280Z"
   },
   {
     "station": "Tanjong Pagar",
@@ -3531,7 +3531,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:49.816Z"
+    "scraped_at": "2026-02-12T13:22:22.199Z"
   },
   {
     "station": "Outram Park",
@@ -3688,7 +3688,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:50.725Z"
+    "scraped_at": "2026-02-12T13:22:23.175Z"
   },
   {
     "station": "Tiong Bahru",
@@ -3740,7 +3740,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:51.639Z"
+    "scraped_at": "2026-02-12T13:22:24.065Z"
   },
   {
     "station": "Redhill",
@@ -3792,7 +3792,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:52.548Z"
+    "scraped_at": "2026-02-12T13:22:25.018Z"
   },
   {
     "station": "Queenstown",
@@ -3844,7 +3844,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:53.457Z"
+    "scraped_at": "2026-02-12T13:22:25.952Z"
   },
   {
     "station": "Commonwealth",
@@ -3896,7 +3896,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:54.412Z"
+    "scraped_at": "2026-02-12T13:22:26.877Z"
   },
   {
     "station": "Buona Vista",
@@ -4053,7 +4053,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:55.362Z"
+    "scraped_at": "2026-02-12T13:22:27.779Z"
   },
   {
     "station": "Dover",
@@ -4105,7 +4105,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:56.306Z"
+    "scraped_at": "2026-02-12T13:22:28.722Z"
   },
   {
     "station": "Clementi",
@@ -4157,7 +4157,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:57.205Z"
+    "scraped_at": "2026-02-12T13:22:29.654Z"
   },
   {
     "station": "Admiralty",
@@ -4239,7 +4239,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:58.132Z"
+    "scraped_at": "2026-02-12T13:22:30.590Z"
   },
   {
     "station": "Boon Lay",
@@ -4291,7 +4291,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:20:59.132Z"
+    "scraped_at": "2026-02-12T13:22:31.526Z"
   },
   {
     "station": "Pioneer",
@@ -4343,7 +4343,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:00.044Z"
+    "scraped_at": "2026-02-12T13:22:32.471Z"
   },
   {
     "station": "Joo Koon",
@@ -4395,7 +4395,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:00.973Z"
+    "scraped_at": "2026-02-12T13:22:33.375Z"
   },
   {
     "station": "Gul Circle",
@@ -4447,7 +4447,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:02.100Z"
+    "scraped_at": "2026-02-12T13:22:34.323Z"
   },
   {
     "station": "Tuas Crescent",
@@ -4499,7 +4499,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:03.005Z"
+    "scraped_at": "2026-02-12T13:22:35.269Z"
   },
   {
     "station": "Tuas West Road",
@@ -4551,7 +4551,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:04.039Z"
+    "scraped_at": "2026-02-12T13:22:36.150Z"
   },
   {
     "station": "Tuas Link",
@@ -4588,7 +4588,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:04.972Z"
+    "scraped_at": "2026-02-12T13:22:37.119Z"
   },
   {
     "station": "Bras Basah",
@@ -4685,7 +4685,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:05.873Z"
+    "scraped_at": "2026-02-12T13:22:38.074Z"
   },
   {
     "station": "Esplanade",
@@ -4782,7 +4782,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:06.806Z"
+    "scraped_at": "2026-02-12T13:22:39.138Z"
   },
   {
     "station": "Promenade",
@@ -4909,7 +4909,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:07.732Z"
+    "scraped_at": "2026-02-12T13:22:40.063Z"
   },
   {
     "station": "Nicoll Highway",
@@ -5036,7 +5036,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:08.667Z"
+    "scraped_at": "2026-02-12T13:22:41.036Z"
   },
   {
     "station": "Stadium",
@@ -5148,7 +5148,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:09.572Z"
+    "scraped_at": "2026-02-12T13:22:41.957Z"
   },
   {
     "station": "Mountbatten",
@@ -5245,7 +5245,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:10.511Z"
+    "scraped_at": "2026-02-12T13:22:42.894Z"
   },
   {
     "station": "Dakota",
@@ -5357,7 +5357,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:11.424Z"
+    "scraped_at": "2026-02-12T13:22:43.847Z"
   },
   {
     "station": "MacPherson",
@@ -5469,7 +5469,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:12.396Z"
+    "scraped_at": "2026-02-12T13:22:44.738Z"
   },
   {
     "station": "Tai Seng",
@@ -5566,7 +5566,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:13.357Z"
+    "scraped_at": "2026-02-12T13:22:45.652Z"
   },
   {
     "station": "Bartley",
@@ -5663,7 +5663,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:14.258Z"
+    "scraped_at": "2026-02-12T13:22:46.551Z"
   },
   {
     "station": "Serangoon",
@@ -5775,7 +5775,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:15.174Z"
+    "scraped_at": "2026-02-12T13:22:47.510Z"
   },
   {
     "station": "Lorong Chuan",
@@ -5887,7 +5887,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:16.117Z"
+    "scraped_at": "2026-02-12T13:22:48.404Z"
   },
   {
     "station": "Marymount",
@@ -5999,7 +5999,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:17.023Z"
+    "scraped_at": "2026-02-12T13:22:49.374Z"
   },
   {
     "station": "Caldecott",
@@ -6216,7 +6216,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:17.946Z"
+    "scraped_at": "2026-02-12T13:22:50.359Z"
   },
   {
     "station": "Botanic Gardens",
@@ -6313,7 +6313,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:18.855Z"
+    "scraped_at": "2026-02-12T13:22:51.284Z"
   },
   {
     "station": "Farrer Road",
@@ -6410,7 +6410,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:19.849Z"
+    "scraped_at": "2026-02-12T13:22:52.187Z"
   },
   {
     "station": "Holland Village",
@@ -6522,7 +6522,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:20.840Z"
+    "scraped_at": "2026-02-12T13:22:53.173Z"
   },
   {
     "station": "one-north",
@@ -6619,7 +6619,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:21.790Z"
+    "scraped_at": "2026-02-12T13:22:54.122Z"
   },
   {
     "station": "Kent Ridge",
@@ -6716,7 +6716,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:22.864Z"
+    "scraped_at": "2026-02-12T13:22:55.051Z"
   },
   {
     "station": "Haw Par Villa",
@@ -6813,7 +6813,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:23.786Z"
+    "scraped_at": "2026-02-12T13:22:56.008Z"
   },
   {
     "station": "Pasir Panjang",
@@ -6895,7 +6895,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:24.704Z"
+    "scraped_at": "2026-02-12T13:22:56.976Z"
   },
   {
     "station": "Labrador Park",
@@ -6977,7 +6977,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:25.635Z"
+    "scraped_at": "2026-02-12T13:22:57.917Z"
   },
   {
     "station": "Telok Blangah",
@@ -7059,7 +7059,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:26.628Z"
+    "scraped_at": "2026-02-12T13:22:58.861Z"
   },
   {
     "station": "HarbourFront",
@@ -7126,7 +7126,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:27.581Z"
+    "scraped_at": "2026-02-12T13:22:59.839Z"
   },
   {
     "station": "Woodlands North",
@@ -7238,7 +7238,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:28.485Z"
+    "scraped_at": "2026-02-12T13:23:00.773Z"
   },
   {
     "station": "Woodlands",
@@ -7425,7 +7425,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:29.405Z"
+    "scraped_at": "2026-02-12T13:23:01.726Z"
   },
   {
     "station": "Woodlands South",
@@ -7537,7 +7537,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:30.354Z"
+    "scraped_at": "2026-02-12T13:23:02.667Z"
   },
   {
     "station": "Springleaf",
@@ -7664,7 +7664,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:31.345Z"
+    "scraped_at": "2026-02-12T13:23:03.602Z"
   },
   {
     "station": "Lentor",
@@ -7791,7 +7791,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:32.290Z"
+    "scraped_at": "2026-02-12T13:23:04.546Z"
   },
   {
     "station": "Mayflower",
@@ -7918,7 +7918,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:33.216Z"
+    "scraped_at": "2026-02-12T13:23:05.434Z"
   },
   {
     "station": "Bright Hill",
@@ -8045,7 +8045,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:34.188Z"
+    "scraped_at": "2026-02-12T13:23:06.402Z"
   },
   {
     "station": "Upper Thomson",
@@ -8172,7 +8172,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:35.213Z"
+    "scraped_at": "2026-02-12T13:23:07.297Z"
   },
   {
     "station": "Stevens",
@@ -8299,7 +8299,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:36.112Z"
+    "scraped_at": "2026-02-12T13:23:08.215Z"
   },
   {
     "station": "Napier",
@@ -8426,7 +8426,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:37.037Z"
+    "scraped_at": "2026-02-12T13:23:09.356Z"
   },
   {
     "station": "Orchard Boulevard",
@@ -8553,7 +8553,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:37.963Z"
+    "scraped_at": "2026-02-12T13:23:10.297Z"
   },
   {
     "station": "Great World",
@@ -8680,7 +8680,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:38.853Z"
+    "scraped_at": "2026-02-12T13:23:11.431Z"
   },
   {
     "station": "Havelock",
@@ -8807,7 +8807,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:39.837Z"
+    "scraped_at": "2026-02-12T13:23:12.373Z"
   },
   {
     "station": "Maxwell",
@@ -8919,7 +8919,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:40.776Z"
+    "scraped_at": "2026-02-12T13:23:13.441Z"
   },
   {
     "station": "Shenton Way",
@@ -9031,7 +9031,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:41.760Z"
+    "scraped_at": "2026-02-12T13:23:14.357Z"
   },
   {
     "station": "Gardens by the Bay",
@@ -9128,7 +9128,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:42.692Z"
+    "scraped_at": "2026-02-12T13:23:15.328Z"
   },
   {
     "station": "Tanjong Rhu",
@@ -9240,7 +9240,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:43.611Z"
+    "scraped_at": "2026-02-12T13:23:16.310Z"
   },
   {
     "station": "Katong Park",
@@ -9352,7 +9352,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:44.552Z"
+    "scraped_at": "2026-02-12T13:23:17.276Z"
   },
   {
     "station": "Tanjong Katong",
@@ -9464,7 +9464,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:45.478Z"
+    "scraped_at": "2026-02-12T13:23:18.238Z"
   },
   {
     "station": "Marine Parade",
@@ -9576,7 +9576,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:46.396Z"
+    "scraped_at": "2026-02-12T13:23:19.241Z"
   },
   {
     "station": "Marine Terrace",
@@ -9688,7 +9688,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:47.431Z"
+    "scraped_at": "2026-02-12T13:23:20.140Z"
   },
   {
     "station": "Siglap",
@@ -9800,7 +9800,7 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:48.387Z"
+    "scraped_at": "2026-02-12T13:23:21.071Z"
   },
   {
     "station": "Bayshore",
@@ -9897,6 +9897,413 @@
         }
       }
     ],
-    "scraped_at": "2026-02-08T13:21:49.329Z"
+    "scraped_at": "2026-02-12T13:23:22.016Z"
+  },
+  {
+    "station": "South View",
+    "station_slug": "south-view",
+    "directions": [
+      {
+        "description": "To BP6 Bukit Panjang P1 (Platform 1)",
+        "first_train": {
+          "monday_to_friday": "05:11",
+          "saturday": "05:11",
+          "sunday_public_holidays": "--",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "23:36",
+          "saturday": "23:36",
+          "sunday_public_holidays": "22:36",
+          "eve_of_public_holidays": "23:36"
+        }
+      },
+      {
+        "description": "To BP6 Bukit Panjang P1 (Platform 2)",
+        "first_train": {
+          "monday_to_friday": "05:14",
+          "saturday": "05:14",
+          "sunday_public_holidays": "--",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "23:31",
+          "saturday": "23:31",
+          "sunday_public_holidays": "22:31",
+          "eve_of_public_holidays": "23:31"
+        }
+      }
+    ],
+    "scraped_at": "2026-02-12T13:23:22.920Z"
+  },
+  {
+    "station": "Keat Hong",
+    "station_slug": "keat-hong",
+    "directions": [
+      {
+        "description": "To BP6 Bukit Panjang P1 (Platform 1)",
+        "first_train": {
+          "monday_to_friday": "05:09",
+          "saturday": "05:09",
+          "sunday_public_holidays": "--",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "23:34",
+          "saturday": "23:34",
+          "sunday_public_holidays": "22:34",
+          "eve_of_public_holidays": "23:34"
+        }
+      },
+      {
+        "description": "To BP6 Bukit Panjang P1 (Platform 2)",
+        "first_train": {
+          "monday_to_friday": "05:16",
+          "saturday": "05:16",
+          "sunday_public_holidays": "--",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "23:33",
+          "saturday": "23:33",
+          "sunday_public_holidays": "22:33",
+          "eve_of_public_holidays": "23:33"
+        }
+      }
+    ],
+    "scraped_at": "2026-02-12T13:23:23.832Z"
+  },
+  {
+    "station": "Teck Whye",
+    "station_slug": "teck-whye",
+    "directions": [
+      {
+        "description": "To BP6 Bukit Panjang P1 (Platform 1)",
+        "first_train": {
+          "monday_to_friday": "05:08",
+          "saturday": "05:08",
+          "sunday_public_holidays": "--",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "23:33",
+          "saturday": "23:33",
+          "sunday_public_holidays": "22:33",
+          "eve_of_public_holidays": "23:33"
+        }
+      },
+      {
+        "description": "To BP6 Bukit Panjang P1 (Platform 2)",
+        "first_train": {
+          "monday_to_friday": "05:17",
+          "saturday": "05:17",
+          "sunday_public_holidays": "--",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "23:34",
+          "saturday": "23:34",
+          "sunday_public_holidays": "22:34",
+          "eve_of_public_holidays": "23:34"
+        }
+      }
+    ],
+    "scraped_at": "2026-02-12T13:23:24.768Z"
+  },
+  {
+    "station": "Bukit Panjang",
+    "station_slug": "bukit-panjang",
+    "directions": [
+      {
+        "description": "To BP6 Bukit Panjang P1 (Platform 1)",
+        "first_train": {
+          "monday_to_friday": "05:05",
+          "saturday": "05:05",
+          "sunday_public_holidays": "--",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "23:30",
+          "saturday": "23:30",
+          "sunday_public_holidays": "22:30",
+          "eve_of_public_holidays": "23:30"
+        }
+      },
+      {
+        "description": "To BP6 Bukit Panjang P1 (Platform 2)",
+        "first_train": {
+          "monday_to_friday": "04:59",
+          "saturday": "04:59",
+          "sunday_public_holidays": "--",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "23:37",
+          "saturday": "23:37",
+          "sunday_public_holidays": "22:37",
+          "eve_of_public_holidays": "23:37"
+        }
+      }
+    ],
+    "scraped_at": "2026-02-12T13:23:25.689Z"
+  },
+  {
+    "station": "Petir",
+    "station_slug": "petir",
+    "directions": [
+      {
+        "description": "To BP6 Bukit Panjang P1 (Platform 1)",
+        "first_train": {
+          "monday_to_friday": "05:06",
+          "saturday": "05:06",
+          "sunday_public_holidays": "--",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "23:38",
+          "saturday": "23:38",
+          "sunday_public_holidays": "22:38",
+          "eve_of_public_holidays": "23:38"
+        }
+      },
+      {
+        "description": "To BP6 Bukit Panjang P1 (Platform 2)",
+        "first_train": {
+          "monday_to_friday": "05:09",
+          "saturday": "05:09",
+          "sunday_public_holidays": "--",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "23:29",
+          "saturday": "23:29",
+          "sunday_public_holidays": "22:29",
+          "eve_of_public_holidays": "23:29"
+        }
+      }
+    ],
+    "scraped_at": "2026-02-12T13:23:26.613Z"
+  },
+  {
+    "station": "Pending",
+    "station_slug": "pending",
+    "directions": [
+      {
+        "description": "To BP6 Bukit Panjang P1 (Platform 1)",
+        "first_train": {
+          "monday_to_friday": "05:08",
+          "saturday": "05:08",
+          "sunday_public_holidays": "--",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "23:40",
+          "saturday": "23:40",
+          "sunday_public_holidays": "22:40",
+          "eve_of_public_holidays": "23:40"
+        }
+      },
+      {
+        "description": "To BP6 Bukit Panjang P1 (Platform 2)",
+        "first_train": {
+          "monday_to_friday": "05:07",
+          "saturday": "05:07",
+          "sunday_public_holidays": "--",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "23:27",
+          "saturday": "23:27",
+          "sunday_public_holidays": "22:27",
+          "eve_of_public_holidays": "23:27"
+        }
+      }
+    ],
+    "scraped_at": "2026-02-12T13:23:27.566Z"
+  },
+  {
+    "station": "Bangkit",
+    "station_slug": "bangkit",
+    "directions": [
+      {
+        "description": "To BP6 Bukit Panjang P1 (Platform 1)",
+        "first_train": {
+          "monday_to_friday": "05:09",
+          "saturday": "05:09",
+          "sunday_public_holidays": "--",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "23:41",
+          "saturday": "23:41",
+          "sunday_public_holidays": "22:41",
+          "eve_of_public_holidays": "23:41"
+        }
+      },
+      {
+        "description": "To BP6 Bukit Panjang P1 (Platform 2)",
+        "first_train": {
+          "monday_to_friday": "05:06",
+          "saturday": "05:06",
+          "sunday_public_holidays": "--",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "23:26",
+          "saturday": "23:26",
+          "sunday_public_holidays": "22:26",
+          "eve_of_public_holidays": "23:26"
+        }
+      }
+    ],
+    "scraped_at": "2026-02-12T13:23:29.401Z"
+  },
+  {
+    "station": "Fajar",
+    "station_slug": "fajar",
+    "directions": [
+      {
+        "description": "To BP6 Bukit Panjang P1 (Platform 1)",
+        "first_train": {
+          "monday_to_friday": "05:11",
+          "saturday": "05:11",
+          "sunday_public_holidays": "--",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "23:43",
+          "saturday": "23:43",
+          "sunday_public_holidays": "22:43",
+          "eve_of_public_holidays": "23:43"
+        }
+      },
+      {
+        "description": "To BP6 Bukit Panjang P1 (Platform 2)",
+        "first_train": {
+          "monday_to_friday": "05:04",
+          "saturday": "05:04",
+          "sunday_public_holidays": "--",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "23:24",
+          "saturday": "23:24",
+          "sunday_public_holidays": "22:24",
+          "eve_of_public_holidays": "23:24"
+        }
+      }
+    ],
+    "scraped_at": "2026-02-12T13:23:30.285Z"
+  },
+  {
+    "station": "Segar",
+    "station_slug": "segar",
+    "directions": [
+      {
+        "description": "To BP6 Bukit Panjang P1 (Platform 1)",
+        "first_train": {
+          "monday_to_friday": "05:12",
+          "saturday": "05:12",
+          "sunday_public_holidays": "--",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "23:45",
+          "saturday": "23:45",
+          "sunday_public_holidays": "22:45",
+          "eve_of_public_holidays": "23:45"
+        }
+      },
+      {
+        "description": "To BP6 Bukit Panjang P1 (Platform 2)",
+        "first_train": {
+          "monday_to_friday": "05:03",
+          "saturday": "05:03",
+          "sunday_public_holidays": "--",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "23:22",
+          "saturday": "23:22",
+          "sunday_public_holidays": "22:22",
+          "eve_of_public_holidays": "23:22"
+        }
+      }
+    ],
+    "scraped_at": "2026-02-12T13:23:31.171Z"
+  },
+  {
+    "station": "Jelapang",
+    "station_slug": "jelapang",
+    "directions": [
+      {
+        "description": "To BP6 Bukit Panjang P1 (Platform 1)",
+        "first_train": {
+          "monday_to_friday": "05:14",
+          "saturday": "05:14",
+          "sunday_public_holidays": "--",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "23:47",
+          "saturday": "23:47",
+          "sunday_public_holidays": "22:47",
+          "eve_of_public_holidays": "23:47"
+        }
+      },
+      {
+        "description": "To BP6 Bukit Panjang P1 (Platform 2)",
+        "first_train": {
+          "monday_to_friday": "05:01",
+          "saturday": "05:01",
+          "sunday_public_holidays": "--",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "23:20",
+          "saturday": "23:20",
+          "sunday_public_holidays": "22:20",
+          "eve_of_public_holidays": "23:20"
+        }
+      }
+    ],
+    "scraped_at": "2026-02-12T13:23:32.090Z"
+  },
+  {
+    "station": "Senja",
+    "station_slug": "senja",
+    "directions": [
+      {
+        "description": "To BP6 Bukit Panjang P1 (Platform 1)",
+        "first_train": {
+          "monday_to_friday": "05:15",
+          "saturday": "05:15",
+          "sunday_public_holidays": "--",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "23:48",
+          "saturday": "23:48",
+          "sunday_public_holidays": "22:48",
+          "eve_of_public_holidays": "23:48"
+        }
+      },
+      {
+        "description": "To BP6 Bukit Panjang P1 (Platform 2)",
+        "first_train": {
+          "monday_to_friday": "05:00",
+          "saturday": "05:00",
+          "sunday_public_holidays": "--",
+          "eve_of_public_holidays": "--"
+        },
+        "last_train": {
+          "monday_to_friday": "23:19",
+          "saturday": "23:19",
+          "sunday_public_holidays": "22:19",
+          "eve_of_public_holidays": "23:19"
+        }
+      }
+    ],
+    "scraped_at": "2026-02-12T13:23:33.017Z"
   }
 ]

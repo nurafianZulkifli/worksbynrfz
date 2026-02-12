@@ -19,7 +19,8 @@ const testStations = [
   'holland-village', 'one-north', 'kent-ridge', 'haw-par-villa', 'pasir-panjang', 'labrador-park', 'telok-blangah', 'harbourfront',
   'woodlands-north', 'woodlands', 'woodlands-south', 'springleaf', 'lentor', 'mayflower', 'bright-hill', 'upper-thomson', 'stevens',
   'napier', 'orchard-boulevard', 'great-world', 'havelock', 'maxwell', 'shenton-way', 'gardens-by-the-bay', 'tanjong-rhu', 'katong-park',
-  'tanjong-katong', 'marine-parade', 'marine-terrace', 'siglap', 'bayshore'
+  'tanjong-katong', 'marine-parade', 'marine-terrace', 'siglap', 'bayshore', 'south-view', 'keat-hong', 'teck-whye', 'bukit-panjang', 'petir',
+  'pending', 'bangkit', 'fajar', 'segar', 'jelapang', 'senja'
 ];
 
 (async () => {
