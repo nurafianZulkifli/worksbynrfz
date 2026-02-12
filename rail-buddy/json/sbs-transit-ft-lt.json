@@ -4,7 +4,7 @@
     "station_slug": "east-loop",
     "directions": [
       {
-        "description": "Sengkang LRT First and Last Train Timings (Updated 2 June 2020)",
+        "description": "Sengkang LRT First and Last Train Timings",
         "first_train": {
           "monday_to_friday": "05:25",
           "saturday": "05:45",
@@ -20,7 +20,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "Punggol LRT First and Last Train Timings (Updated 2 June 2020)",
+        "description": "Punggol LRT First and Last Train Timings",
         "first_train": {
           "monday_to_friday": "05:20",
           "saturday": "05:40",
@@ -42,7 +42,7 @@
     "station_slug": "west-loop",
     "directions": [
       {
-        "description": "Sengkang LRT First and Last Train Timings (Updated 2 June 2020)",
+        "description": "Sengkang LRT First and Last Train Timings",
         "first_train": {
           "monday_to_friday": "05:18",
           "saturday": "05:38",
@@ -58,7 +58,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "Punggol LRT First and Last Train Timings (Updated 2 June 2020)",
+        "description": "Punggol LRT First and Last Train Timings",
         "first_train": {
           "monday_to_friday": "05:18",
           "saturday": "05:38",
