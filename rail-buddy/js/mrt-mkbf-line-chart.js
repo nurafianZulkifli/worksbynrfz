@@ -105,7 +105,7 @@ const mkbfDataMrt = [
       { month: "Aug-25", value: 311000 },
       { month: "Sep-25", value: 287000 },
       { month: "Oct-25", value: 299000 },
-      { month: "Nov-25", value: 2878000 },
+      { month: "Nov-25", value: 287800 },
       { month: "Dec-25", value: 325000 },
       { month: "Jan-26", value: 373000 }
     ]
