@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 filterTitle.innerHTML = `
                     <div class="bus-stop-info">
                         <span class="bus-stop-code">
-                            <img src="assets/bus-icon.png" alt="Bus Icon"> <!-- Replace with your bus icon path -->
+                            <img src="assets/bus-icon.png" alt="Bus Icon">
                             <span class="bus-stop-code-text">${busStop.BusStopCode}</span>
                         </span>
                         <span class="bus-stop-description">${busStop.Description}</span>

@@ -95,6 +95,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             console.log('Fetching from JSON file:', jsonUrl);
 
             const response = await fetch(jsonUrl);
+            console.log('Fetch response status:', response.status);
 
             if (!response.ok) {
                 console.error('Response not OK:', response.status, response.statusText);
@@ -121,19 +122,27 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             // Find the bus stop details for the title
             const stop = allBusStops.find(s => s.BusStopCode === busStopCode);
-            const busStopCodeEl = document.getElementById('busStopCode');
-            const busStopDescriptionEl = document.getElementById('busStopDescription');
 
-            if (busStopCodeEl && busStopDescriptionEl) {
-                if (stop) {
+            // Update title elements
+            try {
+                const busStopCodeEl = document.getElementById('busStopCode');
+                const busStopDescriptionEl = document.getElementById('busStopDescription');
+
+                console.log('Elements found:', { busStopCodeEl: !!busStopCodeEl, busStopDescriptionEl: !!busStopDescriptionEl });
+
+                if (busStopCodeEl) {
                     busStopCodeEl.textContent = busStopCode;
-                    busStopDescriptionEl.textContent = stop.Description;
                 } else {
-                    busStopCodeEl.textContent = busStopCode;
-                    busStopDescriptionEl.textContent = '';
+                    console.warn('busStopCode element not found');
                 }
-            } else {
-                console.error('Bus stop display elements not found');
+                if (busStopDescriptionEl) {
+                    busStopDescriptionEl.textContent = stop ? stop.Description : '';
+                } else {
+                    console.warn('busStopDescription element not found');
+                }
+            } catch (titleError) {
+                console.error('Error updating bus stop title elements:', titleError);
+                throw titleError;
             }
 
             // Display services
@@ -145,7 +154,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
 
         } catch (error) {
-            console.error('Error fetching bus timings:', error);
+            console.error('Error fetching bus timings:', error, error.stack);
             const errorMsg = error.message || 'Unknown error';
             servicesContainer.innerHTML = `<div class="no-data" style="grid-column: 1/-1;">Error loading bus timings: ${errorMsg}<br><small style="opacity: 0.7;">Check console for details.</small></div>`;
         }
