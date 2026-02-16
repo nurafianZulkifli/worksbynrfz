@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Populate dropdown with bus stops
     function populateDropdown(stops) {
         busStopDropdown.innerHTML = '<option value="">Select a bus stop...</option>';
-        
+
         stops.forEach(stop => {
             const option = document.createElement('option');
             option.value = stop.BusStopCode;
@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Search functionality
     busStopSearch.addEventListener('input', (e) => {
         const query = e.target.value.toLowerCase().trim();
-        
+
         if (query === '') {
             filteredStops = allBusStops;
             clearSearch.classList.remove('visible');
@@ -93,27 +93,27 @@ document.addEventListener('DOMContentLoaded', async () => {
             // This avoids CORS, API, and backend complexity
             const jsonUrl = 'json/first-last-bus.json';
             console.log('Fetching from JSON file:', jsonUrl);
-            
+
             const response = await fetch(jsonUrl);
-            
+
             if (!response.ok) {
                 console.error('Response not OK:', response.status, response.statusText);
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            
+
             const allStopsData = await response.json();
             console.log('All stops data loaded:', allStopsData.length, 'stops');
 
             // Find data for the selected bus stop
             const stopData = allStopsData.find(stop => stop.busStopCode === busStopCode);
-            
+
             if (!stopData) {
                 servicesContainer.innerHTML = `<div class="no-data" style="grid-column: 1/-1;">No data found for this bus stop. Data may need to be refreshed.</div>`;
                 return;
             }
 
             const busServices = stopData.services || [];
-            
+
             if (busServices.length === 0) {
                 servicesContainer.innerHTML = '<div class="no-data" style="grid-column: 1/-1;">No bus services found for this stop.</div>';
                 return;
@@ -216,5 +216,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Initialize on page load
     console.log('Initializing First & Last Bus page...');
-    loadBusStops();
+    await loadBusStops();
+
+    // Check for URL parameter and auto-select bus stop
+    const urlParams = new URLSearchParams(window.location.search);
+    const busStopCodeParam = urlParams.get('BusStopCode');
+    if (busStopCodeParam && busStopCodeParam.trim() !== '') {
+        busStopDropdown.value = busStopCodeParam;
+        busStopSearch.value = busStopCodeParam;
+        clearSearch.classList.add('visible');
+        displayBusStop(busStopCodeParam);
+    }
 });

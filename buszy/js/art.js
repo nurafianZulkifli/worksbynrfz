@@ -67,6 +67,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                         </span>
                         <span class="bus-stop-description">${busStop.Description}</span>
                     </div>
+                    <div class="bus-stop-actions" style="margin-top: 15px;">
+                        <a href="first-last.html?BusStopCode=${busStop.BusStopCode}" class="btn btn-flt btn-sm">
+                            <i class="fa-regular fa-clock"></i>&nbsp;&nbsp;View First/Last Bus Timings
+                        </a>
+                    </div>
                 `;
             } else {
                 filterTitle.textContent = `Bus Stop Not Found (${busStopCode})`;
@@ -127,7 +132,7 @@ async function fetchBusArrivals() {
     try {
         // Save current scroll position at the very start
         const scrollPosition = window.scrollY || document.documentElement.scrollTop;
-        
+
         const searchInput = document.getElementById('bus-stop-search').value.trim();
         const container = document.getElementById('bus-arrivals-container');
 
@@ -182,7 +187,7 @@ async function fetchBusArrivals() {
         // Create a map of destination codes to names from cached bus stops
         let destinationMap = {};
         let customDestinationMap = {};
-        
+
         // Load custom destination code mappings
         try {
             const response = await fetch('json/destination-codes.json');
@@ -192,7 +197,7 @@ async function fetchBusArrivals() {
         } catch (error) {
             console.warn('Custom destination codes file not found or error loading:', error);
         }
-        
+
         try {
             const allBusStops = JSON.parse(localStorage.getItem('allBusStops')) || [];
             allBusStops.forEach((stop) => {
@@ -263,7 +268,7 @@ async function fetchBusArrivals() {
         // Build new content
         const tempContainer = document.createElement('div');
         const busStopCode = document.getElementById('bus-stop-search').value.trim();
-        
+
         data.Services.forEach((service) => {
             const card = document.createElement('div');
             card.classList.add('col-12', 'col-md-4', 'col-xl-3', 'card-bt'); // Add col-sm-6 for 2 cards per row on small screens
@@ -291,13 +296,13 @@ async function fetchBusArrivals() {
                                 <span style="display: flex; align-items: center; gap: 0.3rem; flex-wrap: wrap;">
                                     ${service.NextBus?.Type ? `<img src="assets/${service.NextBus.Type.toLowerCase()}.png" alt="${service.NextBus.Type}" class="img-fluid" style="width: 50px;">` : ''}
                                     ${service.NextBus?.Load ? `<span class="load-indicator ${service.NextBus.Load.toLowerCase()}"> ${getLoadIcon(service.NextBus.Load)}</span>` : ''}
-                                    <button class="btn btn-busloc btn-sm view-location-btn" 
-                                        data-lat="${service.NextBus?.Latitude || '0.0'}" 
-                                        data-lng="${service.NextBus?.Longitude || '0.0'}" 
-                                        data-bus="${service.ServiceNo}" 
-                                        data-type="${service.NextBus?.Type || ''}" 
+                                    <button class="btn btn-busloc btn-sm view-location-btn"
+                                        data-lat="${service.NextBus?.Latitude || '0.0'}"
+                                        data-lng="${service.NextBus?.Longitude || '0.0'}"
+                                        data-bus="${service.ServiceNo}"
+                                        data-type="${service.NextBus?.Type || ''}"
                                         data-load="${service.NextBus?.Load || ''}"
-                                        ${!service.NextBus || service.NextBus.Latitude === "0.0" && service.NextBus.Longitude === "0.0" || !service.NextBus.EstimatedArrival ? 'disabled' : ''}> 
+                                        ${!service.NextBus || service.NextBus.Latitude === "0.0" && service.NextBus.Longitude === "0.0" || !service.NextBus.EstimatedArrival ? 'disabled' : ''}>
                                         <i class="fa-regular fa-location-dot"></i>
                                     </button>
                                 </span>
@@ -309,11 +314,11 @@ async function fetchBusArrivals() {
                                 <span style="display: flex; align-items: center; gap: 0.3rem; flex-wrap: wrap;">
                                     ${service.NextBus2?.Type ? `<img src="assets/${service.NextBus2.Type.toLowerCase()}.png" alt="${service.NextBus2.Type}" class="img-fluid" style="width: 50px;">` : ''}
                                     ${service.NextBus2?.Load ? `<span class="load-indicator ${service.NextBus2.Load.toLowerCase()}"> ${getLoadIcon(service.NextBus2.Load)}</span>` : ''}
-                                    <button class="btn btn-busloc btn-sm view-location-btn" 
-                                        data-lat="${service.NextBus2?.Latitude || '0.0'}" 
-                                        data-lng="${service.NextBus2?.Longitude || '0.0'}" 
-                                        data-bus="${service.ServiceNo}" 
-                                        data-type="${service.NextBus2?.Type || ''}" 
+                                    <button class="btn btn-busloc btn-sm view-location-btn"
+                                        data-lat="${service.NextBus2?.Latitude || '0.0'}"
+                                        data-lng="${service.NextBus2?.Longitude || '0.0'}"
+                                        data-bus="${service.ServiceNo}"
+                                        data-type="${service.NextBus2?.Type || ''}"
                                         data-load="${service.NextBus2?.Load || ''}"
                                         ${!service.NextBus2 || service.NextBus2.Latitude === "0.0" && service.NextBus2.Longitude === "0.0" || !service.NextBus2.EstimatedArrival ? 'disabled' : ''}>
                                         <i class="fa-regular fa-location-dot"></i>
@@ -346,7 +351,7 @@ async function fetchBusArrivals() {
                         alert('Map is not available on this device. Please try on desktop.');
                         return;
                     }
-                    
+
                     const latitude = parseFloat(button.getAttribute('data-lat'));
                     const longitude = parseFloat(button.getAttribute('data-lng'));
                     const busNumber = button.getAttribute('data-bus');
@@ -396,11 +401,11 @@ async function fetchBusArrivals() {
     } catch (error) {
         console.error('Error fetching bus arrivals:', error);
         const container = document.getElementById('bus-arrivals-container');
-        
+
         // Determine error message based on error type
         let errorMessage = 'Error loading data. Try Refreshing.';
         let errorDetails = '';
-        
+
         if (error instanceof TypeError && error.message.includes('fetch')) {
             errorMessage = 'Network error. Check your connection.';
             errorDetails = 'Unable to connect to the server. Please check your internet connection.';
@@ -411,7 +416,7 @@ async function fetchBusArrivals() {
             errorMessage = 'Data error. Try Refreshing.';
             errorDetails = 'The server sent invalid data. Please refresh the page.';
         }
-        
+
         container.innerHTML = `
             <div class="col-12">
                 <div class="card">
@@ -510,7 +515,7 @@ try {
     const mapContainer = document.getElementById('bus-map');
     if (mapContainer) {
         map = L.map('bus-map').setView([1.3521, 103.8198], 12); // Default view (Singapore)
-        
+
         // Add a tile layer (OpenStreetMap)
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 18,

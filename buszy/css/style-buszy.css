@@ -533,7 +533,7 @@ table th {
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 12px rgba(0, 0, 0, 0.1);
     color: #252525;
     border-radius: 60px;
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     border: none;
     margin-left: 3em;
     margin-right: 3em;
@@ -557,7 +557,7 @@ table th {
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 12px rgba(0, 0, 0, 0.1);
     color: #252525;
     border-radius: 60px;
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     border: none;
 }
 
@@ -658,7 +658,7 @@ table th {
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 12px rgba(0, 0, 0, 0.1);
     color: #fff;
     border-radius: 60px;
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     border: none;
     margin-left: 3em;
     margin-right: 3em;
@@ -681,7 +681,7 @@ table th {
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 12px rgba(0, 0, 0, 0.1);
     color: #fff;
     border-radius: 60px;
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     border: none;
     margin-left: 1em;
 }
@@ -705,7 +705,7 @@ table th {
     text-transform: capitalize;
     color: #000;
     border-radius: 60px;
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     border: none;
     margin-left: 1em;
     border: 1px solid #cccccc;
@@ -716,7 +716,16 @@ table th {
 .btn-busloc {
     background-color: #de652e;
     color: #fff;
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    border: 1px solid #cccccc;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.btn-flt {
+    background-color: #1f83a1;
+    color: #fff;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     border: 1px solid #cccccc;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 12px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
@@ -725,7 +734,7 @@ table th {
 .btn-busloc:disabled {
     background-color: #cecece;
     color: #535353;
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     border: 1px solid #cccccc;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 12px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
@@ -734,7 +743,7 @@ table th {
 .btn-notify {
     background-color: #dfdfdf;
     color: #8f8f8f;
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     border: 1px solid #cccccc;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 12px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
@@ -750,7 +759,7 @@ table th {
 .btn-notify.active:hover {
     background-color: #6d99c0 !important;
     color: #fff;
-    transform: translateY(-2px);
+    transform: translateY(-1px);
 }
 
 
@@ -767,11 +776,13 @@ table th {
 .btn-toPin:focus,
 .btn-toPin:hover,
 .btn-busloc:focus,
-.btn-busloc:hover {
+.btn-busloc:hover,
+.btn-flt:focus,
+.btn-flt:hover {
     font-weight: 500;
     background-color: #6d99c0 !important;
     color: #fff;
-    transform: translateY(-2px);
+    transform: translateY(-1px);
 }
 
 /*  */
@@ -971,6 +982,18 @@ body.dark-mode .btn-toPin {
     color: #fff;
 }
 
+body.dark-mode .btn-flt {
+    color: #fff;
+    border: 1px solid #2b2b2b33;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+body.dark-mode .btn-flt:hover {
+    background-color: #6d99c0 !important;
+    color: #fff;
+    transform: translateY(-2px);
+}
+
 /*  */
 body.dark-mode .list-group-item.active {
     z-index: 2;
@@ -1029,7 +1052,7 @@ body.dark-mode .fleet-legend span {
 body.dark-mode .btn-busloc:disabled {
     background-color: #171a24;
     color: #535353;
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     border: 1px solid rgb(73, 73, 73);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 12px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
@@ -1049,7 +1072,7 @@ body.dark-mode .btn-notify:hover {
 body.dark-mode .btn-notify.active {
     background-color: #319139;
     color: #fff;
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     border: 1px solid #2b2b2b33;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(61, 61, 61, 0.384);
     border-radius: 10px;

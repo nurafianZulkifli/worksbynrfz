@@ -1,41 +1,48 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <script>if(localStorage.getItem('dark-mode')==='enabled'){document.documentElement.classList.add('dark-mode');document.documentElement.style.background='#121521';}</script>
-    <meta name="description" content="">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="google-site-verification" content="57TuruPNu5wqSSia_cUehl5t9Gh1AbxrHNPcMiFx-aQ" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="UTF-8" />
+    <script>
+        if (localStorage.getItem('dark-mode') === 'enabled') {
+            document.documentElement.classList.add('dark-mode');
+            document.documentElement.style.background = '#121521';
+        }
+    </script>
+    <meta content name="description" />
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <meta content="57TuruPNu5wqSSia_cUehl5t9Gh1AbxrHNPcMiFx-aQ" name="google-site-verification" />
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport" />
     <title>Arrival Timings | Buszy</title>
-    <meta content="" name="description">
-    <meta content="" name="keywords">
-    <meta property="og:image" content="https://i.imgur.com/i8n9KYs.png" />
+    <meta content name="description" />
+    <meta content name="keywords" />
+    <meta content="https://i.imgur.com/i8n9KYs.png" property="og:image" />
 
-    <link rel="icon" href="../buszy/assets/icon-512.png">
+    <link href="../buszy/assets/icon-512.png" rel="icon" />
 
-    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.0.0/css/all.css" />
+    <link href="https://site-assets.fontawesome.com/releases/v7.0.0/css/all.css" rel="stylesheet" />
 
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="css/style-buszy.css">
-    <link rel="stylesheet" href="../css/style-breakpoints.css">
-    <link rel="stylesheet" href="../css/dark-mode.css">
+    <link href="../css/style.css" rel="stylesheet" />
+    <link href="css/style-buszy.css" rel="stylesheet" />
+    <link href="../css/style-breakpoints.css" rel="stylesheet" />
+    <link href="../css/dark-mode.css" rel="stylesheet" />
 
-
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+    <link crossorigin href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet" />
+    <script crossorigin src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+    </script>
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WN76281P3Q"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WN76281P3Q">
+    </script>
     <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
         gtag('js', new Date());
 
         gtag('config', 'G-WN76281P3Q');
     </script>
-
 </head>
 
 <style>
@@ -69,6 +76,7 @@
         padding: 1rem;
         background-color: #fff;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s;
     }
 
     .card .card-header {
@@ -480,11 +488,13 @@
         <nav aria-label="breadcrumb" style="margin-bottom:0;">
             <ol class="breadcrumb breadcrumb-fixed" id="floating-breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="nbs.html"><i class="fa-regular fa-location-dot"></i>
+                    <a href="nbs.html">
+                        <i class="fa-regular fa-location-dot"></i>
                     </a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a href="abs.html"><i class="fa-regular fa-magnifying-glass"></i>
+                    <a href="abs.html">
+                        <i class="fa-regular fa-magnifying-glass"></i>
                     </a>
                 </li>
             </ol>
@@ -495,37 +505,38 @@
     <nav class="navbar-container">
         <div class="navbar">
             <!-- Logo -->
-            <a href="../buszy.html"><img src="assets/logo.png" alt="logo" class="logo" /></a>
+            <a href="../buszy.html">
+                <img alt="logo" class="logo" src="assets/logo.png" />
+            </a>
 
             <!-- Navigation Links -->
             <ul class="navbar-nav" id="navbarNav">
                 <li class="nav-item">
-                    <a href="../buszy.html" class="nav-link">
+                    <a class="nav-link" href="../buszy.html">
                         <i class="fa-sharp fa-regular fa-thumbtack-angle"></i>
                         <span>Pinned</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="nbs.html" class="nav-link">
+                    <a class="nav-link" href="nbs.html">
                         <i class="fa-regular fa-location-dot"></i>
                         <span>Nearby</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="abs.html" class="nav-link">
+                    <a class="nav-link" href="abs.html">
                         <i class="fa-regular fa-magnifying-glass"></i>
                         <span>Search</span>
                     </a>
                 </li>
-                <li class="nav-item ">
-                    <a href="menu.html" class="nav-link active">
+                <li class="nav-item">
+                    <a class="nav-link active" href="menu.html">
                         <i class="fa-regular fa-bars"></i>
                         <span>Menu</span>
                     </a>
                 </li>
             </ul>
         </div>
-
     </nav>
 
     <!-- Mobile Bottom Navigation Bar -->
@@ -566,8 +577,6 @@
         </ul>
     </nav>
 
-
-
     <!------------------------------------------------------------------------ Start of Sections ------------------------------------------------------------------------>
 
     <!-- Title/Breadcrumbs -->
@@ -579,11 +588,15 @@
                         <nav aria-label="breadcrumb" class="breadcrumb-desktop" style="display:none;">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item">
-                                    <a href="nbs.html"><i class="fa-regular fa-location-dot"></i>
+                                    <a href="nbs.html">
+                                        <i class="fa-regular fa-location-dot">
+                                        </i>
                                     </a>
                                 </li>
                                 <li class="breadcrumb-item">
-                                    <a href="abs.html"><i class="fa-regular fa-magnifying-glass"></i>
+                                    <a href="abs.html">
+                                        <i class="fa-regular fa-magnifying-glass">
+                                        </i>
                                     </a>
                                 </li>
                             </ol>
@@ -592,20 +605,22 @@
                             <div
                                 style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
                                 <div>
-                                    <h1 class="page-title" id="filter-title">Arrival Timings</h1>
+                                    <h1 class="page-title" id="filter-title">
+                                        Arrival Timings
+                                    </h1>
                                 </div>
                                 <div style="position: relative; max-width: 400px; margin-top: 5px; display: none;">
                                     <i class="fa-regular fa-search"
-                                        style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #cccccc; z-index: 1;"></i>
-                                    <input type="text" id="bus-stop-search" class="form-control"
-                                        placeholder=" Search Bus Stop Code" style="padding-left: 35px; width: 100%;">
+                                        style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #cccccc; z-index: 1;">
+                                    </i>
+                                    <input class="form-control" id="bus-stop-search" placeholder=" Search Bus Stop Code"
+                                        style="padding-left: 35px; width: 100%;" type="text" />
                                 </div>
-
                             </div>
                         </div>
                     </div>
                 </div>
-                <hr>
+                <hr />
             </div>
         </div>
     </section>
@@ -613,31 +628,40 @@
     <!-- Container for the map -->
     <section class="bus-location-section">
         <div class="container">
-            <button id="collapse-map-btn" class="btn btn-busloc btn-sm" title="Collapse Map">
+            <button class="btn btn-busloc btn-sm" id="collapse-map-btn" title="Collapse Map">
                 <i class="fa-regular fa-chevron-up"></i>&nbsp;&nbsp;Collapse Map
             </button>
-            <button id="current-location-btn" class="btn btn-busloc btn-sm" title="Go to Current Location">
+            <button class="btn btn-busloc btn-sm" id="current-location-btn" title="Go to Current Location">
                 <i class="fa-regular fa-location-crosshairs"></i>&nbsp;&nbsp;Current Location
             </button>
             <div id="bus-map" style="height: 400px; width: 100%;"></div>
         </div>
     </section>
 
-
     <section class="about-me-summ clearfix" style="padding-bottom: 5em;">
         <div class="container">
             <!-- Fleet Legend -->
             <div class="fleet-legend">
-                <span><img src="assets/dd.png" alt="BD Icon" class="fleet-icon"> Double</span>
-                <span style="gap: 2px;"><img src="assets/bd.png" alt="SMRT Icon" class="fleet-icon"> Bendy</span>
-                <span><img src="assets/sd.png" alt="Other Icon" class="fleet-icon"> Single</span>
+                <span>
+                    <img alt="BD Icon" class="fleet-icon" src="assets/dd.png" /> Double
+                </span>
+                <span style="gap: 2px;">
+                    <img alt="SMRT Icon" class="fleet-icon" src="assets/bd.png" /> Bendy
+                </span>
+                <span>
+                    <img alt="Other Icon" class="fleet-icon" src="assets/sd.png" /> Single
+                </span>
             </div>
 
             <!-- Incoming Buses Section -->
             <div id="incoming-buses-section" style="display: none; margin-bottom: 2em;">
-                <h3 style="font-weight: bold; margin-bottom: 0.5rem;">Incoming Buses</h3>
-                <p style="font-size: 0.9rem; color: #999; margin-bottom: 1rem; text-align: left;">*Buses might not
-                    arrive in exact order</p>
+                <h3 style="font-weight: bold; margin-bottom: 0.5rem;">
+                    Incoming Buses
+                </h3>
+                <p style="font-size: 0.9rem; color: #999; margin-bottom: 1rem; text-align: left;">
+                    *Buses might not
+                    arrive in exact order
+                </p>
                 <div id="incoming-buses-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;">
                     <!-- Incoming buses will be populated here -->
                 </div>
@@ -647,19 +671,19 @@
             <div class="row" id="bus-arrivals-container">
                 <div class="col-12 text-center">
                     <p id="loading-message" style="display: flex; align-items: center; justify-content: center;">
-                        <span class="spinner-border" role="status" style="margin-right: 1em;"></span>Loading Data...
+                        <span class="spinner-border" role="status" style="margin-right: 1em;">
+                        </span>Loading Data...
                     </p>
-
                 </div>
             </div>
         </div>
     </section>
 
-
-    <script type="text/javascript" id="cookiebanner" src="../js/cookies-banner.js" data-position="bottom"
-        data-bg="#f2f3e5" data-fg="#000" data-font-family="Onest, sans-serif" data-zindex="12345111111"
-        data-message="This website uses cookies to provide necessary site functionality and to improve your experience. By using this website, you agree to our use of cookies.">
-        </script>
+    <script data-bg="#f2f3e5" data-fg="#000" data-font-family="Onest, sans-serif"
+        data-message="This website uses cookies to provide necessary site functionality and to improve your experience. By using this website, you agree to our use of cookies."
+        data-position="bottom" data-zindex="12345111111" id="cookiebanner" src="../js/cookies-banner.js"
+        type="text/javascript">
+    </script>
 
     <script src="js/mob-navtabs.js"></script>
 
@@ -681,8 +705,6 @@
 
     <script src="../js/utils.js"></script>
 
-    <script src="../js/notificationManager.js"></script>
-
     <script src="js/art.js"></script>
 
     <script>
@@ -695,7 +717,5 @@
             });
         }
     </script>
-
 </body>
-
 </html>
