@@ -123,16 +123,18 @@ document.addEventListener('DOMContentLoaded', async () => {
             const stop = allBusStops.find(s => s.BusStopCode === busStopCode);
             const busStopCodeEl = document.getElementById('busStopCode');
             const busStopDescriptionEl = document.getElementById('busStopDescription');
-            // const busStopSubtitle = document.getElementById('busStopSubtitle');
 
-            if (stop) {
-                busStopCodeEl.textContent = busStopCode;
-                busStopDescriptionEl.textContent = stop.Description;
+            if (busStopCodeEl && busStopDescriptionEl) {
+                if (stop) {
+                    busStopCodeEl.textContent = busStopCode;
+                    busStopDescriptionEl.textContent = stop.Description;
+                } else {
+                    busStopCodeEl.textContent = busStopCode;
+                    busStopDescriptionEl.textContent = '';
+                }
             } else {
-                busStopCodeEl.textContent = busStopCode;
-                busStopDescriptionEl.textContent = '';
+                console.error('Bus stop display elements not found');
             }
-            // busStopSubtitle.textContent = `Last updated: ${new Date().toLocaleDateString('en-SG')}`;
 
             // Display services
             servicesContainer.innerHTML = '';
