@@ -291,7 +291,7 @@ async function fetchBusArrivals() {
                     <div class="card-body">
                         <div class="card-content-art">
                             ${hasNextBus ? `
-                            <div class="d-flex justify-content-between" style="flex-wrap: wrap; gap: 0.5rem;">
+                            <div class="busNo-card d-flex justify-content-between">
                                 <span class="bus-time">${service.NextBus?.EstimatedArrival ? formatArrivalTimeOrArr(service.NextBus.EstimatedArrival, now) : '--'}</span>
                                 <span style="display: flex; align-items: center; gap: 0.3rem; flex-wrap: wrap;">
                                     ${service.NextBus?.Type ? `<img src="assets/${service.NextBus.Type.toLowerCase()}.png" alt="${service.NextBus.Type}" class="img-fluid" style="width: 50px;">` : ''}
@@ -309,7 +309,7 @@ async function fetchBusArrivals() {
                             </div>
                             ` : `<div style="padding: 0.5rem; color: #999; font-size: 0.9rem;">No arrival data</div>`}
                             ${hasNextBus2 ? `
-                            <div class="d-flex justify-content-between" style="margin-top: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+                            <div class="busNo-card d-flex justify-content-between">
                                 <span class="bus-time">${service.NextBus2?.EstimatedArrival ? formatArrivalTimeOrArr(service.NextBus2.EstimatedArrival, now) : '--'}</span>
                                 <span style="display: flex; align-items: center; gap: 0.3rem; flex-wrap: wrap;">
                                     ${service.NextBus2?.Type ? `<img src="assets/${service.NextBus2.Type.toLowerCase()}.png" alt="${service.NextBus2.Type}" class="img-fluid" style="width: 50px;">` : ''}

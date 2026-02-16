@@ -295,6 +295,11 @@
         cursor: default;
     }
 
+    .busNo-card {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
     body.dark-mode .card .card-header .destination-code {
         color: #aaa;
     }
@@ -478,6 +483,13 @@
         #incoming-buses-section p {
             font-size: 0.8rem;
             margin-bottom: 0.75rem;
+        }
+    }
+
+    @media screen and (max-width: 381px) {
+        .busNo-card {
+            flex-wrap: wrap;
+            gap: 0.1rem !important;
         }
     }
 </style>
