@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const stop = allBusStops.find(s => s.BusStopCode === busStopCode);
             const busStopCodeEl = document.getElementById('busStopCode');
             const busStopDescriptionEl = document.getElementById('busStopDescription');
-            const busStopSubtitle = document.getElementById('busStopSubtitle');
+            // const busStopSubtitle = document.getElementById('busStopSubtitle');
 
             if (stop) {
                 busStopCodeEl.textContent = busStopCode;
@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 busStopCodeEl.textContent = busStopCode;
                 busStopDescriptionEl.textContent = '';
             }
-            busStopSubtitle.textContent = `Last updated: ${new Date().toLocaleDateString('en-SG')}`;
+            // busStopSubtitle.textContent = `Last updated: ${new Date().toLocaleDateString('en-SG')}`;
 
             // Display services
             servicesContainer.innerHTML = '';
