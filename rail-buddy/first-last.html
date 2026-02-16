@@ -1,34 +1,34 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
     <script>
         if (localStorage.getItem('dark-mode') === 'enabled') {
             document.documentElement.classList.add('dark-mode');
             document.documentElement.style.background = '#121521';
         }
     </script>
-    <meta content name="description" />
-    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
-    <meta content="57TuruPNu5wqSSia_cUehl5t9Gh1AbxrHNPcMiFx-aQ" name="google-site-verification" />
-    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport" />
-    <title>First & Last Bus Timings | Buszy</title>
-    <meta content name="description" />
-    <meta content name="keywords" />
-    <meta content="https://i.imgur.com/i8n9KYs.png" property="og:image" />
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="57TuruPNu5wqSSia_cUehl5t9Gh1AbxrHNPcMiFx-aQ" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>First & Last Trains | RailBuddy</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    <meta property="og:image" content="https://i.imgur.com/i8n9KYs.png" />
 
-    <link href="../buszy/assets/icon-512.png" rel="icon" />
+    <link rel="icon" href="assets/icon-512.png">
 
-    <link href="https://site-assets.fontawesome.com/releases/v7.0.0/css/all.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.0.0/css/all.css" />
 
-    <link href="../css/style.css" rel="stylesheet" />
-    <link href="css/style-buszy.css" rel="stylesheet" />
-    <link href="../css/style-breakpoints.css" rel="stylesheet" />
-    <link href="../css/dark-mode.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="css/style-tdt.css">
+    <link rel="stylesheet" href="../css/style-breakpoints.css">
+    <link rel="stylesheet" href="../css/dark-mode.css">
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WN76281P3Q">
-    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WN76281P3Q"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
 
@@ -39,502 +39,502 @@
 
         gtag('config', 'G-WN76281P3Q');
     </script>
-</head>
 
-<style>
-    .selector-section {
-        background: #fff;
-        border-radius: 12px;
-        padding: 20px;
-        margin-bottom: 30px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    }
-
-    .selector-section label {
-        display: block;
-        font-weight: 600;
-        margin-top: 3em;
-        margin-bottom: 10px;
-        color: #000;
-    }
-
-    #busStopDropdown {
-        display: block;
-        width: 100%;
-        padding: 0.775rem 2.5rem 0.775rem 1.75rem;
-        margin-top: 5px;
-        font-size: 1rem;
-        font-weight: 400;
-        line-height: 1.5;
-        color: #000;
-        appearance: none;
-        background-color: #ffffff;
-        background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23607d96" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"%3E%3Cpolyline points="6 9 12 15 18 9"%3E%3C/polyline%3E%3C/svg%3E');
-        background-position: right 0.75rem center;
-        background-repeat: no-repeat;
-        background-size: 1.2rem;
-        background-clip: padding-box;
-        border-radius: 25px;
-        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-        border: 1px solid #2b2b2b33;
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
-    #busStopDropdown:hover {
-        border-color: #607d96;
-    }
-
-    .content-section {
-        background: #fff;
-        border-radius: 12px;
-        padding: 30px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        min-height: 400px;
-        display: none;
-    }
-
-    .content-section.active {
-        display: block;
-    }
-
-    .bus-stop-title {
-        font-size: 1.8rem;
-        color: #333;
-        margin-bottom: 10px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .bus-stop-code {
-        display: inline-flex;
-        align-items: center;
-        background-color: #94d40b;
-        color: #000;
-        font-weight: bold;
-        font-size: 20px;
-        padding: 5px 4px;
-        border-radius: 5px;
-        gap: 10px;
-        cursor: default;
-    }
-
-    body.dark-mode .bus-stop-code {
-        display: inline-flex;
-        align-items: center;
-        background-color: #7db603;
-        color: #000;
-        font-weight: bold;
-        font-size: 20px;
-        padding: 5px 4px;
-        border-radius: 5px;
-        gap: 10px;
-        cursor: default;
-    }
-
-    .bus-stop-code img {
-        width: 35px;
-        height: auto;
-        cursor: default;
-    }
-
-    .bus-stop-code-text,
-    body.dark-mode .bus-stop-code-text {
-        font-size: 25px;
-        font-weight: bold;
-        color: #000;
-        background-color: #fff;
-        border-top-right-radius: 5px;
-        border-bottom-right-radius: 5px;
-        padding: 2px 6px;
-        cursor: default;
-    }
-
-    .bus-stop-description {
-        font-size: 35px;
-        font-weight: bold;
-        margin-left: 12px;
-        cursor: default;
-        color: #000;
-    }
-
-    body.dark-mode .bus-stop-description {
-        font-size: 35px;
-        font-weight: bold;
-        margin-left: 12px;
-        cursor: default;
-        color: #fff;
-    }
-
-    .bus-stop-info {
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px;
-    }
-
-    .bus-stop-subtitle {
-        color: #888;
-        margin-bottom: 30px;
-        font-size: 0.9rem;
-    }
-
-    .services-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 20px;
-    }
-
-    .service-header {
-        background-color: #94d40b;
-        border-radius: 5px;
-        color: #000;
-        font-weight: bold;
-        padding: 5px 10px;
-        display: inline-block;
-        white-space: nowrap;
-        font-size: 20px;
-        width: fit-content;
-        margin-bottom: 7px;
-        padding-bottom: 5px;
-    }
-
-    .service-route {
-        font-size: 0.85rem;
-        color: #666;
-        margin-bottom: 15px;
-        font-weight: bold;
-        padding-bottom: 5px;
-        border-bottom: 2px solid #607d96;
-    }
-
-    .service-card {
-        border: 1px solid #ddd;
-        border-radius: 25px;
-        padding: 1rem;
-        background-color: #f5f5f5;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s;
-        margin-bottom: 1em;
-        margin-top: 1em;
-    }
-
-    .service-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
-    }
-
-    .time-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 10px;
-        margin-bottom: 12px;
-        padding-bottom: 10px;
-    }
-
-    .time-row:last-child {
-        margin-bottom: 0;
-        border-bottom: none;
-    }
-
-    .day-label {
-        font-size: 0.85rem;
-        color: #666;
-        font-weight: 500;
-    }
-
-    .time-value {
-        background: #fff;
-        padding: 5px 8px;
-        border-radius: 4px;
-        text-align: center;
-        font-weight: 600;
-    }
-
-    .time-value.first-bus {
-        color: #27ae60;
-    }
-
-    .time-value.last-bus {
-        color: #e74c3c;
-    }
-
-    .no-data {
-        text-align: center;
-        color: #999;
-        padding: 40px 20px;
-    }
-
-    .loading {
-        text-align: center;
-        color: #607d96;
-        padding: 40px 20px;
-    }
-
-    .spinner {
-        display: inline-block;
-        width: 40px;
-        height: 40px;
-        border: 4px solid #f3f3f3;
-        border-top: 4px solid #607d96;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-        0% {
-            transform: rotate(0deg);
+    <style>
+        .selector-section {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
 
-        100% {
-            transform: rotate(360deg);
+        .selector-section label {
+            display: block;
+            font-weight: 600;
+            margin-top: 3em;
+            margin-bottom: 10px;
+            color: #000;
         }
-    }
 
-    .search-container {
-        position: relative;
-        margin-bottom: 15px;
-        height: 40px;
-    }
+        #stationDropdown {
+            display: block;
+            width: 100%;
+            padding: 0.775rem 2.5rem 0.775rem 1.75rem;
+            margin-top: 5px;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #000;
+            appearance: none;
+            background-color: #ffffff;
+            background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23607d96" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"%3E%3Cpolyline points="6 9 12 15 18 9"%3E%3C/polyline%3E%3C/svg%3E');
+            background-position: right 0.75rem center;
+            background-repeat: no-repeat;
+            background-size: 1.2rem;
+            background-clip: padding-box;
+            border-radius: 25px;
+            transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+            border: 1px solid #2b2b2b33;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
 
-    .search-input-wrapper {
-        position: relative;
-        height: 100%;
-    }
+        #stationDropdown:hover {
+            border-color: #607d96;
+        }
 
-    .search-input {
-        display: block;
-        width: 100%;
-        padding: 0.6rem 1.75rem 0.6rem 35px;
-        font-size: 1rem;
-        font-weight: 400;
-        line-height: 1.5;
-        color: #d3d3d3;
-        appearance: none;
-        background-color: #ffffff;
-        background-clip: padding-box;
-        border-radius: 25px;
-        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-        border: 1px solid #2b2b2b33;
-        box-sizing: border-box;
-        height: 50px;
-    }
+        .content-section {
+            background: #fff;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            min-height: 400px;
+            display: none;
+        }
 
-    .search-input:focus {
-        outline: none;
-        border-color: #607d96;
-        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-    }
+        .content-section.active {
+            display: block;
+        }
 
-    .search-icon {
-        position: absolute;
-        left: 12px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #cccccc;
-        pointer-events: none;
-        z-index: 1;
-        font-size: 1rem;
-    }
-
-    .clear-search {
-        position: absolute;
-        right: 12px;
-        transform: translateY(-50%);
-        background: none;
-        border: none;
-        color: #999;
-        cursor: pointer;
-        font-size: 35px;
-        top: 26px;
-        padding: 0;
-        display: none;
-        z-index: 10;
-    }
-
-    .clear-search:hover {
-        color: #607d96;
-    }
-
-    .clear-search.visible {
-        display: block;
-    }
-
-    .search-results-count {
-        font-size: 0.85rem;
-        color: #999;
-        margin-top: 1em;
-        display: block;
-        margin-left: 0;
-    }
-
-    body.dark-mode .selector-section {
-        background: #1c1f2b;
-        border: 1px solid #2b2b2b33;
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
-    body.dark-mode .selector-section label {
-        color: #fff;
-    }
-
-    body.dark-mode #busStopDropdown {
-        display: block;
-        width: 100%;
-        padding: 0.775rem 2.5rem 0.775rem 1.75rem;
-        color: #fff;
-        appearance: none;
-        background-color: #393e53;
-        background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%2391a5be" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"%3E%3Cpolyline points="6 9 12 15 18 9"%3E%3C/polyline%3E%3C/svg%3E');
-        background-position: right 0.75rem center;
-        background-repeat: no-repeat;
-        background-size: 1.2rem;
-        background-clip: padding-box;
-        border-radius: 25px;
-        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-        border: 1px solid #2b2b2b33;
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
-    body.dark-mode #busStopDropdown:hover {
-        border-color: #91a5be;
-    }
-
-    body.dark-mode #busStopDropdown:focus {
-        border-color: #91a5be;
-        box-shadow: 0 0 0 3px rgba(136, 153, 255, 0.1);
-    }
-
-    body.dark-mode .content-section {
-        background: #1c1f2b;
-        border: 1px solid #2b2b2b33;
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
-    body.dark-mode .bus-stop-title {
-        color: #fff;
-    }
-
-    body.dark-mode .bus-stop-subtitle {
-        color: #bbb;
-    }
-
-    body.dark-mode .service-card {
-        background: #292d3d;
-        border: 1px solid #2b2b2b33;
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
-
-    body.dark-mode .service-header {
-        color: #000;
-        border-bottom-color: #91a5be;
-    }
-
-    body.dark-mode .service-route {
-        color: #bbb;
-        border-bottom: 2px solid #91a5be;
-    }
-
-    body.dark-mode .day-label {
-        color: #ccc;
-    }
-
-    body.dark-mode .no-data {
-        color: #777;
-    }
-
-    body.dark-mode .loading {
-        color: #91a5be;
-    }
-
-    body.dark-mode .search-input {
-        display: block;
-        width: 100%;
-        color: #fff;
-        appearance: none;
-        background: #1c1f2b;
-        background-clip: padding-box;
-        border-radius: 25px;
-        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-        border: 2px solid #393e53;
-    }
-
-    body.dark-mode .search-input::placeholder {
-        color: #bbbbbb;
-    }
-
-    body.dark-mode .search-input:focus {
-        border-color: #91a5be;
-        box-shadow: 0 0 0 3px rgba(136, 153, 255, 0.1);
-    }
-
-    body.dark-mode .clear-search {
-        color: #bbb;
-    }
-
-    body.dark-mode .clear-search:hover {
-        color: #91a5be;
-    }
-
-    body.dark-mode .search-results-count {
-        color: #e4e4e4;
-    }
-
-    body.dark-mode .spinner {
-        border: 4px solid #3a3a3a;
-        border-top: 4px solid #91a5be;
-    }
-
-    body.dark-mode .time-value {
-        background: #1c1f2b;
-        border-radius: 15px;
-    }
-
-    @media (max-width: 768px) {
-        .header h1 {
+        .station-title {
             font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 10px;
         }
 
-        .services-grid {
-            grid-template-columns: 1fr;
+        .station-subtitle {
+            color: #888;
+            margin-bottom: 30px;
+            font-size: 0.9rem;
+        }
+
+        .directions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .direction-card {
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            padding: 1rem;
+            background-color: #f5f5f5;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            margin-bottom: 1em;
+            margin-top: 1em;
+        }
+
+        .direction-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .direction-header {
+            font-weight: 600;
+            font-size: 1rem;
+            color: #607d96;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #607d96;
         }
 
         .time-row {
-            grid-template-columns: 1fr;
-            gap: 5px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+        }
+
+        .time-row:last-child {
+            margin-bottom: 0;
+            border-bottom: none;
         }
 
         .day-label {
-            font-size: 0.75rem;
+            font-size: 0.85rem;
+            color: #666;
+            font-weight: 500;
         }
 
-        .bus-stop-info {
-            flex-direction: column;
-            align-items: flex-start;
+        .time-value {
+            background: #fff;
+            padding: 5px 8px;
+            border-radius: 4px;
+            text-align: center;
+            font-weight: 600;
         }
 
-        .bus-stop-description,
-        body.dark-mode .bus-stop-description {
+        .time-value.first-train {
+            color: #27ae60;
+        }
+
+        .time-value.last-train {
+            color: #e74c3c;
+        }
+
+        .no-data {
+            text-align: center;
+            color: #999;
+            padding: 40px 20px;
+        }
+
+        .loading {
+            text-align: center;
+            color: #607d96;
+            padding: 40px 20px;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #607d96;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .search-container {
+            position: relative;
+            margin-bottom: 15px;
+            height: 40px;
+        }
+
+        .search-input-wrapper {
+            position: relative;
+            height: 100%;
+        }
+
+        .search-input {
+            display: block;
+            width: 100%;
+            padding: 0.6rem 1.75rem 0.6rem 35px;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #d3d3d3;
+            appearance: none;
+            background-color: #ffffff;
+            background-clip: padding-box;
+            border-radius: 25px;
+            transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+            border: 1px solid #2b2b2b33;
+            box-sizing: border-box;
+            /* box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 12px rgba(0, 0, 0, 0.1); */
+            height: 50px;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #607d96;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #cccccc;
+            pointer-events: none;
+            z-index: 1;
+            font-size: 1rem;
+        }
+
+        .clear-search {
+            position: absolute;
+            right: 12px;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            font-size: 35px;
+            top: 26px;
+            padding: 0;
+            display: none;
+            z-index: 10;
+        }
+
+        .clear-search:hover {
+            color: #607d96;
+        }
+
+        .clear-search.visible {
+            display: block;
+        }
+
+        .search-results-count {
+            font-size: 0.85rem;
+            color: #999;
+            margin-top: 1em;
+            display: block;
             margin-left: 0;
-            margin-top: 10px;
-            font-size: 28px;
         }
-    }
-</style>
+
+        .stations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .station-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            background: #f9f9f9;
+            transition: all 0.3s;
+        }
+
+        .station-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-color: #607d96;
+        }
+
+        .station-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #607d96;
+        }
+
+        .time-item {
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        .time-label {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .time-display {
+            background: #fff;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-weight: 600;
+            min-width: 70px;
+            text-align: center;
+        }
+
+        .time-display.first {
+            color: #27ae60;
+        }
+
+        .time-display.last {
+            color: #e74c3c;
+        }
+
+        body.dark-mode .selector-section {
+            background: #1c1f2b;
+            border: 1px solid #2b2b2b33;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        body.dark-mode .selector-section label {
+            color: #fff;
+        }
+
+        body.dark-mode #stationDropdown {
+            display: block;
+            width: 100%;
+            padding: 0.775rem 2.5rem 0.775rem 1.75rem;
+            color: #fff;
+            appearance: none;
+            background-color: #393e53;
+            background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%2391a5be" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"%3E%3Cpolyline points="6 9 12 15 18 9"%3E%3C/polyline%3E%3C/svg%3E');
+            background-position: right 0.75rem center;
+            background-repeat: no-repeat;
+            background-size: 1.2rem;
+            background-clip: padding-box;
+            border-radius: 25px;
+            transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+            border: 1px solid #2b2b2b33;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        body.dark-mode #stationDropdown:hover {
+            border-color: #91a5be;
+        }
+
+        body.dark-mode #stationDropdown:focus {
+            border-color: #91a5be;
+            box-shadow: 0 0 0 3px rgba(136, 153, 255, 0.1);
+        }
+
+        body.dark-mode .content-section {
+            background: #1c1f2b;
+            border: 1px solid #2b2b2b33;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        body.dark-mode .station-title {
+            color: #fff;
+        }
+
+        body.dark-mode .station-subtitle {
+            color: #bbb;
+        }
+
+        body.dark-mode .direction-card {
+            background: #292d3d;
+            border: 1px solid #2b2b2b33;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        body.dark-mode .direction-card:hover {
+            border-color: #91a5be;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        body.dark-mode .direction-header {
+            color: #91a5be;
+            border-bottom-color: #91a5be;
+        }
+
+        body.dark-mode .day-label {
+            color: #ccc;
+        }
+
+        body.dark-mode .no-data {
+            color: #777;
+        }
+
+        body.dark-mode .loading {
+            color: #91a5be;
+        }
+
+        body.dark-mode .search-input {
+            display: block;
+            width: 100%;
+            color: #fff;
+            appearance: none;
+            background: #1c1f2b;
+            background-clip: padding-box;
+            border-radius: 25px;
+            transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+            border: 2px solid #393e53;
+            /* box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1); */
+        }
+
+        body.dark-mode .search-input::placeholder {
+            color: #bbbbbb;
+        }
+
+        body.dark-mode .search-input:focus {
+            border-color: #91a5be;
+            box-shadow: 0 0 0 3px rgba(136, 153, 255, 0.1);
+        }
+
+        body.dark-mode .clear-search {
+            color: #bbb;
+        }
+
+        body.dark-mode .clear-search:hover {
+            color: #91a5be;
+        }
+
+        body.dark-mode .search-results-count {
+            color: #e4e4e4;
+        }
+
+        body.dark-mode .station-card {
+            background: #2d3242;
+            border: 1px solid #2b2b2b33;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        body.dark-mode .station-card:hover {
+            border-color: #91a5be;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        body.dark-mode .station-name {
+            color: #fff;
+            border-bottom-color: #91a5be;
+        }
+
+        body.dark-mode .time-label {
+            color: #ccc;
+        }
+
+        body.dark-mode .time-display {
+            background: #1c1f2b;
+            color: #fff;
+        }
+
+        body.dark-mode .time-display.first {
+            color: #27ae60;
+        }
+
+        body.dark-mode .time-display.last {
+            color: #e74c3c;
+        }
+
+        body.dark-mode .spinner {
+            border: 4px solid #3a3a3a;
+            border-top: 4px solid #91a5be;
+        }
+
+        body.dark-mode .time-value {
+            background: #1c1f2b;
+            border-radius: 15px;
+        }
+
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .directions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stations-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .time-row {
+                grid-template-columns: 1fr;
+                gap: 5px;
+            }
+
+            .day-label {
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
 
 <body>
     <!-- Fixed Breadcrumb at very top (mobile/tablet only) -->
     <div class="breadcrumb-fixed-placeholder">
-        <nav aria-label="breadcrumb" style="margin-bottom: 0">
+        <nav aria-label="breadcrumb" style="margin-bottom:0;">
             <ol class="breadcrumb breadcrumb-fixed" id="floating-breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="../buszy.html">
-                        <i class="fa-regular fa-house"></i>
+                    <a href="../rail-buddy.html"><i class="fa-regular fa-home"></i>
                     </a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a href="menu.html">
-                        <i class="fa-regular fa-bars"></i>
+                    <a href="menu.html"><i class="fa-regular fa-bars"></i>
                     </a>
                 </li>
             </ol>
@@ -545,68 +545,67 @@
     <nav class="navbar-container">
         <div class="navbar">
             <!-- Logo -->
-            <a href="../buszy.html">
-                <img alt="logo" class="logo" src="assets/logo.png" />
-            </a>
+            <a href="../rail-buddy.html"><img src="assets/logo.png" alt="logo" class="logo" /></a>
 
             <!-- Navigation Links -->
             <ul class="navbar-nav" id="navbarNav">
                 <li class="nav-item">
-                    <a class="nav-link" href="../buszy.html">
-                        <i class="fa-sharp fa-regular fa-thumbtack-angle"></i>
-                        <span>Pinned</span>
+                    <a href="../rail-buddy.html" class="nav-link">
+                        <i class="fa-sharp fa-regular fa-home"></i>
+                        <span>Home</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="nbs.html">
-                        <i class="fa-regular fa-location-dot"></i>
-                        <span>Nearby</span>
+                    <a href="history.html" class="nav-link">
+                        <i class="fa-regular fa-clock-rotate-left"></i>
+                        <span>History</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="abs.html">
-                        <i class="fa-regular fa-magnifying-glass"></i>
-                        <span>Search</span>
+                    <a href="first-last.html" class="nav-link active">
+                        <i class="fa-regular fa-clock"></i>
+                        <span>Timings</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="menu.html">
+                    <a href="menu.html" class="nav-link">
                         <i class="fa-regular fa-bars"></i>
                         <span>Menu</span>
                     </a>
                 </li>
             </ul>
         </div>
+
     </nav>
 
     <!-- Mobile Bottom Navigation Bar -->
     <nav class="mobile-bottom-nav">
         <ul>
             <li>
-                <a href="../buszy.html">
+                <a href="../rail-buddy.html">
                     <span class="icon">
-                        <i class="fa-sharp fa-regular fa-thumbtack-angle"></i>
+                        <i class="fa-sharp fa-regular fa-home"></i>
                     </span>
-                    <span class="label">Pinned</span>
+                    <span class="label">Home</span>
                 </a>
             </li>
             <li>
-                <a href="nbs.html">
+                <a href="history.html">
                     <span class="icon">
-                        <i class="fa-regular fa-location-dot"></i>
+                        <i class="fa-regular fa-clock-rotate-left"></i>
                     </span>
-                    <span class="label">Nearby</span>
-                </a>
-            </li>
-            <li>
-                <a href="abs.html">
-                    <span class="icon">
-                        <i class="fa-regular fa-magnifying-glass"></i>
-                    </span>
-                    <span class="label">Search</span>
+                    <span class="label">History</span>
                 </a>
             </li>
             <li class="active">
+                <a href="first-last.html">
+                    <span class="icon">
+                        <i class="fa-regular fa-clock"></i>
+                    </span>
+                    <span class="label">Timings</span>
+                </a>
+            </li>
+            <li>
                 <a href="menu.html">
                     <span class="icon">
                         <i class="fa-regular fa-bars"></i>
@@ -617,7 +616,10 @@
         </ul>
     </nav>
 
+
+
     <!------------------------------------------------------------------------ Start of Sections ------------------------------------------------------------------------>
+
 
     <!-- Title/Breadcrumbs -->
     <section class="about-me-sum clearfix">
@@ -625,16 +627,15 @@
             <div class="page-header-section">
                 <div class="container container-xxl container-mobile container-mobile-header">
                     <div class="breadcrumb-wrapper">
-                        <nav aria-label="breadcrumb" class="breadcrumb-desktop" style="display: none">
+                        <nav aria-label="breadcrumb" class="breadcrumb-desktop" style="display:none;">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item">
-                                    <a href="../buszy.html">
+                                    <a href="../rail-buddy.html">
                                         <i class="fa-regular fa-house"></i>
                                     </a>
                                 </li>
                                 <li class="breadcrumb-item">
-                                    <a href="first-last.html">
-                                        <i class="fa-regular fa-clock"></i>
+                                    <a href="first-last.html"><i class="fa-regular fa-clock"></i>
                                     </a>
                                 </li>
                             </ol>
@@ -643,87 +644,82 @@
                             <div
                                 style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
                                 <div>
-                                    <h1 class="page-title" id="filter-title">
-                                        First & Last Bus
-                                    </h1>
+                                    <h1 class="page-title" id="filter-title">First & Last Trains</h1>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <hr />
+                <hr>
             </div>
+
         </div>
+
     </section>
 
     <!-- Section Contents -->
     <section class="pdf-section">
         <div class="container">
-            <div class="header"></div>
+            <div class="header">
+            </div>
+
             <div class="selector-section">
                 <div class="search-container">
                     <div class="search-input-wrapper">
                         <i class="fa-regular fa-search"
-                            style="position: absolute; left: 12px; top: 65%; transform: translateY(-65%); color: #cccccc; z-index: 1;">
-                        </i>
-                        <input autocomplete="on" class="search-input" id="busStopSearch"
-                            placeholder="Enter bus stop code or name" type="text" />
-                        <button class="clear-search" id="clearSearch" title="Clear search">
-                            &times;
-                        </button>
+                            style="position: absolute; left: 12px; top: 65%; transform: translateY(-65%); color: #cccccc; z-index: 1;"></i>
+                        <input type="text" id="stationSearch" class="search-input"
+                            placeholder="Enter station name or code" autocomplete="on">
+                        <button class="clear-search" id="clearSearch" title="Clear search">&times;</button>
                     </div>
                     <div class="search-results-count" id="resultsCount"></div>
                 </div>
-                <label for="busStopDropdown">Bus Stop:</label>
-                <select id="busStopDropdown">
-                    <option value>Loading bus stops...</option>
+
+                <label for="stationDropdown">Station List:</label>
+                <select id="stationDropdown">
+                    <option value="">Loading stations...</option>
                 </select>
             </div>
+
             <div class="content-section" id="contentSection">
-                <div class="bus-stop-info">
-                    <div class="bus-stop-code">
-                        <img alt="bus icon" src="assets/bus-icon.png" />
-                        <span class="bus-stop-code-text" id="busStopCode">
-                            --
-                        </span>
-                    </div>
-                    <div class="bus-stop-description" id="busStopDescription">
-                        --
-                    </div>
-                </div>
-                <!-- <div class="bus-stop-subtitle" id="busStopSubtitle">
-                    Select a bus stop to begin
-                </div> -->
-                <div class="services-grid" id="servicesContainer"></div>
+                <div class="station-title" id="stationTitle">--</div>
+                <div class="station-subtitle" id="stationSubtitle">Select a station to begin</div>
+                <div id="directionsContainer"></div>
             </div>
         </div>
     </section>
 
-    <footer style="padding-top: 2em; padding-bottom: 2em">
-        <p style="text-align: center">
-            Timings are provided by
-            <a class="hyperlink" href="https://businterchange.net/" target="_blank">
-                Businterchange.net
-            </a>
-        </p>
-    </footer>
 
-    <script data-bg="#f2f3e5" data-fg="#000" data-font-family="Onest, sans-serif"
-        data-message="This website uses cookies to provide necessary site functionality and to improve your experience. By using this website, you agree to our use of cookies."
-        data-position="bottom" data-zindex="12345111111" id="cookiebanner" src="../js/cookies-banner.js"
-        type="text/javascript">
-        </script>
+    <script type="text/javascript" id="cookiebanner" src="../js/cookies-banner.js" data-position="bottom"
+        data-bg="#f2f3e5" data-fg="#000" data-font-family="Onest, sans-serif" data-zindex="12345111111"
+        data-message="This website uses cookies to provide necessary site functionality and to improve your experience. By using this website, you agree to our use of cookies.">
+    </script>
+
+
 
     <script src="js/mob-navtabs.js"></script>
-    <script src="buszy-subp.js"></script>
+
+    <script src="tdt-subp.js"></script>
+
     <script src="../js/jquery.min.js"></script>
+
     <script src="../js/popper.min.js"></script>
+
     <script src="../js/bootstrap.min.js"></script>
+
     <script src="../js/pw.bundle.js"></script>
+
     <script src="../js/default-assets/active.js"></script>
+
     <script src="../js/isotope.pkgd.min.js"></script>
+
     <script src="../js/dstabs.js"></script>
+
     <script src="../js/utils.js"></script>
-    <script src="js/fl-bus.js"></script>
+
+    <script src="js/ft-lt.js"></script>
+
+
 </body>
+
 </html>
