@@ -1,13 +1,20 @@
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
+const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const LTA_API_KEY = process.env.LTA_API_KEY;
 
-app.use(cors()); // Enable CORS
+// Enable CORS with explicit configuration
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type']
+}));
 
+// Define all API routes BEFORE static file serving
 // Define the /bus-arrivals route
 app.get('/bus-arrivals', async (req, res) => {
   try {
@@ -158,6 +165,11 @@ app.get('/train-service-alerts', async (req, res) => {
     res.status(500).send('Error connecting to LTA DataMall');
   }
 });
+
+// Serve static files (after all API routes to prevent conflicts)
+app.use(express.static(path.join(__dirname))); // Serve all static files from root
+app.use('/buszy', express.static(path.join(__dirname, 'buszy'))); // Serve buszy folder
+app.use('/rail-buddy', express.static(path.join(__dirname, 'rail-buddy'))); // Serve rail-buddy folder
 
 // Start the server
 app.listen(PORT, () => {
