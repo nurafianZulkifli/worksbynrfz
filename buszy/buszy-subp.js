@@ -38,7 +38,7 @@ function setThemeColorMeta(mode) {
         document.head.appendChild(metaThemeColor);
     }
     if (mode === 'dark') {
-        metaThemeColor.setAttribute('content', '#18191a'); // match dark background
+        metaThemeColor.setAttribute('content', '#121521'); // match dark background
         // Optionally, update manifest dynamically if needed (not widely supported)
     } else {
         metaThemeColor.setAttribute('content', '#ececea'); // match light theme
