@@ -153,7 +153,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const busStopCodeEl = document.getElementById('busStopCode');
                 const busStopDescriptionEl = document.getElementById('busStopDescription');
 
-                console.log('Elements found:', { busStopCodeEl: !!busStopCodeEl, busStopDescriptionEl: !!busStopDescriptionEl });
+                console.log('Elements found:', {
+                    busStopCodeEl: !!busStopCodeEl,
+                    busStopDescriptionEl: !!busStopDescriptionEl
+                });
 
                 if (busStopCodeEl) {
                     busStopCodeEl.textContent = busStopCode;
@@ -262,10 +265,21 @@ document.addEventListener('DOMContentLoaded', async () => {
         const timings = service.timings || {};
         // console.log('Service timings:', timings);
 
-        const dayTypes = [
-            { key: 'Weekdays', label: 'Weekdays', data: timings.Weekdays },
-            { key: 'Saturdays', label: 'Saturdays', data: timings.Saturdays },
-            { key: 'Sundays & Public Holidays', label: 'Sun & Public Holidays', data: timings['Sundays & Public Holidays'] }
+        const dayTypes = [{
+                key: 'Weekdays',
+                label: 'Weekdays',
+                data: timings.Weekdays
+            },
+            {
+                key: 'Saturdays',
+                label: 'Saturdays',
+                data: timings.Saturdays
+            },
+            {
+                key: 'Sundays & Public Holidays',
+                label: 'Sun & Public Holidays',
+                data: timings['Sundays & Public Holidays']
+            }
         ];
 
         dayTypes.forEach(day => {
