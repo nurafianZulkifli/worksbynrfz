@@ -77,6 +77,31 @@ document.addEventListener('DOMContentLoaded', async () => {
         busStopSearch.focus();
     });
 
+    // Fetch destination codes from live API (like art.js does)
+    async function fetchDestinationCodesForStop(busStopCode) {
+        try {
+            const url = new URL('https://bat-lta-9eb7bbf231a2.herokuapp.com/bus-arrivals');
+            url.searchParams.append('BusStopCode', busStopCode);
+            const response = await fetch(url);
+            if (!response.ok) return {};
+
+            const data = await response.json();
+            const destinationCodeMap = {}; // Map service number to destination code
+
+            if (data.Services && Array.isArray(data.Services)) {
+                data.Services.forEach(service => {
+                    if (service.NextBus?.DestinationCode) {
+                        destinationCodeMap[service.ServiceNo] = service.NextBus.DestinationCode;
+                    }
+                });
+            }
+            return destinationCodeMap;
+        } catch (error) {
+            console.warn('Error fetching live destination codes:', error);
+            return {};
+        }
+    }
+
     // Display bus stop data
     async function displayBusStop(busStopCode) {
         if (!busStopCode) {
@@ -145,11 +170,41 @@ document.addEventListener('DOMContentLoaded', async () => {
                 throw titleError;
             }
 
+            // Load destination maps (like in art.js)
+            let destinationMap = {};
+            let customDestinationMap = {};
+
+            // Load custom destination code mappings from art.js approach
+            try {
+                const response = await fetch('json/destination-codes.json');
+                if (response.ok) {
+                    customDestinationMap = await response.json();
+                }
+            } catch (error) {
+                console.warn('Custom destination codes file not found or error loading:', error);
+            }
+
+            try {
+                const allBusStopsData = JSON.parse(localStorage.getItem('allBusStops')) || [];
+                allBusStopsData.forEach((stop) => {
+                    destinationMap[stop.BusStopCode] = stop.Description;
+                });
+            } catch (error) {
+                console.error('Error creating destination map:', error);
+            }
+
+            // Fetch live destination codes from API (same as art.js)
+            const liveDestinationCodes = await fetchDestinationCodesForStop(busStopCode);
+
             // Display services
             servicesContainer.innerHTML = '';
 
             busServices.forEach(service => {
-                const card = createServiceCard(service);
+                // Merge in the live destination code (takes priority over routeName)
+                if (liveDestinationCodes[service.service]) {
+                    service.destinationCode = liveDestinationCodes[service.service];
+                }
+                const card = createServiceCard(service, destinationMap, customDestinationMap);
                 servicesContainer.appendChild(card);
             });
 
@@ -162,11 +217,30 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Helper function to capitalize each word
     function capitalizeWords(str) {
-        return str.toLowerCase().replace(/\b\w/g, char => char.toUpperCase());
+        const acronyms = ['MRT', 'TBI', 'LRT'];
+        let result = str.toLowerCase().replace(/\b\w/g, char => char.toUpperCase());
+        acronyms.forEach(acronym => {
+            result = result.replace(new RegExp(`\\b${acronym.toLowerCase()}\\b`, 'gi'), acronym);
+        });
+        return result;
+    }
+
+    // Function to get destination name from code or fallback to route name
+    function getDestinationName(destinationCode, destinationMap, customDestinationMap) {
+        // First try to find in bus stops map
+        if (destinationMap[destinationCode]) {
+            return destinationMap[destinationCode];
+        }
+        // Then try custom destination codes mapping
+        if (customDestinationMap[destinationCode]) {
+            return customDestinationMap[destinationCode];
+        }
+        // Finally return the code itself if not found
+        return destinationCode;
     }
 
     // Create service card
-    function createServiceCard(service) {
+    function createServiceCard(service, destinationMap, customDestinationMap) {
         const card = document.createElement('div');
         card.className = 'service-card';
 
@@ -176,10 +250,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         header.textContent = service.service || 'Unknown Service';
         card.appendChild(header);
 
-        // Route name with "To" prefix
+        // Route name with "To" prefix - using destination code mapping from art.js
         const routeName = document.createElement('div');
         routeName.className = 'service-route';
-        routeName.textContent = service.routeName ? `To ${capitalizeWords(service.routeName)}` : '';
+        const destination = service.destinationCode || service.routeName;
+        const destinationName = getDestinationName(destination, destinationMap, customDestinationMap);
+        routeName.textContent = destinationName ? `To ${capitalizeWords(destinationName)}` : '';
         card.appendChild(routeName);
 
         // Timings
