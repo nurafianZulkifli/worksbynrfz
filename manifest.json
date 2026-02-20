@@ -1,9 +1,10 @@
 {
-  "name": "Works by NRFZ",
-  "short_name": "Works by NRFZ",
-  "start_url": "index.html",
-  "display": "standalone",
-  "background_color": "#121521",
+  "name": "NRFZ - Transit & Train Apps",
+  "short_name": "NRFZ",
+  "description": "Hub for Buszy and RailBuddy apps",
+  "start_url": "/",
+  "display": "minimal-ui",
+  "background_color": "#ffffff",
   "theme_color": "#007bff",
   "icons": [
     {

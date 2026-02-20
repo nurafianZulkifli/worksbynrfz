@@ -115,12 +115,15 @@ function updateHrefForDarkMode() {
 
     if (isDarkMode) {
         /* Banners */
-        aboutPage.style.backgroundImage = "url('img/bg-img/hero-buszy-dark.png')";
-
+        const imageName = 'hero-buszy-dark.png';
+        const imageUrl = (window.PWAConfig ? window.PWAConfig.basePath : '/') + 'img/bg-img/' + imageName;
+        aboutPage.style.backgroundImage = `url('${imageUrl}')`;
 
     } else {
         /* Banners */
-        aboutPage.style.backgroundImage = "url('img/bg-img/hero-buszy.png')";
+        const imageName = 'hero-buszy.png';
+        const imageUrl = (window.PWAConfig ? window.PWAConfig.basePath : '/') + 'img/bg-img/' + imageName;
+        aboutPage.style.backgroundImage = `url('${imageUrl}')`;
     }
 
 

@@ -60,10 +60,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                     // Make the bus stop details clickable
                     const link = document.createElement('a');
                     link.href = `art.html?BusStopCode=${encodeURIComponent(bookmark.BusStopCode)}`;
+                    
+                    // Build correct image path for GitHub Pages and Heroku
+                    const basePath = (window.PWAConfig ? window.PWAConfig.basePath : '/');
+                    const busIconPath = basePath + 'buszy/assets/bus-icon.png';
+                    
                     link.innerHTML = `
                     <div class="bus-stop-info">
                         <span class="bus-stop-code">
-                            <img src="assets/bus-icon.png" alt="Bus Icon"> <!-- Replace with your bus icon path -->
+                            <img src="${busIconPath}" alt="Bus Icon">
                             <span class="bus-stop-code-text">${busStop.BusStopCode}</span>
                         </span>
                         <span class="bus-stop-description">${busStop.Description}</span>

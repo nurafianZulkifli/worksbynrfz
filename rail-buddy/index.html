@@ -12,18 +12,24 @@
     <meta content="" name="description">
     <meta content="" name="keywords">
     <meta property="og:image" content="https://i.imgur.com/i8n9KYs.png" />
+    <meta name="description" content="Real-time train line status, delays, and schedules for Singapore MRT and LRT networks">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="RailBuddy">
 
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#121521">
-
-    <link rel="icon" href="rail-buddy/assets/icon-512.png">
+    <link rel="manifest" href="./manifest.json">
+    <link rel="icon" href="./assets/icon-512.png" type="image/png">
+    <link rel="apple-touch-icon" href="./assets/icon-512.png">
+    <meta name="theme-color" content="#007bff">
 
     <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.0.0/css/all.css" />
 
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="rail-buddy/css/style-tdt.css">
-    <link rel="stylesheet" href="css/style-breakpoints.css">
-    <link rel="stylesheet" href="css/dark-mode.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/pwa-styles.css">
+    <link rel="stylesheet" href="./css/style-tdt.css">
+    <link rel="stylesheet" href="../css/style-breakpoints.css">
+    <link rel="stylesheet" href="../css/dark-mode.css">
 
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -185,30 +191,30 @@
     <nav class="navbar-container">
         <div class="navbar">
             <!-- Logo -->
-            <a href="rail-buddy.html"><img src="rail-buddy/assets/logo.png" alt="logo" class="logo" /></a>
+            <a href="./"><img src="./assets/logo.png" alt="logo" class="logo" /></a>
 
             <!-- Navigation Links -->
             <ul class="navbar-nav" id="navbarNav">
                 <li class="nav-item">
-                    <a href="rail-buddy.html" class="nav-link active">
+                    <a href="./" class="nav-link active">
                         <i class="fa-sharp fa-regular fa-home"></i>
                         <span>Home</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="rail-buddy/history.html" class="nav-link">
+                    <a href="./history.html" class="nav-link">
                         <i class="fa-regular fa-clock-rotate-left"></i>
                         <span>History</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="rail-buddy/first-last.html" class="nav-link">
+                    <a href="./first-last.html" class="nav-link">
                         <i class="fa-regular fa-clock"></i>
                         <span>Timings</span>
                     </a>
                 </li>
                 <li class="nav-item ">
-                    <a href="rail-buddy/menu.html" class="nav-link">
+                    <a href="./menu.html" class="nav-link">
                         <i class="fa-regular fa-bars"></i>
                         <span>Menu</span>
                     </a>
@@ -222,7 +228,7 @@
     <nav class="mobile-bottom-nav">
         <ul>
             <li class="active">
-                <a href="rail-buddy.html">
+                <a href="./">
                     <span class="icon">
                         <i class="fa-sharp fa-regular fa-home"></i>
                     </span>
@@ -230,7 +236,7 @@
                 </a>
             </li>
             <li>
-                <a href="rail-buddy/history.html">
+                <a href="./history.html">
                     <span class="icon">
                         <i class="fa-regular fa-clock-rotate-left"></i>
                     </span>
@@ -238,7 +244,7 @@
                 </a>
             </li>
             <li>
-                <a href="rail-buddy/first-last.html">
+                <a href="./first-last.html">
                     <span class="icon">
                         <i class="fa-regular fa-clock"></i>
                     </span>
@@ -246,7 +252,7 @@
                 </a>
             </li>
             <li>
-                <a href="rail-buddy/menu.html">
+                <a href="./menu.html">
                     <span class="icon">
                         <i class="fa-regular fa-bars"></i>
                     </span>
@@ -267,70 +273,69 @@
             <div class='alert-last-updated' style='margin-top:12px;font-size:0.98em;color:#888;'></div>
 
             <li class="custom-list-item">
-                <img src="rail-buddy/assets/caplets/NSLCap.png" alt="NSL">
+                <img src="./assets/caplets/NSLCap.png" alt="NSL">
                 <span class="line-name">North-South Line</span>
                 <span class="status-icon pulse"><i class="fa-regular fa-check"></i></span>
             </li>
             <hr>
             <li class="custom-list-item">
-                <img src="rail-buddy/assets/caplets/EWLCap.png" alt="EWL">
+                <img src="./assets/caplets/EWLCap.png" alt="EWL">
                 <span class="line-name">East-West Line</span>
                 <span class="status-icon pulse"><i class="fa-regular fa-check"></i></span>
             </li>
             <hr>
             <li class="custom-list-item">
-                <img src="rail-buddy/assets/caplets/NELCap.png" alt="NEL">
+                <img src="./assets/caplets/NELCap.png" alt="NEL">
                 <span class="line-name">North East Line</span>
                 <span class="status-icon pulse"><i class="fa-regular fa-check"></i></span>
             </li>
             <hr>
             <li class="custom-list-item">
-                <img src="rail-buddy/assets/caplets/CCLCap.png" alt="CCL">
+                <img src="./assets/caplets/CCLCap.png" alt="CCL">
                 <span class="line-name">Circle Line</span>
                 <span class="status-icon pulse"><i class="fa-regular fa-check"></i></span>
             </li>
             <hr>
             <li class="custom-list-item">
-                <img src="rail-buddy/assets/caplets/DTLCap.png" alt="DTL">
+                <img src="./assets/caplets/DTLCap.png" alt="DTL">
                 <span class="line-name">Downtown Line</span>
                 <span class="status-icon pulse"><i class="fa-regular fa-check"></i></span>
             </li>
             <hr>
             <li class="custom-list-item">
-                <img src="rail-buddy/assets/caplets/TELCap.png" alt="TEL">
+                <img src="./assets/caplets/TELCap.png" alt="TEL">
                 <span class="line-name">Thomson-East Coast Line</span>
                 <span class="status-icon pulse"><i class="fa-regular fa-check"></i></span>
             </li>
             <hr>
             <li class="custom-list-item">
-                <img src="rail-buddy/assets/caplets/BPCap.png" alt="BP">
+                <img src="./assets/caplets/BPCap.png" alt="BP">
                 <span class="line-name">Bukit Panjang LRT</span>
                 <span class="status-icon pulse"><i class="fa-regular fa-check"></i></span>
             </li>
             <hr>
             <li class="custom-list-item">
-                <img src="rail-buddy/assets/caplets/SKCap.png" alt="SK">
+                <img src="./assets/caplets/SKCap.png" alt="SK">
                 <span class="line-name">Sengkang LRT</span>
                 <span class="status-icon pulse"><i class="fa-regular fa-check"></i></span>
             </li>
             <hr>
             <li class="custom-list-item">
-                <img src="rail-buddy/assets/caplets/PGCap.png" alt="PG">
+                <img src="./assets/caplets/PGCap.png" alt="PG">
                 <span class="line-name">Punggol LRT</span>
                 <span class="status-icon pulse"><i class="fa-regular fa-check"></i></span>
             </li>
         </div>
     </section>
 
-
     <script type="text/javascript" id="cookiebanner" src="../js/cookies-banner.js" data-position="bottom"
         data-bg="#f2f3e5" data-fg="#000" data-font-family="Onest, sans-serif" data-zindex="12345111111"
         data-message="This website uses cookies to provide necessary site functionality and to improve your experience. By using this website, you agree to our use of cookies.">
-        </script>
+    </script>
 
-    <script src="rail-buddy/js/mob-navtabs.js"></script>
+    <script src="./js/mob-navtabs.js"></script>
 
-    <script src="rail-buddy/tdt-subp.js"></script>
+    <script src="./tdt-subp.js"></script>
 
     <script src="../js/jquery.min.js"></script>
 
@@ -344,11 +349,19 @@
 
     <script src="../js/isotope.pkgd.min.js"></script>
 
-    <script src="../js/dstabs.js"></script>
+    <script src="/js/dstabs.js"></script>
 
     <script src="../js/utils.js"></script>
 
-    <script src="rail-buddy/js/tsa.js"></script>
+    <script src="../js/pwa-config.js"></script>
+
+    <script src="../js/pwa-helper.js"></script>
+
+    <script src="../js/pwa-migration.js"></script>
+
+    <script src="./js/pwa-init.js"></script>
+
+    <script src="./js/tsa.js"></script>
 
 </body>
 

@@ -528,7 +528,7 @@
         <nav aria-label="breadcrumb" style="margin-bottom: 0">
             <ol class="breadcrumb breadcrumb-fixed" id="floating-breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="../buszy.html">
+                    <a href="./">
                         <i class="fa-regular fa-house"></i>
                     </a>
                 </li>
@@ -545,14 +545,14 @@
     <nav class="navbar-container">
         <div class="navbar">
             <!-- Logo -->
-            <a href="../buszy.html">
+            <a href="./">
                 <img alt="logo" class="logo" src="assets/logo.png" />
             </a>
 
             <!-- Navigation Links -->
             <ul class="navbar-nav" id="navbarNav">
                 <li class="nav-item">
-                    <a class="nav-link" href="../buszy.html">
+                    <a class="nav-link" href="./">
                         <i class="fa-sharp fa-regular fa-thumbtack-angle"></i>
                         <span>Pinned</span>
                     </a>
@@ -583,7 +583,7 @@
     <nav class="mobile-bottom-nav">
         <ul>
             <li>
-                <a href="../buszy.html">
+                <a href="./">
                     <span class="icon">
                         <i class="fa-sharp fa-regular fa-thumbtack-angle"></i>
                     </span>
@@ -628,7 +628,7 @@
                         <nav aria-label="breadcrumb" class="breadcrumb-desktop" style="display: none">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item">
-                                    <a href="../buszy.html">
+                                    <a href="./">
                                         <i class="fa-regular fa-house"></i>
                                     </a>
                                 </li>
@@ -682,7 +682,7 @@
             <div class="content-section" id="contentSection">
                 <div class="bus-stop-info">
                     <div class="bus-stop-code">
-                        <img alt="bus icon" src="assets/bus-icon.png" />
+                        <img alt="bus icon" src="assets/bus-icon.png" class="bus-icon-img" />
                         <span class="bus-stop-code-text" id="busStopCode">
                             --
                         </span>
@@ -724,6 +724,17 @@
     <script src="../js/isotope.pkgd.min.js"></script>
     <script src="../js/dstabs.js"></script>
     <script src="../js/utils.js"></script>
+    <script src="../js/pwa-config.js"></script>
+    <script>
+        // Fix image paths for GitHub Pages and Heroku compatibility
+        document.addEventListener('DOMContentLoaded', () => {
+            const busIconImg = document.querySelector('.bus-icon-img');
+            if (busIconImg && window.PWAConfig) {
+                const basePath = window.PWAConfig.basePath;
+                busIconImg.src = basePath + 'buszy/assets/bus-icon.png';
+            }
+        });
+    </script>
     <script src="js/fl-bus.js"></script>
 </body>
 </html>

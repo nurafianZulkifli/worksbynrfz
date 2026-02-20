@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Check if there are no bookmarks
         if (bookmarks.length === 0) {
-            bookmarksContainer.innerHTML = '<p class="pin-msg">Your Pinned Bus Stops will appear here.<br><small style="font-size: 0.85em; opacity: 0.8;">Tip: You can <a href="buszy/settings.html" style="text-decoration: underline; color: inherit;">import data from Settings</a> if you have a backup.</small></p>';
+            bookmarksContainer.innerHTML = '<p class="pin-msg">Your Pinned Bus Stops will appear here.<br><small style="font-size: 0.85em; opacity: 0.8;">Tip: You can <a href="./settings.html" style="text-decoration: underline; color: inherit;">import data from Settings</a> if you have a backup.</small></p>';
             return;
         }
 
@@ -59,11 +59,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                     // Make the bus stop details clickable
                     const link = document.createElement('a');
-                    link.href = `buszy/art.html?BusStopCode=${encodeURIComponent(bookmark.BusStopCode)}`;
+                    link.href = `./art.html?BusStopCode=${encodeURIComponent(bookmark.BusStopCode)}`;
+                    
+                    // Build correct image path for GitHub Pages and Heroku
+                    const basePath = (window.PWAConfig ? window.PWAConfig.basePath : '/');
+                    const busIconPath = basePath + 'buszy/assets/bus-icon.png';
+                    
                     link.innerHTML = `
                     <div class="bus-stop-info">
                         <span class="bus-stop-code">
-                            <img src="buszy/assets/bus-icon.png" alt="Bus Icon">
+                            <img src="${busIconPath}" alt="Bus Icon">
                             <span class="bus-stop-code-text">${busStop.BusStopCode}</span>
                         </span>
                         <span class="bus-stop-description">${busStop.Description}</span>
@@ -156,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const busStopName = element.getAttribute('data-bus-stop-name'); // Optional: Get the bus stop name
 
             // Redirect to art.html with the bus stop code as a query parameter
-            const url = new URL('art.html', window.location.origin);
+            const url = new URL('./art.html', window.location.href);
             url.searchParams.set('BusStopCode', busStopCode);
             if (busStopName) {
                 url.searchParams.set('BusStopName', busStopName); // Optional

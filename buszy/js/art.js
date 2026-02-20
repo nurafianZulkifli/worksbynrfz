@@ -59,10 +59,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             if (busStop) {
                 // Update title with styled bus stop code and name
+                // Build correct image path for GitHub Pages and Heroku
+                const basePath = (window.PWAConfig ? window.PWAConfig.basePath : '/');
+                const busIconPath = basePath + 'buszy/assets/bus-icon.png';
+                
                 filterTitle.innerHTML = `
                     <div class="bus-stop-info">
                         <span class="bus-stop-code">
-                            <img src="assets/bus-icon.png" alt="Bus Icon">
+                            <img src="${busIconPath}" alt="Bus Icon">
                             <span class="bus-stop-code-text">${busStop.BusStopCode}</span>
                         </span>
                         <span class="bus-stop-description">${busStop.Description}</span>

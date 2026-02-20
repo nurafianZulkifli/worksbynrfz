@@ -1,0 +1,213 @@
+/**
+ * PWA Styles
+ * Shared styles for PWA install banners and update notifications
+ */
+
+/* Install Banner Styles */
+.pwa-install-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+  color: white;
+  padding: 16px;
+  z-index: 9999;
+  box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.3s ease-out;
+}
+
+.pwa-banner-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.pwa-banner-text h3 {
+  margin: 0 0 4px 0;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.pwa-banner-text p {
+  margin: 0;
+  font-size: 14px;
+  opacity: 0.95;
+  line-height: 1.4;
+}
+
+.pwa-banner-buttons {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.pwa-banner-buttons button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.pwa-install-btn {
+  background: white;
+  color: #007bff;
+}
+
+.pwa-install-btn:hover {
+  background: #f0f0f0;
+  transform: translateY(-2px);
+}
+
+.pwa-install-btn:active {
+  transform: translateY(0);
+}
+
+.pwa-cancel-btn {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.pwa-cancel-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.pwa-cancel-btn:active {
+  transform: translateY(0);
+}
+
+/* Update Banner Styles */
+.pwa-update-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+  color: white;
+  padding: 16px;
+  z-index: 9998;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  animation: slideDown 0.3s ease-out;
+}
+
+.pwa-update-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.pwa-update-content strong {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.pwa-update-content p {
+  margin: 0;
+  font-size: 14px;
+  opacity: 0.95;
+}
+
+.pwa-update-content button {
+  padding: 8px 16px;
+  background: white;
+  color: #28a745;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.pwa-update-content button:hover {
+  background: #f0f0f0;
+  transform: translateY(-2px);
+}
+
+.pwa-update-content button:active {
+  transform: translateY(0);
+}
+
+/* Animations */
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .pwa-banner-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .pwa-banner-buttons {
+    width: 100%;
+  }
+
+  .pwa-banner-buttons button {
+    flex: 1;
+  }
+
+  .pwa-update-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .pwa-update-content button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .pwa-install-banner,
+  .pwa-update-banner {
+    padding: 12px;
+  }
+
+  .pwa-banner-text h3 {
+    font-size: 16px;
+  }
+
+  .pwa-banner-text p,
+  .pwa-update-content p {
+    font-size: 13px;
+  }
+
+  .pwa-banner-buttons button,
+  .pwa-update-content button {
+    font-size: 13px;
+    padding: 6px 12px;
+  }
+}

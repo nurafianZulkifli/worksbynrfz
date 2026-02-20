@@ -214,10 +214,15 @@ function displayBusStops(busStops) {
 
         const busStopElement = document.createElement('div');
         busStopElement.className = 'bus-stop';
+        
+        // Build correct image path for GitHub Pages and Heroku
+        const basePath = (window.PWAConfig ? window.PWAConfig.basePath : '/');
+        const busIconPath = basePath + 'buszy/assets/bus-icon.png';
+        
         busStopElement.innerHTML = `
             <div class="bus-stop-info">
                 <div class="bus-stop-code">
-                    <img src="assets/bus-icon.png" alt="Bus Icon">
+                    <img src="${busIconPath}" alt="Bus Icon">
                     <span class="bus-stop-code-text">${busStop.BusStopCode}</span>
                 </div>
                 <div class="bus-stop-details">
@@ -250,7 +255,8 @@ function displayBusStops(busStops) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const searchBusStopButton = document.querySelector('a[href="buszy.html"]'); // Select the "Search Bus Stop" button
+    // Select the "Search Bus Stop" button - look for links to index or ./
+    const searchBusStopButton = document.querySelector('a[href="./"], a[href="index.html"]'); // Select the "Search Bus Stop" button
     const searchInput = document.getElementById('bus-stop-search'); // Select the search input field
 
     if (searchBusStopButton && searchInput) {

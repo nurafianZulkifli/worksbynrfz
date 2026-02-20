@@ -168,8 +168,39 @@ app.get('/train-service-alerts', async (req, res) => {
 
 // Serve static files (after all API routes to prevent conflicts)
 app.use(express.static(path.join(__dirname))); // Serve all static files from root
-app.use('/buszy', express.static(path.join(__dirname, 'buszy'))); // Serve buszy folder
-app.use('/rail-buddy', express.static(path.join(__dirname, 'rail-buddy'))); // Serve rail-buddy folder
+
+// Buszy app routes
+app.get('/buszy/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'buszy/index.html'));
+});
+
+app.get('/buszy/service-worker.js', (req, res) => {
+  res.type('application/javascript');
+  res.set('Service-Worker-Allowed', '/buszy/');
+  res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+  res.sendFile(path.join(__dirname, 'buszy/service-worker.js'));
+});
+
+// RailBuddy app routes
+app.get('/rail-buddy/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'rail-buddy/index.html'));
+});
+
+app.get('/rail-buddy/service-worker.js', (req, res) => {
+  res.type('application/javascript');
+  res.set('Service-Worker-Allowed', '/rail-buddy/');
+  res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+  res.sendFile(path.join(__dirname, 'rail-buddy/service-worker.js'));
+});
+
+// Legacy redirects (optional - remove if not needed)
+app.get('/buszy.html', (req, res) => {
+  res.redirect(301, '/buszy/');
+});
+
+app.get('/rail-buddy.html', (req, res) => {
+  res.redirect(301, '/rail-buddy/');
+});
 
 // Start the server
 app.listen(PORT, () => {
