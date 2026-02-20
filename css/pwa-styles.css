@@ -9,12 +9,14 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+  background: linear-gradient(84deg, rgba(81, 167, 190, 1) 0%, rgba(53, 64, 117, 1) 100%);
   color: white;
   padding: 16px;
   z-index: 9999;
   box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.2);
   animation: slideUp 0.3s ease-out;
+  border-radius: 24px;
+  margin: 1em;
 }
 
 .pwa-banner-content {
@@ -31,6 +33,7 @@
   font-size: 18px;
   font-weight: 600;
   line-height: 1.2;
+  color: #fff;
 }
 
 .pwa-banner-text p {
@@ -38,6 +41,7 @@
   font-size: 14px;
   opacity: 0.95;
   line-height: 1.4;
+  color: #fff;
 }
 
 .pwa-banner-buttons {
@@ -49,7 +53,7 @@
 .pwa-banner-buttons button {
   padding: 8px 16px;
   border: none;
-  border-radius: 4px;
+  border-radius: 24px;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;

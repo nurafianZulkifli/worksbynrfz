@@ -15,8 +15,6 @@ window.PWAConfig = (() => {
     basePath = '/nrfz-dev/';
   }
   
-  console.log('[PWA Config] Base path detected:', basePath);
-  
   return {
     basePath: basePath,
     
@@ -43,7 +41,3 @@ window.PWAConfig = (() => {
     }
   };
 })();
-
-// Verify configuration
-console.log('[PWA Config] Buszy config:', PWAConfig.buszy);
-console.log('[PWA Config] RailBuddy config:', PWAConfig.railBuddy);

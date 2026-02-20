@@ -20,7 +20,6 @@ window.addEventListener('load', () => {
     cacheName: config.cacheName,
     showInstallBanner: true,
     onInstalled: () => {
-      console.log('RailBuddy app installed successfully');
       // Optional: Track installation event
       if (window.gtag) {
         window.gtag('event', 'app_install', {
@@ -29,10 +28,6 @@ window.addEventListener('load', () => {
       }
     }
   });
-
-  console.log('[RailBuddy] PWA initialized');
-  console.log('[RailBuddy] Config:', config);
-  console.log('[RailBuddy] Status:', window.railbuddyPWA.getStatus());
 });
 
 // Expose PWA helper to window for debugging/manual use

@@ -20,7 +20,6 @@ window.addEventListener('load', () => {
     cacheName: config.cacheName,
     showInstallBanner: true,
     onInstalled: () => {
-      console.log('Buszy app installed successfully');
       // Optional: Track installation event
       if (window.gtag) {
         window.gtag('event', 'app_install', {
@@ -29,10 +28,6 @@ window.addEventListener('load', () => {
       }
     }
   });
-
-  console.log('[Buszy] PWA initialized');
-  console.log('[Buszy] Config:', config);
-  console.log('[Buszy] Status:', window.buszyPWA.getStatus());
 });
 
 // Expose PWA helper to window for debugging/manual use

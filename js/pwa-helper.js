@@ -17,7 +17,6 @@ class PWAHelper {
     // Check if running as standalone app
     if (window.navigator.standalone === true) {
       this.isInstalled = true;
-      console.log(`[${this.appName}] Running as standalone PWA`);
     }
 
     // Register service worker
@@ -41,7 +40,6 @@ class PWAHelper {
 
     navigator.serviceWorker.register(swPath, { scope })
       .then(registration => {
-        console.log(`[${this.appName}] Service Worker registered at`, registration.scope);
 
         // Check for updates every 60 seconds
         setInterval(() => {
@@ -57,7 +55,6 @@ class PWAHelper {
 
           newWorker.addEventListener('statechange', () => {
             if (newWorker.state === 'activated') {
-              console.log(`[${this.appName}] Update available, refreshing...`);
               this.notifyUpdateAvailable();
             }
           });
@@ -75,7 +72,6 @@ class PWAHelper {
     window.addEventListener('beforeinstallprompt', event => {
       event.preventDefault();
       this.installPromptEvent = event;
-      console.log(`[${this.appName}] Install prompt available`);
       
       // Show install banner
       if (this.config.showInstallBanner !== false) {
@@ -84,7 +80,6 @@ class PWAHelper {
     });
 
     window.addEventListener('appinstalled', () => {
-      console.log(`[${this.appName}] App installed successfully`);
       this.isInstalled = true;
       this.hideInstallPrompt();
       
@@ -149,7 +144,6 @@ class PWAHelper {
    */
   async promptInstall() {
     if (!this.installPromptEvent) {
-      console.warn(`[${this.appName}] Install prompt not available`);
       return false;
     }
 
@@ -157,7 +151,6 @@ class PWAHelper {
       this.installPromptEvent.prompt();
       const { outcome } = await this.installPromptEvent.userChoice;
       
-      console.log(`[${this.appName}] Installation outcome:`, outcome);
       this.installPromptEvent = null;
       
       return outcome === 'accepted';
@@ -223,7 +216,6 @@ class PWAHelper {
       const cacheName = this.config.cacheName;
       if (cacheName) {
         await caches.delete(cacheName);
-        console.log(`[${this.appName}] Cache cleared`);
       }
       return true;
     } catch (error) {

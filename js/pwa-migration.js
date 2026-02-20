@@ -5,7 +5,6 @@
  */
 
 window.addEventListener('load', async () => {
-  console.log('[PWA Migration] Starting cleanup...');
 
   // Step 1: Unregister old root service worker
   if ('serviceWorker' in navigator) {
@@ -17,9 +16,7 @@ window.addEventListener('load', async () => {
         if (registration.scope === window.location.origin + '/' || 
             registration.scope.endsWith('/scope-unknown')) {
           
-          console.log('[PWA Migration] Found old service worker:', registration.scope);
           await registration.unregister();
-          console.log('[PWA Migration] Unregistered old service worker');
         }
       }
     } catch (error) {
@@ -34,12 +31,7 @@ window.addEventListener('load', async () => {
       const oldCaches = cacheNames.filter(name => name.startsWith('nrfz-cache-'));
       
       for (let cacheName of oldCaches) {
-        console.log('[PWA Migration] Deleting old cache:', cacheName);
         await caches.delete(cacheName);
-      }
-      
-      if (oldCaches.length > 0) {
-        console.log('[PWA Migration] Deleted', oldCaches.length, 'old cache(s)');
       }
     } catch (error) {
       console.error('[PWA Migration] Error deleting caches:', error);
@@ -48,7 +40,6 @@ window.addEventListener('load', async () => {
 
   // Step 3: Show migration banner if old app was installed
   if (window.navigator.standalone === true) {
-    console.log('[PWA Migration] App is running as standalone');
     
     // Check localStorage for migration flag
     const hasMigrated = localStorage.getItem('pwa-migration-notified');
@@ -58,8 +49,6 @@ window.addEventListener('load', async () => {
       localStorage.setItem('pwa-migration-notified', 'true');
     }
   }
-
-  console.log('[PWA Migration] Cleanup complete');
 });
 
 /**
