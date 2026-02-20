@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Fetch both service alerts and train timings
   Promise.all([
     fetch('https://bat-lta-9eb7bbf231a2.herokuapp.com/train-service-alerts').then(r => r.json()),
-    fetch('rail-buddy/json/ft-lt.json').then(r => r.json())
+    fetch('json/ft-lt.json').then(r => r.json())
   ]).then(([data, timings]) => {
       if (!data || !data.value) return;
       // Map line names to codes used in your HTML
