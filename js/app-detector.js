@@ -32,14 +32,29 @@ function detectAndOpenAndroidPWA() {
     navigator.getInstalledRelatedApps().then(function(apps) {
         if (apps.length > 0) {
             // Found installed PWA(s) - open the first one
-            // The browser will handle opening it in standalone mode
             var appId = apps[0].id;
             
-            // Try to navigate to the app's URL - browser will open in installed app mode
+            // Use window.open to open in standalone mode if available
+            // This ensures it opens as a separate app instance, not within current PWA
             if (appId === 'buszy') {
-                window.location.href = '/buszy/';
+                window.open('/buszy/', '_blank', 'standalone');
+                // Force close the current navigation if we're coming from RailBuddy
+                if (window.location.pathname.includes('rail-buddy') || window.location.pathname.includes('index')) {
+                    setTimeout(function() {
+                        if (sessionStorage.getItem('detectAppsOnLoad') === 'true') {
+                            window.close();
+                        }
+                    }, 500);
+                }
             } else if (appId === 'railbuddy') {
-                window.location.href = '/rail-buddy/';
+                window.open('/rail-buddy/', '_blank', 'standalone');
+                if (window.location.pathname.includes('buszy') || window.location.pathname.includes('index')) {
+                    setTimeout(function() {
+                        if (sessionStorage.getItem('detectAppsOnLoad') === 'true') {
+                            window.close();
+                        }
+                    }, 500);
+                }
             }
         }
     }).catch(function(err) {
@@ -64,12 +79,22 @@ function detectAndOpenIOSPWA() {
     if (navigator.getInstalledRelatedApps) {
         navigator.getInstalledRelatedApps().then(function(apps) {
             if (apps.length > 0) {
-                // Navigate to first installed app's URL
+                // Open the first installed app in a new window/tab
                 var appId = apps[0].id;
                 if (appId === 'buszy') {
-                    window.location.href = '/buszy/';
+                    window.open('/buszy/', '_blank');
+                    setTimeout(function() {
+                        if (sessionStorage.getItem('detectAppsOnLoad') === 'true') {
+                            window.close();
+                        }
+                    }, 500);
                 } else if (appId === 'railbuddy') {
-                    window.location.href = '/rail-buddy/';
+                    window.open('/rail-buddy/', '_blank');
+                    setTimeout(function() {
+                        if (sessionStorage.getItem('detectAppsOnLoad') === 'true') {
+                            window.close();
+                        }
+                    }, 500);
                 }
             }
         });
