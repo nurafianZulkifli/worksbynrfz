@@ -1,4 +1,5 @@
 {
+  "id": "buszy",
   "name": "Buszy - Bus Timings & Alerts",
   "short_name": "Buszy",
   "description": "Real-time bus timings, alerts, and pinned bus stops for Singapore buses",
@@ -46,5 +47,12 @@
       "text": "text",
       "url": "url"
     }
-  }
+  },
+  "related_applications": [
+    {
+      "platform": "web",
+      "url": "/rail-buddy/manifest.json",
+      "id": "railbuddy"
+    }
+  ]
 }

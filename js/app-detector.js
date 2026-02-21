@@ -1,8 +1,8 @@
-// App Detection and Launch Logic for Index Page
-// Detects if user clicked "Other Apps" and tries to open installed apps
+// PWA Detection and Launch Logic for Index Page
+// Detects if user clicked "Other Apps" and tries to open installed PWAs
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Check if we should try to detect and open installed apps
+    // Check if we should try to detect and open installed PWAs
     var shouldDetectApps = sessionStorage.getItem('detectAppsOnLoad');
     
     if (shouldDetectApps !== 'true') {
@@ -16,90 +16,62 @@ document.addEventListener('DOMContentLoaded', function() {
     var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
     
     if (isAndroid) {
-        detectAndOpenAndroidApp();
+        detectAndOpenAndroidPWA();
     } else if (isIOS) {
-        detectAndOpenIOSApp();
+        detectAndOpenIOSPWA();
     }
 });
 
-function detectAndOpenAndroidApp() {
-    // App packages to try - in order of preference
-    var apps = [
-        { name: 'Buszy', package: 'sg.nrfz.buszy' },
-        { name: 'RailBuddy', package: 'sg.nrfz.railbuddy' }
-    ];
-    
-    // Try to open the first available app
-    for (var i = 0; i < apps.length; i++) {
-        var app = apps[i];
-        var intentUrl = 'intent://index.html#Intent;package=' + app.package + ';scheme=https;end';
-        
-        tryOpenApp(intentUrl, function() {
-            // If no app opens, the page stays visible
-            // This is handled naturally - if none open, user sees app selection
-        });
-        
-        // For Android, we try the first one and let it work
-        break;
+function detectAndOpenAndroidPWA() {
+    // Use getInstalledRelatedApps API to detect installed PWAs
+    if (!navigator.getInstalledRelatedApps) {
+        console.log('getInstalledRelatedApps not supported');
+        return;
     }
+    
+    navigator.getInstalledRelatedApps().then(function(apps) {
+        if (apps.length > 0) {
+            // Found installed PWA(s) - open the first one
+            // The browser will handle opening it in standalone mode
+            var appId = apps[0].id;
+            
+            // Try to navigate to the app's URL - browser will open in installed app mode
+            if (appId === 'buszy') {
+                window.location.href = '/buszy/';
+            } else if (appId === 'railbuddy') {
+                window.location.href = '/rail-buddy/';
+            }
+        }
+    }).catch(function(err) {
+        console.log('Error detecting installed PWAs:', err);
+    });
 }
 
-function detectAndOpenIOSApp() {
-    // App URL schemes to try - in order of preference
-    var apps = [
-        { name: 'Buszy', scheme: 'buszy://' },
-        { name: 'RailBuddy', scheme: 'railbuddy://' }
-    ];
+function detectAndOpenIOSPWA() {
+    // On iOS, PWAs installed as web clips can't be directly launched from browser
+    // However, we can detect if we're in standalone mode
+    if (window.navigator.standalone === true) {
+        // We're already in a PWA - don't need to do anything
+        return;
+    }
     
-    // Store the start time to detect if app actually opened
-    var appStartTime = Date.now();
-    var appOpened = false;
+    // For iOS, we could check using matchMedia for display-mode: standalone
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+        return;
+    }
     
-    // Create a handler to detect if the app opened
-    var handleVisibilityChange = function() {
-        if (document.hidden) {
-            // Page became hidden - app likely opened
-            appOpened = true;
-            document.removeEventListener('visibilitychange', handleVisibilityChange);
-        }
-    };
-    
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    
-    // Try apps with increasing delays
-    for (var i = 0; i < apps.length; i++) {
-        (function(index, startTime) {
-            setTimeout(function() {
-                if (!appOpened) {
-                    // Try this app
-                    window.location.href = apps[index].scheme;
+    // Try to detect installed PWAs via related apps if available
+    if (navigator.getInstalledRelatedApps) {
+        navigator.getInstalledRelatedApps().then(function(apps) {
+            if (apps.length > 0) {
+                // Navigate to first installed app's URL
+                var appId = apps[0].id;
+                if (appId === 'buszy') {
+                    window.location.href = '/buszy/';
+                } else if (appId === 'railbuddy') {
+                    window.location.href = '/rail-buddy/';
                 }
-            }, index * 500); // Stagger attempts by 500ms
-        })(i, appStartTime);
+            }
+        });
     }
-    
-    // After trying all apps, clean up the listener
-    setTimeout(function() {
-        document.removeEventListener('visibilitychange', handleVisibilityChange);
-    }, apps.length * 500 + 2000);
-}
-
-function tryOpenApp(url, callback) {
-    // Store the current timestamp and visibility state
-    var startTime = Date.now();
-    var originalVisibility = document.hidden;
-    
-    // Set a timer to check if we're still on the page
-    var checkTimer = setInterval(function() {
-        var elapsed = Date.now() - startTime;
-        
-        // If page is not hidden after 2.5 seconds, assume app didn't open
-        if (elapsed > 2500) {
-            clearInterval(checkTimer);
-            if (callback) callback();
-        }
-    }, 100);
-    
-    // Try to open the app
-    window.location.href = url;
 }

@@ -1,4 +1,5 @@
 {
+  "id": "railbuddy",
   "name": "RailBuddy - Train Status & Alerts",
   "short_name": "RailBuddy",
   "description": "Real-time train line status, delays, and schedules for Singapore MRT and LRT networks",
@@ -46,5 +47,12 @@
       "text": "text",
       "url": "url"
     }
-  }
+  },
+  "related_applications": [
+    {
+      "platform": "web",
+      "url": "/buszy/manifest.json",
+      "id": "buszy"
+    }
+  ]
 }
