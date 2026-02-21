@@ -161,24 +161,27 @@
 /* ---- */
 
 /* ---- 1.0.4a Min Width: 992px */
-  @media (min-width: 992px) {
+@media (min-width: 992px) {
     .video-row {
-      display: flex;
-      gap: 2em;
-      justify-content: center;
-      align-items: flex-start;
+        display: flex;
+        gap: 2em;
+        justify-content: center;
+        align-items: flex-start;
     }
+
     .video-row video {
-      width: 48%;
-      max-width: 600px;
+        width: 48%;
+        max-width: 600px;
     }
-  }
-  @media (max-width: 991.98px) {
+}
+
+@media (max-width: 991.98px) {
     .video-row video {
-      width: 100%;
-      margin-bottom: 1em;
+        width: 100%;
+        margin-bottom: 1em;
     }
-  }
+}
+
 /* ---- */
 
 /* ---- 1.0.5 Max Width: 768px */
@@ -366,6 +369,12 @@
         margin-bottom: 0px;
         font-weight: bolder;
     }
+
+    .wbnrfz-works {
+        padding-top: 0em;
+        padding-bottom: 0em;
+    }
+
 }
 
 /* ---- */
@@ -543,6 +552,14 @@
         text-align: center;
     }
 
+    .app-thumbnail {
+        height: 206px;
+    }
+
+    .app-thumbnail-link {
+        height: 200px;
+    }
+
 }
 
 /* ---- */
@@ -616,9 +633,33 @@
     .scrollable-tabs-container ul {
         padding: 12px 30px !important;
     }
+
+    .wbnrfz-works {
+        padding-top: 0em;
+        padding-bottom: 3em;
+    }
+
+    .app-thumbnail {
+        height: 186px;
+    }
+
+    .app-thumbnail-link {
+        height: 180px;
+    }
 }
 
 /* ---- */
+
+/* ---- 1.0.8 Max Width: 524px */
+@media (max-width: 524px) {
+    .app-thumbnail {
+        height: 186px;
+    }
+
+    .app-thumbnail-link {
+        height: 180px;
+    }
+}
 
 /* ---- 1.0.9 Max Width: 480px */
 @media (max-width: 480px) {
@@ -1502,32 +1543,32 @@
 
 /* ------------------------------------------ 4.0 Responsive Columns ------------------------------------------ */
 
-    /* Breakpoints for Responsive Columns */
-    @media (max-width: 992px) {
-        .wbnrfz-grid {
-            grid-template-columns: repeat(auto-fit, minmax(3, 1fr));
-            /* Adjust column size for medium screens */
-        }
+/* Breakpoints for Responsive Columns */
+@media (max-width: 992px) {
+    .wbnrfz-grid {
+        grid-template-columns: repeat(auto-fit, minmax(3, 1fr));
+        /* Adjust column size for medium screens */
     }
+}
 
-    @media (max-width: 768px) {
-        .wbnrfz-grid {
-            grid-template-columns: repeat(2, 1fr);
-            /* 2 columns for smaller screens */
-        }
+@media (max-width: 768px) {
+    .wbnrfz-grid {
+        grid-template-columns: repeat(2, 1fr);
+        /* 2 columns for smaller screens */
     }
+}
 
 
-    @media (max-width: 581px) {
-        .wbnrfz-grid {
-            grid-template-columns: repeat(2, 1fr);
-            /* 2 columns for small screens */
-        }
+@media (max-width: 581px) {
+    .wbnrfz-grid {
+        grid-template-columns: repeat(2, 1fr);
+        /* 2 columns for small screens */
     }
+}
 
-        @media (max-width: 580px) {
-        .wbnrfz-grid {
-            grid-template-columns: repeat(1, 1fr);
-            /* Single column for extra small screens */
-        }
+@media (max-width: 580px) {
+    .wbnrfz-grid {
+        grid-template-columns: repeat(1, 1fr);
+        /* Single column for extra small screens */
     }
+}
