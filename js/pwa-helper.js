@@ -162,24 +162,10 @@ class PWAHelper {
 
   /**
    * Notify user of available update
+   * Disabled - update notifications removed
    */
   notifyUpdateAvailable() {
-    const message = document.createElement('div');
-    message.className = 'pwa-update-banner';
-    message.innerHTML = `
-      <div class="pwa-update-content">
-        <strong>Update Available</strong>
-        <p>A new version of ${this.appName} is ready</p>
-        <button onclick="location.reload()">Refresh Now</button>
-      </div>
-    `;
-    
-    document.body.appendChild(message);
-    
-    // Auto-remove after 10 seconds
-    setTimeout(() => {
-      message.remove();
-    }, 10000);
+    // Update notification banner disabled
   }
 
   /**
