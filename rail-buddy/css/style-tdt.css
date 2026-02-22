@@ -11,7 +11,7 @@ body.dark-mode .page-header-section {
 }
 
 .nav-link.active {
-    background: linear-gradient(84deg, rgba(81, 167, 190, 1) 0%, rgba(53, 64, 117, 1) 100%) !important;
+    background: linear-gradient(58deg, rgb(172, 55, 42) 0%, rgb(163, 110, 17) 100%); !important;
 }
 
 .mobile-bottom-nav,
@@ -95,6 +95,16 @@ body.dark-mode li.breadcrumb-item a {
     margin-top: 1em;
     color: #4d4d4d;
     text-align: left !important;
+}
+
+/* Install Banner Styles */
+.pwa-install-banner {
+    background: linear-gradient(58deg, rgb(172, 55, 42) 0%, rgb(163, 110, 17) 100%);
+}
+
+.pwa-install-btn {
+  background: white;
+  color: #8f2d22;
 }
 
 body.dark-mode .about-me-summ {
@@ -250,7 +260,7 @@ body.dark-mode .list-group-item:hover {
         pointer-events: none;
     }
 
-      .mobile-bottom-nav::before {
+    .mobile-bottom-nav::before {
         content: '';
         position: absolute;
         left: 0;
@@ -359,6 +369,7 @@ body.dark-mode #stationDropdown.error {
         opacity: 0;
         transform: translateY(-10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
