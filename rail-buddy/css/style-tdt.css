@@ -11,7 +11,7 @@ body.dark-mode .page-header-section {
 }
 
 .nav-link.active {
-    background: linear-gradient(58deg, rgb(172, 55, 42) 0%, rgb(163, 110, 17) 100%); !important;
+    background: linear-gradient(58deg, rgb(172, 55, 42) 0%, rgb(163, 110, 17) 100%) !important;
 }
 
 .mobile-bottom-nav,
@@ -24,7 +24,7 @@ body.dark-mode .mobile-bottom-nav {
 }
 
 .hyperlink {
-    color: #67a0bb !important;
+    color: #8f2d22 !important;
 }
 
 #scrollUp {
@@ -315,7 +315,7 @@ body.dark-mode .list-group-item:hover {
     }
 
     .mobile-bottom-nav li.active {
-        background: linear-gradient(84deg, rgba(81, 167, 190, 1) 0%, rgba(53, 64, 117, 1) 100%);
+        background: linear-gradient(58deg, rgb(172, 55, 42) 0%, rgb(163, 110, 17) 100%);
     }
 
     .mobile-bottom-nav .icon {
