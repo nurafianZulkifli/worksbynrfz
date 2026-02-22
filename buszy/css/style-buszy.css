@@ -806,7 +806,7 @@ table th {
 }
 
 .lg-menu {
-    font-size: 20px;
+    font-size: 16px;
     margin-bottom: 0px;
     font-weight: bolder;
 }
@@ -1098,6 +1098,6 @@ body.dark-mode .form-control {
     }
 
     .lg-menu {
-        font-size: 18px;
+        font-size: 16px;
     }
 }
