@@ -1088,10 +1088,6 @@ body.dark-mode .list-group-item {
     background-color: #1c1f2b;
 }
 
-body.dark-mode .form-control {
-    background: #393e53 !important;
-}
-
 @media (max-width: 768px) {
     .pin-msg {
         padding: 1em;
