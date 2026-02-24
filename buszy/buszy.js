@@ -1,31 +1,31 @@
 /* Dark Mode Functionality for Individual Pages */
 
-// Initialize default preferences for first-time visitors
-function initializeDefaultPreferences() {
-    // Set default time format if not already set
-    if (!localStorage.getItem('timeFormat')) {
-        localStorage.setItem('timeFormat', '24-hour');
-    }
-    
-    // Set default dark mode preference if not already set
-    if (!localStorage.getItem('dark-mode')) {
-        localStorage.setItem('dark-mode', 'disabled');
-    }
-}
+// Check localStorage for dark mode preference, fall back to system preference
+const _savedTheme = localStorage.getItem('dark-mode');
+const _prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+const _isDark = _savedTheme === 'enabled' || (_savedTheme === null && _prefersDark);
 
-// Initialize defaults immediately
-initializeDefaultPreferences();
-
-// Check localStorage for dark mode preference
-if (localStorage.getItem('dark-mode') === 'enabled') {
+if (_isDark) {
     document.body.classList.add('dark-mode');
     updateThemeIcon('dark');
     updateHrefForDarkMode();
-    setThemeColorMeta('dark');
 } else {
     updateThemeIcon('light');
-    setThemeColorMeta('light');
 }
+
+// Follow system theme changes when no manual preference is stored
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    if (localStorage.getItem('dark-mode') === null) {
+        if (e.matches) {
+            document.body.classList.add('dark-mode');
+            updateThemeIcon('dark');
+        } else {
+            document.body.classList.remove('dark-mode');
+            updateThemeIcon('light');
+        }
+        updateHrefForDarkMode();
+    }
+});
 
 // Get both toggle buttons
 const toggleButtonDesktop = document.getElementById('dark-mode-toggle-desktop');
