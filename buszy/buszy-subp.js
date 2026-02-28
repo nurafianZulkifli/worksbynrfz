@@ -8,7 +8,6 @@ const _isDark = _savedTheme === 'enabled' || (_savedTheme === null && _prefersDa
 if (_isDark) {
     document.body.classList.add('dark-mode');
     updateThemeIcon('dark');
-    updateHrefForDarkMode();
 } else {
     updateThemeIcon('light');
 }
@@ -23,7 +22,6 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e)
             document.body.classList.remove('dark-mode');
             updateThemeIcon('light');
         }
-        updateHrefForDarkMode();
     }
 });
 
