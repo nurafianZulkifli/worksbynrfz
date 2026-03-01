@@ -131,6 +131,9 @@ function debounce(func, delay) {
 // Store previous content for comparison
 let previousContainerHTML = '';
 
+// Abort controller for in-flight requests (prevents stale responses)
+let currentFetchController = null;
+
 // Updated fetchBusArrivals function
 async function fetchBusArrivals() {
     try {
@@ -160,14 +163,19 @@ async function fetchBusArrivals() {
         const url = new URL('https://bat-lta-9eb7bbf231a2.herokuapp.com/bus-arrivals');
         url.searchParams.append('BusStopCode', searchInput);
 
-        const response = await fetch(url);
+        // Abort any previous in-flight request so stale responses don't overwrite fresh ones
+        if (currentFetchController) {
+            currentFetchController.abort();
+        }
+        currentFetchController = new AbortController();
+
+        const response = await fetch(url, { signal: currentFetchController.signal });
 
         if (!response.ok) {
             throw new Error('Failed to fetch bus arrivals');
         }
 
         const data = await response.json();
-        // console.log('API Response:', data); // Debugging line to check API response
 
         if (!data.Services || data.Services.length === 0) {
             const noDataHTML = `
@@ -403,6 +411,9 @@ async function fetchBusArrivals() {
             });
         }
     } catch (error) {
+        // Silently ignore aborted requests (superseded by a newer fetch)
+        if (error.name === 'AbortError') return;
+
         console.error('Error fetching bus arrivals:', error);
         const container = document.getElementById('bus-arrivals-container');
 
@@ -466,8 +477,11 @@ function formatArrivalTimeOrArr(isoString, now, isIncomingBus = false) {
     const savedFormat = localStorage.getItem('timeFormat') || '12-hour';
 
     if (savedFormat === 'mins') {
-        // Calculate the time difference in minutes
-        const minutes = Math.ceil(timeDifference / (1000 * 60));
+        // Calculate the time difference in minutes (floor to match transit display conventions)
+        const minutes = Math.floor(timeDifference / (1000 * 60));
+        if (minutes <= 0) {
+            return `<span class="arrival-now">Arr</span>`;
+        }
         const minText = minutes === 1 ? 'min' : 'mins';
         if (isIncomingBus) {
             return `${minutes}<span style="font-size: 0.7em;"> ${minText}</span>`;
