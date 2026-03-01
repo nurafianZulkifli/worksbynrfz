@@ -278,9 +278,18 @@
                 const basePath = window.PWAConfig.basePath;
                 const bgElement = document.getElementById('cv-bat');
                 
-                // Check dark mode preference
-                const isDarkMode = localStorage.getItem('dark-mode') === 'enabled' || 
-                                  (document.documentElement.classList.contains('dark-mode'));
+                // Check dark mode preference using the same logic as buszy.js
+                const _themePreference = localStorage.getItem('theme-preference') || 'system';
+                const _prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                let isDarkMode = false;
+                
+                if (_themePreference === 'dark') {
+                    isDarkMode = true;
+                } else if (_themePreference === 'light') {
+                    isDarkMode = false;
+                } else if (_themePreference === 'system') {
+                    isDarkMode = _prefersDark;
+                }
                 
                 const imageName = isDarkMode ? 'hero-buszy-dark.png' : 'hero-buszy.png';
                 const imageUrl = basePath + 'img/bg-img/' + imageName;

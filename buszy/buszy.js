@@ -155,6 +155,7 @@ function updateThemeIcon(theme) {
 function updateHrefForDarkMode() {
     /* Banners */
     const aboutPage = document.getElementById('cv-bat');
+    if (!aboutPage) return;
 
     const isDarkMode = document.body.classList.contains('dark-mode');
 
