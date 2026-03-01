@@ -274,25 +274,12 @@
         <script src="../js/pwa-config.js"></script>
 
         <script>
-            // Helper to get cookie
-            function getCookie(name) {
-                const nameEQ = name + "=";
-                const cookies = document.cookie.split(';');
-                for (let i = 0; i < cookies.length; i++) {
-                    const cookie = cookies[i].trim();
-                    if (cookie.indexOf(nameEQ) === 0) {
-                        return cookie.substring(nameEQ.length);
-                    }
-                }
-                return null;
-            }
-            
             if (window.PWAConfig) {
                 const basePath = window.PWAConfig.basePath;
                 const bgElement = document.getElementById('cv-bat');
                 
-                // Check dark mode preference - check cookies first for cross-site sync
-                const _themePreference = getCookie('theme-preference') || localStorage.getItem('theme-preference') || 'system';
+                // Check dark mode preference using the same logic as buszy.js
+                const _themePreference = localStorage.getItem('theme-preference') || 'system';
                 const _prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
                 let isDarkMode = false;
                 
