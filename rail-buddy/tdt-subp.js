@@ -20,15 +20,16 @@ function shouldBeDark() {
 if (shouldBeDark()) {
     document.body.classList.add('dark-mode');
     updateThemeIcon('dark');
+    updateHrefForDarkMode();
 } else {
     updateThemeIcon('light');
 }
 
 // Listen to theme toggle clicks
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
     const themeToggleDesktop = document.getElementById('theme-toggle-desktop');
     const themeToggleMobile = document.getElementById('theme-toggle-mobile');
-
+    
     function cycleTheme() {
         const themes = ['light', 'dark', 'system'];
         const currentTheme = window._themePreference || 'system';
@@ -36,11 +37,11 @@ document.addEventListener('DOMContentLoaded', function () {
         const nextTheme = themes[(currentIndex + 1) % themes.length];
         applyTheme(nextTheme);
     }
-
+    
     function applyTheme(preference) {
         localStorage.setItem('theme-preference', preference);
         window._themePreference = preference;
-
+        
         if (preference === 'dark') {
             document.body.classList.add('dark-mode');
             updateThemeIcon('dark');
@@ -57,14 +58,14 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     }
-
+    
     if (themeToggleDesktop) {
         themeToggleDesktop.addEventListener('click', (e) => {
             e.preventDefault();
             cycleTheme();
         });
     }
-
+    
     if (themeToggleMobile) {
         themeToggleMobile.addEventListener('click', (e) => {
             e.preventDefault();
@@ -123,7 +124,7 @@ function updateThemeIcon(theme) {
             themeIconMobile.classList.add('fa-sun-bright');
         }
     }
-
+    
     // Update display text
     let displayText = 'Display: ';
     if (preference === 'light') {
@@ -133,7 +134,7 @@ function updateThemeIcon(theme) {
     } else if (preference === 'system') {
         displayText += 'Follow System';
     }
-
+    
     if (themeTextDesktop) themeTextDesktop.textContent = displayText;
     if (themeTextMobile) themeTextMobile.textContent = displayText;
 
