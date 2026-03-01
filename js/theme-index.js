@@ -1,21 +1,82 @@
 /* Dark Mode Functionality for Individual Pages */
 
-// Check localStorage for dark mode preference, fall back to system preference
-const _savedTheme = localStorage.getItem('dark-mode');
-const _prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-const _isDark = _savedTheme === 'enabled' || (_savedTheme === null && _prefersDark);
+// Use window properties if they exist from initial script, otherwise create them
+if (typeof window._themePreference === 'undefined') {
+    window._themePreference = localStorage.getItem('theme-preference') || 'system';
+}
+if (typeof window._prefersDark === 'undefined') {
+    window._prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+}
 
-if (_isDark) {
+// Determine if dark mode should be active
+function shouldBeDark() {
+    if (window._themePreference === 'dark') return true;
+    if (window._themePreference === 'light') return false;
+    if (window._themePreference === 'system') return window._prefersDark;
+    return window._prefersDark; // Default to system preference
+}
+
+// Apply theme on page load
+if (shouldBeDark()) {
     document.body.classList.add('dark-mode');
     updateThemeIcon('dark');
-    updateHrefForDarkMode();
 } else {
     updateThemeIcon('light');
 }
 
-// Follow system theme changes when no manual preference is stored
+// Listen to theme toggle clicks
+document.addEventListener('DOMContentLoaded', function() {
+    const themeToggleDesktop = document.getElementById('theme-toggle-desktop');
+    const themeToggleMobile = document.getElementById('theme-toggle-mobile');
+    
+    function cycleTheme() {
+        const themes = ['light', 'dark', 'system'];
+        const currentTheme = window._themePreference || 'system';
+        const currentIndex = themes.indexOf(currentTheme);
+        const nextTheme = themes[(currentIndex + 1) % themes.length];
+        applyTheme(nextTheme);
+    }
+    
+    function applyTheme(preference) {
+        localStorage.setItem('theme-preference', preference);
+        window._themePreference = preference;
+        
+        if (preference === 'dark') {
+            document.body.classList.add('dark-mode');
+            updateThemeIcon('dark');
+        } else if (preference === 'light') {
+            document.body.classList.remove('dark-mode');
+            updateThemeIcon('light');
+        } else if (preference === 'system') {
+            if (window._prefersDark) {
+                document.body.classList.add('dark-mode');
+                updateThemeIcon('dark');
+            } else {
+                document.body.classList.remove('dark-mode');
+                updateThemeIcon('light');
+            }
+        }
+    }
+    
+    if (themeToggleDesktop) {
+        themeToggleDesktop.addEventListener('click', (e) => {
+            e.preventDefault();
+            cycleTheme();
+        });
+    }
+    
+    if (themeToggleMobile) {
+        themeToggleMobile.addEventListener('click', (e) => {
+            e.preventDefault();
+            cycleTheme();
+        });
+    }
+});
+
+// Follow system theme changes when set to 'system' preference
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-    if (localStorage.getItem('dark-mode') === null) {
+    window._prefersDark = e.matches;
+    if (localStorage.getItem('theme-preference') === 'system' || localStorage.getItem('theme-preference') === null) {
         if (e.matches) {
             document.body.classList.add('dark-mode');
             updateThemeIcon('dark');
@@ -23,38 +84,20 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e)
             document.body.classList.remove('dark-mode');
             updateThemeIcon('light');
         }
-        updateHrefForDarkMode();
     }
 });
 
-// Get both toggle buttons
+// Get both toggle buttons (for backward compatibility with mobile views)
 const toggleButtonDesktop = document.getElementById('dark-mode-toggle-desktop');
 const toggleButtonMobile = document.getElementById('dark-mode-toggle-mobile');
-// Function to toggle dark mode
-function toggleDarkMode() {
-    document.body.classList.toggle('dark-mode');
-    // Save the preference in localStorage
-    if (document.body.classList.contains('dark-mode')) {
-        localStorage.setItem('dark-mode', 'enabled');
-        updateThemeIcon('dark');
-    } else {
-        localStorage.setItem('dark-mode', 'disabled');
-        updateThemeIcon('light');
-    }
-}
 
-// Add event listeners to both buttons if they exist
-if (toggleButtonDesktop) {
-    toggleButtonDesktop.addEventListener('click', toggleDarkMode);
-}
-
-if (toggleButtonMobile) {
-    toggleButtonMobile.addEventListener('click', toggleDarkMode);
-}
-// Function to update the theme icon with animation
+// Function to update the theme icon and text with animation
 function updateThemeIcon(theme) {
     const themeIconDesktop = document.getElementById('theme-icon-desktop');
     const themeIconMobile = document.getElementById('theme-icon-mobile');
+    const themeTextDesktop = document.getElementById('theme-text-desktop');
+    const themeTextMobile = document.getElementById('theme-text-mobile');
+    const preference = window._themePreference || 'system';
 
     // Add animation class to both icons
     if (themeIconDesktop) themeIconDesktop.classList.add('animate');
@@ -80,6 +123,19 @@ function updateThemeIcon(theme) {
             themeIconMobile.classList.add('fa-sun-bright');
         }
     }
+    
+    // Update display text
+    let displayText = 'Display: ';
+    if (preference === 'light') {
+        displayText += 'Light';
+    } else if (preference === 'dark') {
+        displayText += 'Dark';
+    } else if (preference === 'system') {
+        displayText += 'Follow System';
+    }
+    
+    if (themeTextDesktop) themeTextDesktop.textContent = displayText;
+    if (themeTextMobile) themeTextMobile.textContent = displayText;
 
     // Remove the animation class after the animation ends
     setTimeout(() => {

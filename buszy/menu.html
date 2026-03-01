@@ -3,12 +3,6 @@
 
 <head>
     <meta charset="UTF-8">
-    <script>
-        if (localStorage.getItem('dark-mode') === 'enabled') {
-            document.documentElement.classList.add('dark-mode');
-            document.documentElement.style.background = '#121521';
-        }
-    </script>
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="57TuruPNu5wqSSia_cUehl5t9Gh1AbxrHNPcMiFx-aQ" />
@@ -19,8 +13,9 @@
     <meta property="og:image" content="https://i.imgur.com/i8n9KYs.png" />
 
     <link rel="icon" href="../buszy/assets/icon-512.png">
+    <meta name="theme-color" content="#121521">
 
-    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.2.0/css/all.css"/>
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.2.0/css/all.css" />
 
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="css/style-buszy.css">
@@ -349,17 +344,18 @@
                 </a>
 
                 <a href="" class="list-group-item list-group-item-action flex-column align-items-start"
-                    id="dark-mode-toggle-desktop">
+                    id="theme-toggle-desktop">
                     <div class="d-flex">
                         <div>
-                            <h5 class="lg-menu"><i class="fa-regular fa-sun-bright"></i> Display: Light</h5>
+                            <h5 class="lg-menu"><i class="fa-regular fa-sun-bright" id="theme-icon-desktop"></i>&nbsp; <span id="theme-text-desktop">Display: Light</span></h5>
                         </div>
                     </div>
                 </a>
 
                 <hr>
 
-                <a href="../index.html" id="other-apps-link" class="list-group-item list-group-item-action flex-column align-items-start">
+                <a href="../index.html" id="other-apps-link"
+                    class="list-group-item list-group-item-action flex-column align-items-start">
                     <div class="d-flex">
                         <div>
                             <h5 class="lg-menu"><i class="fa-regular fa-grid"></i> Other Apps</h5>
@@ -373,7 +369,7 @@
             <hr>
 
             <div style="text-align: center; color: gray; font-size: 14px; margin-top: 1em; margin-bottom: 2em;">
-                Version 3.1.40 (1238)
+                Version 3.1.40 (1320)
             </div>
         </div>
     </section>
