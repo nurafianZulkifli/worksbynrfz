@@ -1,8 +1,30 @@
 /* Dark Mode Functionality for Individual Pages */
 
+// Helper function to get cookie value
+function getCookie(name) {
+    const nameEQ = name + "=";
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.indexOf(nameEQ) === 0) {
+            return cookie.substring(nameEQ.length);
+        }
+    }
+    return null;
+}
+
+// Helper function to set cookie with path for cross-domain access
+function setCookie(name, value, days = 365) {
+    const date = new Date();
+    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    const expires = "expires=" + date.toUTCString();
+    document.cookie = name + "=" + value + ";" + expires + ";path=/";
+}
+
 // Use window properties if they exist from initial script, otherwise create them
 if (typeof window._themePreference === 'undefined') {
-    window._themePreference = localStorage.getItem('theme-preference') || 'system';
+    // Check cookies first (for cross-site sync), then localStorage
+    window._themePreference = getCookie('theme-preference') || localStorage.getItem('theme-preference') || 'system';
 }
 if (typeof window._prefersDark === 'undefined') {
     window._prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -40,6 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function applyTheme(preference) {
         localStorage.setItem('theme-preference', preference);
+        setCookie('theme-preference', preference);
         window._themePreference = preference;
         
         if (preference === 'dark') {
