@@ -39,7 +39,44 @@
     </script>
 
     <style>
+        .wbnrfz-works {
+            padding-top: 6em;
+            padding-bottom: 0em;
+            padding-left: 1.2em;
+            padding-right: 1.2em;
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .wbnrfz-works::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("../img/bg-img/hero-bg.png") top right no-repeat;
+            background-size: cover;
+            filter: blur(15px);
+            z-index: 0;
+        }
+
+        body.dark-mode .wbnrfz-works::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("../img/bg-img/hero-bg-dark.png") top right no-repeat;
+            background-size: cover;
+            filter: blur(15px);
+            z-index: 0;
+        }
+
         .select-apps-container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .wbnrfz-works .container {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -310,7 +347,7 @@
             <!-- Navigation Links -->
             <ul class="navbar-nav" id="navbarNav">
                 <li class="nav-item">
-                    <a href="index.html" class="nav-link active">
+                    <a href="https://nurafianzulkifli.com" class="nav-link active">
                         <i class="fa-sharp fa-regular fa-home"></i>
                         <span>Home</span>
                     </a>
