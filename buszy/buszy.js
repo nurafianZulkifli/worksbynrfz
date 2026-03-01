@@ -45,16 +45,20 @@ document.addEventListener('DOMContentLoaded', function() {
         if (preference === 'dark') {
             document.body.classList.add('dark-mode');
             updateThemeIcon('dark');
+            updateHrefForDarkMode();
         } else if (preference === 'light') {
             document.body.classList.remove('dark-mode');
             updateThemeIcon('light');
+            updateHrefForDarkMode();
         } else if (preference === 'system') {
             if (window._prefersDark) {
                 document.body.classList.add('dark-mode');
                 updateThemeIcon('dark');
+                updateHrefForDarkMode();
             } else {
                 document.body.classList.remove('dark-mode');
                 updateThemeIcon('light');
+                updateHrefForDarkMode();
             }
         }
     }
@@ -81,9 +85,11 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e)
         if (e.matches) {
             document.body.classList.add('dark-mode');
             updateThemeIcon('dark');
+            updateHrefForDarkMode();
         } else {
             document.body.classList.remove('dark-mode');
             updateThemeIcon('light');
+            updateHrefForDarkMode();
         }
     }
 });
