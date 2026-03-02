@@ -203,7 +203,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             servicesContainer.innerHTML = '';
 
             busServices.forEach(service => {
-                // Merge in the live destination code (takes priority over routeName)
+                // If service is live, use the live destination code; otherwise use stored data
                 if (liveDestinationCodes[service.service]) {
                     service.destinationCode = liveDestinationCodes[service.service];
                 }
