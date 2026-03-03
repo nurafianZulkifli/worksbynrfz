@@ -273,7 +273,8 @@
     }
 
     /* Newton connector style - separate capsules with connector */
-    .station-connector .station-code:has(~ .interchange-badge) {
+    .station-connector .station-code:has(~ .interchange-badge),
+    .station-connector-2 .station-code:has(~ .interchange-badge) {
         border-radius: 13.6px / 19.2px;
         border-right: 2px solid #fff;
         position: relative;
@@ -294,7 +295,21 @@
         z-index: -1;
     }
 
-    .station-connector .interchange-badge {
+        .station-connector-2 .station-code:has(~ .interchange-badge)::after {
+        content: '';
+        position: absolute;
+        right: -9px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 10px;
+        height: 10px;
+        background: #005ec8;
+        border-radius: 2px;
+        z-index: -1;
+    }
+
+    .station-connector .interchange-badge,
+    .station-connector-2 .interchange-badge {
         border-radius: 13.6px / 19.2px;
         border: 2px solid #fff;
         border-left: 2px solid #fff;
@@ -313,6 +328,19 @@
         width: 19px;
         height: 10px;
         background: #009645;
+        border-radius: 2px;
+        z-index: -1;
+    }
+
+        .station-connector-2 .interchange-badge::before {
+        content: '';
+        position: absolute;
+        left: -9px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 19px;
+        height: 10px;
+        background: #c41e3a;
         border-radius: 2px;
         z-index: -1;
     }
@@ -797,7 +825,7 @@
                         <div class="station">
                             <div class="station-dot"></div>
                             <div class="station-content">
-                                <div class="station-codes">
+                                <div class="station-codes station-connector-2">
                                     <span class="station-code">DT 11</span>
                                     <span class="interchange-badge mrt-nsl">NS 21</span>
                                 </div>
@@ -893,7 +921,7 @@
                                 <div class="station-content">
                                     <div class="station-codes">
                                         <span class="station-code">DT 19</span>
-                                        <span class="interchange-badge mrt-nsl">NE 4</span>
+                                        <span class="interchange-badge mrt-nel">NE 4</span>
                                     </div>
                                     <div class="station-name">Chinatown</div>
                                 </div>
