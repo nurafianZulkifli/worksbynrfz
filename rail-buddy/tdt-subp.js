@@ -20,7 +20,6 @@ function shouldBeDark() {
 if (shouldBeDark()) {
     document.body.classList.add('dark-mode');
     updateThemeIcon('dark');
-    updateHrefForDarkMode();
 } else {
     updateThemeIcon('light');
 }
