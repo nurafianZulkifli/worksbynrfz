@@ -1,128 +1,153 @@
-// Script to scrape first & last train info for all SMRT stations
-// Usage: node rail-buddy/js/scrape-all-stations.js
+// Script to scrape train timings from LTA train map
+// Scrapes www.lta.gov.sg/content/ltagov/en/map/train.html
+// Users click on different stations to view timings
+// Usage: node rail-buddy/js/scrape-smrt.js
 
 const puppeteer = require('puppeteer');
 const cheerio = require('cheerio');
 const fs = require('fs');
-
-// List of common SMRT stations (can be expanded)
-const testStations = [
-  'jurong-east', 'bukit-batok', 'bukit-gombak', 'choa-chu-kang', 'yew-tee', 'kranji', 'marsiling',
-  'woodlands', 'admiralty', 'sembawang', 'canberra', 'yishun', 'khatib', 'yio-chu-kang', 'ang-mo-kio',
-  'bishan', 'braddell', 'toa-payoh', 'novena', 'newton', 'orchard', 'somerset', 'dhoby-ghaut', 'city-hall',
-  'raffles-place', 'marina-bay', 'marina-south-pier', 'pasir-ris', 'tampines', 'simei', 'tanah-merah',
-  'bedok', 'kembangan', 'eunos', 'paya-lebar', 'aljunied', 'kallang', 'lavender', 'bugis', 'tanjong-pagar', 'outram-park',
-  'tiong-bahru', 'redhill', 'queenstown', 'commonwealth', 'buona-vista', 'dover', 'clementi', 'jurong-west', 'boon-lay', 'pioneer',
-  'joo-koon', 'gul-circle', 'tuas-crescent', 'tuas-west-road', 'tuas-link', 'bras-basah', 'esplanade', 'promenade', 'nicoll-highway',
-  'stadium', 'mountbatten', 'dakota', 'macpherson', 'tai-seng', 'bartley', 'serangoon', 'lorong-chuan', 'marymount', 'caldecott',
-  'botanic-gardens', 'farrer-road', 'holland-village', 'one-north', 'kent-ridge', 'haw-par-villa', 'pasir-panjang', 'labrador-park',
-  'telok-blangah', 'harbourfront', 'woodlands-north', 'woodlands', 'woodlands-south', 'springleaf', 'lentor', 'mayflower', 'bright-hill',
-  'upper-thomson', 'stevens', 'napier', 'orchard-boulevard', 'great-world', 'havelock', 'maxwell', 'shenton-way', 'gardens-by-the-bay',
-  'tanjong-rhu', 'katong-park', 'tanjong-katong', 'marine-parade', 'marine-terrace', 'siglap', 'bayshore', 'south-view', 'keat-hong',
-  'teck-whye', 'bukit-panjang', 'petir', 'pending', 'bangkit', 'fajar', 'segar', 'jelapang', 'senja'
-];
 
 (async () => {
   let browser;
   const allStationData = [];
 
   try {
-    browser = await puppeteer.launch({ headless: 'new' });
+    console.log('🚀 Starting LTA Train Map Scraper...\n');
+    
+    browser = await puppeteer.launch({ 
+      headless: 'new',
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
 
-    for (let i = 0; i < testStations.length; i++) {
-      const stationSlug = testStations[i];
-      console.log(`\n[${i + 1}/${testStations.length}] Scraping ${stationSlug}...`);
+    const page = await browser.newPage();
+    
+    // Load the LTA train map page
+    const mapUrl = 'https://www.lta.gov.sg/content/ltagov/en/map/train.html';
+    console.log(`📍 Loading LTA train map: ${mapUrl}`);
+    
+    await page.goto(mapUrl, { waitUntil: 'networkidle2', timeout: 60000 });
+    
+    // Wait for stations to load
+    await page.waitForSelector('[data-station]', { timeout: 30000 }).catch(() => {
+      console.log('⚠️  Could not find station elements with data-station attribute');
+    });
+
+    // Extract all available stations
+    const stations = await page.evaluate(() => {
+      const stationElements = document.querySelectorAll('[data-station], .station-item, [role="button"][data-name]');
+      const stationList = [];
+      
+      stationElements.forEach((el) => {
+        const stationName = el.getAttribute('data-station') || 
+                           el.getAttribute('data-name') || 
+                           el.textContent?.trim();
+        if (stationName && stationName.length > 0) {
+          stationList.push(stationName);
+        }
+      });
+      
+      // Remove duplicates
+      return [...new Set(stationList)];
+    });
+
+    console.log(`\n✓ Found ${stations.length} stations\n`);
+
+    // Scrape timing data for each station
+    for (let i = 0; i < stations.length; i++) {
+      const stationName = stations[i];
+      console.log(`[${i + 1}/${stations.length}] Clicking station: ${stationName}...`);
 
       try {
-        const page = await browser.newPage();
-        const url = `https://journey.smrt.com.sg/journey/station_info/${stationSlug}/first-and-last-train/`;
+        // Click on the station to load its timings
+        await page.evaluate((name) => {
+          const elements = Array.from(document.querySelectorAll('[data-station], .station-item, [role="button"][data-name]'));
+          const element = elements.find(el => 
+            (el.getAttribute('data-station') === name || 
+             el.getAttribute('data-name') === name || 
+             el.textContent?.trim() === name)
+          );
+          
+          if (element) {
+            element.click();
+          }
+        }, stationName);
 
-        await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
-        const html = await page.content();
-        await page.close();
+        // Wait for timing data to appear
+        await page.waitForTimeout(1000);
 
-        const $ = cheerio.load(html);
-
-        // Get station name from the page
-        const stationName = $('h1#txtStationName').text().trim() || stationSlug;
-
-        // Extract first/last train data
-        const directions = [];
-        const containers = $('div.divTimesDescContainer');
-
-        containers.each((idx, container) => {
-          const $container = $(container);
-          const header = $container.find('div#divTimeHeader').text().trim();
-
-          // Skip empty headers
-          if (!header || header.length === 0) {
-            return;
+        // Extract timing information from the page
+        const timingData = await page.evaluate(() => {
+          const timingContainer = document.querySelector('[id*="timing"], [class*="timing"], [class*="schedule"]');
+          const nextTrainInfo = document.querySelector('[id*="next"], [class*="next-train"]');
+          
+          if (!timingContainer && !nextTrainInfo) {
+            return null;
           }
 
-          const table = $container.find('table');
-          if (table.length === 0) return;
-
-          const directionData = {
-            description: header,
-            first_train: {},
-            last_train: {}
+          const data = {
+            next_train: null,
+            directions: []
           };
 
-          const rows = table.find('tbody tr');
-          rows.each((rowIdx, row) => {
-            if (rowIdx === 0) return; // Skip header
+          // Try to extract next train info
+          if (nextTrainInfo) {
+            data.next_train = nextTrainInfo.textContent?.trim();
+          }
 
-            const $row = $(row);
-            const cells = $row.find('td');
-            if (cells.length >= 3) {
-              const dayLabel = $(cells[0]).text().trim();
-              const firstTime = $(cells[1]).text().trim().replace(/--:--/g, '--');
-              const lastTime = $(cells[2]).text().trim().replace(/--:--/g, '--');
-
-              let dayKey = null;
-              if (dayLabel.includes('Eve')) {
-                dayKey = 'eve_of_public_holidays';
-              } else if (dayLabel.includes('Monday') && dayLabel.includes('Friday')) {
-                dayKey = 'monday_to_friday';
-              } else if (dayLabel.includes('Saturday')) {
-                dayKey = 'saturday';
-              } else if (dayLabel.includes('Sunday') || dayLabel.includes('Public')) {
-                dayKey = 'sunday_public_holidays';
+          // Extract direction-specific timings
+          const directionElements = document.querySelectorAll('[id*="direction"], [class*="direction"]');
+          directionElements.forEach((dir) => {
+            const dirName = dir.querySelector('h3, h4, .direction-name')?.textContent?.trim();
+            const timings = dir.querySelectorAll('[class*="time"], td');
+            
+            const times = [];
+            timings.forEach(timing => {
+              const text = timing.textContent?.trim();
+              if (text && /\d{1,2}:\d{2}/.test(text)) {
+                times.push(text);
               }
+            });
 
-              if (dayKey) {
-                directionData.first_train[dayKey] = firstTime;
-                directionData.last_train[dayKey] = lastTime;
-              }
+            if (dirName || times.length > 0) {
+              data.directions.push({
+                description: dirName || 'Direction ' + (data.directions.length + 1),
+                times: times
+              });
             }
           });
 
-          if (Object.keys(directionData.first_train).length > 0) {
-            directions.push(directionData);
-          }
+          return data;
         });
 
-        allStationData.push({
-          station: stationName,
-          station_slug: stationSlug,
-          directions: directions,
-          scraped_at: new Date().toISOString()
-        });
+        if (timingData) {
+          allStationData.push({
+            station: stationName,
+            timing_data: timingData,
+            scraped_at: new Date().toISOString()
+          });
 
-        console.log(`  ✓ Found ${directions.length} directions`);
+          console.log(`  ✓ Extracted timing data`);
+        } else {
+          console.log(`  ⚠️  No timing data found on page`);
+        }
 
       } catch (error) {
-        console.error(`  ✗ Error scraping ${stationSlug}: ${error.message}`);
+        console.error(`  ✗ Error scraping ${stationName}: ${error.message}`);
       }
+
+      // Small delay between clicks to avoid overwhelming the page
+      await page.waitForTimeout(500);
     }
 
+    await page.close();
+
     // Save the data
-    const outputPath = __dirname + '/../json/smrt-ft-lt.json';
+    const outputPath = __dirname + '/../json/lta-train-timings.json';
     fs.writeFileSync(outputPath, JSON.stringify(allStationData, null, 2));
-    console.log(`\n✓ Saved data for ${allStationData.length} stations to ${outputPath}`);
+    console.log(`\n✅ Saved data for ${allStationData.length} stations to ${outputPath}`);
 
   } catch (error) {
-    console.error('Fatal error:', error.message);
+    console.error('❌ Fatal error:', error.message);
   } finally {
     if (browser) await browser.close();
   }
