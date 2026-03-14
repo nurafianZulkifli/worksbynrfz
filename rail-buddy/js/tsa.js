@@ -98,42 +98,44 @@ document.addEventListener('DOMContentLoaded', function() {
       // Then, process alerts (which can override grey status if trains are operating)
       alerts.forEach(alert => {
         if (alert.Status === 1 || alert.Status === 2) {
-          let foundLine = null;
-          let foundMsg = '';
           if (alert.Message && Array.isArray(alert.Message) && alert.Message.length > 0) {
-            const msg = alert.Message[0].Content || '';
-            foundMsg = linkify(msg);
-            for (const [lineName, code] of Object.entries(lineMap)) {
-              if (msg.includes(lineName) || msg.includes(code)) {
-                foundLine = code;
-                break;
+            // Process each message separately
+            alert.Message.forEach(messageObj => {
+              const msg = messageObj.Content || '';
+              const foundMsg = linkify(msg);
+              let foundLine = null;
+              
+              for (const [lineName, code] of Object.entries(lineMap)) {
+                if (msg.includes(lineName) || msg.includes(code)) {
+                  foundLine = code;
+                  break;
+                }
               }
-            }
-          }
-          if (foundLine) {
-            const items = document.querySelectorAll('.custom-list-item');
-            items.forEach(item => {
-              const img = item.querySelector('img');
-              if (img && img.alt === foundLine) {
-                const icon = item.querySelector('.status-icon');
-                if (icon) {
-                  if (alert.Status === 1) {
-                    icon.style.background = '#ffb300'; // amber
-                    icon.innerHTML = '<i class="fa-regular fa-triangle-exclamation"></i>'; // warning sign
-                    icon.style.color = '#000';
-                  } else if (alert.Status === 2) {
-                    icon.style.background = '#e53935'; // red
-                    icon.innerHTML = '<i class="fa-regular fa-diamond-exclamation"></i>'; // critical sign
-                    icon.style.color = '#fff';
+              
+              if (foundLine && foundMsg) {
+                const items = document.querySelectorAll('.custom-list-item');
+                items.forEach(item => {
+                  const img = item.querySelector('img');
+                  if (img && img.alt === foundLine) {
+                    const icon = item.querySelector('.status-icon');
+                    if (icon) {
+                      if (alert.Status === 1) {
+                        icon.style.background = '#ffb300'; // amber
+                        icon.innerHTML = '<i class="fa-regular fa-triangle-exclamation"></i>'; // warning sign
+                        icon.style.color = '#000';
+                      } else if (alert.Status === 2) {
+                        icon.style.background = '#e53935'; // red
+                        icon.innerHTML = '<i class="fa-regular fa-diamond-exclamation"></i>'; // critical sign
+                        icon.style.color = '#fff';
+                      }
+                    }
+                    // Show alert message below the item
+                    const msgBox = document.createElement('div');
+                    msgBox.className = 'alert-message-box';
+                    msgBox.innerHTML = `<span class=\"alert-message-content\">${foundMsg}</span>`;
+                    item.parentNode.insertBefore(msgBox, item.nextSibling);
                   }
-                }
-                // Show alert message below the item if not already present
-                if (foundMsg && !item.nextElementSibling?.classList.contains('alert-message-box')) {
-                  const msgBox = document.createElement('div');
-                  msgBox.className = 'alert-message-box';
-                  msgBox.innerHTML = `<span class=\"alert-message-content\">${foundMsg}</span>`;
-                  item.parentNode.insertBefore(msgBox, item.nextSibling);
-                }
+                });
               }
             });
           }
