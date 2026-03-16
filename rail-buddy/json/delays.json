@@ -1,4 +1,17 @@
 [
+        {
+        "type": "Disruption",
+        "title": "SK Minor Delay - Inner Loop",
+        "line": "SK",
+        "from": "Renjong",
+        "to": "Cheng Lim",
+        "start": "2026-03-16",
+        "end": "2026-03-16",
+        "status": "Resolved",
+        "tags": [
+            "Delay"
+        ]
+    },
     
     {
         "type": "Disruption",
