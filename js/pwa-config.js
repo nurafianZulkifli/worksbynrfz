@@ -33,10 +33,19 @@ window.PWAConfig = (() => {
       manifestPath: basePath + 'rail-buddy/manifest.json',
       cacheName: 'rail-buddy-cache-v1'
     },
+
+    main: {
+      appName: 'Works by NRFZ',
+      swPath: basePath + 'service-worker.js',
+      scope: basePath,
+      manifestPath: basePath + 'manifest.json',
+      cacheName: 'main-cache-v1'
+    },
     
     getConfig: function(app) {
       if (app === 'buszy') return this.buszy;
       if (app === 'rail-buddy') return this.railBuddy;
+      if (app === 'main') return this.main;
       return null;
     }
   };

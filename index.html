@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <meta charset="UTF-8">
     <meta name="description" content="Select app page for Works by NRFZ">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="57TuruPNu5wqSSia_cUehl5t9Gh1AbxrHNPcMiFx-aQ" />
@@ -12,12 +13,19 @@
     <meta property="og:image" content="https://i.imgur.com/i8n9KYs.png" />
 
     <meta name="theme-color" content="#121521">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Works by NRFZ">
 
+    <link rel="manifest" href="./manifest.json">
     <link rel="icon" href="./img/core-img/favicon.png">
+    <link rel="apple-touch-icon" href="./img/core-img/icon-192.png">
 
     <script src="https://kit.fontawesome.com/965e82ac01.js" crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/pwa-styles.css">
     <link rel="stylesheet" href="css/style-mobNav.css">
     <link rel="stylesheet" href="css/style-breakpoints.css">
     <link rel="stylesheet" href="css/dark-mode.css">
@@ -452,6 +460,13 @@
 
     <script src="js/app-detector.js"></script>
 
+    <script src="js/pwa-config.js"></script>
+
+    <script src="js/pwa-helper.js"></script>
+
+    <script src="js/pwa-migration.js"></script>
+
+    <script src="js/pwa-init-main.js"></script>
 
 
 
