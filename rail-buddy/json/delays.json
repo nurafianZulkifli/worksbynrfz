@@ -1,5 +1,5 @@
 [
-        {
+    {
         "type": "Disruption",
         "title": "SK Minor Delay - Inner Loop",
         "line": "SK",
@@ -12,7 +12,19 @@
             "Delay"
         ]
     },
-    
+    {
+        "type": "Disruption",
+        "title": "DTL Minor Delay - Bukit Panjang - Botanic Gardens",
+        "line": "DTL",
+        "from": "Bukit Panjang",
+        "to": "Botanic Gardens",
+        "start": "2026-03-13",
+        "end": "2026-03-13",
+        "status": "Resolved",
+        "tags": [
+            "Delay"
+        ]
+    },
     {
         "type": "Disruption",
         "title": "CCL Minor Delay - Bishan to Buona Vista",
@@ -26,7 +38,6 @@
             "Delay"
         ]
     },
-
     {
         "type": "Disruption",
         "title": "NSL Minor delay - Ang Mo Kio to Woodlands",
@@ -41,7 +52,6 @@
             "Train Fault"
         ]
     },
-
     {
         "type": "Disruption",
         "title": "CCL Delay - HarbourFront to Paya Lebar (Public Report)",
