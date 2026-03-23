@@ -280,20 +280,21 @@
 
     body.dark-mode .ib-time.arrived {
         animation: pulse-indicator-dark 2s infinite;
-        border-color: #7db603;
+        border: 2px solid #7db603;
+        border-radius: 10px;
     }
 
     @keyframes pulse-indicator-dark {
 
         0%,
         100% {
-            border-color: #7db603;
-            box-shadow: 0 0 3px rgba(125, 182, 3, 0.3);
+            border-color: #b0e63c;
+            box-shadow: 0 0 3px #b0e63c6e;
         }
 
         50% {
             border-color: #6ea100;
-            box-shadow: 0 0 8px rgba(110, 161, 0, 0.5);
+            box-shadow: 0 0 8px #cefa6e8a;
         }
     }
 
