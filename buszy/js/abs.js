@@ -219,6 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     const loadingMessageElement = document.getElementById('loading-message');
+    if (!loadingMessageElement) return;
     let messageIndex = 0;
 
     // Function to update the loading message

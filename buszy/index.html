@@ -20,7 +20,7 @@
     <link rel="manifest" href="./manifest.json">
     <link rel="icon" href="./assets/icon-192.png" type="image/png">
     <link rel="apple-touch-icon" href="./assets/icon-192.png">
-    <meta name="theme-color" content="#007bff">
+
 
     <script src="https://kit.fontawesome.com/965e82ac01.js" crossorigin="anonymous"></script>
 
@@ -46,7 +46,63 @@
     #cv-bat {
         background-size: cover;
         background-position: center;
-        height: 50vh;
+        height: 70vh;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    #cv-bat::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 100%;
+        width: 100vw;
+        margin-left: calc(-50vw + 50%);
+        background: linear-gradient(to bottom,
+                rgba(236, 236, 234, 0) 0%,
+                rgba(236, 236, 234, 0) 15%,
+                rgba(236, 236, 234, 0.3) 35%,
+                rgba(236, 236, 234, 0.6) 50%,
+                rgba(236, 236, 234, 0.85) 65%,
+                rgba(236, 236, 234, 1) 80%,
+                rgba(236, 236, 234, 1) 100%);
+        -webkit-backdrop-filter: blur(25px);
+        backdrop-filter: blur(25px);
+        -webkit-mask-image: linear-gradient(to top,
+                black 0%,
+                black 40%,
+                rgba(0, 0, 0, 0.6) 60%,
+                rgba(0, 0, 0, 0.2) 80%,
+                transparent 100%);
+        mask-image: linear-gradient(to top,
+                black 0%,
+                black 53%,
+                rgba(0, 0, 0, 0.6) 60%,
+                rgba(0, 0, 0, 0.2) 80%,
+                transparent 100%);
+        z-index: -1;
+    }
+
+    body.dark-mode #cv-bat::before {
+        background: linear-gradient(to bottom,
+                rgba(18, 21, 33, 0) 0%,
+                rgba(18, 21, 33, 0) 15%,
+                rgba(18, 21, 33, 0.3) 35%,
+                rgba(18, 21, 33, 0.6) 50%,
+                rgba(18, 21, 33, 0.85) 65%,
+                rgba(18, 21, 33, 1) 80%,
+                rgba(18, 21, 33, 1) 100%);
+    }
+
+    #cv-bat .container {
+        position: relative;
+        z-index: 2;
+        width: 100%;
     }
 
     .footer {
@@ -110,15 +166,393 @@
         align-items: center;
     }
 
+    /* Cover Search Wrapper */
+    .cover-search-wrapper {
+        background: transparent;
+        padding: 0;
+        padding-top: 40px;
+        max-width: 100%;
+        margin: 0 auto;
+        text-align: center;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    body.dark-mode .cover-search-wrapper {
+        background: transparent;
+    }
+
+    .cover-title {
+        color: #fff;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 30px;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        display: none;
+    }
+
+    /* Search Bar Styles */
+    .search-container {
+        width: 100%;
+        margin-bottom: 0;
+        margin-top: 0;
+        max-width: 600px;
+        padding: 30px 40px 20px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .search-box {
+        width: 100%;
+        max-width: 500px;
+        padding: 12px 20px;
+        padding-left: 40px;
+        font-size: 1rem;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 25px;
+        background: rgba(255, 255, 255, 0.85) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg>') no-repeat;
+        background-position: 12px center;
+        transition: all 0.3s ease;
+        color: #333;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    .search-box::placeholder {
+        color: #999;
+    }
+
+    .search-box:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2), 0 4px 12px rgba(0, 0, 0, 0.15);
+        background-color: #fff;
+    }
+
+    body.dark-mode .search-box {
+        background-color: #1c1f2b6e;
+        border: 2px solid #525872;
+        color: #e0e0e0;
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%23a0a0a0" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg>');
+    }
+
+    body.dark-mode .search-box::placeholder {
+        color: #888;
+    }
+
+    /* Category Tabs Styles */
+    .category-tabs {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 0;
+        justify-content: center;
+        flex-wrap: wrap;
+        padding: 15px 40px 0;
+        width: 100%;
+    }
+
+    .category-tab {
+        padding: 12px 20px;
+        border: none;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
+        background: #fff;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.95rem;
+        font-weight: 500;
+        color: #000;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        border-radius: 24px;
+
+    }
+
+    .category-tab:hover {
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    .category-tab.active {
+        background: linear-gradient(84deg, rgba(81, 167, 190, 1) 0%, rgba(53, 64, 117, 1) 100%) !important;
+        color: #fff;
+    }
+
+    body.dark-mode .category-tab {
+        background-color: #393e53;
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    body.dark-mode .category-tab:hover {
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    body.dark-mode .category-tab.active {
+        color: #fff;
+    }
+
+    .category-tab i {
+        font-size: 1rem;
+    }
+
+    .pinned {
+        /* margin-top: 2em; */
+        margin-top: -9rem;
+        margin-bottom: 2em;
+        position: relative;
+        z-index: 10;
+    }
+
+    .no-results {
+        text-align: center;
+        padding: 40px 20px;
+        color: #666;
+    }
+
+    body.dark-mode .no-results {
+        color: #a0a0a0;
+    }
+
+    /* Nearby Bus Stops Styles */
+    .bus-stop {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: 1px solid #ddd;
+        border-radius: 25px;
+        background-color: #fff;
+        padding-top: 0.96em;
+        padding-bottom: 0.96em;
+    }
+
+    body.dark-mode .bus-stop {
+        background-color: #1c1f2b;
+        border: 1px solid #2b2b2b33;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .bus-stop-details {
+        padding-right: 1em;
+    }
+
+    .road-name {
+        font-size: 18px;
+    }
+
+    .distance {
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    body.dark-mode .distance,
+    body.dark-mode .road-name {
+        color: #e0e0e0;
+    }
+
+    .btn-rfetch {
+        position: relative;
+        z-index: 1;
+        min-width: 50px;
+        width: auto;
+        height: auto;
+        line-height: 40px;
+        font-size: 14px;
+        font-weight: 500;
+        display: inline-block;
+        padding: 0 30px;
+        text-align: center;
+        text-transform: capitalize;
+        color: #fff;
+        border-radius: 60px;
+        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        border: none;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 12px rgba(0, 0, 0, 0.1);
+        background-color: #bb2d3b;
+    }
+
+    .btn-rfetch:focus,
+    .btn-rfetch:hover {
+        font-weight: 500;
+        background-color: #6d99c0 !important;
+        color: #fff;
+        transform: translateY(-2px);
+    }
+
+    /* Tab switching */
+    .tabs-switcher {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #ddd;
+    }
+
+    .tab-button {
+        padding: 12px 24px;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 500;
+        color: #666;
+        border-bottom: 3px solid transparent;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .tab-button:hover {
+        color: #007bff;
+    }
+
+    .tab-button.active {
+        color: #007bff;
+        border-bottom-color: #007bff;
+    }
+
+    body.dark-mode .tab-button {
+        color: #a0a0a0;
+    }
+
+    body.dark-mode .tab-button:hover,
+    body.dark-mode .tab-button.active {
+        color: #4a90e2;
+    }
+
+    body.dark-mode .tabs-switcher {
+        border-bottom-color: #444;
+    }
+
+    .tab-content {
+        display: none;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+
     @media (max-width: 768px) {
-        .pin-msg {
-            flex-direction: column;
+        #cv-bat {
+            height: 50vh;
         }
+
+        .cover-search-wrapper {
+            padding: 0;
+        }
+
+        .search-container {
+            padding: 20px 20px 15px;
+            max-width: 100%;
+        }
+
+        .search-box {
+            max-width: 100%;
+            padding: 10px 16px;
+            padding-left: 36px;
+            font-size: 0.9rem;
+        }
+
+        .category-tabs {
+            padding: 10px 12px 10px;
+            gap: 10px;
+            overflow-x: auto;
+        }
+
+        .category-tab {
+            padding: 8px 12px;
+            font-size: 0.95rem;
+        }
+
+
+        .pin-msg {
+            flex-direction: row;
+        }
+
+        .bus-stop-info {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .bus-stop-details {
+            padding-right: 1em;
+            padding-top: 0.5em;
+        }
+
+        .bus-stop-description,
+        body.dark-mode .bus-stop-description {
+            margin-left: 0px;
+            margin-top: 5px;
+            font-size: 15px;
+        }
+
+        .bus-stop-description span,
+        body.dark-mode .bus-stop-description span {
+            margin-left: 0px;
+            margin-top: 5px;
+            font-size: 15px;
+        }
+
+        body.dark-mode .distance,
+        .distance {
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        body.dark-mode .road-name,
+        .road-name {
+            font-size: 15px;
+        }
+
+        .tab-button {
+            padding: 10px 16px;
+            font-size: 0.9rem;
+        }
+
+        .pinned {
+            margin-top: -7rem;
+            margin-bottom: 2em;
+            position: relative;
+            z-index: 10;
+        }
+
+        .container {
+            padding: 0 15px;
+
+        }
+
     }
 
     @media (max-width: 545px) {
         #cv-bat {
-            height: 35vh;
+            height: 45vh;
+        }
+
+        .cover-search-wrapper {
+            padding: 0;
+        }
+
+        .search-container {
+            padding: 15px 15px 12px;
+            max-width: 100%;
+        }
+
+        .search-box {
+            max-width: 100%;
+            padding: 9px 14px;
+            padding-left: 32px;
+            font-size: 0.85rem;
+        }
+
+        .category-tabs {
+            padding: 10px 12px 10px;
+            gap: 10px;
+            overflow-x: auto;
+        }
+
+        .category-tab {
+            padding: 8px 12px;
+            font-size: 0.75rem;
         }
 
         .bus-stop-info {
@@ -139,12 +573,21 @@
             margin-bottom: 0.5em;
             font-weight: bolder;
             color: #3b3b3b;
-            text-align: center;
+            text-align: left;
         }
 
         .bus-stop-code-text,
         body.dark-mode .bus-stop-code-text {
-            font-size: 17px;
+            font-size: 14px;
+        }
+    }
+
+    @media (max-width: 344px) {
+        .pinned {
+            margin-top: -5rem;
+            margin-bottom: 2em;
+            position: relative;
+            z-index: 10;
         }
     }
 </style>
@@ -160,20 +603,20 @@
             <ul class="navbar-nav" id="navbarNav">
                 <li class="nav-item">
                     <a href="#" class="nav-link active">
-                        <i class="fa-sharp fa-regular fa-thumbtack-angle"></i>
-                        <span>Pinned</span>
+                        <i class="fa-sharp fa-regular fa-house"></i>
+                        <span>Home</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="./nbs.html" class="nav-link">
-                        <i class="fa-regular fa-location-dot"></i>
-                        <span>Nearby</span>
+                    <a href="./first-last.html" class="nav-link">
+                        <i class="fa-regular fa-clock"></i>
+                        <span>Timings</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="./abs.html" class="nav-link">
-                        <i class="fa-regular fa-magnifying-glass"></i>
-                        <span>Search</span>
+                    <a href="./ann.html" class="nav-link">
+                        <i class="fa-regular fa-bullhorn"></i>
+                        <span>Announcements</span>
                     </a>
                 </li>
                 <li class="nav-item ">
@@ -192,25 +635,22 @@
             <li class="active">
                 <a href="#">
                     <span class="icon">
-                        <i class="fa-sharp fa-regular fa-thumbtack-angle"></i>
+                        <i class="fa-sharp fa-regular fa-house"></i>
                     </span>
-                    <span class="label">Pinned</span>
                 </a>
             </li>
             <li>
-                <a href="./nbs.html">
+                <a href="./first-last.html">
                     <span class="icon">
-                        <i class="fa-regular fa-location-dot"></i>
+                        <i class="fa-regular fa-clock"></i>
                     </span>
-                    <span class="label">Nearby</span>
                 </a>
             </li>
             <li>
-                <a href="./abs.html">
+                <a href="./ann.html">
                     <span class="icon">
-                        <i class="fa-regular fa-magnifying-glass"></i>
+                        <i class="fa-regular fa-bullhorn"></i>
                     </span>
-                    <span class="label">Search</span>
                 </a>
             </li>
             <li>
@@ -218,7 +658,6 @@
                     <span class="icon">
                         <i class="fa-regular fa-bars"></i>
                     </span>
-                    <span class="label">Menu</span>
                 </a>
             </li>
         </ul>
@@ -228,85 +667,174 @@
 
     <!-- Cover Header -->
     <section class="breadcrumb-area-eicw-cover bg-img bg-overlay" id="cv-bat">
-        <div class="container h-100">
-            <div class="row h-100 align-items-center">
+        <div class="container">
+            <div class="row h-100 align-items-center justify-content-center">
                 <div class="col-12">
+                    <div class="cover-search-wrapper">
+                        <h2><i class="fa-regular fa-location-pin"></i>&nbsp;Bus Stops</h2>
+
+                        <div class="search-container">
+                            <input type="text" class="search-box" id="bus-stop-search"
+                                placeholder="Search bus stops by name or code...">
+                        </div>
+
+                        <div class="category-tabs">
+                            <button class="category-tab active" data-category="pinned">
+                                <i class="fa-sharp fa-regular fa-thumbtack-angle"></i>&nbsp;
+                                Pinned
+                            </button>
+                            <button class="category-tab" data-category="nearby">
+                                <i class="fa-regular fa-location-dot"></i>&nbsp;
+                                Nearby
+                            </button>
+                            <button class="category-tab" data-category="all">
+                                <i class="fa-regular fa-grid"></i>&nbsp;
+                                All
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section class="pinned" id="pinned">
-            <div class="container">
-                <h2><i class="fa-regular fa-location-pin"></i>&nbsp;Pinned Bus Stops</h2>
-                <!-- Section Contents -->
+    <section class="pinned" id="pinned">
+        <div class="container">
+            <!-- All Tab (Search all bus stops) -->
+            <div id="all-content" class="tab-content">
+                <section class="about-me-summ clearfix" style="padding-bottom: 5em;">
+                    <div class="list-group">
+                        <p class="pin-msg" id="loading-message"
+                            style="display: flex; align-items: center; justify-content: center;">
+                            <span class="spinner" role="status" style="margin-right: 1em;"></span>Loading Data...
+                        </p>
+                    </div>
+                    <div class="pagination-buttons">
+                        <button id="prev-button" class="btn pw-btn-prev btn-2 mt-15"
+                            style="display: none;">Previous</button>
+                        <button id="next-button" class="btn pw-btn-next btn-2 mt-15"
+                            style="display: none;">Next</button>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Pinned Tab -->
+            <div id="pinned-content" class="tab-content active">
                 <section class="about-me-summ clearfix" style="padding-bottom: 5em;">
                     <div id="bookmarks-container" class="list-group"></div>
                 </section>
             </div>
-        </section>
-        </main>
 
-        <script type="text/javascript" id="cookiebanner" src="../js/cookies-banner.js" data-position="bottom" data-bg="#f2f3e5"
-            data-fg="#000" data-font-family="Onest, sans-serif" data-zindex="12345111111"
-            data-message="This website uses cookies to provide necessary site functionality and to improve your experience. By using this website, you agree to our use of cookies.">
+            <!-- Nearby Tab -->
+            <div id="nearby-content" class="tab-content">
+                <section class="about-me-summ clearfix" style="padding-bottom: 5em;">
+
+                    <div id="bus-stops"></div>
+
+                </section>
+            </div>
+        </div>
+    </section>
+    </main>
+
+    <script type="text/javascript" id="cookiebanner" src="../js/cookies-banner.js" data-position="bottom"
+        data-bg="#f2f3e5" data-fg="#000" data-font-family="Onest, sans-serif" data-zindex="12345111111"
+        data-message="This website uses cookies to provide necessary site functionality and to improve your experience. By using this website, you agree to our use of cookies.">
         </script>
 
-        <script src="./js/mob-navtabs.js"></script>
+    <script src="./js/mob-navtabs.js"></script>
 
-        <script src="./buszy.js"></script>
+    <script src="./js/mob-navtabs-tooltip.js"></script>
 
-        <script src="../js/jquery.min.js"></script>
+    <script src="./buszy-subp.js"></script>
 
-        <script src="../js/popper.min.js"></script>
+    <script src="../js/jquery.min.js"></script>
 
-        <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/popper.min.js"></script>
 
-        <script src="../js/pw.bundle.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
 
-        <script src="../js/default-assets/active.js"></script>
+    <script src="../js/pw.bundle.js"></script>
 
-        <script src="../js/isotope.pkgd.min.js"></script>
+    <script src="../js/default-assets/active.js"></script>
 
-        <script src="../js/dstabs.js"></script>
+    <script src="../js/isotope.pkgd.min.js"></script>
 
-        <script src="../js/utils.js"></script>
+    <script src="../js/dstabs.js"></script>
 
-        <script src="../js/pwa-config.js"></script>
+    <script src="../js/utils.js"></script>
 
-        <script>
-            if (window.PWAConfig) {
-                const basePath = window.PWAConfig.basePath;
-                const bgElement = document.getElementById('cv-bat');
-                
-                // Check dark mode preference using the same logic as buszy.js
-                const _themePreference = localStorage.getItem('theme-preference') || 'system';
-                const _prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                let isDarkMode = false;
-                
-                if (_themePreference === 'dark') {
-                    isDarkMode = true;
-                } else if (_themePreference === 'light') {
-                    isDarkMode = false;
-                } else if (_themePreference === 'system') {
-                    isDarkMode = _prefersDark;
-                }
-                
-                const imageName = isDarkMode ? 'hero-buszy-dark.png' : 'hero-buszy.png';
-                const imageUrl = basePath + 'img/bg-img/' + imageName;
-                
-                if (bgElement) {
-                    bgElement.style.backgroundImage = `url('${imageUrl}')`;
-                }
+    <script src="../js/pwa-config.js"></script>
+
+    <script src="./js/nbs.js"></script>
+
+    <script>
+        if (window.PWAConfig) {
+            const basePath = window.PWAConfig.basePath;
+            const bgElement = document.getElementById('cv-bat');
+
+            // Check dark mode preference using the same logic as buszy.js
+            const _themePreference = localStorage.getItem('theme-preference') || 'system';
+            const _prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            let isDarkMode = false;
+
+            if (_themePreference === 'dark') {
+                isDarkMode = true;
+            } else if (_themePreference === 'light') {
+                isDarkMode = false;
+            } else if (_themePreference === 'system') {
+                isDarkMode = _prefersDark;
             }
-        </script>
 
-        <script src="../js/pwa-helper.js"></script>
+            const imageName = isDarkMode ? 'hero-buszy-dark.png' : 'hero-buszy.png';
+            const imageUrl = basePath + 'img/bg-img/' + imageName;
 
-        <script src="../js/pwa-migration.js"></script>
+            if (bgElement) {
+                bgElement.style.backgroundImage = `url('${imageUrl}')`;
+            }
+        }
+    </script>
 
-        <script src="./js/pwa-init.js"></script>
+    <script src="../js/pwa-helper.js"></script>
 
-        <script src="./js/buszy-main.js"></script>
+    <script src="../js/pwa-migration.js"></script>
+
+    <script src="./js/pwa-init.js"></script>
+
+    <script src="./js/buszy-main.js"></script>
+
+    <script>
+        // Category tab switching functionality
+        const categoryTabs = document.querySelectorAll('.category-tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        categoryTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const category = tab.getAttribute('data-category');
+
+                // Remove active class from all tabs and contents
+                categoryTabs.forEach(t => t.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+
+                // Add active class to clicked tab and corresponding content
+                tab.classList.add('active');
+                const contentElement = document.getElementById(category + '-content');
+                if (contentElement) {
+                    contentElement.classList.add('active');
+                }
+            });
+        });
+
+        // Add hidden class styling for filtered items
+        const style = document.createElement('style');
+        style.textContent = '.list-group-item.hidden { display: none; }';
+        document.head.appendChild(style);
+    </script>
+
+    <!-- Include scripts for all three functionalities -->
+    <script src="./js/abs.js"></script>
+    <script src="./js/pinned.js"></script>
+    <script src="./js/nbs.js"></script>
 
 </body>
 

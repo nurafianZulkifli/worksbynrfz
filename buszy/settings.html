@@ -15,7 +15,7 @@
     <link rel="manifest" href="./manifest.json">
 
     <link rel="icon" href="../buszy/assets/icon-512.png">
-    <meta name="theme-color" content="#121521">
+
 
     <script src="https://kit.fontawesome.com/965e82ac01.js" crossorigin="anonymous"></script>
 
@@ -123,6 +123,10 @@
                     <a href="menu.html"><i class="fa-regular fa-bars"></i>
                     </a>
                 </li>
+                <li class="breadcrumb-item">
+                    <a href="#"><i class="fa-regular fa-gear"></i>
+                    </a>
+                </li>
             </ol>
         </nav>
     </div>
@@ -136,25 +140,25 @@
             <!-- Navigation Links -->
             <ul class="navbar-nav" id="navbarNav">
                 <li class="nav-item">
-                    <a href="index.html" class="nav-link">
-                        <i class="fa-sharp fa-regular fa-thumbtack-angle"></i>
-                        <span>Pinned</span>
+                    <a href="#" class="nav-link">
+                        <i class="fa-sharp fa-regular fa-house"></i>
+                        <span>Home</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="nbs.html" class="nav-link">
-                        <i class="fa-regular fa-location-dot"></i>
-                        <span>Nearby</span>
+                    <a href="./first-last.html" class="nav-link">
+                        <i class="fa-regular fa-clock"></i>
+                        <span>Timings</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="abs.html" class="nav-link">
-                        <i class="fa-regular fa-magnifying-glass"></i>
-                        <span>Search</span>
+                    <a href="./ann.html" class="nav-link">
+                        <i class="fa-regular fa-bullhorn"></i>
+                        <span>Announcements</span>
                     </a>
                 </li>
                 <li class="nav-item ">
-                    <a href="menu.html" class="nav-link active">
+                    <a href="./menu.html" class="nav-link active">
                         <i class="fa-regular fa-bars"></i>
                         <span>Menu</span>
                     </a>
@@ -168,35 +172,31 @@
     <nav class="mobile-bottom-nav">
         <ul>
             <li>
-                <a href="index.html">
+                <a href="#">
                     <span class="icon">
-                        <i class="fa-sharp fa-regular fa-thumbtack-angle"></i>
+                        <i class="fa-sharp fa-regular fa-house"></i>
                     </span>
-                    <span class="label">Pinned</span>
                 </a>
             </li>
             <li>
-                <a href="nbs.html">
+                <a href="./first-last.html">
                     <span class="icon">
-                        <i class="fa-regular fa-location-dot"></i>
+                        <i class="fa-regular fa-clock"></i>
                     </span>
-                    <span class="label">Nearby</span>
                 </a>
             </li>
             <li>
-                <a href="abs.html">
+                <a href="./ann.html">
                     <span class="icon">
-                        <i class="fa-regular fa-magnifying-glass"></i>
+                        <i class="fa-regular fa-bullhorn"></i>
                     </span>
-                    <span class="label">Search</span>
                 </a>
             </li>
             <li class="active">
-                <a href="menu.html">
+                <a href="./menu.html">
                     <span class="icon">
                         <i class="fa-regular fa-bars"></i>
                     </span>
-                    <span class="label">Menu</span>
                 </a>
             </li>
         </ul>
@@ -221,6 +221,10 @@
                                 </li>
                                 <li class="breadcrumb-item">
                                     <a href="menu.html"><i class="fa-regular fa-bars"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="#"><i class="fa-regular fa-gear"></i>
                                     </a>
                                 </li>
                             </ol>
@@ -281,7 +285,9 @@
                     <button id="import-data-btn" class="btn btn-install">Import Data</button><br>
                     <p class="fetch">Restore your previously exported data or migrate from another device.</p>
                     <input type="file" id="import-file-input" accept=".json" style="display: none;">
-                    <div id="import-message" style="margin-top: 1rem; display: none; padding: 0.75rem; border-radius: 5px; font-size: 14px;"></div>
+                    <div id="import-message"
+                        style="margin-top: 1rem; display: none; padding: 0.75rem; border-radius: 5px; font-size: 14px;">
+                    </div>
                 </li>
             </ul>
 
@@ -305,6 +311,8 @@
         </script>
 
     <script src="js/mob-navtabs.js"></script>
+
+    <script src="js/mob-navtabs-tooltip.js"></script>
 
     <script src="buszy-subp.js"></script>
 

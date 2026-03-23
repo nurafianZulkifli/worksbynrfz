@@ -13,7 +13,7 @@
     <meta property="og:image" content="https://i.imgur.com/i8n9KYs.png" />
 
     <link rel="icon" href="../buszy/assets/icon-512.png">
-    <meta name="theme-color" content="#121521">
+
 
     <script src="https://kit.fontawesome.com/965e82ac01.js" crossorigin="anonymous"></script>
 
@@ -183,7 +183,7 @@
                     </a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a href="menu.html"><i class="fa-regular fa-bars"></i>
+                    <a href="#"><i class="fa-regular fa-bars"></i>
                     </a>
                 </li>
             </ol>
@@ -194,30 +194,30 @@
     <nav class="navbar-container">
         <div class="navbar">
             <!-- Logo -->
-            <a href="./"><img src="assets/logo.png" alt="logo" class="logo"></a>
+            <a href="index.html"><img src="assets/logo.png" alt="logo" class="logo"></a>
 
             <!-- Navigation Links -->
             <ul class="navbar-nav" id="navbarNav">
                 <li class="nav-item">
-                    <a href="./" class="nav-link">
-                        <i class="fa-sharp fa-regular fa-thumbtack-angle"></i>
-                        <span>Pinned</span>
+                    <a href="index.html" class="nav-link">
+                        <i class="fa-sharp fa-regular fa-house"></i>
+                        <span>Home</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="nbs.html" class="nav-link">
-                        <i class="fa-regular fa-location-dot"></i>
-                        <span>Nearby</span>
+                    <a href="./first-last.html" class="nav-link">
+                        <i class="fa-regular fa-clock"></i>
+                        <span>Timings</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="abs.html" class="nav-link">
-                        <i class="fa-regular fa-magnifying-glass"></i>
-                        <span>Search</span>
+                    <a href="./ann.html" class="nav-link">
+                        <i class="fa-regular fa-bullhorn"></i>
+                        <span>Announcements</span>
                     </a>
                 </li>
                 <li class="nav-item ">
-                    <a href="menu.html" class="nav-link active">
+                    <a href="#" class="nav-link active">
                         <i class="fa-regular fa-bars"></i>
                         <span>Menu</span>
                     </a>
@@ -231,35 +231,31 @@
     <nav class="mobile-bottom-nav">
         <ul>
             <li>
-                <a href="./">
+                <a href="index.html">
                     <span class="icon">
-                        <i class="fa-sharp fa-regular fa-thumbtack-angle"></i>
+                        <i class="fa-sharp fa-regular fa-house"></i>
                     </span>
-                    <span class="label">Pinned</span>
                 </a>
             </li>
             <li>
-                <a href="nbs.html">
+                <a href="./first-last.html">
                     <span class="icon">
-                        <i class="fa-regular fa-location-dot"></i>
+                        <i class="fa-regular fa-clock"></i>
                     </span>
-                    <span class="label">Nearby</span>
                 </a>
             </li>
             <li>
-                <a href="abs.html">
+                <a href="./ann.html">
                     <span class="icon">
-                        <i class="fa-regular fa-magnifying-glass"></i>
+                        <i class="fa-regular fa-bullhorn"></i>
                     </span>
-                    <span class="label">Search</span>
                 </a>
             </li>
             <li class="active">
-                <a href="menu.html">
+                <a href="./menu.html">
                     <span class="icon">
                         <i class="fa-regular fa-bars"></i>
                     </span>
-                    <span class="label">Menu</span>
                 </a>
             </li>
         </ul>
@@ -310,14 +306,6 @@
     <section class="about-me-summ clearfix" style="padding-bottom: 5em;">
         <div class="container">
             <div class="list-group">
-                <a href="ann.html" class="list-group-item list-group-item-action flex-column align-items-start">
-                    <div class="d-flex">
-                        <div>
-                            <h5 class="lg-menu"><i class="fa-regular fa-bullhorn"></i> Announcements</h5>
-                        </div>
-                    </div>
-                </a>
-
                 <a href="https://www.lta.gov.sg/content/ltagov/en/map/fare-calculator.html"
                     class="list-group-item list-group-item-action flex-column align-items-start">
                     <div class="d-flex">
@@ -327,13 +315,16 @@
                     </div>
                 </a>
 
-                <a href="first-last.html" class="list-group-item list-group-item-action flex-column align-items-start">
+                <a href="../index.html" id="other-apps-link"
+                    class="list-group-item list-group-item-action flex-column align-items-start">
                     <div class="d-flex">
                         <div>
-                            <h5 class="lg-menu"><i class="fa-regular fa-clock"></i> First &amp; Last Bus</h5>
+                            <h5 class="lg-menu"><i class="fa-regular fa-grid"></i> Other Apps</h5>
                         </div>
                     </div>
                 </a>
+
+                <hr>
 
                 <a href="settings.html" class="list-group-item list-group-item-action flex-column align-items-start">
                     <div class="d-flex">
@@ -347,18 +338,9 @@
                     id="theme-toggle-desktop">
                     <div class="d-flex">
                         <div>
-                            <h5 class="lg-menu"><i class="fa-regular fa-sun-bright" id="theme-icon-desktop"></i>&nbsp; <span id="theme-text-desktop">Display: Light</span></h5>
-                        </div>
-                    </div>
-                </a>
-
-                <hr>
-
-                <a href="../index.html" id="other-apps-link"
-                    class="list-group-item list-group-item-action flex-column align-items-start">
-                    <div class="d-flex">
-                        <div>
-                            <h5 class="lg-menu"><i class="fa-regular fa-grid"></i> Other Apps</h5>
+                            <h5 class="lg-menu"><i class="fa-regular fa-sun-bright" id="theme-icon-desktop"></i>&nbsp;
+                                <span id="theme-text-desktop">Display: Light</span>
+                            </h5>
                         </div>
                     </div>
                 </a>
@@ -369,7 +351,7 @@
             <hr>
 
             <div style="text-align: center; color: gray; font-size: 14px; margin-top: 1em; margin-bottom: 2em;">
-                Version 3.1.50 (2130)
+                Version 4.0.0 (1249)
             </div>
         </div>
     </section>
@@ -382,6 +364,8 @@
 
 
     <script src="js/mob-navtabs.js"></script>
+
+    <script src="js/mob-navtabs-tooltip.js"></script>
 
     <script src="buszy-subp.js"></script>
 

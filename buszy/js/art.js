@@ -263,12 +263,16 @@ async function fetchBusArrivals() {
             incomingSection.style.display = 'block';
             const isDarkMode = document.body.classList.contains('dark-mode');
             const bgColor = isDarkMode ? '#7db603' : '#94d40b';
-            const newIncomingHTML = topFourBuses.map(bus => `
+            const newIncomingHTML = topFourBuses.map(bus => {
+                const isArrived = bus.TimeStr.includes('Arr');
+                const arrivedClass = isArrived ? 'arrived' : '';
+                return `
                 <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
-                    <div class="ib-time">${bus.TimeStr}</div>
+                    <div class="ib-time ${arrivedClass}">${bus.TimeStr}</div>
                     <div class="ib-svc" style="background-color: ${bgColor};" >${bus.ServiceNo}</div>
                 </div>
-            `).join('');
+            `;
+            }).join('');
             // Only update if content has changed
             if (incomingGrid.innerHTML !== newIncomingHTML) {
                 incomingGrid.innerHTML = newIncomingHTML;

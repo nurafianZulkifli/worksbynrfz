@@ -236,6 +236,26 @@
         border-radius: 10px;
         width: 100%;
         cursor: default;
+        transition: border-color 0.3s ease;
+    }
+
+    .ib-time.arrived {
+        animation: pulse-indicator 2s infinite;
+        border-color: #7db603;
+    }
+
+    @keyframes pulse-indicator {
+
+        0%,
+        100% {
+            border-color: #94d40b;
+            box-shadow: 0 0 3px rgba(148, 212, 11, 0.2);
+        }
+
+        50% {
+            border-color: rgb(104, 151, 2);
+            box-shadow: 0 0 8px rgba(104, 151, 2, 0.4);
+        }
     }
 
     .ib-svc {
@@ -256,6 +276,25 @@
 
     body.dark-mode .ib-time {
         color: #fff;
+    }
+
+    body.dark-mode .ib-time.arrived {
+        animation: pulse-indicator-dark 2s infinite;
+        border-color: #7db603;
+    }
+
+    @keyframes pulse-indicator-dark {
+
+        0%,
+        100% {
+            border-color: #7db603;
+            box-shadow: 0 0 3px rgba(125, 182, 3, 0.3);
+        }
+
+        50% {
+            border-color: #6ea100;
+            box-shadow: 0 0 8px rgba(110, 161, 0, 0.5);
+        }
     }
 
     body.dark-mode .ib-svc {
@@ -495,13 +534,13 @@
         <nav aria-label="breadcrumb" style="margin-bottom:0;">
             <ol class="breadcrumb breadcrumb-fixed" id="floating-breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="nbs.html">
-                        <i class="fa-regular fa-location-dot"></i>
+                    <a href="index.html">
+                        <i class="fa-regular fa-home"></i>
                     </a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a href="abs.html">
-                        <i class="fa-regular fa-magnifying-glass"></i>
+                    <a href="#">
+                        <i class="fa-regular fa-bus"></i>
                     </a>
                 </li>
             </ol>
@@ -512,32 +551,30 @@
     <nav class="navbar-container">
         <div class="navbar">
             <!-- Logo -->
-            <a href="./">
-                <img alt="logo" class="logo" src="assets/logo.png" />
-            </a>
+            <a href="./"><img src="./assets/logo.png" alt="logo" class="logo" /></a>
 
             <!-- Navigation Links -->
             <ul class="navbar-nav" id="navbarNav">
                 <li class="nav-item">
-                    <a class="nav-link" href="./">
-                        <i class="fa-sharp fa-regular fa-thumbtack-angle"></i>
-                        <span>Pinned</span>
+                    <a href="#" class="nav-link active">
+                        <i class="fa-sharp fa-regular fa-house"></i>
+                        <span>Home</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="nbs.html">
-                        <i class="fa-regular fa-location-dot"></i>
-                        <span>Nearby</span>
+                    <a href="./first-last.html" class="nav-link">
+                        <i class="fa-regular fa-clock"></i>
+                        <span>Timings</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="abs.html">
-                        <i class="fa-regular fa-magnifying-glass"></i>
-                        <span>Search</span>
+                    <a href="./ann.html" class="nav-link">
+                        <i class="fa-regular fa-bullhorn"></i>
+                        <span>Announcements</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="menu.html">
+                <li class="nav-item ">
+                    <a href="./menu.html" class="nav-link">
                         <i class="fa-regular fa-bars"></i>
                         <span>Menu</span>
                     </a>
@@ -549,36 +586,32 @@
     <!-- Mobile Bottom Navigation Bar -->
     <nav class="mobile-bottom-nav">
         <ul>
-            <li>
-                <a href="./">
-                    <span class="icon">
-                        <i class="fa-sharp fa-regular fa-thumbtack-angle"></i>
-                    </span>
-                    <span class="label">Pinned</span>
-                </a>
-            </li>
-            <li>
-                <a href="nbs.html">
-                    <span class="icon">
-                        <i class="fa-regular fa-location-dot"></i>
-                    </span>
-                    <span class="label">Nearby</span>
-                </a>
-            </li>
             <li class="active">
-                <a href="abs.html">
+                <a href="#">
                     <span class="icon">
-                        <i class="fa-regular fa-magnifying-glass"></i>
+                        <i class="fa-sharp fa-regular fa-house"></i>
                     </span>
-                    <span class="label">Search</span>
                 </a>
             </li>
             <li>
-                <a href="menu.html">
+                <a href="./first-last.html">
+                    <span class="icon">
+                        <i class="fa-regular fa-clock"></i>
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a href="./ann.html">
+                    <span class="icon">
+                        <i class="fa-regular fa-bullhorn"></i>
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a href="./menu.html">
                     <span class="icon">
                         <i class="fa-regular fa-bars"></i>
                     </span>
-                    <span class="label">Menu</span>
                 </a>
             </li>
         </ul>
@@ -595,14 +628,14 @@
                         <nav aria-label="breadcrumb" class="breadcrumb-desktop" style="display:none;">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item">
-                                    <a href="nbs.html">
-                                        <i class="fa-regular fa-location-dot">
+                                    <a href="index.html">
+                                        <i class="fa-regular fa-house">
                                         </i>
                                     </a>
                                 </li>
                                 <li class="breadcrumb-item">
-                                    <a href="abs.html">
-                                        <i class="fa-regular fa-magnifying-glass">
+                                    <a href="#">
+                                        <i class="fa-regular fa-bus">
                                         </i>
                                     </a>
                                 </li>
@@ -693,6 +726,8 @@
         </script>
 
     <script src="js/mob-navtabs.js"></script>
+
+    <script src="js/mob-navtabs-tooltip.js"></script>
 
     <script src="buszy-subp.js"></script>
 
