@@ -284,7 +284,7 @@ function displayBusStops(busStops, isCached = true) {
     searchStatusDiv.style.cssText = 'text-align: center; margin-top: 15px; padding: 10px 0;';
     searchStatusDiv.innerHTML = `
         <button id="refresh-nearby-btn" class="btn btn-rfetch">
-            <i class="fa-regular fa-rotate"></i> Refresh
+            <i class="fa-regular fa-rotate"></i>
         </button>
     `;
     busStopsContainer.appendChild(searchStatusDiv);
@@ -300,7 +300,7 @@ function displayBusStops(busStops, isCached = true) {
             const mobileBottomNav = document.querySelector('.mobile-bottom-nav');
             if (navbarContainer) navbarContainer.classList.add('nav-disabled');
             if (mobileBottomNav) mobileBottomNav.classList.add('nav-disabled');
-            busStopsContainer.innerHTML = '<p class="pin-msg"><span class="spinner"></span>Searching for nearby bus stops...</p>';
+            busStopsContainer.innerHTML = '<p class="pin-msg"><span class="spinner"></span>Searching nearby bus stops...</p>';
             
             // Force a new location request
             const cachedLocation = sessionStorage.getItem('userLocation');
