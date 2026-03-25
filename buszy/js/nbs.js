@@ -14,7 +14,7 @@ function initializeGeolocationSearch() {
     // Disable navigation while loading
     const navbarContainer = document.querySelector('.navbar-container');
     const mobileBottomNav = document.querySelector('.mobile-bottom-nav');
-
+    
     // Helper to enable navigation
     function enableNavigation() {
         if (navbarContainer) navbarContainer.classList.remove('nav-disabled');
@@ -64,6 +64,7 @@ function initializeGeolocationSearch() {
         }
     }
 
+
     // Helper to show error only if nothing can be loaded
     function showLocationError() {
         busStopsContainer.innerHTML = `
@@ -76,9 +77,7 @@ function initializeGeolocationSearch() {
         const retryBtn = document.getElementById('retry-location-btn');
         if (retryBtn) {
             retryBtn.addEventListener('click', () => {
-                // Clear cache and force new fetch
-                sessionStorage.removeItem('nearbyBusStopsCache');
-                requestLocation(true);
+                requestLocation(true); // Force location prompt
             });
         }
     }
@@ -90,17 +89,18 @@ function initializeGeolocationSearch() {
             return;
         }
 
-        // Check if we already have cached nearby bus stops (unless forced)
-        const cachedBusStops = sessionStorage.getItem('nearbyBusStopsCache');
-        if (cachedBusStops && !force) {
-            // Already fetched in this session, don't fetch again
-            return;
-        }
-
-        // Show spinner at the start of the loading process
-        if (!cachedBusStops) {
-            busStopsContainer.innerHTML = '<p class="pin-msg"><span class="spinner"></span>Searching for nearby bus stops...</p>';
-            disableNavigation();
+        // Check if we have cached bus stops and not forcing a refresh
+        if (!force) {
+            const cachedBusStops = sessionStorage.getItem('nearbyBusStops');
+            if (cachedBusStops) {
+                try {
+                    const busStops = JSON.parse(cachedBusStops);
+                    displayBusStops(busStops, true); // true = isCached
+                } catch (error) {
+                    console.error('Error parsing cached bus stops:', error);
+                }
+                return;
+            }
         }
 
         // Try cached location first, unless force is true
@@ -118,6 +118,10 @@ function initializeGeolocationSearch() {
             return;
         }
 
+        // Show spinner while waiting for location
+        disableNavigation();
+        busStopsContainer.innerHTML = '<p class="pin-msg"><span class="spinner"></span>Searching for nearby bus stops...</p>';
+
         navigator.geolocation.getCurrentPosition((position) => {
             const latitude = position.coords.latitude;
             const longitude = position.coords.longitude;
@@ -133,13 +137,12 @@ function initializeGeolocationSearch() {
         });
     }
 
-    // Try to fetch location on load
-    requestLocation(false); // Don't force, use cache if available
+    // Try to fetch location on load (without forcing, so cached results are used)
+    requestLocation(false);
 
-    // Add refresh event listener to re-fetch location only on manual page refresh
-    window.addEventListener('beforeunload', () => {
-        // Clear cache when user is about to leave the page
-        sessionStorage.removeItem('nearbyBusStopsCache');
+    // Add refresh event listener - don't force refresh, use cached results if available
+    window.addEventListener('pageshow', (event) => {
+        requestLocation(false);
     });
 }
 
@@ -161,12 +164,10 @@ async function fetchNearbyBusStops(latitude, longitude, onError) {
         const busStops = await response.json();
         if (busStops && busStops.length > 0) {
             // Cache the bus stops in sessionStorage
-            sessionStorage.setItem('nearbyBusStopsCache', JSON.stringify(busStops));
-            displayBusStops(busStops);
+            sessionStorage.setItem('nearbyBusStops', JSON.stringify(busStops));
+            displayBusStops(busStops, false);
         } else {
             busStopsContainer.innerHTML = '<p class="pin-msg"><i class="fa-regular fa-circle-info"></i>No Bus Stops found nearby.</p>';
-            // Still set cache flag even if no results
-            sessionStorage.setItem('nearbyBusStopsCache', JSON.stringify([]));
         }
     } catch (error) {
         console.error('Error:', error);
@@ -212,7 +213,7 @@ function togglePinBusStop(busStop, pinButton) {
 }
 
 // Display the 3 nearest bus stops
-function displayBusStops(busStops) {
+function displayBusStops(busStops, isCached = true) {
     const busStopsContainer = document.getElementById('bus-stops');
     busStopsContainer.innerHTML = ''; // Clear previous results
 
@@ -278,6 +279,46 @@ function displayBusStops(busStops) {
         busStopsContainer.appendChild(busStopElement);
     });
 
+    // Add status message and refresh button
+    const searchStatusDiv = document.createElement('div');
+    searchStatusDiv.style.cssText = 'text-align: center; margin-top: 15px; padding: 10px 0;';
+    searchStatusDiv.innerHTML = `
+        <button id="refresh-nearby-btn" class="btn btn-rfetch">
+            <i class="fa-regular fa-rotate"></i> Refresh
+        </button>
+    `;
+    busStopsContainer.appendChild(searchStatusDiv);
+
+    // Add refresh button functionality
+    const refreshBtn = document.getElementById('refresh-nearby-btn');
+    if (refreshBtn) {
+        refreshBtn.addEventListener('click', () => {
+            // Clear cached bus stops
+            sessionStorage.removeItem('nearbyBusStops');
+            // Request fresh location
+            const navbarContainer = document.querySelector('.navbar-container');
+            const mobileBottomNav = document.querySelector('.mobile-bottom-nav');
+            if (navbarContainer) navbarContainer.classList.add('nav-disabled');
+            if (mobileBottomNav) mobileBottomNav.classList.add('nav-disabled');
+            busStopsContainer.innerHTML = '<p class="pin-msg"><span class="spinner"></span>Searching for nearby bus stops...</p>';
+            
+            // Force a new location request
+            const cachedLocation = sessionStorage.getItem('userLocation');
+            if (cachedLocation) {
+                const { latitude, longitude } = JSON.parse(cachedLocation);
+                fetchNearbyBusStops(latitude, longitude, () => {
+                    busStopsContainer.innerHTML = '<p class="pin-msg"><i class="fa-regular fa-triangle-exclamation"></i>Unable to refresh. Please try again.</p>';
+                    if (navbarContainer) navbarContainer.classList.remove('nav-disabled');
+                    if (mobileBottomNav) mobileBottomNav.classList.remove('nav-disabled');
+                });
+            } else {
+                busStopsContainer.innerHTML = '<p class="pin-msg"><i class="fa-regular fa-triangle-exclamation"></i>Unable to retrieve location. Please try again.</p>';
+                if (navbarContainer) navbarContainer.classList.remove('nav-disabled');
+                if (mobileBottomNav) mobileBottomNav.classList.remove('nav-disabled');
+            }
+        });
+    }
+
     // Apply current search filter if one exists
     const searchInput = document.getElementById('bus-stop-search');
     if (searchInput && searchInput.value) {
@@ -288,6 +329,12 @@ function displayBusStops(busStops) {
             item.style.display = (code.includes(query) || desc.includes(query)) ? '' : 'none';
         });
     }
+
+    // Enable navigation
+    const navbarContainer = document.querySelector('.navbar-container');
+    const mobileBottomNav = document.querySelector('.mobile-bottom-nav');
+    if (navbarContainer) navbarContainer.classList.remove('nav-disabled');
+    if (mobileBottomNav) mobileBottomNav.classList.remove('nav-disabled');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
