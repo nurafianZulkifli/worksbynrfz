@@ -7,8 +7,8 @@ function isInstagramInAppBrowser() {
     return /Instagram/.test(userAgent);
 }
 
-// Unified logic for geolocation and bus stop loading
-document.addEventListener('DOMContentLoaded', () => {
+// Initialize geolocation search
+function initializeGeolocationSearch() {
     const busStopsContainer = document.getElementById('bus-stops');
     busStopsContainer.innerHTML = '<p class="pin-msg"><span class="spinner"></span>Searching for nearby bus stops...</p>';
 
@@ -128,7 +128,15 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('pageshow', (event) => {
         requestLocation(true); // Always force location fetch on refresh or bfcache
     });
-});
+}
+
+// Execute geolocation initialization immediately or on DOMContentLoaded
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeGeolocationSearch);
+} else {
+    // DOM is already loaded, execute immediately
+    initializeGeolocationSearch();
+}
 
 async function fetchNearbyBusStops(latitude, longitude, onError) {
     const busStopsContainer = document.getElementById('bus-stops');
