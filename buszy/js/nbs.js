@@ -10,18 +10,21 @@ function isInstagramInAppBrowser() {
 // Initialize geolocation search
 function initializeGeolocationSearch() {
     const busStopsContainer = document.getElementById('bus-stops');
-    busStopsContainer.innerHTML = '<p class="pin-msg"><span class="spinner"></span>Searching for nearby bus stops...</p>';
 
     // Disable navigation while loading
     const navbarContainer = document.querySelector('.navbar-container');
     const mobileBottomNav = document.querySelector('.mobile-bottom-nav');
-    if (navbarContainer) navbarContainer.classList.add('nav-disabled');
-    if (mobileBottomNav) mobileBottomNav.classList.add('nav-disabled');
 
     // Helper to enable navigation
     function enableNavigation() {
         if (navbarContainer) navbarContainer.classList.remove('nav-disabled');
         if (mobileBottomNav) mobileBottomNav.classList.remove('nav-disabled');
+    }
+
+    // Helper to disable navigation
+    function disableNavigation() {
+        if (navbarContainer) navbarContainer.classList.add('nav-disabled');
+        if (mobileBottomNav) mobileBottomNav.classList.add('nav-disabled');
     }
 
     // Helper to show Instagram limitation message
@@ -61,7 +64,6 @@ function initializeGeolocationSearch() {
         }
     }
 
-
     // Helper to show error only if nothing can be loaded
     function showLocationError() {
         busStopsContainer.innerHTML = `
@@ -74,18 +76,31 @@ function initializeGeolocationSearch() {
         const retryBtn = document.getElementById('retry-location-btn');
         if (retryBtn) {
             retryBtn.addEventListener('click', () => {
-                requestLocation(true); // Force location prompt
+                // Clear cache and force new fetch
+                sessionStorage.removeItem('nearbyBusStopsCache');
+                requestLocation(true);
             });
         }
     }
-
-
 
     function requestLocation(force = false) {
         // Check if running in Instagram in-app browser
         if (isInstagramInAppBrowser()) {
             showInstagramLimitationMessage();
             return;
+        }
+
+        // Check if we already have cached nearby bus stops (unless forced)
+        const cachedBusStops = sessionStorage.getItem('nearbyBusStopsCache');
+        if (cachedBusStops && !force) {
+            // Already fetched in this session, don't fetch again
+            return;
+        }
+
+        // Show spinner at the start of the loading process
+        if (!cachedBusStops) {
+            busStopsContainer.innerHTML = '<p class="pin-msg"><span class="spinner"></span>Searching for nearby bus stops...</p>';
+            disableNavigation();
         }
 
         // Try cached location first, unless force is true
@@ -103,9 +118,6 @@ function initializeGeolocationSearch() {
             return;
         }
 
-        // Show spinner while waiting for location
-        busStopsContainer.innerHTML = '<p class="pin-msg"><span class="spinner"></span>Searching for nearby bus stops...</p>';
-
         navigator.geolocation.getCurrentPosition((position) => {
             const latitude = position.coords.latitude;
             const longitude = position.coords.longitude;
@@ -121,12 +133,13 @@ function initializeGeolocationSearch() {
         });
     }
 
-    // Always try to fetch location on load
-    requestLocation(true); // Always force location fetch on load
+    // Try to fetch location on load
+    requestLocation(false); // Don't force, use cache if available
 
-    // Add refresh event listener to re-fetch location
-    window.addEventListener('pageshow', (event) => {
-        requestLocation(true); // Always force location fetch on refresh or bfcache
+    // Add refresh event listener to re-fetch location only on manual page refresh
+    window.addEventListener('beforeunload', () => {
+        // Clear cache when user is about to leave the page
+        sessionStorage.removeItem('nearbyBusStopsCache');
     });
 }
 
@@ -147,9 +160,13 @@ async function fetchNearbyBusStops(latitude, longitude, onError) {
         }
         const busStops = await response.json();
         if (busStops && busStops.length > 0) {
+            // Cache the bus stops in sessionStorage
+            sessionStorage.setItem('nearbyBusStopsCache', JSON.stringify(busStops));
             displayBusStops(busStops);
         } else {
             busStopsContainer.innerHTML = '<p class="pin-msg"><i class="fa-regular fa-circle-info"></i>No Bus Stops found nearby.</p>';
+            // Still set cache flag even if no results
+            sessionStorage.setItem('nearbyBusStopsCache', JSON.stringify([]));
         }
     } catch (error) {
         console.error('Error:', error);
