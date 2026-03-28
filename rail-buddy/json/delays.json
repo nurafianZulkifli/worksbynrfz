@@ -1,12 +1,28 @@
-[
+{
+  "disruptions": [
     {
         "type": "Disruption",
         "title": "SK Minor Delay - Inner Loop",
         "line": "SK",
         "from": "Renjong",
         "to": "Cheng Lim",
+        "separator": "⇄",
         "start": "2026-03-16",
         "end": "2026-03-16",
+        "status": "Resolved",
+        "tags": [
+            "Delay"
+        ]
+    },
+        {
+        "type": "Disruption",
+        "title": "NSL Minor Delay - Woodlands - Yishun (to Marina South Pier)",
+        "line": "NSL",
+        "from": "Woodlands",
+        "to": "Yishun",
+        "separator": "→",
+        "start": "2026-03-18",
+        "end": "2026-03-18",
         "status": "Resolved",
         "tags": [
             "Delay"
@@ -18,6 +34,7 @@
         "line": "DTL",
         "from": "Bukit Panjang",
         "to": "Botanic Gardens",
+        "separator": "⇄",
         "start": "2026-03-13",
         "end": "2026-03-13",
         "status": "Resolved",
@@ -31,6 +48,7 @@
         "line": "CCL",
         "from": "Bishan",
         "to": "Buona Vista",
+        "separator": "⇄",
         "start": "2026-01-13",
         "end": "2026-01-14",
         "status": "Resolved",
@@ -44,6 +62,7 @@
         "line": "NSL",
         "from": "Ang Mo Kio",
         "to": "Woodlands",
+        "separator": "⇄",
         "start": "2025-12-26",
         "end": "2025-12-26",
         "status": "Resolved",
@@ -64,6 +83,7 @@
             "HarbourFront",
             "HarbourFront"
         ],
+        "separator": "⇄",
         "start": "2025-12-08",
         "end": "2025-12-08",
         "status": "Resolved",
@@ -71,4 +91,5 @@
             "Delay"
         ]
     }
-]
+  ]
+}

@@ -30,7 +30,9 @@ async function renderDelaysBarChart() {
     const minorCounts = {};
     const majorCounts = {};
     labels.forEach(l => { minorCounts[l] = 0; majorCounts[l] = 0; });
-    delaysData.forEach(item => {
+    // Handle both old array format and new object format with disruptions property
+    const disruptions = delaysData.disruptions || delaysData;
+    disruptions.forEach(item => {
         let type = 'minor';
         if (/major/i.test(item.title)) type = 'major';
         else if (/minor/i.test(item.title)) type = 'minor';
