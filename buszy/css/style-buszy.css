@@ -464,6 +464,10 @@ table th {
     cursor: default;
 }
 
+.fleet-legend span i {
+    font-size: 30px;
+}
+
 .fleet-icon {
     width: 50px;
     height: auto;
@@ -566,7 +570,7 @@ table th {
 .pw-btn-next {
     position: relative;
     z-index: 1;
-    min-width: 160px;
+    min-width: 100px;
     height: 46px;
     line-height: 46px;
     font-size: 14px;
@@ -588,7 +592,7 @@ table th {
 .pw-btn-prev {
     position: relative;
     z-index: 1;
-    min-width: 160px;
+    min-width: 100px;
     height: 46px;
     line-height: 46px;
     font-size: 14px;
@@ -921,34 +925,30 @@ body.dark-mode .action-link:hover {
     align-items: center;
     justify-content: center;
     border-radius: 15px;
-    font-size: 14px;
+    font-size: 30px;
     font-weight: bold;
     color: #fff;
     text-transform: uppercase;
 }
 
 /* Seats Available (SEA) - Green */
-.load-indicator.sea i {
+.load-indicator.sea i:first-child {
     color: #28a745;
-    font-size: 19px;
 }
 
 /* Standing Available (SDA) - Yellow */
-.load-indicator.sda i {
+.load-indicator.sda i:first-child {
     color: #dfa908;
-    font-size: 15px;
 }
 
 /* Limited Standing (LSD) - Red */
-.load-indicator.lsd i {
+.load-indicator.lsd i:first-child {
     color: #dc3545;
-    font-size: 15px;
 }
 
 /* Default Load Indicator (Fallback) */
-.load-indicator.default i {
+.load-indicator.default i:first-child {
     color: #6c757d;
-    font-size: 17px;
 }
 
 .about-me-summ {

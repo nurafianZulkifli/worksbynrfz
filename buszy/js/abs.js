@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const listGroup = document.querySelector('.list-group');
     const prevButton = document.getElementById('prev-button');
     const nextButton = document.getElementById('next-button');
-    const limit = 20;
+    const limit = 10;
     let allBusStops = [];
     let currentPage = 1;
     let totalPages = 1;
@@ -163,17 +163,27 @@ document.addEventListener('DOMContentLoaded', async () => {
     displayBusStops(allBusStops, currentPage);
 
     // Pagination
-    prevButton.addEventListener('click', () => {
+    prevButton.addEventListener('click', (e) => {
+        e.preventDefault();
         if (currentPage > 1) {
+            const scrollPos = window.scrollY || document.documentElement.scrollTop;
             currentPage--;
             displayBusStops(allBusStops, currentPage);
+            requestAnimationFrame(() => {
+                window.scrollTo(0, scrollPos);
+            });
         }
     });
 
-    nextButton.addEventListener('click', () => {
+    nextButton.addEventListener('click', (e) => {
+        e.preventDefault();
         if (currentPage < totalPages) {
+            const scrollPos = window.scrollY || document.documentElement.scrollTop;
             currentPage++;
             displayBusStops(allBusStops, currentPage);
+            requestAnimationFrame(() => {
+                window.scrollTo(0, scrollPos);
+            });
         }
     });
 

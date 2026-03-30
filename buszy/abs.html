@@ -7,9 +7,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="57TuruPNu5wqSSia_cUehl5t9Gh1AbxrHNPcMiFx-aQ" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Search Bus Stop | Buszy</title>
-    <meta content="" name="description">
-    <meta content="" name="keywords">
+    <title>Bus Services | Buszy</title>
+    <meta content="View all bus services available on Buszy" name="description">
+    <meta content="bus services, routes, schedules" name="keywords">
     <meta property="og:image" content="https://i.imgur.com/i8n9KYs.png" />
 
     <link rel="icon" href="../buszy/assets/icon-512.png">
@@ -143,6 +143,207 @@
     .nav-disabled button:hover {
         opacity: 0.5;
     }
+
+    .bus-service-card {
+        background: #f8f9fa;
+        border: 1px solid #e0e0e0;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 15px;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        cursor: pointer;
+    }
+
+    .bus-service-card:hover {
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        transform: translateY(-2px);
+    }
+
+    body.dark-mode .bus-service-card {
+        background: #1c1f2b;
+        border: 1px solid #2b2b2b33;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .service-number {
+        display: inline-block;
+        background-color: #94d40b;
+        color: #000;
+        font-weight: bold;
+        font-size: 18px;
+        padding: 8px 16px;
+        border-radius: 8px;
+        margin-right: 15px;
+        min-width: 60px;
+        text-align: center;
+    }
+
+    body.dark-mode .service-number {
+        background-color: #7db603;
+    }
+
+    .service-type {
+        display: inline-block;
+        background-color: #e0e0e0;
+        color: #333;
+        padding: 4px 12px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    body.dark-mode .service-type {
+        background-color: #393e53 !important;
+        color: #fff !important;
+    }
+
+    .service-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 12px;
+        flex-wrap: wrap;
+    }
+
+    .service-routes {
+        margin-top: 12px;
+        font-size: 14px;
+    }
+
+    body.dark-mode .service-routes {
+        color: #e0e0e0;
+    }
+
+    .service-routes strong {
+        display: block;
+        margin-bottom: 6px;
+    }
+
+    .service-info-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 12px;
+        margin-top: 12px;
+        font-size: 14px;
+    }
+
+    .service-info-item {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .service-info-label {
+        font-weight: 600;
+        color: #666;
+        font-size: 12px;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+    }
+
+    body.dark-mode .service-info-label {
+        color: #aaa;
+    }
+
+    .service-info-value {
+        color: #333;
+        padding: 6px 0;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+
+    body.dark-mode .service-info-value {
+        color: #e0e0e0;
+    }
+
+    .service-info-value i {
+        color: #1e90ff;
+        font-size: 0.9rem;
+    }
+
+    .remarks {
+        background-color: #fff3cd;
+        border-left: 4px solid #ffc107;
+        padding: 10px;
+        margin-top: 12px;
+        border-radius: 4px;
+        font-size: 13px;
+    }
+
+    body.dark-mode .remarks {
+        background-color: #663c00;
+        border-left-color: #ffc107;
+        color: #ffe0b2;
+    }
+
+    .no-services {
+        text-align: center;
+        padding: 40px;
+        color: #666;
+    }
+
+    body.dark-mode .no-services {
+        color: #aaa;
+    }
+
+    /* Search Bar Styles */
+    .search-container {
+        width: 100%;
+        margin-bottom: 0;
+        margin-top: 0;
+        max-width: 400px;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+    }
+
+    .search-box {
+        width: 100%;
+        max-width: 350px;
+        padding: 12px 20px;
+        padding-left: 40px;
+        font-size: 1rem;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 25px;
+        background: rgba(255, 255, 255, 0.85) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg>') no-repeat;
+        background-position: 12px center;
+        transition: all 0.3s ease;
+        color: #333;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    .search-box::placeholder {
+        color: #999;
+    }
+
+    .search-box:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2), 0 4px 12px rgba(0, 0, 0, 0.15);
+        background-color: #fff;
+    }
+
+    body.dark-mode .search-box {
+        background-color: #1c1f2b6e;
+        color: #fff;
+        border-color: rgba(255, 255, 255, 0.2);
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg>');
+        background-position: 12px center;
+        background-repeat: no-repeat;
+    }
+
+    body.dark-mode .search-box::placeholder {
+        color: #aaa;
+    }
+
+    body.dark-mode .search-box:focus {
+        outline: none;
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25), 0 4px 12px rgba(0, 0, 0, 0.15);
+        background-color: #1e2230;
+    }
 </style>
 
 <body>
@@ -167,30 +368,30 @@
     <nav class="navbar-container">
         <div class="navbar">
             <!-- Logo -->
-            <a href="./"><img src="assets/logo.png" alt="logo" class="logo" /></a>
+            <a href="index.html"><img src="assets/logo.png" alt="logo" class="logo"></a>
 
             <!-- Navigation Links -->
             <ul class="navbar-nav" id="navbarNav">
                 <li class="nav-item">
-                    <a href="./" class="nav-link">
-                        <i class="fa-sharp fa-regular fa-thumbtack-angle"></i>
-                        <span>Pinned</span>
+                    <a href="index.html" class="nav-link">
+                        <i class="fa-sharp fa-regular fa-house"></i>
+                        <span>Home</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="nbs.html" class="nav-link">
-                        <i class="fa-regular fa-location-dot"></i>
-                        <span>Nearby</span>
+                    <a href="./first-last.html" class="nav-link">
+                        <i class="fa-regular fa-clock"></i>
+                        <span>Timings</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="abs.html" class="nav-link active">
-                        <i class="fa-regular fa-magnifying-glass"></i>
-                        <span>Search</span>
+                    <a href="./ann.html" class="nav-link">
+                        <i class="fa-regular fa-bullhorn"></i>
+                        <span>Announcements</span>
                     </a>
                 </li>
                 <li class="nav-item ">
-                    <a href="menu.html" class="nav-link">
+                    <a href="./menu.html" class="nav-link active">
                         <i class="fa-regular fa-bars"></i>
                         <span>Menu</span>
                     </a>
@@ -204,39 +405,36 @@
     <nav class="mobile-bottom-nav">
         <ul>
             <li>
-                <a href="./">
+                <a href="index.html">
                     <span class="icon">
-                        <i class="fa-sharp fa-regular fa-thumbtack-angle"></i>
+                        <i class="fa-sharp fa-regular fa-house"></i>
                     </span>
-                    <span class="label">Pinned</span>
                 </a>
             </li>
             <li>
-                <a href="nbs.html">
+                <a href="./first-last.html">
                     <span class="icon">
-                        <i class="fa-regular fa-location-dot"></i>
+                        <i class="fa-regular fa-clock"></i>
                     </span>
-                    <span class="label">Nearby</span>
+                </a>
+            </li>
+            <li>
+                <a href="./ann.html">
+                    <span class="icon">
+                        <i class="fa-regular fa-bullhorn"></i>
+                    </span>
                 </a>
             </li>
             <li class="active">
-                <a href="abs.html">
-                    <span class="icon">
-                        <i class="fa-regular fa-magnifying-glass"></i>
-                    </span>
-                    <span class="label">Search</span>
-                </a>
-            </li>
-            <li>
-                <a href="menu.html">
+                <a href="./menu.html">
                     <span class="icon">
                         <i class="fa-regular fa-bars"></i>
                     </span>
-                    <span class="label">Menu</span>
                 </a>
             </li>
         </ul>
     </nav>
+
 
 
 
@@ -257,7 +455,11 @@
                                     </a>
                                 </li>
                                 <li class="breadcrumb-item">
-                                    <a href="abs.html"><i class="fa-regular fa-magnifying-glass"></i>
+                                    <a href="menu.html"><i class="fa-regular fa-bars"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="abs.html"><i class="fa-kit fa-lta-bus-stop"></i>
                                     </a>
                                 </li>
                             </ol>
@@ -266,14 +468,14 @@
                             <div
                                 style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
                                 <div>
-                                    <h1 class="page-title" id="filter-title">Search Bus Stop</h1>
+                                    <h1 class="page-title" id="filter-title">Bus Services</h1>
                                 </div>
-                                <div style="position: relative; max-width: 400px; margin-top: 5px;">
-                                    <i class="fa-regular fa-search"
-                                        style="position: absolute; left: 12px; top: 54%; transform: translateY(-54%); color: #cccccc; z-index: 1;"></i>
-                                    <input type="text" id="bus-stop-search" class="form-control"
-                                        placeholder="Bus Stop Name, Codes" style="padding-left: 35px;">
+                            <div style="max-width: 400px; width: 100%;">
+                                <div class="search-container">
+                                    <input type="text" class="search-box" id="service-search"
+                                        placeholder="Search Bus Service">
                                 </div>
+                            </div>
                             </div>
                         </div>
                     </div>
@@ -287,16 +489,18 @@
     <section class="about-me-summ clearfix" style="padding-bottom: 5em;">
 
         <div class="container">
-            <h2 class="text-center" style="padding-top: 1em;">Bus Stops</h2>
-            <div class="list-group">
+            <h2 class="text-center" style="padding-top: 1em; padding-bottom: 0.5em;">All Bus Services</h2>
+            <div class="list-group" id="services-container">
                 <p class="pin-msg" id="loading-message"
                     style="display: flex; align-items: center; justify-content: center;">
-                    <span class="spinner" role="status" style="margin-right: 1em;"></span>Loading Data...
+                    <span class="spinner" role="status" style="margin-right: 1em;"></span>Loading Services...
                 </p>
             </div>
-            <div class="pagination-buttons">
-                <button id="prev-button" class="btn pw-btn-prev btn-2 mt-15" style="display: none;">Previous</button>
-                <button id="next-button" class="btn pw-btn-next btn-2 mt-15" style="display: none;">Next</button>
+            <div class="pagination-buttons" style="display: flex; gap: 10px; justify-content: center; margin-top: 2em; flex-wrap: wrap;">
+                <button id="prev-button" class="btn pw-btn-prev btn-2 mt-15"
+                    style="display: none;"><i class="fa-solid fa-arrow-left"></i></button>
+                <button id="next-button" class="btn pw-btn-next btn-2 mt-15"
+                    style="display: none;"><i class="fa-solid fa-arrow-right"></i></button>
             </div>
         </div>
     </section>
@@ -328,7 +532,7 @@
 
     <script src="../js/pwa-config.js"></script>
 
-    <script src="js/abs.js"></script>
+    <script src="js/asvc.js"></script>
 
 </body>
 

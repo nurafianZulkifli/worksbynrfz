@@ -176,6 +176,65 @@ app.get('/train-service-alerts', async (req, res) => {
   }
 });
 
+// Define the /bus-routes route with skip support
+app.get('/bus-routes', async (req, res) => {
+  try {
+    const skip = parseInt(req.query.$skip) || 0;
+    const limit = parseInt(req.query.$limit) || 500;
+
+    const response = await ltaApi.get(`/BusRoutes?$skip=${skip}`);
+
+    // Bus routes are quasi-static — cache for 24 hours client-side
+    res.set('Cache-Control', 'public, max-age=86400');
+    res.json(response.data);
+  } catch (error) {
+    console.error('Error fetching bus routes from LTA:', error.message);
+    res.status(500).send('Error connecting to LTA DataMall');
+  }
+});
+
+// Define the /bus-stop-det route (get specific bus stop details)
+app.get('/bus-stop-det', async (req, res) => {
+  try {
+    const busStopCode = req.query.BusStopCode;
+
+    if (!busStopCode) {
+      return res.status(400).send('BusStopCode is required');
+    }
+
+    const busStops = await getAllBusStops();
+    const busStop = busStops.find(stop => stop.BusStopCode === busStopCode);
+
+    if (!busStop) {
+      return res.status(404).send('Bus stop not found');
+    }
+
+    // Bus stop details are quasi-static — cache for 1 hour client-side
+    res.set('Cache-Control', 'public, max-age=3600');
+    res.json(busStop);
+  } catch (error) {
+    console.error('Error fetching bus stop details:', error.message);
+    res.status(500).send('Error fetching bus stop details');
+  }
+});
+
+// Define the /bus-services route with skip support
+app.get('/bus-services', async (req, res) => {
+  try {
+    const skip = parseInt(req.query.$skip) || 0;
+    const limit = parseInt(req.query.$limit) || 500;
+
+    const response = await ltaApi.get(`/BusServices?$skip=${skip}`);
+
+    // Bus services are quasi-static — cache for 24 hours client-side
+    res.set('Cache-Control', 'public, max-age=86400');
+    res.json(response.data);
+  } catch (error) {
+    console.error('Error fetching bus services from LTA:', error.message);
+    res.status(500).send('Error connecting to LTA DataMall');
+  }
+});
+
 // Serve static files (after all API routes to prevent conflicts)
 app.use(express.static(path.join(__dirname))); // Serve all static files from root
 

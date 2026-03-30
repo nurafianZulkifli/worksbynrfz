@@ -87,13 +87,13 @@
     .card .card-content-art {
         display: flex;
         flex-direction: column;
-        gap: 0.5rem;
+        gap: 1rem;
     }
 
     .card .card-content-art span {
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: 1rem !important;
     }
 
     .card .operator-logo {
@@ -112,13 +112,25 @@
     .service-no {
         background-color: #94d40b;
         border-radius: 5px;
-        color: #000;
+        color: #000 !important;
         font-weight: bold;
         padding: 5px 10px;
         display: inline-block;
         white-space: nowrap;
         font-size: 20px;
         width: fit-content;
+    }
+
+    body.dark-mode a.ib-svc:hover {
+        transform: translateY(-3px) !important;
+        color: #fff !important;
+        background-color: #52718d !important;
+    }
+
+    body.dark-mode a.service-no:hover {
+        transform: translateY(-3px);
+        color: #fff !important;
+        background-color: #52718d;
     }
 
     .bus-time {
@@ -274,6 +286,20 @@
         cursor: default;
     }
 
+    a.ib-svc:hover {
+        transform: translateY(-3px) !important;
+        color: #000 !important;
+        background-color: #c7e3fb !important;
+        font-weight: bold;
+    }
+
+    a.service-no:hover {
+        transform: translateY(-3px);
+        color: #fff !important;
+        background-color: #c7e3fb;
+    }
+
+
     body.dark-mode .ib-time {
         color: #fff;
     }
@@ -343,7 +369,7 @@
 
     body.dark-mode .service-no {
         background-color: #7db603;
-        color: #000;
+        color: #000 !important;
         width: fit-content;
     }
 
@@ -407,6 +433,17 @@
         }
     }
 
+    @media (min-width: 1025px) and (max-width: 1199px) {
+        .col-xl-3 {
+            flex: 0 0 auto;
+            width: 50%;
+        }
+
+        #incoming-buses-grid {
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)) !important;
+        }
+    }
+
     @media (min-width: 1200px) {
         .col-xl-3 {
             flex: 0 0 auto;
@@ -437,11 +474,19 @@
         .card .card-content-art span {
             font-size: 20px;
         }
+
+        .load-indicator i {
+            font-size: 30px;
+        }
     }
 
     @media (max-width: 485px) {
         .card .card-content-art span {
             font-size: 17px;
+        }
+
+        .load-indicator i {
+            font-size: 25px;
         }
 
         .bus-stop-info {
@@ -543,7 +588,7 @@
                 </li>
                 <li class="breadcrumb-item">
                     <a href="#">
-                        <i class="fa-regular fa-bus"></i>
+                        <i class="fa-kit fa-lta-bus"></i>
                     </a>
                 </li>
             </ol>
@@ -638,7 +683,7 @@
                                 </li>
                                 <li class="breadcrumb-item">
                                     <a href="#">
-                                        <i class="fa-regular fa-bus">
+                                        <i class="fa-kit fa-lta-bus">
                                         </i>
                                     </a>
                                 </li>
@@ -686,13 +731,13 @@
             <!-- Fleet Legend -->
             <div class="fleet-legend">
                 <span>
-                    <img alt="BD Icon" class="fleet-icon" src="assets/dd.png" /> Double
+                    <i class="fa-kit fa-lta-bus"></i> Single
                 </span>
                 <span style="gap: 2px;">
-                    <img alt="SMRT Icon" class="fleet-icon" src="assets/bd.png" /> Bendy
+                    <i class="fa-kit fa-lta-bb"></i>&nbsp; Bendy
                 </span>
                 <span>
-                    <img alt="Other Icon" class="fleet-icon" src="assets/sd.png" /> Single
+                    <i class="fa-kit fa-lta-dd"></i> Double
                 </span>
             </div>
 

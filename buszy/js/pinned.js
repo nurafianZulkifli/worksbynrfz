@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         messageContainer.className = 'pin-msg';
         
         const icon = document.createElement('i');
-        icon.className = 'fa-utility fa-semibold fa-face-frown';
+        icon.className = 'fa-kit fa-lta-bus-stop';
         messageContainer.appendChild(icon);
         
         const textNode = document.createTextNode(' No Pinned Bus Stop. ');

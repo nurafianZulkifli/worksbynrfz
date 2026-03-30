@@ -3,7 +3,6 @@
 // Load disruption cards
 
 let disruptionsData = [];
-const DEFAULT_SEPARATOR = '⇄'; // Default separator if not specified
 const now = new Date();
 const minMonth = 11; // December (0-based)
 const minYear = 2025;
@@ -111,11 +110,10 @@ function renderDisruptionsByMonth() {
       };
       const lineKey = item.line ? item.line.toLowerCase() : '';
       const capletFile = capletMap[lineKey] || 'NSLCap.png';
-      const separator = item.separator || DEFAULT_SEPARATOR;
       routeBadges += `
         <span class="route-badge">
           <img src="assets/caplets/${capletFile}" alt="${item.line}" style="height: 35px; width: auto;">
-          <span class="route">${from} ${separator} ${to}</span>
+          <span class="route">${from} ⇄ ${to}</span>
         </span>
       `;
     }
@@ -164,8 +162,7 @@ document.addEventListener('DOMContentLoaded', function () {
   fetch('json/delays.json')
     .then(response => response.json())
     .then(data => {
-      // Use the disruptions array
-      disruptionsData = data.disruptions || data;
+      disruptionsData = data;
       renderMonthLabel();
       renderDisruptionsByMonth();
     });
