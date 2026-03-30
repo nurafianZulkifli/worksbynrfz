@@ -18,41 +18,74 @@ document.addEventListener('DOMContentLoaded', async () => {
         let allBusStops = [];
         let skip = 0;
         const batchSize = 500;
+        let hasError = false;
 
         while (true) {
             try {
+                console.log(`Fetching bus stops batch: skip=${skip}, batchSize=${batchSize}`);
                 const response = await fetch(`${apiUrl}?$skip=${skip}&$top=${batchSize}`, {
                     method: 'GET',
                     headers: { accept: 'application/json' },
                 });
 
-                if (!response.ok) throw new Error('Failed to fetch bus stops');
+                if (!response.ok) {
+                    console.error(`API Error: ${response.status} ${response.statusText}`);
+                    throw new Error(`HTTP Error: ${response.status}`);
+                }
 
                 const data = await response.json();
+                
+                // Validate response structure
+                if (!data.value || !Array.isArray(data.value)) {
+                    console.error('Invalid API response structure:', data);
+                    hasError = true;
+                    break;
+                }
+                
                 allBusStops = allBusStops.concat(data.value);
+                console.log(`Fetched ${data.value.length} stops, total so far: ${allBusStops.length}`);
 
-                if (data.value.length < batchSize) break;
+                if (data.value.length < batchSize) {
+                    console.log('Fetch complete - received less than batch size');
+                    break;
+                }
 
                 skip += batchSize;
             } catch (error) {
-                console.error('Error fetching bus stops:', error);
+                console.error('Error fetching bus stops batch:', error);
+                hasError = true;
                 break;
             }
         }
-
-        localStorage.setItem('allBusStops', JSON.stringify(allBusStops));
+        
+        if (allBusStops.length > 0) {
+            console.log('Saving to localStorage:', allBusStops.length, 'stops');
+            localStorage.setItem('allBusStops', JSON.stringify(allBusStops));
+        } else if (hasError) {
+            console.error('No bus stops fetched and fetch had errors');
+        }
+        
         return allBusStops;
     }
 
     // Function to display bus stops for the current page
     function displayBusStops(busStops, page) {
+        // Ensure busStops is an array
+        if (!Array.isArray(busStops)) {
+            console.error('Invalid busStops data:', busStops);
+            listGroup.innerHTML = '<p class="pin-msg"><i class="fa-regular fa-triangle-exclamation"></i>Error: Invalid bus stops data. Please refresh the page.</p>';
+            prevButton.style.display = 'none';
+            nextButton.style.display = 'none';
+            return;
+        }
+        
         const startIndex = (page - 1) * limit;
         const endIndex = startIndex + limit;
         const paginatedBusStops = busStops.slice(startIndex, endIndex);
 
         listGroup.innerHTML = '';
         if (busStops.length === 0) {
-            listGroup.innerHTML = '<p class="pin-msg"><i class="fa-regular fa-circle-info"></i>No bus stops found.</p>';
+            listGroup.innerHTML = '<p class="pin-msg"><i class="fa-regular fa-circle-info"></i>Loading bus stops... If this persists, please try refreshing the page.</p>';
             prevButton.style.display = 'none';
             nextButton.style.display = 'none';
             return;
@@ -153,10 +186,32 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Load bus stops from localStorage or fetch from API
     const cachedBusStops = localStorage.getItem('allBusStops');
+    let loadedFromCache = false;
+    
     if (cachedBusStops) {
-        allBusStops = JSON.parse(cachedBusStops);
-    } else {
+        try {
+            const parsed = JSON.parse(cachedBusStops);
+            if (Array.isArray(parsed) && parsed.length > 0) {
+                allBusStops = parsed;
+                loadedFromCache = true;
+                console.log('Loaded bus stops from cache:', allBusStops.length);
+            } else {
+                console.warn('Cached data is not a valid array or is empty, fetching fresh data...');
+                localStorage.removeItem('allBusStops');
+            }
+        } catch (parseError) {
+            console.warn('Failed to parse cached bus stops, fetching fresh data:', parseError);
+            localStorage.removeItem('allBusStops');
+        }
+    }
+    
+    // Fetch from API if not loaded from cache
+    if (!loadedFromCache) {
+        console.log('Fetching bus stops from API...');
         allBusStops = await fetchAllBusStops();
+        if (!Array.isArray(allBusStops) || allBusStops.length === 0) {
+            console.error('Failed to fetch or cache bus stops');
+        }
     }
 
     totalPages = Math.ceil(allBusStops.length / limit);

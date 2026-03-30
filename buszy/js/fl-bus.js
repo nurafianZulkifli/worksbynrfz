@@ -15,13 +15,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         try {
             const cached = localStorage.getItem('allBusStops');
             if (cached) {
-                allBusStops = JSON.parse(cached);
-                console.log('Loaded bus stops from cache:', allBusStops.length);
+                try {
+                    const parsed = JSON.parse(cached);
+                    allBusStops = Array.isArray(parsed) ? parsed : [];
+                    console.log('Loaded bus stops from cache:', allBusStops.length);
+                } catch (parseError) {
+                    console.warn('Failed to parse cached bus stops:', parseError);
+                    allBusStops = [];
+                }
             } else {
                 // Fetch from API if not cached
                 const response = await fetch('https://bat-lta-9eb7bbf231a2.herokuapp.com/bus-stops?$skip=0&$top=5000');
                 const data = await response.json();
-                allBusStops = data.value || [];
+                allBusStops = Array.isArray(data.value) ? data.value : [];
                 console.log('Loaded bus stops from API:', allBusStops.length);
                 localStorage.setItem('allBusStops', JSON.stringify(allBusStops));
             }

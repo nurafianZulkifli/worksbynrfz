@@ -98,7 +98,13 @@ self.addEventListener('activate', event => {
       );
     })
   );
-  self.clients.claim();
+  
+  // Claim clients with error handling
+  if (self.clients && typeof self.clients.claim === 'function') {
+    self.clients.claim().catch(error => {
+      console.warn('[Buszy SW] Failed to claim clients:', error);
+    });
+  }
 });
 
 // Fetch: serve from cache, fallback to network

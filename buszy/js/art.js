@@ -57,7 +57,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Fetch the bus stop name from the /bus-stops endpoint
         try {
-            let busStops = JSON.parse(localStorage.getItem('allBusStops')) || [];
+            let busStops = [];
+            try {
+                const cached = localStorage.getItem('allBusStops');
+                busStops = cached ? JSON.parse(cached) : [];
+                if (!Array.isArray(busStops)) {
+                    busStops = [];
+                }
+            } catch (parseError) {
+                console.warn('Failed to parse cached bus stops:', parseError);
+                busStops = [];
+            }
 
             // If bus stops are not cached, fetch them from the server
             if (busStops.length === 0) {
@@ -81,7 +91,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             // Find the bus stop by BusStopCode
-            const busStop = busStops.find(stop => stop.BusStopCode === busStopCode);
+            const busStop = Array.isArray(busStops) ? busStops.find(stop => stop.BusStopCode === busStopCode) : null;
 
             if (busStop) {
                 // Update title with styled bus stop code and name

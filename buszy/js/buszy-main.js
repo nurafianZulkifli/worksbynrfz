@@ -20,7 +20,17 @@ document.addEventListener('DOMContentLoaded', async () => {
             bookmarksContainer.innerHTML = '<p class="pin-msg">Re-fetching Data In Progress, your pinned bus stops will show shortly...</p>';
 
             // Check if bus stops are already cached in localStorage
-            let busStops = JSON.parse(localStorage.getItem('allBusStops')) || [];
+            let busStops = [];
+            try {
+                const cached = localStorage.getItem('allBusStops');
+                busStops = cached ? JSON.parse(cached) : [];
+                if (!Array.isArray(busStops)) {
+                    busStops = [];
+                }
+            } catch (parseError) {
+                console.warn('Failed to parse cached bus stops:', parseError);
+                busStops = [];
+            }
             if (busStops.length === 0) {
                 // Fetch all bus stops from the /bus-stops endpoint if not cached
                 let skip = 0;
@@ -49,7 +59,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             if (bookmarks.length > 0) {
                 bookmarks.forEach((bookmark) => {
-                    const busStop = busStops.find(stop => stop.BusStopCode === bookmark.BusStopCode);
+                    const busStop = Array.isArray(busStops) ? busStops.find(stop => stop.BusStopCode === bookmark.BusStopCode) : null;
+                    
+                    // Skip if bus stop not found
+                    if (!busStop) {
+                        console.warn('Bus stop not found:', bookmark.BusStopCode);
+                        return;
+                    }
 
                     const listItem = document.createElement('div');
                     listItem.className = 'list-group-item';
