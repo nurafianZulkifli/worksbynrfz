@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const nextButton = document.getElementById('next-button');
     const limit = 10;
     let allBusStops = [];
+    let currentDisplayList = []; // Track the current list being displayed (full or filtered)
     let currentPage = 1;
     let totalPages = 1;
 
@@ -215,6 +216,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     totalPages = Math.ceil(allBusStops.length / limit);
+    currentDisplayList = allBusStops; // Initialize display list to all stops
     displayBusStops(allBusStops, currentPage);
 
     // Pagination
@@ -223,7 +225,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (currentPage > 1) {
             const scrollPos = window.scrollY || document.documentElement.scrollTop;
             currentPage--;
-            displayBusStops(allBusStops, currentPage);
+            displayBusStops(currentDisplayList, currentPage);
             requestAnimationFrame(() => {
                 window.scrollTo(0, scrollPos);
             });
@@ -235,7 +237,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (currentPage < totalPages) {
             const scrollPos = window.scrollY || document.documentElement.scrollTop;
             currentPage++;
-            displayBusStops(allBusStops, currentPage);
+            displayBusStops(currentDisplayList, currentPage);
             requestAnimationFrame(() => {
                 window.scrollTo(0, scrollPos);
             });
@@ -245,13 +247,24 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Search functionality
     searchInput.addEventListener('input', (event) => {
         const query = event.target.value.toLowerCase();
-        const filteredBusStops = allBusStops.filter((busStop) =>
-            busStop.BusStopCode.toLowerCase().includes(query) ||
-            busStop.Description.toLowerCase().includes(query)
-        );
+        let filteredBusStops;
+        
+        if (query.trim() === '') {
+            // If search is empty, show all bus stops
+            filteredBusStops = allBusStops;
+        } else {
+            // Filter based on search query
+            filteredBusStops = allBusStops.filter((busStop) =>
+                busStop.BusStopCode.toLowerCase().includes(query) ||
+                busStop.Description.toLowerCase().includes(query)
+            );
+        }
+        
+        // Update the current display list and pagination
+        currentDisplayList = filteredBusStops;
         totalPages = Math.ceil(filteredBusStops.length / limit);
         currentPage = 1;
-        displayBusStops(filteredBusStops, currentPage);
+        displayBusStops(currentDisplayList, currentPage);
     });
 });
 
