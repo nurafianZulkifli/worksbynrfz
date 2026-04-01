@@ -27,6 +27,10 @@ body.dark-mode .mobile-bottom-nav {
     color: #8f2d22 !important;
 }
 
+body.dark-mode .hyperlink {
+    color: #cf5244 !important;
+}
+
 #scrollUp {
     display: none !important;
 }
