@@ -438,6 +438,20 @@
         display: block;
     }
 
+ .list-group-item:first-child {
+        transition-duration: 800ms;
+        border-radius: 20px;
+        margin-top: 2em;
+        font-size: 20px;
+    }
+
+    .list-group-item:last-child {
+        transition-duration: 800ms;
+        border-radius: 20px;
+        margin-bottom: 2em;
+        font-size: 20px;
+    }
+
     @media (max-width: 768px) {
         #cv-bat {
             height: 50vh;
@@ -470,6 +484,11 @@
             font-size: 0.95rem;
         }
 
+        /* Balanced padding between tab and cards */
+        [data-refresh-header] {
+            margin-bottom: 15px;
+            padding-right: 10px;
+        }
 
         .pin-msg {
             flex-direction: row;
@@ -559,6 +578,13 @@
         .category-tab {
             padding: 8px 12px;
             font-size: 0.75rem;
+        }
+
+        /* Balanced padding between tab and cards */
+        [data-refresh-header] {
+            margin-top: 25px;
+            margin-bottom: 0px;
+            padding-right: 10px;
         }
 
         .bus-stop-info {
@@ -715,11 +741,12 @@
                             <span class="spinner" role="status" style="margin-right: 1em;"></span>Loading Data...
                         </p>
                     </div>
-                    <div class="pagination-buttons">
-                        <button id="prev-button" class="btn pw-btn-prev btn-2 mt-15"
-                            style="display: none;"><i class="fa-solid fa-arrow-left"></i></button>
-                        <button id="next-button" class="btn pw-btn-next btn-2 mt-15"
-                            style="display: none;"><i class="fa-solid fa-arrow-right"></i></button>
+                    <div class="pagination-buttons"
+                        style="display: flex; gap: 10px; justify-content: center; margin-top: 2em; flex-wrap: nowrap;">
+                        <button id="prev-button" class="btn pw-btn-prev btn-2 mt-15" style="display: none;"><i
+                                class="fa-solid fa-arrow-left"></i></button>
+                        <button id="next-button" class="btn pw-btn-next btn-2 mt-15" style="display: none;"><i
+                                class="fa-solid fa-arrow-right"></i></button>
                     </div>
                 </section>
             </div>
@@ -840,6 +867,8 @@
     <!-- Include scripts for all three functionalities -->
     <script src="./js/abs.js"></script>
     <script src="./js/pinned.js"></script>
+
+    <script src="../js/back-to-top.js"></script>
 
 </body>
 
