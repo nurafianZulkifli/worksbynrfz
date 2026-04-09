@@ -822,6 +822,10 @@ table th {
     color: #fff;
 }
 
+.btn-toPin.btn-2 {
+    color: #000;
+}
+
 .bz-btn:focus,
 .bz-btn:hover,
 .btn-unpin:focus,
