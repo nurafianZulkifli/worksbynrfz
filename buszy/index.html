@@ -864,6 +864,32 @@
         document.head.appendChild(style);
     </script>
 
+    <!-- Import pinned bus stops from URL parameter if present -->
+    <script>
+        // Check for importPinned parameter and restore data to localStorage
+        (function() {
+            const params = new URLSearchParams(window.location.search);
+            const importedPinned = params.get('importPinned');
+            
+            if (importedPinned) {
+                try {
+                    // Decode the base64 data
+                    const decodedData = atob(importedPinned);
+                    
+                    // Restore to localStorage - this will overwrite existing data
+                    localStorage.setItem('bookmarkedBusStops', decodedData);
+                    
+                    // Clean up the URL parameter to avoid re-importing on page refresh
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                    
+                    console.log('Pinned bus stops successfully imported from menu');
+                } catch (error) {
+                    console.error('Error importing pinned bus stops:', error);
+                }
+            }
+        })();
+    </script>
+
     <!-- Include scripts for all three functionalities -->
     <script src="./js/abs.js"></script>
     <script src="./js/pinned.js"></script>
