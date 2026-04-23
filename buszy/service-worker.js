@@ -13,7 +13,7 @@ const BASE_PATH = (() => {
   return match ? match[1] : '/';
 })();
 
-const CACHE_VERSION = 'v1';
+const CACHE_VERSION = 'v4.5';
 const CACHE_NAME = `buszy-cache-${CACHE_VERSION}`;
 
 // Helper function to build paths with correct base
@@ -98,13 +98,7 @@ self.addEventListener('activate', event => {
       );
     })
   );
-  
-  // Claim clients with error handling
-  if (self.clients && typeof self.clients.claim === 'function') {
-    self.clients.claim().catch(error => {
-      console.warn('[Buszy SW] Failed to claim clients:', error);
-    });
-  }
+  self.clients.claim();
 });
 
 // Fetch: serve from cache, fallback to network

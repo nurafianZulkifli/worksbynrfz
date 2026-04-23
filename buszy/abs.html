@@ -52,7 +52,7 @@
         padding: 5px 4px;
         border-radius: 5px;
         gap: 10px;
-        cursor: default;
+        cursor: pointer;
     }
 
     body.dark-mode .bus-stop-code {
@@ -156,9 +156,17 @@
     }
 
     .bus-service-card:hover {
+        background-color: #cbe5fb !important;
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
         transform: translateY(-2px);
     }
+
+    body.dark-mode .bus-service-card:hover {
+        background-color: #334250 !important;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        transform: translateY(-2px);
+    }
+
 
     body.dark-mode .bus-service-card {
         background: #1c1f2b;
@@ -196,6 +204,47 @@
 
     body.dark-mode .service-type {
         background-color: #393e53 !important;
+        color: #fff !important;
+    }
+
+    /* Service operator color coding */
+    .service-type-gas {
+        background-color: #FFB84D !important;
+        color: #000 !important;
+    }
+
+    body.dark-mode .service-type-gas {
+        background-color: #E6A03C !important;
+        color: #000 !important;
+    }
+
+    .service-type-sbst {
+        background-color: #8b168b !important;
+        color: #fff !important;
+    }
+
+    body.dark-mode .service-type-sbst {
+        background-color: #8b168b !important;
+        color: #fff !important;
+    }
+
+    .service-type-tts {
+        background-color: #4CAF50 !important;
+        color: #fff !important;
+    }
+
+    body.dark-mode .service-type-tts {
+        background-color: #45A049 !important;
+        color: #fff !important;
+    }
+
+    .service-type-smrt {
+        background-color: #F44336 !important;
+        color: #fff !important;
+    }
+
+    body.dark-mode .service-type-smrt {
+        background-color: #DA190B !important;
         color: #fff !important;
     }
 
@@ -288,6 +337,34 @@
         color: #aaa;
     }
 
+    /* Alert Styles */
+    .alert {
+        padding: 12px 15px;
+        border-radius: 6px;
+        border: 1px solid transparent;
+    }
+
+    .alert-info {
+        background-color: #d1ecf1;
+        border-color: #bee5eb;
+        color: #0c5460;
+    }
+
+    .alert-info i {
+        color: #0c5460;
+        font-size: 1rem;
+    }
+
+    body.dark-mode .alert-info {
+        background-color: #063c47;
+        border-color: #0d4f5e;
+        color: #7dd3e0;
+    }
+
+    body.dark-mode .alert-info i {
+        color: #7dd3e0;
+    }
+
     /* Search Bar Styles */
     .search-container {
         width: 100%;
@@ -299,50 +376,83 @@
         justify-content: center;
     }
 
-    .search-box {
+    .search-wrapper {
+        display: flex;
+        align-items: center;
         width: 100%;
-        max-width: 350px;
-        padding: 12px 20px;
-        padding-left: 40px;
-        font-size: 1rem;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        border-radius: 25px;
-        background: rgba(255, 255, 255, 0.85) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg>') no-repeat;
-        background-position: 12px center;
-        transition: all 0.3s ease;
+        background: #fff;
+        border: 1px solid #1c1f2b33;
+        border-radius: 50px;
+        padding: 0.5rem 1rem;
+        box-shadow: 3px 0 15px -1px rgba(0, 0, 0, 0.1);
+        gap: 0.6rem;
+    }
+
+    .search-icon {
+        color: #888;
+        font-size: 0.95rem;
+        flex-shrink: 0;
+    }
+
+    .search-box {
+        flex: 1;
+        border: none;
+        outline: none;
+        background: transparent;
+        font-size: 0.95rem;
         color: #333;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        min-width: 0;
     }
 
     .search-box::placeholder {
-        color: #999;
-    }
-
-    .search-box:focus {
-        outline: none;
-        border-color: #007bff;
-        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2), 0 4px 12px rgba(0, 0, 0, 0.15);
-        background-color: #fff;
-    }
-
-    body.dark-mode .search-box {
-        background-color: #1c1f2b6e;
-        color: #fff;
-        border-color: rgba(255, 255, 255, 0.2);
-        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg>');
-        background-position: 12px center;
-        background-repeat: no-repeat;
-    }
-
-    body.dark-mode .search-box::placeholder {
         color: #aaa;
     }
 
-    body.dark-mode .search-box:focus {
-        outline: none;
-        border-color: #0d6efd;
-        box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25), 0 4px 12px rgba(0, 0, 0, 0.15);
-        background-color: #1e2230;
+    .search-clear {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        background: #e8e8e8;
+        color: #555;
+        border-radius: 50%;
+        width: 28px;
+        height: 28px;
+        font-size: 1rem;
+        cursor: pointer;
+        flex-shrink: 0;
+        padding: 0;
+        transition: background 0.2s;
+    }
+
+    .search-clear:hover {
+        background: #d0d0d0;
+    }
+
+    body.dark-mode .search-wrapper {
+        background: #1c1f2b;
+        border-color: #393e53;
+    }
+
+    body.dark-mode .search-box {
+        color: #e0e0e0;
+    }
+
+    body.dark-mode .search-box::placeholder {
+        color: #666;
+    }
+
+    body.dark-mode .search-icon {
+        color: #666;
+    }
+
+    body.dark-mode .search-clear {
+        background: #2e3244;
+        color: #aaa;
+    }
+
+    body.dark-mode .search-clear:hover {
+        background: #3a3f58;
     }
 </style>
 
@@ -357,7 +467,11 @@
                     </a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a href="abs.html"><i class="fa-regular fa-magnifying-glass"></i>
+                    <a href="menu.html"><i class="fa-regular fa-bars"></i>
+                    </a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="abs.html"><i class="fa-kit fa-lta-bus"></i>
                     </a>
                 </li>
             </ol>
@@ -385,9 +499,10 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="./ann.html" class="nav-link">
+                    <a href="./ann.html" class="nav-link" id="ann-nav-desktop">
                         <i class="fa-regular fa-bullhorn"></i>
                         <span>Announcements</span>
+                        <span class="ann-indicator-dot"></span>
                     </a>
                 </li>
                 <li class="nav-item ">
@@ -419,9 +534,10 @@
                 </a>
             </li>
             <li>
-                <a href="./ann.html">
+                <a href="./ann.html" id="ann-nav-mobile">
                     <span class="icon">
                         <i class="fa-regular fa-bullhorn"></i>
+                        <span class="ann-indicator-dot"></span>
                     </span>
                 </a>
             </li>
@@ -459,7 +575,7 @@
                                     </a>
                                 </li>
                                 <li class="breadcrumb-item">
-                                    <a href="abs.html"><i class="fa-kit fa-lta-bus-stop"></i>
+                                    <a href="abs.html"><i class="fa-kit fa-lta-bus"></i>
                                     </a>
                                 </li>
                             </ol>
@@ -470,12 +586,19 @@
                                 <div>
                                     <h1 class="page-title" id="filter-title">Bus Services</h1>
                                 </div>
-                            <div style="max-width: 400px; width: 100%;">
-                                <div class="search-container">
-                                    <input type="text" class="search-box" id="service-search"
-                                        placeholder="Search Bus Service">
+                                <div style="max-width: 400px; width: 100%;">
+                                    <div class="search-container">
+                                        <div class="search-wrapper">
+                                            <i class="fa-regular fa-magnifying-glass search-icon"></i>
+                                            <input type="text" class="search-box" id="service-search"
+                                                placeholder="Search Bus Service">
+                                            <button class="search-clear" id="search-clear" aria-label="Clear search"
+                                                style="display:none;">
+                                                <i class="fa-regular fa-xmark"></i>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
                             </div>
                         </div>
                     </div>
@@ -489,18 +612,38 @@
     <section class="about-me-summ clearfix" style="padding-bottom: 5em;">
 
         <div class="container">
-            <h2 class="text-center" style="padding-top: 1em; padding-bottom: 0.5em;">All Bus Services</h2>
+            <h2 class="text-center" style="padding-top: 1em; padding-bottom: 0.5em;">All Bus Services <span
+                    id="service-count" style="font-size: 0.8em;"></span></h2>
+
+            <div class="alert alert-info" role="alert" style="margin-bottom: 1.5em; display: flex; align-items: center; gap: 0.5em;">
+                <i class="fa-solid fa-circle-info"></i>
+                <span>Many Bus Service Numbers are still not available. We are working to add them in.</span>
+            </div>
+
             <div class="list-group" id="services-container">
                 <p class="pin-msg" id="loading-message"
                     style="display: flex; align-items: center; justify-content: center;">
-                    <span class="spinner" role="status" style="margin-right: 1em;"></span>Loading Services...
+                    <svg class="spinner" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="status"
+                        style="margin-right: 1em;">
+                        <circle cx="50" cy="50" r="45">
+                            <animateTransform attributeName="transform" type="rotate" values="-90;810" keyTimes="0;1"
+                                dur="2s" repeatCount="indefinite" />
+                            <animate attributeName="stroke-dashoffset" values="0%;0%;-157.080%" calcMode="spline"
+                                keySplines="0.61, 1, 0.88, 1; 0.12, 0, 0.39, 0" keyTimes="0;0.5;1" dur="2s"
+                                repeatCount="indefinite" />
+                            <animate attributeName="stroke-dasharray" values="0% 314.159%;157.080% 157.080%;0% 314.159%"
+                                calcMode="spline" keySplines="0.61, 1, 0.88, 1; 0.12, 0, 0.39, 0" keyTimes="0;0.5;1"
+                                dur="2s" repeatCount="indefinite" />
+                        </circle>
+                    </svg>Loading Bus Services...
                 </p>
             </div>
-            <div class="pagination-buttons" style="display: flex; gap: 10px; justify-content: center; margin-top: 2em; flex-wrap: wrap;">
-                <button id="prev-button" class="btn pw-btn-prev btn-2 mt-15"
-                    style="display: none;"><i class="fa-solid fa-arrow-left"></i></button>
-                <button id="next-button" class="btn pw-btn-next btn-2 mt-15"
-                    style="display: none;"><i class="fa-solid fa-arrow-right"></i></button>
+            <div class="pagination-buttons"
+                style="display: flex; gap: 10px; justify-content: center; margin-top: 2em; flex-wrap: nowrap;">
+                <button id="prev-button" class="btn pw-btn-prev btn-2 mt-15" style="display: none;"><i
+                        class="fa-solid fa-arrow-left"></i></button>
+                <button id="next-button" class="btn pw-btn-next btn-2 mt-15" style="display: none;"><i
+                        class="fa-solid fa-arrow-right"></i></button>
             </div>
         </div>
     </section>
@@ -509,6 +652,8 @@
         data-bg="#f2f3e5" data-fg="#000" data-font-family="Onest, sans-serif" data-zindex="12345111111"
         data-message="This website uses cookies to provide necessary site functionality and to improve your experience. By using this website, you agree to our use of cookies.">
         </script>
+
+    <script src="../js/cookies-theme-sync.js"></script>
 
     <script src="js/mob-navtabs.js"></script>
 
@@ -533,6 +678,10 @@
     <script src="../js/pwa-config.js"></script>
 
     <script src="js/asvc.js"></script>
+
+    <script src="./js/ann-indicator.js"></script>
+
+    <script src="../js/back-to-top.js"></script>
 
 </body>
 

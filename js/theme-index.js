@@ -56,6 +56,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 updateThemeIcon('light');
             }
         }
+        
+        // Update cookies banner theme if the function is available
+        if (typeof window.updateCookiesBannerTheme === 'function') {
+            window.updateCookiesBannerTheme();
+        }
+        
+        // Adjust install banner position if the function is available
+        if (typeof window.adjustInstallBannerPosition === 'function') {
+            window.adjustInstallBannerPosition();
+        }
     }
     
     if (themeToggleDesktop) {
@@ -83,6 +93,16 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e)
         } else {
             document.body.classList.remove('dark-mode');
             updateThemeIcon('light');
+        }
+        
+        // Update cookies banner theme if the function is available
+        if (typeof window.updateCookiesBannerTheme === 'function') {
+            window.updateCookiesBannerTheme();
+        }
+        
+        // Adjust install banner position if the function is available
+        if (typeof window.adjustInstallBannerPosition === 'function') {
+            window.adjustInstallBannerPosition();
         }
     }
 });
@@ -125,7 +145,7 @@ function updateThemeIcon(theme) {
     }
     
     // Update display text
-    let displayText = 'Display: ';
+    let displayText = 'Theme: ';
     if (preference === 'light') {
         displayText += 'Light';
     } else if (preference === 'dark') {

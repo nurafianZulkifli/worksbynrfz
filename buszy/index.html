@@ -20,6 +20,8 @@
     <link rel="manifest" href="./manifest.json">
     <link rel="icon" href="./assets/icon-192.png" type="image/png">
     <link rel="apple-touch-icon" href="./assets/icon-192.png">
+    <!-- iOS PWA Startup Image -->
+    <link rel="apple-touch-startup-image" href="../img/bg-img/hero-buszy-dark.png">
 
 
     <script src="https://kit.fontawesome.com/965e82ac01.js" crossorigin="anonymous"></script>
@@ -119,7 +121,7 @@
         padding: 5px 4px;
         border-radius: 5px;
         gap: 10px;
-        cursor: default;
+        cursor: pointer;
     }
 
     body.dark-mode .bus-stop-code {
@@ -132,13 +134,13 @@
         padding: 5px 4px;
         border-radius: 5px;
         gap: 10px;
-        cursor: default;
+        cursor: pointer;
     }
 
     .bus-stop-code img {
         width: 25px;
         height: auto;
-        cursor: default;
+        cursor: pointer;
     }
 
     .bus-stop-code-text,
@@ -150,7 +152,7 @@
         border-top-right-radius: 5px;
         border-bottom-right-radius: 5px;
         padding: 2px 6px;
-        cursor: default;
+        cursor: pointer;
     }
 
     .bus-stop-description,
@@ -203,18 +205,34 @@
         padding: 30px 40px 20px;
         display: flex;
         justify-content: center;
+        position: relative;
+    }
+
+    .search-wrapper {
+        width: 100%;
+        max-width: 500px;
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .search-icon {
+        position: absolute;
+        left: 12px;
+        color: #888;
+        font-size: 0.95rem;
+        pointer-events: none;
+        z-index: 1;
     }
 
     .search-box {
         width: 100%;
-        max-width: 500px;
         padding: 12px 20px;
         padding-left: 40px;
         font-size: 1rem;
         border: 1px solid rgba(255, 255, 255, 0.3);
         border-radius: 25px;
-        background: rgba(255, 255, 255, 0.85) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg>') no-repeat;
-        background-position: 12px center;
+        background: rgba(255, 255, 255, 0.85);
         transition: all 0.3s ease;
         color: #333;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
@@ -231,15 +249,50 @@
         background-color: #fff;
     }
 
+    .search-clear {
+        position: absolute;
+        right: 8px;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        background: #e8e8e8;
+        color: #555;
+        border-radius: 50%;
+        width: 28px;
+        height: 28px;
+        font-size: 1rem;
+        cursor: pointer;
+        padding: 0;
+        transition: background 0.2s;
+        z-index: 2;
+    }
+
+    .search-clear:hover {
+        background: #d0d0d0;
+    }
+
     body.dark-mode .search-box {
         background-color: #1c1f2b6e;
         border: 2px solid #525872;
         color: #e0e0e0;
-        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%23a0a0a0" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg>');
     }
 
     body.dark-mode .search-box::placeholder {
         color: #888;
+    }
+
+    body.dark-mode .search-icon {
+        color: #666;
+    }
+
+    body.dark-mode .search-clear {
+        background: #2e3244;
+        color: #aaa;
+    }
+
+    body.dark-mode .search-clear:hover {
+        background: #3a3f58;
     }
 
     /* Category Tabs Styles */
@@ -247,10 +300,50 @@
         display: flex;
         gap: 16px;
         margin-bottom: 0;
-        justify-content: center;
-        flex-wrap: wrap;
         padding: 15px 40px 0;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-behavior: smooth;
+        flex-shrink: 1;
+        mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+        -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .category-tabs::-webkit-scrollbar {
+        display: none;
+    }
+
+    .category-tabs-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         width: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .scroll-indicator {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        background: transparent;
+        color: #007bff;
+        font-size: 1.5rem;
+        cursor: pointer;
+        padding: 8px 12px;
+        flex-shrink: 0;
+        transition: color 0.2s;
+    }
+
+    .scroll-indicator:hover {
+        color: #0056b3;
+    }
+
+    .scroll-indicator.visible {
+        display: flex;
     }
 
     .category-tab {
@@ -267,7 +360,7 @@
         display: flex;
         align-items: center;
         border-radius: 24px;
-
+        flex-shrink: 0;
     }
 
     .category-tab:hover {
@@ -298,6 +391,37 @@
         color: #fff;
     }
 
+    /* Bus Service Tab Styles */
+    .bus-service-tab {
+        background-color: #94d40b !important;
+        color: #000 !important;
+        font-weight: 600;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15) !important;
+    }
+
+    .bus-service-tab:hover {
+        background-color: #c7e3fb !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2) !important;
+    }
+
+    body.dark-mode .bus-service-tab {
+        background-color: #7db603 !important;
+        color: #000 !important;
+    }
+
+    body.dark-mode .bus-service-tab:hover {
+        background-color: #94d40b !important;
+    }
+
+    body.dark-mode .scroll-indicator {
+        color: #51a7be;
+    }
+
+    body.dark-mode .scroll-indicator:hover {
+        color: #6fb8d4;
+    }
+
     .category-tab i {
         font-size: 1rem;
     }
@@ -308,6 +432,11 @@
         margin-bottom: 2em;
         position: relative;
         z-index: 10;
+    }
+
+    .pinned .about-me-summ {
+        padding-top: 0rem;
+        margin-top: 1em;
     }
 
     .no-results {
@@ -438,10 +567,10 @@
         display: block;
     }
 
- .list-group-item:first-child {
+    .list-group-item:first-child {
         transition-duration: 800ms;
         border-radius: 20px;
-        margin-top: 2em;
+        /* margin-top: 2em; */
         font-size: 20px;
     }
 
@@ -470,6 +599,7 @@
             max-width: 100%;
             padding: 10px 16px;
             padding-left: 36px;
+            padding-right: 36px;
             font-size: 0.9rem;
         }
 
@@ -477,6 +607,15 @@
             padding: 10px 12px 10px;
             gap: 10px;
             overflow-x: auto;
+        }
+
+        .category-tabs-container {
+            padding-right: 12px;
+        }
+
+        .scroll-indicator {
+            padding: 6px 8px;
+            font-size: 1.2rem;
         }
 
         .category-tab {
@@ -558,7 +697,7 @@
         }
 
         .search-container {
-            padding: 15px 15px 12px;
+            padding: 15px 10px 12px;
             max-width: 100%;
         }
 
@@ -566,14 +705,29 @@
             max-width: 100%;
             padding: 9px 14px;
             padding-left: 32px;
+            padding-right: 32px;
             font-size: 0.85rem;
         }
 
         .category-tabs {
-            padding: 10px 12px 10px;
+            padding: 10px 10px 10px;
             gap: 10px;
             overflow-x: auto;
         }
+
+        .scroll-indicator {
+            padding: 6px 8px;
+            font-size: 1.1rem;
+        }
+
+        #scroll-indicator {
+            height: 100%;
+            width: 0;
+            background: none;
+            color: #fff;
+            transition: width 0.1s ease;
+        }
+
 
         .category-tab {
             padding: 8px 12px;
@@ -625,6 +779,29 @@
 </style>
 
 <body>
+    <!-- Apply dark mode before splash renders to avoid flash -->
+    <script>
+        (function () {
+            var pref = localStorage.getItem('theme-preference') || 'system';
+            var isDark = pref === 'dark' || (pref === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            if (isDark) document.body.classList.add('dark-mode');
+        })();
+    </script>
+
+    <!-- PWA Splash Screen: only show on fresh launch -->
+    <script>
+        if (sessionStorage.getItem('splashShown')) {
+            document.documentElement.style.setProperty('--splash-display', 'none');
+        }
+    </script>
+    <div id="pwa-splash" style="display: var(--splash-display, flex);">
+        <div class="splash-content">
+            <img src="./assets/icon-512.png" alt="Buszy" class="splash-icon">
+            <span class="splash-name">Buszy</span>
+        </div>
+        <div class="splash-hero"></div>
+    </div>
+
     <!-- Navigation Bar -->
     <nav class="navbar-container">
         <div class="navbar">
@@ -646,9 +823,10 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="./ann.html" class="nav-link">
+                    <a href="./ann.html" class="nav-link" id="ann-nav-desktop">
                         <i class="fa-regular fa-bullhorn"></i>
                         <span>Announcements</span>
+                        <span class="ann-indicator-dot"></span>
                     </a>
                 </li>
                 <li class="nav-item ">
@@ -679,9 +857,10 @@
                 </a>
             </li>
             <li>
-                <a href="./ann.html">
+                <a href="./ann.html" id="ann-nav-mobile">
                     <span class="icon">
                         <i class="fa-regular fa-bullhorn"></i>
+                        <span class="ann-indicator-dot"></span>
                     </span>
                 </a>
             </li>
@@ -701,27 +880,43 @@
     <section class="breadcrumb-area-eicw-cover bg-img bg-overlay" id="cv-bat">
         <div class="container">
             <div class="row h-100 align-items-center justify-content-center">
-                <div class="col-12">
+                <div class="col-12" style="padding-left: 0em; padding-right: 0em;">
                     <div class="cover-search-wrapper">
                         <h2><i class="fa-regular fa-location-pin"></i>&nbsp;Bus Stops</h2>
 
                         <div class="search-container">
-                            <input type="text" class="search-box" id="bus-stop-search"
-                                placeholder="Search bus stops by name or code...">
+                            <div class="search-wrapper">
+                                <i class="fa-regular fa-magnifying-glass search-icon"></i>
+                                <input type="text" class="search-box" id="bus-stop-search"
+                                    placeholder="Search bus stops by name or code">
+                                <button class="search-clear" id="search-clear" aria-label="Clear search">
+                                    <i class="fa-regular fa-xmark"></i>
+                                </button>
+                            </div>
                         </div>
 
-                        <div class="category-tabs">
-                            <button class="category-tab active" data-category="pinned">
-                                <i class="fa-sharp fa-regular fa-thumbtack-angle"></i>&nbsp;
-                                Pinned
-                            </button>
-                            <button class="category-tab" data-category="nearby">
-                                <i class="fa-regular fa-location-dot"></i>&nbsp;
-                                Nearby
-                            </button>
-                            <button class="category-tab" data-category="all">
-                                <i class="fa-regular fa-grid"></i>&nbsp;
-                                All
+                        <div class="category-tabs-container">
+                            <div class="category-tabs" id="category-tabs">
+                                <button class="category-tab active" data-category="pinned">
+                                    <i class="fa-sharp fa-regular fa-thumbtack-angle"></i>&nbsp;
+                                    Pinned
+                                </button>
+                                <button class="category-tab" data-category="nearby">
+                                    <i class="fa-kit fa-lta-location"></i>&nbsp;
+                                    Nearby
+                                </button>
+                                <button class="category-tab" data-category="all">
+                                    <i class="fa-kit fa-lta-bus-stop"></i>&nbsp;
+                                    All
+                                </button>
+                                <button class="category-tab bus-service-tab" id="bus-service-tab"
+                                    style="display: none; background-color: #94d40b; color: #000;">
+                                    <i class="fa-kit fa-lta-bus"></i>&nbsp;
+                                    Bus Service
+                                </button>
+                            </div>
+                            <button class="scroll-indicator" id="scroll-indicator" aria-label="Scroll tabs">
+                                <i class="fa-solid fa-chevron-right"></i>
                             </button>
                         </div>
                     </div>
@@ -738,7 +933,20 @@
                     <div class="list-group">
                         <p class="pin-msg" id="loading-message"
                             style="display: flex; align-items: center; justify-content: center;">
-                            <span class="spinner" role="status" style="margin-right: 1em;"></span>Loading Data...
+                            <svg class="spinner" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="status"
+                                style="margin-right: 1em;">
+                                <circle cx="50" cy="50" r="45">
+                                    <animateTransform attributeName="transform" type="rotate" values="-90;810"
+                                        keyTimes="0;1" dur="2s" repeatCount="indefinite" />
+                                    <animate attributeName="stroke-dashoffset" values="0%;0%;-157.080%"
+                                        calcMode="spline" keySplines="0.61, 1, 0.88, 1; 0.12, 0, 0.39, 0"
+                                        keyTimes="0;0.5;1" dur="2s" repeatCount="indefinite" />
+                                    <animate attributeName="stroke-dasharray"
+                                        values="0% 314.159%;157.080% 157.080%;0% 314.159%" calcMode="spline"
+                                        keySplines="0.61, 1, 0.88, 1; 0.12, 0, 0.39, 0" keyTimes="0;0.5;1" dur="2s"
+                                        repeatCount="indefinite" />
+                                </circle>
+                            </svg>Loading Data...
                         </p>
                     </div>
                     <div class="pagination-buttons"
@@ -774,6 +982,8 @@
         data-bg="#f2f3e5" data-fg="#000" data-font-family="Onest, sans-serif" data-zindex="12345111111"
         data-message="This website uses cookies to provide necessary site functionality and to improve your experience. By using this website, you agree to our use of cookies.">
         </script>
+
+    <script src="../js/cookies-theme-sync.js"></script>
 
     <script src="./js/mob-navtabs.js"></script>
 
@@ -834,11 +1044,107 @@
 
     <script src="./js/pwa-init.js"></script>
 
+    <script src="./js/bus-stops-preloader.js"></script>
+
     <script src="./js/buszy-main.js"></script>
 
+    <script src="./js/ann-indicator.js"></script>
+
     <script>
+        // Bus Service Search Detection and Button Toggle
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('bus-stop-search');
+            const busServiceTab = document.getElementById('bus-service-tab');
+
+            if (!searchInput || !busServiceTab) return;
+
+            // Restore service number from sessionStorage if it exists (for back navigation)
+            const savedService = sessionStorage.getItem('lastServiceSearch');
+            if (savedService) {
+                searchInput.value = savedService;
+                busServiceTab.style.display = 'inline-flex';
+                // Clear after restoring so it doesn't persist across sessions
+                sessionStorage.removeItem('lastServiceSearch');
+            }
+
+            // Function to detect if input is a service number (max 4 digits/letters)
+            function isServiceNumber(text) {
+                const cleaned = text.trim();
+                // Match patterns like: 307, 100A, 1000, etc. (1-4 digits max, optional single letter)
+                return /^\d{1,4}[a-zA-Z]?$/.test(cleaned);
+            }
+
+            // Update button visibility on input change
+            searchInput.addEventListener('input', () => {
+                if (isServiceNumber(searchInput.value)) {
+                    busServiceTab.style.display = 'inline-flex';
+                } else {
+                    busServiceTab.style.display = 'none';
+                }
+            });
+
+            // Handle button click
+            busServiceTab.addEventListener('click', (e) => {
+                e.preventDefault();
+                const serviceNumber = searchInput.value.trim().toUpperCase();
+                if (isServiceNumber(serviceNumber)) {
+                    // Save service number to sessionStorage for back navigation
+                    sessionStorage.setItem('lastServiceSearch', serviceNumber);
+
+                    // Highlight the service number text
+                    searchInput.select();
+
+                    // Navigate to bus service page with proper base path
+                    const basePath = (window.PWAConfig && window.PWAConfig.basePath) ? window.PWAConfig.basePath : '/';
+                    setTimeout(() => {
+                        window.location.href = `${basePath}buszy/bus-service.html?service=${encodeURIComponent(serviceNumber)}`;
+                    }, 100);
+                }
+            });
+        });
+
+        // Scroll indicator for category tabs
+        const categoryTabsContainer = document.getElementById('category-tabs');
+        const scrollIndicator = document.getElementById('scroll-indicator');
+
+        function updateScrollIndicator() {
+            if (categoryTabsContainer) {
+                const hasScroll = categoryTabsContainer.scrollWidth > categoryTabsContainer.clientWidth;
+                const isAtEnd = categoryTabsContainer.scrollLeft >=
+                    categoryTabsContainer.scrollWidth - categoryTabsContainer.clientWidth - 10;
+
+                if (hasScroll && !isAtEnd) {
+                    scrollIndicator.classList.add('visible');
+                } else {
+                    scrollIndicator.classList.remove('visible');
+                }
+            }
+        }
+
+        // Expose to window for cross-script access
+        window.updateScrollIndicator = updateScrollIndicator;
+
+        if (scrollIndicator && categoryTabsContainer) {
+            // Check on load
+            setTimeout(updateScrollIndicator, 100);
+
+            // Check on window resize
+            window.addEventListener('resize', updateScrollIndicator);
+
+            // Check on scroll
+            categoryTabsContainer.addEventListener('scroll', updateScrollIndicator);
+
+            // Handle scroll indicator click
+            scrollIndicator.addEventListener('click', () => {
+                categoryTabsContainer.scrollBy({
+                    left: 150,
+                    behavior: 'smooth'
+                });
+            });
+        }
+
         // Category tab switching functionality
-        const categoryTabs = document.querySelectorAll('.category-tab');
+        const categoryTabs = document.querySelectorAll('.category-tab:not(.bus-service-tab)');
         const tabContents = document.querySelectorAll('.tab-content');
 
         categoryTabs.forEach(tab => {
@@ -864,24 +1170,25 @@
         document.head.appendChild(style);
     </script>
 
-    <!-- Import pinned bus stops from URL parameter if present -->
+
+    <!-- Import pinned bus stops from URL parameter if present (TEMP) -->
     <script>
         // Check for importPinned parameter and restore data to localStorage
-        (function() {
+        (function () {
             const params = new URLSearchParams(window.location.search);
             const importedPinned = params.get('importPinned');
-            
+
             if (importedPinned) {
                 try {
                     // Decode the base64 data
                     const decodedData = atob(importedPinned);
-                    
+
                     // Restore to localStorage - this will overwrite existing data
                     localStorage.setItem('bookmarkedBusStops', decodedData);
-                    
+
                     // Clean up the URL parameter to avoid re-importing on page refresh
                     window.history.replaceState({}, document.title, window.location.pathname);
-                    
+
                     console.log('Pinned bus stops successfully imported from menu');
                 } catch (error) {
                     console.error('Error importing pinned bus stops:', error);
@@ -893,6 +1200,29 @@
     <!-- Include scripts for all three functionalities -->
     <script src="./js/abs.js"></script>
     <script src="./js/pinned.js"></script>
+
+    <script>
+        // Dismiss PWA splash screen after page load
+        (function () {
+            function hideSplash() {
+                var splash = document.getElementById('pwa-splash');
+                if (!splash) return;
+                sessionStorage.setItem('splashShown', '1');
+                splash.classList.add('hide');
+                setTimeout(function () {
+                    if (splash.parentNode) splash.parentNode.removeChild(splash);
+                }, 500);
+            }
+            if (sessionStorage.getItem('splashShown')) return;
+            if (document.readyState === 'complete') {
+                setTimeout(hideSplash, 600);
+            } else {
+                window.addEventListener('load', function () {
+                    setTimeout(hideSplash, 600);
+                });
+            }
+        })();
+    </script>
 
     <script src="../js/back-to-top.js"></script>
 

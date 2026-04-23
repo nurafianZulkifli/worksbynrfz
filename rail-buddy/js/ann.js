@@ -9,8 +9,8 @@
  */
 function initAnnouncements() {
     const NEW_ITEM_DAYS = 7;
-    const STORAGE_KEY = 'buszy_ann_state';
-    const HAS_UNREAD_KEY = 'buszy_has_unread';
+    const STORAGE_KEY = 'railbuddy_ann_state';
+    const HAS_UNREAD_KEY = 'railbuddy_has_unread';
     
     // Get all announcement items
     const items = document.querySelectorAll('.list-group-item[data-ann-id][data-ann-date]');
@@ -134,8 +134,8 @@ function hashCode(str) {
  * Clear all announcement badges (mark as read)
  */
 function markAllAsRead() {
-    const STORAGE_KEY = 'buszy_ann_state';
-    const HAS_UNREAD_KEY = 'buszy_has_unread';
+    const STORAGE_KEY = 'railbuddy_ann_state';
+    const HAS_UNREAD_KEY = 'railbuddy_has_unread';
     const items = document.querySelectorAll('.list-group-item[data-ann-id][data-ann-date]');
     const now = new Date().toISOString();
     const newState = {};
@@ -192,7 +192,7 @@ function markAllAsRead() {
     }
 }
 
-// Call the functions on page load
+// Call the function on page load
 document.addEventListener('DOMContentLoaded', function() {
     initAnnouncements();
     

@@ -6,7 +6,6 @@
             line: "BPLRT",
             color: "#718472",
             data: [
-                { month: "Mar-25", value: 398000 },
                 { month: "Apr-25", value: 269000 },
                 { month: "May-25", value: 244000 },
                 { month: "Jun-25", value: 247000 },
@@ -17,14 +16,14 @@
                 { month: "Nov-25", value: 197000 },
                 { month: "Dec-25", value: 199000 },
                 { month: "Jan-26", value: 200000 },
-                { month: "Feb-26", value: 200000 }
+                { month: "Feb-26", value: 200000 },
+                { month: "Mar-26", value: 186000 }
             ]
         },
         {
             line: "SPLRT",
             color: "#b8d8b9",
             data: [
-                { month: "Mar-25", value: 827000 },
                 { month: "Apr-25", value: 829000 },
                 { month: "May-25", value: 998000 },
                 { month: "Jun-25", value: 1252000 },
@@ -35,7 +34,8 @@
                 { month: "Nov-25", value: 849000 },
                 { month: "Dec-25", value: 1025000 },
                 { month: "Jan-26", value: 860000 },
-                { month: "Feb-26", value: 866000 }
+                { month: "Feb-26", value: 866000 },
+                { month: "Mar-26", value: 749000 }
             ]
         }
     ];

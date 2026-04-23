@@ -36,8 +36,26 @@ function getBasePath() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Clear saved state on fresh load or refresh; only restore on back/forward navigation
+    const navType = performance.getEntriesByType('navigation')[0]?.type;
+    if (navType !== 'back_forward') {
+        sessionStorage.removeItem('absvcPage');
+        sessionStorage.removeItem('absvcSearch');
+    }
+
     loadBusServices();
     setupSearchFilter();
+
+    // Restore search input value from sessionStorage (state saved before navigating away)
+    const savedSearch = sessionStorage.getItem('absvcSearch');
+    if (savedSearch) {
+        const searchInput = document.getElementById('service-search');
+        if (searchInput) {
+            searchInput.value = savedSearch;
+            const clearButton = document.getElementById('search-clear');
+            if (clearButton) clearButton.style.display = 'flex';
+        }
+    }
 });
 
 function loadBusServices() {
@@ -114,7 +132,28 @@ function loadBusServices() {
                 });
         })
         .then(() => {
-            displayServices(allServices);
+            // Apply saved search filter if one exists, otherwise show full list
+            const savedSearch = sessionStorage.getItem('absvcSearch');
+            if (savedSearch) {
+                const searchTerm = savedSearch.toLowerCase();
+                const filtered = allServices.filter(service => {
+                    const serviceNum = (service.n || '').toLowerCase();
+                    const type = (service.t || '').toLowerCase();
+                    const start = (service.ts || '').toLowerCase();
+                    const end = (service.te || '').toLowerCase();
+                    const remarks = (service.r || '').toLowerCase();
+                    return serviceNum.includes(searchTerm) ||
+                           type.includes(searchTerm) ||
+                           start.includes(searchTerm) ||
+                           end.includes(searchTerm) ||
+                           remarks.includes(searchTerm);
+                });
+                isSearchActive = true;
+                // Restore saved page within the filtered results
+                displayServices(filtered, false);
+            } else {
+                displayServices(allServices);
+            }
             const loadingMessage = document.getElementById('loading-message');
             if (loadingMessage) {
                 loadingMessage.style.display = 'none';
@@ -124,13 +163,56 @@ function loadBusServices() {
             console.error('Error loading bus services:', error);
             const loadingMessage = document.getElementById('loading-message');
             if (loadingMessage) {
-                loadingMessage.innerHTML = '<p style="color: red;"><i class="fa-regular fa-circle-exclamation"></i> Error loading bus services. Please try again later.</p>';
+                loadingMessage.innerHTML = '<p style="color: red; margin-bottom: 0rem;"><i class="fa-regular fa-circle-exclamation"></i> Error loading bus services. Please try again later.</p>';
             }
         });
 }
 
-function displayServices(services) {
+function naturalSort(a, b) {
+    // Extract service numbers
+    const aNum = (a.n || '').toString();
+    const bNum = (b.n || '').toString();
+    
+    // Split into numeric and alphabetic parts
+    const aParts = aNum.match(/(\d+|\D+)/g) || [];
+    const bParts = bNum.match(/(\d+|\D+)/g) || [];
+    
+    // Compare each part
+    for (let i = 0; i < Math.max(aParts.length, bParts.length); i++) {
+        const aPart = aParts[i] || '';
+        const bPart = bParts[i] || '';
+        
+        // Check if both parts are numeric
+        const aIsNum = /^\d+$/.test(aPart);
+        const bIsNum = /^\d+$/.test(bPart);
+        
+        if (aIsNum && bIsNum) {
+            // Compare numerically
+            const aVal = parseInt(aPart, 10);
+            const bVal = parseInt(bPart, 10);
+            if (aVal !== bVal) {
+                return aVal - bVal;
+            }
+        } else {
+            // Compare alphabetically
+            const comparison = aPart.localeCompare(bPart);
+            if (comparison !== 0) {
+                return comparison;
+            }
+        }
+    }
+    
+    return 0;
+}
+
+function displayServices(services, isFiltered = false) {
     const container = document.getElementById('services-container');
+    
+    // Update service count display FIRST (before any early returns)
+    const countElement = document.getElementById('service-count');
+    if (countElement) {
+        countElement.textContent = `(${services.length})`;
+    }
     
     if (services.length === 0) {
         container.innerHTML = '<div class="no-services"><p><i class="fa-regular fa-circle-info"></i> No bus services found.</p></div>';
@@ -139,10 +221,22 @@ function displayServices(services) {
         return;
     }
     
+    // Sort services by service number using natural sort
+    const sortedServices = services.sort(naturalSort);
+    
     // Store filtered services
-    filteredServices = services;
-    totalPages = Math.ceil(services.length / limit);
-    currentPage = 1;
+    filteredServices = sortedServices;
+    totalPages = Math.ceil(sortedServices.length / limit);
+
+    if (isFiltered) {
+        // Search changed — always start at page 1 and clear saved page
+        currentPage = 1;
+        sessionStorage.removeItem('absvcPage');
+    } else {
+        // Full list load — restore saved page if available
+        const savedPage = parseInt(sessionStorage.getItem('absvcPage')) || 1;
+        currentPage = Math.min(savedPage, totalPages);
+    }
     
     // Display current page
     displayPage(currentPage);
@@ -168,13 +262,25 @@ function createServiceCard(service) {
         frequencyDisplay = '<i class="fa-regular fa-circle-info" style="margin-right: 0.5rem;"></i>Different frequencies by time';
     }
     
+    // Determine service type class based on operator
+    let typeClass = '';
+    if (operator.toUpperCase() === 'GAS') {
+        typeClass = 'service-type-gas';
+    } else if (operator.toUpperCase() === 'SBST') {
+        typeClass = 'service-type-sbst';
+    } else if (operator.toUpperCase() === 'TTS') {
+        typeClass = 'service-type-tts';
+    } else if (operator.toUpperCase() === 'SMRT') {
+        typeClass = 'service-type-smrt';
+    }
+    
     return `
         <a href="bus-service.html?service=${encodeURIComponent(service.n)}" style="text-decoration: none; color: inherit;">
             <div class="bus-service-card">
                 <div class="service-header">
                     <div class="service-number">${service.n}</div>
                     <div class="service-type">${type}</div>
-                    ${operator !== 'Transit' ? `<div class="service-type" style="background-color: #e0e0e0; color: #333;">${operator}</div>` : ''}
+                    ${operator !== 'Transit' ? `<div class="service-type ${typeClass}">${operator}</div>` : ''}
                 </div>
                 
                 <div class="service-routes">
@@ -192,6 +298,7 @@ function displayPage(page) {
     const paginatedServices = filteredServices.slice(startIndex, endIndex);
     
     container.innerHTML = paginatedServices.map(service => createServiceCard(service)).join('');
+    sessionStorage.setItem('absvcPage', page);
 }
 
 function setupPaginationButtons() {
@@ -233,10 +340,16 @@ function setupPaginationButtons() {
 
 function setupSearchFilter() {
     const searchInput = document.getElementById('service-search');
+    const clearButton = document.getElementById('search-clear');
     
     if (searchInput) {
         searchInput.addEventListener('input', function(e) {
             const searchTerm = e.target.value.toLowerCase();
+            sessionStorage.setItem('absvcSearch', e.target.value);
+
+            if (clearButton) {
+                clearButton.style.display = e.target.value.length > 0 ? 'flex' : 'none';
+            }
             
             const filtered = allServices.filter(service => {
                 const serviceNum = (service.n || '').toLowerCase();
@@ -257,7 +370,17 @@ function setupSearchFilter() {
             isSearchActive = searchTerm.length > 0;
             
             // Display filtered results with pagination
-            displayServices(filtered);
+            displayServices(filtered, true);
+        });
+    }
+
+    if (clearButton) {
+        clearButton.addEventListener('click', function() {
+            searchInput.value = '';
+            clearButton.style.display = 'none';
+            sessionStorage.removeItem('absvcSearch');
+            const inputEvent = new Event('input', { bubbles: true });
+            searchInput.dispatchEvent(inputEvent);
         });
     }
 }
@@ -294,9 +417,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to update the loading message
     const updateLoadingMessage = () => {
         loadingMessageElement.innerHTML = `
-                <span class="spinner" role="status" style="margin-right: 0.5em;"></span>${loadingMessages[messageIndex]}
+                <svg class="spinner" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="status" style="margin-right: 1em;">
+                    <circle cx="50" cy="50" r="45">
+                        <animateTransform attributeName="transform" type="rotate" values="-90;810" keyTimes="0;1" dur="2s" repeatCount="indefinite" />
+                        <animate attributeName="stroke-dashoffset" values="0%;0%;-157.080%" calcMode="spline" keySplines="0.61, 1, 0.88, 1; 0.12, 0, 0.39, 0" keyTimes="0;0.5;1" dur="2s" repeatCount="indefinite" />
+                        <animate attributeName="stroke-dasharray" values="0% 314.159%;157.080% 157.080%;0% 314.159%" calcMode="spline" keySplines="0.61, 1, 0.88, 1; 0.12, 0, 0.39, 0" keyTimes="0;0.5;1" dur="2s" repeatCount="indefinite" />
+                    </circle>
+                </svg>${loadingMessages[messageIndex]}
             `;
-        messageIndex = (messageIndex + 1) % loadingMessages.length; // Cycle through messages
+        messageIndex = (messageIndex + 1) % loadingMessages.length;
     };
 
     // Show the first message immediately

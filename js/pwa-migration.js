@@ -16,7 +16,12 @@ window.addEventListener('load', async () => {
         if (registration.scope === window.location.origin + '/' || 
             registration.scope.endsWith('/scope-unknown')) {
           
-          await registration.unregister();
+          try {
+            await registration.unregister();
+            console.log('[PWA Migration] Unregistered old service worker:', registration.scope);
+          } catch (unregisterError) {
+            console.warn('[PWA Migration] Failed to unregister service worker:', unregisterError);
+          }
         }
       }
     } catch (error) {
@@ -31,22 +36,57 @@ window.addEventListener('load', async () => {
       const oldCaches = cacheNames.filter(name => name.startsWith('nrfz-cache-'));
       
       for (let cacheName of oldCaches) {
-        await caches.delete(cacheName);
+        try {
+          await caches.delete(cacheName);
+          console.log('[PWA Migration] Deleted old cache:', cacheName);
+        } catch (cacheError) {
+          console.warn('[PWA Migration] Failed to delete cache:', cacheName, cacheError);
+        }
       }
     } catch (error) {
       console.error('[PWA Migration] Error deleting caches:', error);
     }
   }
 
-  // Step 3: Show migration banner if old app was installed
+  // Step 3: Clean up corrupted storage data
+  try {
+    // Clear potential corrupted keys
+    const storageKeys = Object.keys(localStorage);
+    for (let key of storageKeys) {
+      if (key.includes('ServiceWorkerRegistration') || key.includes('storage')) {
+        try {
+          localStorage.removeItem(key);
+          console.log('[PWA Migration] Cleared corrupted storage key:', key);
+        } catch (e) {
+          console.warn('[PWA Migration] Could not clear key:', key);
+        }
+      }
+    }
+  } catch (error) {
+    console.warn('[PWA Migration] Error cleaning localStorage:', error);
+  }
+
+  // Step 4: Show migration banner if old app was installed
   if (window.navigator.standalone === true) {
-    
-    // Check localStorage for migration flag
-    const hasMigrated = localStorage.getItem('pwa-migration-notified');
-    
-    if (!hasMigrated) {
-      showMigrationBanner();
-      localStorage.setItem('pwa-migration-notified', 'true');
+    try {
+      // Check localStorage for migration flag with error handling
+      let hasMigrated = false;
+      try {
+        hasMigrated = localStorage.getItem('pwa-migration-notified') === 'true';
+      } catch (storageError) {
+        console.warn('[PWA Migration] Could not read localStorage:', storageError);
+      }
+      
+      if (!hasMigrated) {
+        showMigrationBanner();
+        try {
+          localStorage.setItem('pwa-migration-notified', 'true');
+        } catch (storageError) {
+          console.warn('[PWA Migration] Could not write to localStorage:', storageError);
+        }
+      }
+    } catch (error) {
+      console.warn('[PWA Migration] Error showing banner:', error);
     }
   }
 });

@@ -1,14 +1,14 @@
 {
   "id": "railbuddy",
-  "name": "RailBuddy - Train Status & Alerts",
+  "name": "RailBuddy",
   "short_name": "RailBuddy",
   "description": "Real-time train line status, delays, and schedules for Singapore MRT and LRT networks",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "background_color": "#ffffff",
-  "theme_color": "#007bff",
+  "background_color": "#ebebe8",
+  "theme_color": "#ebebe8",
   "categories": ["transportation", "utilities"],
   "icons": [
     {

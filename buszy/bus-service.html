@@ -48,11 +48,11 @@
                     </a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a href="abs.html"><i class="fa-regular fa-bars"></i>
+                    <a href="menu.html"><i class="fa-regular fa-bars"></i>
                     </a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a href="abs.html"><i class="fa-kit fa-lta-bus-stop"></i>
+                    <a href="abs.html"><i class="fa-kit fa-lta-bus"></i>
                     </a>
                 </li>
             </ol>
@@ -141,11 +141,11 @@
                                     </a>
                                 </li>
                                 <li class="breadcrumb-item">
-                                    <a href="abs.html"><i class="fa-regular fa-bars"></i>
+                                    <a href="menu.html"><i class="fa-regular fa-bars"></i>
                                     </a>
                                 </li>
                                 <li class="breadcrumb-item">
-                                    <a href="abs.html"><i class="fa-kit fa-lta-bus-stop"></i>
+                                    <a href="abs.html"><i class="fa-kit fa-lta-bus"></i>
                                     </a>
                                 </li>
                             </ol>
@@ -163,45 +163,41 @@
             <div class="service-number-badge" id="service-number">---</div>
             <div class="service-info">
                 <h1 id="service-title">Loading...</h1>
+
+                <!-- Remove when all svc done -->
+                <!-- <button class="open-route-info-btn" id="open-route-info-btn" aria-label="Open route information">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    Open Route Info
+                </button> -->
+
             </div>
         </div>
 
-        <!-- Quick Info Cards -->
-        <div class="row">
-            <div class="col-md-6 col-lg-4 box-indiv">
-                <div class="port-summary port-cat text-center mb-80">
-                    <div class="summ-icon">
-                        <i class="fa-solid fa-clock"></i>
-                    </div>
-                    <h3 style="font-size: 18px; font-weight: bolder;">Operating Hours</h3>
-                    <h4 style="font-size: 18px;" id="operating-hours">---</h4>
+        <!-- Route Section -->
+        <section class="route-section">
+            <div class="route-terminals">
+                <div class="terminal">
+                    <div class="terminal-label">Starts At</div>
+                    <div class="terminal-name" id="terminal-start">---</div>
                 </div>
-            </div>
+                <div class="route-arrow"><i class="fa-kit fa-lta-to-down"></i></div>
 
-            <div class="col-md-6 col-lg-4 box-indiv">
-                <div class="port-summary port-year text-center mb-80">
-                    <div class="summ-icon">
-                        <i class="fa-solid fa-stopwatch"></i>
-                    </div>
-                    <h3 style="font-size: 18px; font-weight: bolder;" id="frequency-title">Frequency</h3>
-                    <h4 style="font-size: 18px;" id="frequency">---</h4>
+                <div class="loop">
+                    <div class="terminal-label">Loops At</div>
+                    <div class="terminal-name" id="terminal-loop">---</div>
                 </div>
-            </div>
 
-            <div class="col-md-6 col-lg-4 box-indiv">
-                <div class="port-summary port-year text-center mb-80">
-                    <div class="summ-icon">
-                        <i class="fa-regular fa-money-bill"></i>
-                    </div>
-                    <h3 style="font-size: 18px; font-weight: bolder;">Fares</h3>
-                    <h4 style="font-size: 18px;" id="fare">---</h4>
+                <div class="route-arrow"><i class="fa-kit fa-lta-to-down"></i></div>
+                <div class="terminal">
+                    <div class="terminal-label">Ends At</div>
+                    <div class="terminal-name" id="terminal-end">---</div>
                 </div>
             </div>
-        </div>
+        </section>
 
         <!-- Short Bus Service -->
         <section class="short-bus-service" id="short-bus-section" style="display: none;">
-            <h2><i class="fa-kit fa-lta-bus"></i> Short Bus Service</h2>
+            <h2><i class="fa-kit fa-lta-bus"></i> Short Bus Service/Variants</h2>
             <div class="service-links" id="short-bus-content">
                 ---
             </div>
@@ -215,41 +211,38 @@
             </div>
         </section>
 
-        <!-- Remarks Section -->
-        <section class="remarks-section" id="remarks-section" style="display: none;">
-            <div class="service-desc" id="remarks-content">
+        <!-- Express Variant -->
+        <section class="express-variant" id="express-variant-section" style="display: none;">
+            <h2><i class="fa-kit fa-lta-bus"></i> Express Variant</h2>
+            <div class="service-links" id="express-variant-content">
                 ---
             </div>
         </section>
 
-        <!-- Route Section -->
-        <section class="route-section">
-            <h2><i class="fa-solid fa-route"></i> Route</h2>
-            <div class="route-terminals">
-                <div class="terminal">
-                    <div class="terminal-label">Starts At</div>
-                    <div class="terminal-name" id="terminal-start">---</div>
-                </div>
-                <div class="route-arrow"><i class="fa-solid fa-arrow-down"></i></div>
-
-                <div class="loop">
-                    <div class="terminal-label">Loops At</div>
-                    <div class="terminal-name" id="terminal-loop">---</div>
-                </div>
-
-                <div class="route-arrow"><i class="fa-solid fa-arrow-down"></i></div>
-                <div class="terminal">
-                    <div class="terminal-label">Ends At</div>
-                    <div class="terminal-name" id="terminal-end">---</div>
-                </div>
+        <!-- Route Variant -->
+        <section class="route-variant" id="route-variant-section" style="display: none;">
+            <h2><i class="fa-kit fa-lta-bus"></i> Route Variant</h2>
+            <div class="service-links" id="route-variant-content">
+                ---
             </div>
         </section>
 
         <!-- Stops Section -->
         <section class="stops-section">
             <h2><i class="fa-kit fa-lta-bus-stop"></i> Bus Stops (<span id="stops-count">0</span>)</h2>
+            <div class="stops-search-container" id="stops-search-container" style="display:none;">
+                <div class="stops-search-wrapper">
+                    <i class="fa-regular fa-magnifying-glass stops-search-icon"></i>
+                    <input type="text" id="stops-search-input" class="stops-search-input"
+                        placeholder="Search by name, code or road">
+                    <button class="stops-search-clear" id="stops-search-clear" aria-label="Clear search"
+                        style="display:none;">
+                        <i class="fa-regular fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
             <div class="stops-container" id="stops-container">
-                <div class="loading-placeholder">Loading stops...</div>
+                <div class="loading-placeholder">Fetching Data...</div>
             </div>
         </section>
     </div>
@@ -262,6 +255,10 @@
     <script src="buszy-subp.js"></script>
 
     <script src="js/bus-service.js"></script>
+
+    <script src="./js/ann-indicator.js"></script>
+
+    <script src="../js/back-to-top.js"></script>
 </body>
 
 </html>

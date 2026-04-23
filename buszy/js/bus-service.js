@@ -9,6 +9,15 @@ function getServiceNumberFromURL() {
     return params.get('service') || '3'; // Default to service 3 if not specified
 }
 
+// Get highlight stop code from URL parameters if available
+function getHighlightStopFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('highlightStop') || null;
+}
+
+// Store highlight stop code for use in bus stops display
+const highlightStop = getHighlightStopFromURL();
+
 // Get base path for the application
 function getBasePath() {
     // If PWAConfig is available, use it
@@ -33,6 +42,33 @@ function getBasePath() {
 
     // For local or simple paths
     return '/';
+}
+
+// Open route information in new tabs (LTG and SimplyGo)
+function openRouteInfo(serviceNumber) {
+    // Format service number to remove leading zeros if needed for LTG URL
+    const serviceNum = String(serviceNumber).replace(/^0+/, '') || serviceNumber;
+    
+    // URLs for LTG and SimplyGo
+    const ltgUrl = `https://landtransportguru.net/bus${serviceNum}/`;
+    const simplyGoUrl = `https://svc.simplygo.com.sg/eservice/eguide/service_route.php?service=${serviceNum}`;
+    
+    // Open both URLs in new windows/tabs
+    const ltgTab = window.open(ltgUrl, '_blank');
+    const simplyGoTab = window.open(simplyGoUrl, '_blank');
+    
+    console.log('LTG URL:', ltgUrl, 'opened:', !!ltgTab);
+    console.log('SimplyGo URL:', simplyGoUrl, 'opened:', !!simplyGoTab);
+}
+
+// Attach button click handler to open route info
+function attachRouteInfoButton(serviceNumber) {
+    const button = document.getElementById('open-route-info-btn');
+    if (button) {
+        button.onclick = function() {
+            openRouteInfo(serviceNumber);
+        };
+    }
 }
 
 // Load bus service data from API with local JSON fallback
@@ -126,6 +162,32 @@ async function loadLocalBusServiceData() {
     }
 }
 
+// Load destination codes as fallback for missing stops
+let destinationCodesData = null;
+
+async function loadDestinationCodes() {
+    if (destinationCodesData !== null) {
+        return destinationCodesData; // Already loaded
+    }
+    
+    try {
+        const basePath = getBasePath();
+        const jsonPath = basePath + 'buszy/json/destination-codes.json';
+        console.log('Loading destination codes from:', jsonPath);
+        const response = await fetch(jsonPath);
+        if (!response.ok) {
+            throw new Error(`Failed to load data: ${response.statusText}`);
+        }
+        destinationCodesData = await response.json();
+        console.log('Successfully loaded destination codes:', Object.keys(destinationCodesData).length, 'codes');
+        return destinationCodesData;
+    } catch (error) {
+        console.warn('Error loading destination codes:', error);
+        destinationCodesData = {}; // Set to empty object to avoid repeated attempts
+        return destinationCodesData;
+    }
+}
+
 // Fetch enriched stop details from API for given stop codes
 // Cache for bus stop details to avoid repeated API calls
 const stopCache = new Map();
@@ -159,23 +221,32 @@ async function fetchEnrichedStopsFromAPI(serviceNumber, stopCodes) {
 
             const batchPromises = batch.map(stopCode =>
                 fetch(`${API_BASE}/bus-stop-det?BusStopCode=${stopCode}`)
-                    .then(response => {
-                        if (response.ok) return response.json();
-                        throw new Error(`HTTP ${response.status}`);
-                    })
-                    .then(stopData => [
-                        stopCode,
-                        stopData.Description || stopCode,
-                        stopData.RoadName || ''
-                    ])
-                    .catch(error => {
-                        console.warn(`Failed to fetch stop ${stopCode}:`, error);
-                        return [stopCode, stopCode, ''];
-                    })
+                .then(response => {
+                    if (response.ok) return response.json();
+                    throw new Error(`HTTP ${response.status}`);
+                })
+                .then(stopData => [
+                    stopCode,
+                    stopData.Description || stopCode,
+                    stopData.RoadName || ''
+                ])
+                .catch(async (error) => {
+                    console.warn(`Failed to fetch stop ${stopCode}:`, error);
+                    // Check if stop exists in destination-codes.json
+                    const destinationCodes = await loadDestinationCodes();
+                    if (destinationCodes[stopCode]) {
+                        const destCode = destinationCodes[stopCode];
+                        const description = typeof destCode === 'string' ? destCode : destCode.description;
+                        const road = typeof destCode === 'string' ? '' : (destCode.road || '');
+                        console.log(`Using destination code for ${stopCode}: ${description}`);
+                        return [stopCode, description, road];
+                    }
+                    return [stopCode, stopCode, ''];
+                })
             );
 
             const results = await Promise.all(batchPromises);
-            
+
             // Store results in the correct positions and cache
             results.forEach((result, idx) => {
                 const originalIndex = batchIndices[idx];
@@ -236,10 +307,16 @@ async function getServiceDirections(serviceNumber, localService) {
                 });
 
                 console.log(`Found ${directionsOrder.length} directions for service ${serviceNumber}:`, directionsOrder);
-                return {
-                    directions: directionsOrder,
-                    directionDetails: directionsMap
-                };
+
+                // Only return if we actually found directions for this service
+                if (directionsOrder.length > 0) {
+                    return {
+                        directions: directionsOrder,
+                        directionDetails: directionsMap
+                    };
+                } else {
+                    console.log(`Service ${serviceNumber} not found in API response, falling back to local data`);
+                }
             }
         }
     } catch (error) {
@@ -250,13 +327,15 @@ async function getServiceDirections(serviceNumber, localService) {
     if (localService && localService.directions) {
         console.log(`Using local directions for service ${serviceNumber}:`, localService.directions);
         const directionsMap = {};
-        localService.directions.forEach(dir => {
+        // Convert directions to strings to match JSON keys
+        const directionsArray = localService.directions.map(d => String(d));
+        directionsArray.forEach(dir => {
             directionsMap[dir] = {
                 direction: dir
             };
         });
         return {
-            directions: localService.directions,
+            directions: directionsArray,
             directionDetails: directionsMap
         };
     }
@@ -295,8 +374,7 @@ async function getStopsForDirection(serviceNumber, direction) {
 
                 // Convert API stop format to array of stop codes
                 const stopCodes = Array.isArray(stops) ?
-                    stops.map(s => typeof s === 'string' ? s : s.BusStopCode) :
-                    [];
+                    stops.map(s => typeof s === 'string' ? s : s.BusStopCode) : [];
 
                 console.log(`Found ${stopCodes.length} stops for direction ${direction}:`, stopCodes);
                 return stopCodes;
@@ -310,8 +388,54 @@ async function getStopsForDirection(serviceNumber, direction) {
     }
 }
 
+// Find which direction contains the highlighted stop
+// Returns the direction if found in only one direction, otherwise returns null
+async function findDirectionForHighlightedStop(serviceNumber, directions, highlightStop, service) {
+    if (!highlightStop) {
+        return null;
+    }
+
+    console.log(`Searching for highlighted stop ${highlightStop} across ${directions.length} directions`);
+    
+    const directionsWithStop = [];
+    
+    // Check each direction for the highlighted stop
+    for (const direction of directions) {
+        let stopCodes = await getStopsForDirection(serviceNumber, direction);
+
+        // Fallback to local direction_routes if API returned nothing
+        if (stopCodes.length === 0 && service) {
+            const dirKey = String(direction);
+            if (service.direction_routes && service.direction_routes[dirKey]) {
+                stopCodes = service.direction_routes[dirKey].st || [];
+                console.log(`Using local direction_routes for direction ${direction}, ${stopCodes.length} stops`);
+            } else if (service.st) {
+                stopCodes = service.st;
+            }
+        }
+
+        // Compare as strings to avoid type mismatch
+        if (stopCodes.map(String).includes(String(highlightStop))) {
+            directionsWithStop.push(direction);
+            console.log(`Found highlighted stop ${highlightStop} in direction ${direction}`);
+        }
+    }
+    
+    // If found in only one direction, return that direction
+    if (directionsWithStop.length === 1) {
+        console.log(`Highlighted stop ${highlightStop} is only in direction ${directionsWithStop[0]}, will navigate there`);
+        return directionsWithStop[0];
+    } else if (directionsWithStop.length > 1) {
+        console.log(`Highlighted stop ${highlightStop} found in multiple directions:`, directionsWithStop);
+        return null; // Multiple directions, use default
+    } else {
+        console.log(`Highlighted stop ${highlightStop} not found in any direction`);
+        return null;
+    }
+}
+
 // Create and display direction selector
-function createDirectionSelector(directions, onDirectionChange) {
+function createDirectionSelector(directions, onDirectionChange, currentDirection = null) {
     const stopsSection = document.querySelector('.stops-section');
     if (!stopsSection) return;
 
@@ -349,11 +473,15 @@ function createDirectionSelector(directions, onDirectionChange) {
         button.className = 'direction-button';
         button.textContent = `Direction ${direction}`;
         button.setAttribute('data-direction', direction);
+        
+        // Determine if this button should be active
+        const isActive = currentDirection ? direction === currentDirection : index === 0;
+        
         button.style.cssText = `
             padding: 8px 12px;
             border: 2px solid #7bad02;
-            background-color: ${index === 0 ? '#7bad02' : 'transparent'};
-            color: ${index === 0 ? '#000' : '#fff'};
+            background-color: ${isActive ? '#7bad02' : 'transparent'};
+            color: ${isActive ? '#000' : '#fff'};
             border-radius: 24px;
             cursor: pointer;
             font-weight: 500;
@@ -372,7 +500,7 @@ function createDirectionSelector(directions, onDirectionChange) {
             }
         });
 
-        if (index === 0) {
+        if (isActive) {
             button.classList.add('active');
         }
 
@@ -403,6 +531,7 @@ function createDirectionSelector(directions, onDirectionChange) {
 }
 
 // Populate page with service data (compact format)
+// Version: Service 67 debug fix v3
 async function populateServiceData(serviceNumber, service) {
     if (!service) {
         showErrorMessage('Service information not found. Please check the service number.');
@@ -415,11 +544,9 @@ async function populateServiceData(serviceNumber, service) {
     // Service header
     document.getElementById('service-number').textContent = service.n;
     document.getElementById('service-title').textContent = service.op ? `${service.op} ${service.t} Service ${service.n}` : `Service ${service.n}`;
-
-    // Quick info cards
-    document.getElementById('operating-hours').innerHTML = service.h;
-
-    document.getElementById('fare').textContent = service.c;
+    
+    // Attach the route info button handler
+    attachRouteInfoButton(service.n);
 
     // Route terminals
     document.getElementById('terminal-start').textContent = service.ts;
@@ -443,26 +570,47 @@ async function populateServiceData(serviceNumber, service) {
         directions,
         directionDetails
     } = await getServiceDirections(serviceNumber, service);
-    let currentDirection = directions[0];
-    
-    // Display frequency with direction info for the current direction
-    if (service.freq_detail) {
-        displayFrequencyDetails(service.freq_detail, service, currentDirection);
-    } else if (service.direction_freqs && service.direction_freqs[currentDirection]) {
-        displayFrequencyDetails(service.direction_freqs[currentDirection], service, currentDirection);
-    } else {
-        document.getElementById('frequency').textContent = service.f + ' mins';
+    let currentDirection = String(directions[0]); // Ensure direction is a string
+    let lastActiveDirection = String(directions[0]); // Track the last active direction for search restore
+
+    // Check if highlighted stop is only in one direction and auto-navigate to it
+    if (highlightStop && directions.length > 1) {
+        const targetDirection = await findDirectionForHighlightedStop(serviceNumber, directions, highlightStop, service);
+        if (targetDirection) {
+            currentDirection = String(targetDirection);
+            console.log(`Auto-navigating to direction ${currentDirection} for highlighted stop ${highlightStop}`);
+        }
     }
+
+    console.log('Service object:', service);
+    console.log('Has freq_detail?', !!service.freq_detail);
+    console.log('Has direction_freqs?', !!service.direction_freqs);
+    console.log('currentDirection:', currentDirection, 'type:', typeof currentDirection);
+    if (service.direction_freqs) {
+        console.log('direction_freqs[currentDirection]:', service.direction_freqs[currentDirection]);
+        console.log('All direction_freqs keys:', Object.keys(service.direction_freqs));
+    }
+
+    // Display frequency with direction info for the current direction
+    // (Frequency cards have been removed from the page)
 
     // Function to update stops and terminals for selected direction
     const updateStopsForDirection = async (direction) => {
+        // Ensure direction is a string to match JSON keys
+        direction = String(direction);
         currentDirection = direction;
+        lastActiveDirection = direction; // Track this as the last active direction for search restore
 
-        // Show loading indicator
         const stopsContainer = document.getElementById('stops-container');
         stopsContainer.innerHTML = `
             <div class="loading-stops">
-                <div class="loading-spinner"></div>
+                <svg class="loading-spinner" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="45">
+                        <animateTransform attributeName="transform" type="rotate" values="-90;810" keyTimes="0;1" dur="2s" repeatCount="indefinite" />
+                        <animate attributeName="stroke-dashoffset" values="0%;0%;-157.080%" calcMode="spline" keySplines="0.61, 1, 0.88, 1; 0.12, 0, 0.39, 0" keyTimes="0;0.5;1" dur="2s" repeatCount="indefinite" />
+                        <animate attributeName="stroke-dasharray" values="0% 314.159%;157.080% 157.080%;0% 314.159%" calcMode="spline" keySplines="0.61, 1, 0.88, 1; 0.12, 0, 0.39, 0" keyTimes="0;0.5;1" dur="2s" repeatCount="indefinite" />
+                    </circle>
+                </svg>
                 <p>Loading bus stops...</p>
             </div>
         `;
@@ -474,18 +622,9 @@ async function populateServiceData(serviceNumber, service) {
             document.getElementById('terminal-end').textContent = dirRoute.te;
             console.log(`Direction ${direction}: ${dirRoute.ts} → ${dirRoute.te}`);
         }
-        
-        // Update operating hours if direction_hours exist
-        if (service.direction_hours && service.direction_hours[direction]) {
-            document.getElementById('operating-hours').innerHTML = service.direction_hours[direction];
-        }
-        
+
         // Update frequency display with direction info
-        if (service.freq_detail) {
-            displayFrequencyDetails(service.freq_detail, service, direction);
-        } else if (service.direction_freqs && service.direction_freqs[direction]) {
-            displayFrequencyDetails(service.direction_freqs[direction], service, direction);
-        }
+        // (Frequency cards have been removed from the page)
 
         // Try to fetch stops from API first
         let stopCodes = await getStopsForDirection(serviceNumber, direction);
@@ -504,13 +643,26 @@ async function populateServiceData(serviceNumber, service) {
         // Fetch and enrich bus stops from API
         if (stopCodes.length > 0) {
             const enrichedStops = await fetchEnrichedStopsFromAPI(serviceNumber, stopCodes);
-            populateBusStops(enrichedStops);
+            populateBusStops(enrichedStops, highlightStop);
         }
     };
 
     // Create direction selector if multiple directions exist
     if (directions.length > 1) {
-        createDirectionSelector(directions, updateStopsForDirection);
+        createDirectionSelector(directions, updateStopsForDirection, currentDirection);
+
+        // Use a small timeout to ensure the DOM is ready, then click the target direction button
+        setTimeout(() => {
+            const targetButton = document.querySelector(`[data-direction="${currentDirection}"]`);
+            if (targetButton) {
+                console.log(`Auto-clicking button for direction ${currentDirection}`);
+                targetButton.click();
+            } else {
+                console.warn(`Could not find button for direction ${currentDirection}`);
+                // Fallback: load stops directly if button not found
+                updateStopsForDirection(currentDirection);
+            }
+        }, 0);
 
         // Add arrow click handler to reverse/cycle direction
         const routeArrows = document.querySelectorAll('.route-arrow');
@@ -539,10 +691,10 @@ async function populateServiceData(serviceNumber, service) {
                 }
             });
         });
+    } else {
+        // If only one direction, load stops directly
+        await updateStopsForDirection(currentDirection);
     }
-
-    // Load stops for the first direction
-    await updateStopsForDirection(currentDirection);
 
     // Remarks section
     if (service.r) {
@@ -563,10 +715,24 @@ async function populateServiceData(serviceNumber, service) {
         document.getElementById('parent-bus-section').style.display = 'block';
         populateParentBusService(service.pb);
     }
+
+    // Express Variant section (if applicable)
+    if (service.ev && service.ev.length > 0) {
+        document.getElementById('express-variant-section').style.display = 'block';
+        populateExpressVariant(service.ev);
+    }
+
+    // Route Variant section (if applicable)
+    if (service.rv && service.rv.length > 0) {
+        document.getElementById('route-variant-section').style.display = 'block';
+        populateRouteVariant(service.rv);
+    }
 }
 
 // Display frequency details by time period (collapsible)
 function displayFrequencyDetails(freqDetail, service, currentDirection) {
+    // Ensure direction is a string to match JSON keys
+    currentDirection = String(currentDirection);
     const frequencyElement = document.getElementById('frequency');
 
     // Use direction-specific frequencies if available, otherwise use general freq_detail
@@ -576,26 +742,27 @@ function displayFrequencyDetails(freqDetail, service, currentDirection) {
     }
 
     // Check if structure is nested (with day types) or flat (legacy)
-    const isNested = freqDetail.weekdays || freqDetail.saturdays || freqDetail.sundays_holidays;
+    // A structure is nested if any value is an object (not a string/number)
+    const isNested = Object.values(freqDetail).some(val => typeof val === 'object' && val !== null);
 
     // Detect if this is a departure times format (contains non-frequency values like location names)
     let isDepartureTimes = false;
     if (isNested) {
         // Check nested structure for location names
         for (const dayType in freqDetail) {
-            if (['weekdays', 'saturdays', 'sundays_holidays'].includes(dayType)) {
-                const dayValues = Object.values(freqDetail[dayType]);
-                isDepartureTimes = dayValues.some(val => {
-                    const isFrequency = /\d+$/.test(val) || /\d+-\d+/.test(val);
-                    return !isFrequency;
-                });
-                if (isDepartureTimes) break;
-            }
+            const dayValues = Object.values(freqDetail[dayType]);
+            isDepartureTimes = dayValues.some(val => {
+                val = String(val);
+                const isFrequency = /\d+$/.test(val) || /\d+-\d+/.test(val);
+                return !isFrequency;
+            });
+            if (isDepartureTimes) break;
         }
     } else {
         // Check flat structure for location names
         const values = Object.values(freqDetail);
         isDepartureTimes = values.some(val => {
+            val = String(val);
             const isFrequency = /\d+$/.test(val) || val.includes('mins') || /\d+-\d+/.test(val);
             return !isFrequency;
         });
@@ -627,28 +794,32 @@ function displayFrequencyDetails(freqDetail, service, currentDirection) {
         const dayLabels = {
             'weekdays': 'Weekdays',
             'saturdays': 'Sat',
-            'sundays_holidays': 'Sun/PH'
+            'sundays_holidays': 'Sun/PH',
+            'weekends/PH': 'Weekends/PH'
         };
 
         for (const [dayType, times] of Object.entries(freqDetail)) {
-            if (['weekdays', 'saturdays', 'sundays_holidays'].includes(dayType)) {
-                const dayLabel = dayLabels[dayType];
-                html += `<div class="frequency-day-group">
+            // Check if this is a standard day type or a custom one (e.g., "weekdays (TP School Term)")
+            const isStandardDayType = ['weekdays', 'saturdays', 'sundays_holidays', 'weekends/PH'].includes(dayType);
+            const dayLabel = dayLabels[dayType] || dayType; // Use custom label if not standard
+
+            html += `<div class="frequency-day-group">
                     <div class="day-label">${dayLabel}</div>`;
 
-                for (const [timeRange, frequency] of Object.entries(times)) {
-                    // Check if frequency is a number (actual frequency) or a location name
-                    const isFrequency = /\d+$/.test(frequency) || /\d+-\d+/.test(frequency);
-                    const displayValue = isFrequency ? `${frequency} mins` : frequency;
-                    html += `
+            for (const [timeRange, frequency] of Object.entries(times)) {
+                // Ensure frequency is a string for regex testing
+                let freqStr = String(frequency);
+                // Check if frequency is a number (actual frequency) or a location name
+                const isFrequency = /\d+$/.test(freqStr) || /\d+-\d+/.test(freqStr);
+                const displayValue = isFrequency ? `${freqStr} mins` : freqStr;
+                html += `
                         <div class="frequency-item">
                             <span class="time-range">${timeRange}</span>
                             <span class="freq-value">${displayValue}</span>
                         </div>
                     `;
-                }
-                html += '</div>';
             }
+            html += '</div>';
         }
     } else {
         // Handle flat structure (legacy or special cases like departure times)
@@ -702,22 +873,38 @@ function toggleFrequencyDetails(event) {
     }
 }
 
-// Populate bus stops list (compact format: array of [code, name, description])
-function populateBusStops(stops) {
+// Store all stops for search filtering
+let allEnrichedStops = [];
+let currentHighlightStopForSearch = null;
+
+// Render a (possibly filtered) set of stops into the stops container
+function renderFilteredStops(stops) {
     const container = document.getElementById('stops-container');
     const countElement = document.getElementById('stops-count');
 
-    container.innerHTML = ''; // Clear existing content
+    container.innerHTML = '';
     countElement.textContent = stops.length;
+
+    if (stops.length === 0) {
+        container.innerHTML = '<div class="stops-no-results"><i class="fa-regular fa-circle-exclamation"></i> No stops match your search.</div>';
+        return;
+    }
+
+    const basePath = getBasePath();
+    const busIconPath = basePath + 'buszy/assets/bus-icon.png';
+
+    let highlightedElement = null;
 
     stops.forEach((stop, index) => {
         const stopElement = document.createElement('div');
         stopElement.className = 'stop-item';
         stopElement.style.animationDelay = `${index * 0.05}s`;
 
-        // Get base path for bus icon
-        const basePath = getBasePath();
-        const busIconPath = basePath + 'buszy/assets/bus-icon.png';
+        // Only highlight the first occurrence of the highlighted stop
+        if (currentHighlightStopForSearch && stop[0] === currentHighlightStopForSearch && !highlightedElement) {
+            stopElement.classList.add('highlight-stop');
+            highlightedElement = stopElement;
+        }
 
         stopElement.innerHTML = `
             <div class="bus-stop-info">
@@ -732,15 +919,68 @@ function populateBusStops(stops) {
             </div>
         `;
 
-        // Make stop clickable to navigate to art.html
         stopElement.style.cursor = 'pointer';
         stopElement.addEventListener('click', () => {
-            const basePath = getBasePath();
-            const artPath = basePath + 'buszy/art.html?BusStopCode=' + stop[0];
-            window.location.href = artPath;
+            window.location.href = getBasePath() + 'buszy/art.html?BusStopCode=' + stop[0];
         });
 
         container.appendChild(stopElement);
+    });
+
+    if (highlightedElement) {
+        setTimeout(() => {
+            highlightedElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
+    }
+}
+
+// Populate bus stops list (compact format: array of [code, name, description])
+function populateBusStops(stops, highlightStop = null) {
+    allEnrichedStops = stops;
+    currentHighlightStopForSearch = highlightStop;
+
+    renderFilteredStops(stops);
+
+    // Show search bar
+    const searchContainer = document.getElementById('stops-search-container');
+    if (!searchContainer) return;
+    searchContainer.style.display = 'block';
+
+    // Reset search state (e.g. when direction changes)
+    const searchInput = document.getElementById('stops-search-input');
+    const clearButton = document.getElementById('stops-search-clear');
+    if (!searchInput || !clearButton) return;
+    searchInput.value = '';
+    clearButton.style.display = 'none';
+
+    // Remove stale event listeners by replacing the nodes
+    const newInput = searchInput.cloneNode(true);
+    searchInput.parentNode.replaceChild(newInput, searchInput);
+    const newClear = clearButton.cloneNode(true);
+    clearButton.parentNode.replaceChild(newClear, clearButton);
+
+    newInput.addEventListener('input', (e) => {
+        const query = newInput.value.trim().toLowerCase();
+        newClear.style.display = query.length > 0 ? 'flex' : 'none';
+        const filtered = query
+            ? allEnrichedStops.filter(stop =>
+                stop[0].toLowerCase().includes(query) ||
+                stop[1].toLowerCase().includes(query) ||
+                stop[2].toLowerCase().includes(query)
+              )
+            : allEnrichedStops;
+        renderFilteredStops(filtered);
+    });
+
+    newClear.addEventListener('click', async () => {
+        newInput.value = '';
+        newClear.style.display = 'none';
+        renderFilteredStops(allEnrichedStops);
+        newInput.focus();
+        // Restore to the last active direction if different directions exist
+        if (directions.length > 1) {
+            await updateStopsForDirection(lastActiveDirection);
+        }
     });
 }
 
@@ -784,6 +1024,43 @@ function populateParentBusService(parentBusServices) {
     container.appendChild(linkContainer);
 }
 
+// Populate express variant links
+function populateExpressVariant(expressVariants) {
+    const container = document.getElementById('express-variant-content');
+    container.innerHTML = '';
+
+    const linkContainer = document.createElement('div');
+    linkContainer.className = 'express-variant-links';
+
+    expressVariants.forEach((service, index) => {
+        const link = document.createElement('a');
+        link.href = `?service=${service}`;
+        link.className = 'express-variant-button';
+        link.innerHTML = `${service}`;
+        link.style.animationDelay = `${index * 0.05}s`;
+        linkContainer.appendChild(link);
+    });
+
+    container.appendChild(linkContainer);
+}
+
+// Populate route variant links
+function populateRouteVariant(routeVariants) {
+    const container = document.getElementById('route-variant-content');
+    container.innerHTML = '';
+    const linkContainer = document.createElement('div');
+    linkContainer.className = 'route-variant-links';
+    routeVariants.forEach((service, index) => {
+        const link = document.createElement('a');
+        link.href = `?service=${service}`;
+        link.className = 'route-variant-button';
+        link.innerHTML = `${service}`;
+        link.style.animationDelay = `${index * 0.05}s`;
+        linkContainer.appendChild(link);
+    });
+    container.appendChild(linkContainer);
+}
+
 // Initialize page
 async function initializePage() {
     const serviceNumber = getServiceNumberFromURL();
@@ -803,11 +1080,17 @@ async function initializePage() {
     const service = data.find(s => s.n === serviceNumber);
     if (service) {
         console.log('Found service:', service);
+        console.log('Service keys:', Object.keys(service));
+        console.log('Has direction_freqs?', 'direction_freqs' in service);
+        if (service.direction_freqs) {
+            console.log('direction_freqs value:', service.direction_freqs);
+            console.log('direction_freqs keys:', Object.keys(service.direction_freqs));
+        }
         await populateServiceData(serviceNumber, service);
     } else {
         const availableServices = data.map(s => s.n).join(', ');
         console.error('Service not found. Available:', availableServices);
-        showErrorMessage(`Service ${serviceNumber} not found. Available services: ${availableServices}`);
+        showErrorMessage(`Service ${serviceNumber} is not available. <br> Please ensure you have entered a valid service number.`);
     }
 }
 

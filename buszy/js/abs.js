@@ -1,8 +1,44 @@
 
+// *****************************
+// :: Service Parameter Redirect
+// *****************************
+(function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const serviceParam = urlParams.get('service');
+    
+    if (serviceParam) {
+        console.log('Service parameter detected:', serviceParam);
+        
+        // Get base path - with fallback if PWAConfig not yet available
+        let basePath = '/';
+        if (window.PWAConfig && window.PWAConfig.basePath) {
+            basePath = window.PWAConfig.basePath;
+        } else {
+            // Fallback: derive from current pathname
+            const pathname = window.location.pathname;
+            const parts = pathname.split('/').filter(p => p);
+            if (parts.length >= 2 && parts[1] === 'buszy') {
+                basePath = '/' + parts[0] + '/';
+            }
+        }
+        
+        // Redirect directly to bus-service.html using replace to avoid back button issues
+        window.location.replace(`${basePath}buszy/bus-service.html?service=${encodeURIComponent(serviceParam)}`);
+    }
+})();
+
+
 // *********************************
 // :: Bus Stop Search and Pagination
 // *********************************
 document.addEventListener('DOMContentLoaded', async () => {
+    // Clear saved state on fresh load or refresh; only restore on back/forward navigation
+    const navType = performance.getEntriesByType('navigation')[0]?.type;
+    if (navType !== 'back_forward') {
+        sessionStorage.removeItem('absBusSearch');
+        sessionStorage.removeItem('absBusPage');
+    }
+
     const searchInput = document.getElementById('bus-stop-search');
     const apiUrl = 'https://bat-lta-9eb7bbf231a2.herokuapp.com/bus-stops';
     const listGroup = document.querySelector('.list-group');
@@ -86,7 +122,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         listGroup.innerHTML = '';
         if (busStops.length === 0) {
-            listGroup.innerHTML = '<p class="pin-msg"><i class="fa-regular fa-circle-info"></i>Loading bus stops... If this persists, please try refreshing the page.</p>';
+            listGroup.innerHTML = '<p class="pin-msg"><i class="fa-regular fa-face-frown"></i> No Bus Stops Found.</p>';
             prevButton.style.display = 'none';
             nextButton.style.display = 'none';
             return;
@@ -217,7 +253,27 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     totalPages = Math.ceil(allBusStops.length / limit);
     currentDisplayList = allBusStops; // Initialize display list to all stops
-    displayBusStops(allBusStops, currentPage);
+    
+    // Restore search input value and apply filter if it exists
+    const savedSearch = sessionStorage.getItem('absBusSearch');
+    if (savedSearch) {
+        searchInput.value = savedSearch;
+        const clearButton = document.getElementById('search-clear');
+        if (clearButton) {
+            clearButton.style.display = 'flex';
+        }
+        const query = savedSearch.toLowerCase();
+        const filteredBusStops = allBusStops.filter((busStop) =>
+            busStop.BusStopCode.toLowerCase().includes(query) ||
+            busStop.Description.toLowerCase().includes(query)
+        );
+        currentDisplayList = filteredBusStops;
+        totalPages = Math.ceil(filteredBusStops.length / limit);
+        currentPage = parseInt(sessionStorage.getItem('absBusPage')) || 1;
+        currentPage = Math.min(currentPage, totalPages);
+    }
+    
+    displayBusStops(currentDisplayList, currentPage);
 
     // Pagination
     prevButton.addEventListener('click', (e) => {
@@ -225,6 +281,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (currentPage > 1) {
             const scrollPos = window.scrollY || document.documentElement.scrollTop;
             currentPage--;
+            sessionStorage.setItem('absBusPage', currentPage);
             displayBusStops(currentDisplayList, currentPage);
             requestAnimationFrame(() => {
                 window.scrollTo(0, scrollPos);
@@ -237,6 +294,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (currentPage < totalPages) {
             const scrollPos = window.scrollY || document.documentElement.scrollTop;
             currentPage++;
+            sessionStorage.setItem('absBusPage', currentPage);
             displayBusStops(currentDisplayList, currentPage);
             requestAnimationFrame(() => {
                 window.scrollTo(0, scrollPos);
@@ -245,9 +303,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     // Search functionality
+    const clearButton = document.getElementById('search-clear');
+    
     searchInput.addEventListener('input', (event) => {
         const query = event.target.value.toLowerCase();
         let filteredBusStops;
+        
+        // Save search to sessionStorage
+        sessionStorage.setItem('absBusSearch', event.target.value);
+        
+        // Show/hide clear button
+        if (clearButton) {
+            clearButton.style.display = event.target.value.length > 0 ? 'flex' : 'none';
+        }
+        
+        // Switch to "All" tab when searching
+        const allTab = document.querySelector('.category-tab[data-category="all"]');
+        if (allTab && event.target.value.length > 0) {
+            allTab.click();
+        }
         
         if (query.trim() === '') {
             // If search is empty, show all bus stops
@@ -266,6 +340,36 @@ document.addEventListener('DOMContentLoaded', async () => {
         currentPage = 1;
         displayBusStops(currentDisplayList, currentPage);
     });
+
+    // Clear button functionality
+    if (clearButton) {
+        clearButton.addEventListener('click', () => {
+            searchInput.value = '';
+            clearButton.style.display = 'none';
+            sessionStorage.removeItem('absBusSearch');
+            sessionStorage.removeItem('absBusPage');
+
+            // Trigger input event to update all search filters naturally
+            const inputEvent = new Event('input', { bubbles: true });
+            searchInput.dispatchEvent(inputEvent);
+
+            // Hide bus service tab if visible
+            const busServiceTab = document.getElementById('bus-service-tab');
+            if (busServiceTab) busServiceTab.style.display = 'none';
+
+            // Reset scroll indicator after layout settles
+            setTimeout(() => {
+                const scrollIndicator = document.getElementById('scroll-indicator');
+                const categoryTabs = document.getElementById('category-tabs');
+                if (scrollIndicator && categoryTabs) {
+                    categoryTabs.scrollLeft = 0;
+                    if (typeof window.updateScrollIndicator === 'function') {
+                        window.updateScrollIndicator();
+                    }
+                }
+            }, 100);
+        });
+    }
 });
 
 
@@ -303,7 +407,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to update the loading message
     const updateLoadingMessage = () => {
         loadingMessageElement.innerHTML = `
-                <span class="spinner" role="status" style="margin-right: 0.5em;"></span>${loadingMessages[messageIndex]}
+                <svg class="spinner" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="status" style="margin-right: 0.5em;">
+                    <circle cx="50" cy="50" r="45">
+                        <animateTransform attributeName="transform" type="rotate" values="-90;810" keyTimes="0;1" dur="2s" repeatCount="indefinite" />
+                        <animate attributeName="stroke-dashoffset" values="0%;0%;-157.080%" calcMode="spline" keySplines="0.61, 1, 0.88, 1; 0.12, 0, 0.39, 0" keyTimes="0;0.5;1" dur="2s" repeatCount="indefinite" />
+                        <animate attributeName="stroke-dasharray" values="0% 314.159%;157.080% 157.080%;0% 314.159%" calcMode="spline" keySplines="0.61, 1, 0.88, 1; 0.12, 0, 0.39, 0" keyTimes="0;0.5;1" dur="2s" repeatCount="indefinite" />
+                    </circle>
+                </svg>${loadingMessages[messageIndex]}
             `;
         messageIndex = (messageIndex + 1) % loadingMessages.length; // Cycle through messages
     };

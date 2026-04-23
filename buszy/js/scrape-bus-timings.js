@@ -8,7 +8,7 @@ const cheerio = require('cheerio');
 const fs = require('fs');
 const path = require('path');
 
-const OUTPUT_FILE = path.join(__dirname, '../buszy/json/first-last-bus.json');
+const OUTPUT_FILE = path.join(__dirname, '../json/first-last-bus.json');
 const LTA_API_URL = 'https://bat-lta-9eb7bbf231a2.herokuapp.com/bus-stops';
 
 async function fetchAllBusStops() {

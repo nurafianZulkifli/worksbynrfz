@@ -81,6 +81,12 @@
         font-weight: bold;
     }
 
+    @media (max-width: 450px) {
+        .btn-mar {
+            width: auto;
+        }
+    }
+
     .footer {
         display: none;
     }
@@ -105,7 +111,7 @@
         </nav>
     </div>
 
-   <!-- Navigation Bar -->
+    <!-- Navigation Bar -->
     <nav class="navbar-container">
         <div class="navbar">
             <!-- Logo -->
@@ -200,11 +206,14 @@
                         </nav>
                         <div class="page-title-wrapper">
                             <div
-                                style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                                style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
                                 <div>
                                     <h1 class="page-title" id="filter-title">Announcements</h1>
                                 </div>
-
+                                <button id="mark-as-read-btn" class="btn btn-mar badges-btn"
+                                    style="margin: 0; cursor: pointer;">
+                                    <i class="fa-regular fa-check"></i> Mark as Read
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -218,25 +227,43 @@
     <section class="about-me-summ clearfix" style="padding-bottom: 5em;">
         <div class="container">
             <div class="list-group">
-                <a href="settings.html#refetch-stops"
+                <a href="settings.html#refetch-stops" data-ann-id="bus-stop-description-2026-04"
+                    data-ann-date="2026-04-12"
                     class="list-group-item list-group-item-action flex-column align-items-start">
                     <div class="d-flex">
                         <div>
                             <h5 class="lg-ann"><i class="fa-regular fa-thumbtack"></i> Bus Stop Description Changes -
-                                February 2026</h5>
+                                April 2026<span class="ann-badge-container"></span></h5>
                         </div>
                     </div>
                     <p class="mb-1" style="cursor: pointer;">
-                        A few Bus Stop Descriptions (Names) have been updated in February 2026. Do head over to Settings
+                        A few Bus Stop Descriptions (Names) have been updated in April 2026. Do head over to Settings
                         and re-fetch
                         your bus stop data to get the most up to date information.</p>
                 </a>
                 <hr>
-                <a href="https://landtransportguru.net/sklrt-west-single-loop-ops-apr-oct-2026/"
+                <a href="https://landtransportguru.net/shortened-ops-hours-ccl-apr-may-2026/"
+                    data-ann-id="ccl-service-adjustment-2026-04" data-ann-date="2026-04-26"
                     class="list-group-item list-group-item-action flex-column align-items-start">
                     <div class="d-flex">
                         <div>
-                            <h5 class="lg-ann">Service Adjustments - SKLRT</h5>
+                            <h5 class="lg-ann"><i class="fa-kit fa-lta-train"></i> Service Adjustments - CCL<span
+                                    class="ann-badge-container"></span></h5>
+                            <small class="lg-date">26 Mar 2026</small>
+                        </div>
+                    </div>
+                    <p class="mb-1" style="cursor: pointer;">
+                        Early Closures & Late Openings (ECLO) along the entire Circle Line (CCL), between Dhoby Ghaut /
+                        Marina Bay and HarbourFront, will take place across six weekends between 11 April 2026 and 17
+                        May 2026..</p>
+                </a>
+                <a href="https://landtransportguru.net/sklrt-west-single-loop-ops-apr-oct-2026/"
+                    data-ann-id="sklrt-closure-2026-04" data-ann-date="2026-02-20"
+                    class="list-group-item list-group-item-action flex-column align-items-start">
+                    <div class="d-flex">
+                        <div>
+                            <h5 class="lg-ann"><i class="fa-kit fa-lta-lrt"></i> Service Adjustments - SKLRT<span
+                                    class="ann-badge-container"></span></h5>
                             <small class="lg-date">20 Feb 2026</small>
                         </div>
                     </div>
@@ -245,38 +272,13 @@
                         2026. This is to facilitate the track works needed to integrate the existing LRT line with the
                         expanded Sengkang LRT Depot.</p>
                 </a>
-                <a href="https://landtransportguru.net/ecid-ewl-closure-mar26/"
-                    class="list-group-item list-group-item-action flex-column align-items-start">
-                    <div class="d-flex">
-                        <div>
-                            <h5 class="lg-ann">Service Adjustments - EWL</h5>
-                            <small class="lg-date">20 Feb 2026</small>
-                        </div>
-                    </div>
-                    <p class="mb-1" style="cursor: pointer;">
-                        The East-West Line (EWL) will be closed between Tanah Merah–Expo from Saturday, 14 March 2026 to
-                        Tuesday, 17 March 2026. This is to disconnect the reception tracks linking the EWL with Changi
-                        Depot, following the operationalisation of the new East Coast Integrated Depot (ECID) in
-                        December 2025..</p>
-                </a>
-                <a href="https://landtransportguru.net/ccl-degraded-service-jan-apr-26/"
-                    class="list-group-item list-group-item-action flex-column align-items-start">
-                    <div class="d-flex">
-                        <div>
-                            <h5 class="lg-ann">Service Adjustments - CCL</h5>
-                            <small class="lg-date">01 Dec 2025</small>
-                        </div>
-                    </div>
-                    <p class="mb-1" style="cursor: pointer;">
-                        Reduced train services along the entire Circle Line (CCL) will take place from Saturday 17
-                        January 2026 to Sunday 19 April 2026 to facilitate essential tunnel strengthening works between
-                        Mountbatten, Dakota and Paya Lebar stations.</p>
-                </a>
                 <a href="https://www.ptc.gov.sg/newsroom/news-releases/newsroom-view/fare-review-exercise-2025"
+                    data-ann-id="fare-review-2025-10" data-ann-date="2025-10-14"
                     class="list-group-item list-group-item-action flex-column align-items-start">
                     <div class="d-flex">
                         <div>
-                            <h5 class="lg-ann">Fare Review Exercise</h5>
+                            <h5 class="lg-ann"><i class="fa-kit fa-lta-map"></i> Fare Review Exercise<span
+                                    class="ann-badge-container"></span></h5>
                             <small class="lg-date">14 Oct 2025</small>
                         </div>
                     </div>
@@ -292,7 +294,9 @@
     <script type="text/javascript" id="cookiebanner" src="../js/cookies-banner.js" data-position="bottom"
         data-bg="#f2f3e5" data-fg="#000" data-font-family="Onest, sans-serif" data-zindex="12345111111"
         data-message="This website uses cookies to provide necessary site functionality and to improve your experience. By using this website, you agree to our use of cookies.">
-    </script>
+        </script>
+
+    <script src="../js/cookies-theme-sync.js"></script>
 
     <script src="js/mob-navtabs.js"></script>
 
@@ -317,6 +321,8 @@
     <script src="../js/utils.js"></script>
 
     <script src="js/ann.js"></script>
+
+    <script src="../js/back-to-top.js"></script>
 
 </body>
 

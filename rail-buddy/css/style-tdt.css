@@ -1,3 +1,67 @@
+/* ===== PWA Splash Screen ===== */
+#pwa-splash {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background-color: #ebebe8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.5s ease;
+    pointer-events: all;
+    overflow: hidden;
+}
+
+body.dark-mode #pwa-splash {
+    background-color: #121521;
+}
+
+#pwa-splash.hide {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#pwa-splash .splash-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#pwa-splash .splash-icon {
+    width: 100px;
+    height: 100px;
+}
+
+#pwa-splash .splash-name {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-top: 10px;
+    color: #333;
+    letter-spacing: 0.5px;
+}
+
+body.dark-mode #pwa-splash .splash-name {
+    color: #fff;
+}
+
+#pwa-splash .splash-hero {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: url('../../img/bg-img/hero-railbuddy.png') center bottom / cover no-repeat;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.5) 30%, black 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.5) 30%, black 100%);
+}
+
+body.dark-mode #pwa-splash .splash-hero {
+    background-image: url('../../img/bg-img/hero-railbuddy-dark.png');
+}
+
 body.dark-mode {
     background: #121521 !important;
 }
@@ -25,14 +89,6 @@ body.dark-mode .mobile-bottom-nav {
 
 .hyperlink {
     color: #8f2d22 !important;
-}
-
-body.dark-mode .hyperlink {
-    color: #cf5244 !important;
-}
-
-#scrollUp {
-    display: none !important;
 }
 
 .page-title-wrapper>div>div:first-child {
@@ -89,6 +145,12 @@ body.dark-mode li.breadcrumb-item a {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
+.lg-ann {
+    font-size: 25px;
+    margin-bottom: 0px;
+    font-weight: bolder;
+}
+
 .lg-menu {
     font-size: 18px;
     margin-bottom: 0px;
@@ -103,12 +165,13 @@ body.dark-mode li.breadcrumb-item a {
 
 /* Install Banner Styles */
 .pwa-install-banner {
-    background: linear-gradient(58deg, rgb(172, 55, 42) 0%, rgb(163, 110, 17) 100%);
+    background: linear-gradient(58deg, rgba(172, 55, 42, 0.60) 0%, rgba(163, 110, 17, 0.60) 100%);
+    backdrop-filter: blur(25px);
 }
 
 .pwa-install-btn {
-  background: white;
-  color: #8f2d22;
+    background: white;
+    color: #8f2d22;
 }
 
 body.dark-mode .about-me-summ {
@@ -129,6 +192,28 @@ body.dark-mode .list-group-item:hover {
     background-color: #334250;
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+#scrollUp {
+    position: fixed;
+    right: 40px;
+    font-size: 20px;
+    line-height: 47px;
+    width: 46px;
+    height: 46px;
+    bottom: 60px;
+    background-color: #d17321;
+    color: #fff;
+    text-align: center;
+    border-radius: 25px;
+    box-shadow: 0 2px 40px 0px rgba(15, 15, 15, 0.15);
+    z-index: 12345111212;
+    display: block !important;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(12px);
+    transition: opacity 0.3s cubic-bezier(.4, 0, .2, 1), transform 0.3s cubic-bezier(.4, 0, .2, 1);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 @media (min-width: 995px) {
@@ -433,4 +518,85 @@ body.dark-mode .error-message {
     background: #5a1a1a !important;
     border-color: #c33 !important;
     color: #ff6b6b !important;
+}
+
+/* Announcement Indicator Badges */
+.ann-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    margin-left: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    border-radius: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.ann-badge.new {
+    background-color: #ff6b35;
+    color: #fff;
+    animation: pulse-new 2s infinite;
+}
+
+.ann-badge.modified {
+    background-color: #f7b32b;
+    color: #1a1a1a;
+}
+
+@keyframes pulse-new {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(255, 107, 53, 0.7);
+    }
+    50% {
+        box-shadow: 0 0 0 6px rgba(255, 107, 53, 0);
+    }
+}
+
+body.dark-mode .ann-badge.new {
+    background-color: #ff6b35;
+    color: #fff;
+}
+
+body.dark-mode .ann-badge.modified {
+    background-color: #f7b32b;
+    color: #1a1a1a;
+}
+
+/* Announcement Indicator Dot */
+.ann-indicator-dot {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 0;
+    height: 0;
+    background-color: #ff6b35;
+    border-radius: 50%;
+    margin-left: 0;
+    animation: pulse-dot 2s infinite;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease, width 0.3s ease, height 0.3s ease, margin-left 0.3s ease;
+}
+
+.ann-indicator-dot.show {
+    width: 10px;
+    height: 10px;
+    margin-left: 6px;
+    opacity: 1;
+    visibility: visible;
+}
+
+@keyframes pulse-dot {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(255, 107, 53, 0.7);
+    }
+    50% {
+        box-shadow: 0 0 0 6px rgba(255, 107, 53, 0);
+    }
+}
+
+body.dark-mode .ann-indicator-dot {
+    background-color: #ff6b35;
 }

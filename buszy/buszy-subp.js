@@ -125,7 +125,7 @@ function updateThemeIcon(theme) {
     }
     
     // Update display text
-    let displayText = 'Display: ';
+    let displayText = 'Theme: ';
     if (preference === 'light') {
         displayText += 'Light';
     } else if (preference === 'dark') {

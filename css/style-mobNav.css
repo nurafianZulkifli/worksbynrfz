@@ -27,10 +27,6 @@ body.dark-mode .mobile-bottom-nav {
     color: #67a0bb !important;
 }
 
-#scrollUp {
-    display: none !important;
-}
-
 .page-title-wrapper>div>div:first-child {
     margin-bottom: 0px;
 }

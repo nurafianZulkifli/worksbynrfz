@@ -107,6 +107,22 @@
         padding-bottom: 0.5em !important;
         font-size: 16px !important;
     }
+
+    .form-check-input:checked,
+    body.dark-mode .form-check-input:checked {
+        background-color: #1f84a2;
+        border-color: #1f84a2;
+    }
+
+    #refresh-interval-value {
+        font-size: 16px;
+        cursor: default;
+    }
+
+    body.dark-mode .form-check-input {
+        background-color: #313544;
+        border-color: #ffffff3b;
+    }
 </style>
 
 <body>
@@ -272,9 +288,49 @@
         </div>
 
         <div class="container">
-            <h2 class="text-center" style="padding-top: 1em;">Data</h2>
+            <h2 class="text-center" style="padding-top: 1em;">Display Options</h2>
             <ul class="list-group">
                 <li class="list-group-item">
+                    <div class="form-check form-switch"
+                        style="display: flex; align-items: center; gap: 1rem; padding-left: 0em;">
+                        <label class="form-check-label" for="show-fleet-legend"
+                            style="cursor: pointer; margin-bottom: 0; display: flex; align-items: center; padding-top: 8px; font-size: 16px; flex: 1; font-weight: bolder;">
+                            Show Fleet Legend
+                        </label>
+                        <input class="form-check-input" type="checkbox" id="show-fleet-legend" name="show-fleet-legend"
+                            checked style="width: 2.5em; height: 1.2em; cursor: pointer; flex-shrink: 0;">
+                    </div>
+                    <p class="fetch">Displays the incoming buses and fleet legend on the Arrival Timings page.</p>
+                </li>
+                <li class="list-group-item">
+                    <div class="form-check form-switch"
+                        style="display: flex; align-items: center; gap: 1rem; padding-left: 0em;">
+                        <label class="form-check-label" for="show-incoming-buses"
+                            style="cursor: pointer; margin-bottom: 0; display: flex; align-items: center; padding-top: 8px; font-size: 16px; flex: 1; font-weight: bolder;">
+                            Show Incoming Buses
+                        </label>
+                        <input class="form-check-input" type="checkbox" id="show-incoming-buses"
+                            name="show-incoming-buses" checked
+                            style="width: 2.5em; height: 1.2em; cursor: pointer; flex-shrink: 0;">
+                    </div>
+                    <p class="fetch">Displays the next 4 incoming buses on the Arrival Timings page.</p>
+                </li>
+                <a href="" class="list-group-item list-group-item-action" id="theme-toggle-desktop">
+                    <div class="d-flex">
+                        <div>
+                            <h5 class="lg-menu"><i class="fa-regular fa-sun-bright" id="theme-icon-desktop"></i>&nbsp;
+                                <span id="theme-text-desktop">Theme: Light</span>
+                            </h5>
+                        </div>
+                    </div>
+                </a>
+            </ul>
+        </div>
+
+        <div class="container">
+            <h2 class="text-center" style="padding-top: 1em;">Data</h2>
+            <ul class="list-group">
+                <li class="list-group-item" id="refetch-stops">
                     <button id="clear-cache-btn" class="btn btn-rfetch">Re-fetch data</button><br>
                     <p class="fetch">Clear cached bus stop data to ensure you have the latest information.</p>
                 </li>
@@ -289,6 +345,18 @@
                     <div id="import-message"
                         style="margin-top: 1rem; display: none; padding: 0.75rem; border-radius: 5px; font-size: 14px;">
                     </div>
+                </li>
+                <li class="list-group-item">
+                    <label for="refresh-interval"
+                        style="font-size: 16px; font-weight: bolder; display: block; margin-bottom: 0.5rem;">
+                        Refresh Interval
+                    </label>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <input type="range" id="refresh-interval" name="refresh-interval" min="1" max="10" step="0.5"
+                            value="2" style="flex: 1; cursor: pointer;">
+                        <span id="refresh-interval-value" style="font-weight: bold; min-width: 60px;">2 sec</span>
+                    </div>
+                    <p class="fetch">Adjust how often the Arrival Timings page refreshes (1-10 seconds).</p>
                 </li>
             </ul>
         </div>
@@ -306,27 +374,14 @@
                 </ul>
         </div> -->
 
-        <div class="container">
-            <h2 class="text-center" style="padding-top: 1em;">Personalization</h2>
-            <div class="list-group">
-                <a href="" class="list-group-item list-group-item-action" id="theme-toggle-desktop">
-                    <div class="d-flex">
-                        <div>
-                            <h5 class="lg-menu"><i class="fa-regular fa-sun-bright" id="theme-icon-desktop"></i>&nbsp;
-                                <span id="theme-text-desktop">Theme: Light</span>
-                            </h5>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div>
-
     </section>
 
     <script type="text/javascript" id="cookiebanner" src="../js/cookies-banner.js" data-position="bottom"
         data-bg="#f2f3e5" data-fg="#000" data-font-family="Onest, sans-serif" data-zindex="12345111111"
         data-message="This website uses cookies to provide necessary site functionality and to improve your experience. By using this website, you agree to our use of cookies.">
         </script>
+
+    <script src="../js/cookies-theme-sync.js"></script>
 
     <script src="js/mob-navtabs.js"></script>
 
@@ -351,6 +406,8 @@
     <script src="../js/utils.js"></script>
 
     <script src="js/settings.js"></script>
+
+    <script src="./js/ann-indicator.js"></script>
 
     <script src="../js/back-to-top.js"></script>
 

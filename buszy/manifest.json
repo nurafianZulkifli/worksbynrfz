@@ -1,14 +1,14 @@
 {
   "id": "buszy",
-  "name": "Buszy - Bus Timings & Alerts",
+  "name": "Buszy",
   "short_name": "Buszy",
-  "description": "Real-time bus timings, alerts, and pinned bus stops for Singapore buses",
+  "description": "Real-time bus arrival timings, details, and pinned bus stops for Singapore buses",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "background_color": "#ffffff",
-  "theme_color": "#007bff",
+  "background_color": "#ebebe8",
+  "theme_color": "#ebebe8",
   "categories": ["transportation", "utilities"],
   "icons": [
     {
@@ -26,10 +26,10 @@
   ],
   "shortcuts": [
     {
-      "name": "Bus Timings",
-      "short_name": "Timings",
-      "description": "Check bus arrival timings",
-      "url": "./",
+      "name": "Bus Services",
+      "short_name": "Bus Services",
+      "description": "All Bus Services",
+      "url": "./bus-service.html",
       "icons": [
         {
           "src": "./assets/icon-192.png",

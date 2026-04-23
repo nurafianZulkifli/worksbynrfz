@@ -21,6 +21,8 @@
     <link rel="manifest" href="./manifest.json">
     <link rel="icon" href="./assets/icon-512.png" type="image/png">
     <link rel="apple-touch-icon" href="./assets/icon-512.png">
+    <!-- iOS PWA Startup Image -->
+    <link rel="apple-touch-startup-image" href="../img/bg-img/hero-railbuddy-dark.png">
 
     <script src="https://kit.fontawesome.com/965e82ac01.js" crossorigin="anonymous"></script>
 
@@ -195,6 +197,29 @@
 </style>
 
 <body>
+    <!-- Apply dark mode before splash renders to avoid flash -->
+    <script>
+        (function () {
+            var pref = localStorage.getItem('theme-preference') || 'system';
+            var isDark = pref === 'dark' || (pref === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            if (isDark) document.body.classList.add('dark-mode');
+        })();
+    </script>
+
+    <!-- PWA Splash Screen: only show on fresh launch -->
+    <script>
+        if (sessionStorage.getItem('splashShown-railbuddy')) {
+            document.documentElement.style.setProperty('--splash-display', 'none');
+        }
+    </script>
+    <div id="pwa-splash" style="display: var(--splash-display, flex);">
+        <div class="splash-content">
+            <img src="./assets/icon-512.png" alt="RailBuddy" class="splash-icon">
+            <span class="splash-name">RailBuddy</span>
+        </div>
+        <div class="splash-hero"></div>
+    </div>
+
     <!-- Navigation Bar -->
     <nav class="navbar-container">
         <div class="navbar">
@@ -337,6 +362,8 @@
         data-message="This website uses cookies to provide necessary site functionality and to improve your experience. By using this website, you agree to our use of cookies.">
     </script>
 
+    <script src="../js/cookies-theme-sync.js"></script>
+
     <script src="./js/mob-navtabs.js"></script>
 
     <script src="./js/mob-navtabs-tooltip.js"></script>
@@ -368,6 +395,32 @@
     <script src="./js/pwa-init.js"></script>
 
     <script src="./js/tsa.js"></script>
+    <script src="./js/ann-indicator.js"></script>
+
+    <script>
+        // Dismiss PWA splash screen after page load
+        (function () {
+            function hideSplash() {
+                var splash = document.getElementById('pwa-splash');
+                if (!splash) return;
+                sessionStorage.setItem('splashShown-railbuddy', '1');
+                splash.classList.add('hide');
+                setTimeout(function () {
+                    if (splash.parentNode) splash.parentNode.removeChild(splash);
+                }, 500);
+            }
+            if (sessionStorage.getItem('splashShown-railbuddy')) return;
+            if (document.readyState === 'complete') {
+                setTimeout(hideSplash, 600);
+            } else {
+                window.addEventListener('load', function () {
+                    setTimeout(hideSplash, 600);
+                });
+            }
+        })();
+    </script>
+
+    <script src="../js/back-to-top.js"></script>
 
 </body>
 

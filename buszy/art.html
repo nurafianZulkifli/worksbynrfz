@@ -72,6 +72,8 @@
         background-color: #fff;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         transition: all 0.3s;
+        scroll-margin-top: 140px;
+        scroll-margin-bottom: 140px;
     }
 
     .card .card-header {
@@ -86,14 +88,15 @@
 
     .card .card-content-art {
         display: flex;
-        flex-direction: column;
-        gap: 1rem;
+        flex-direction: row;
+        gap: 1.0rem;
+        justify-content: space-around;
     }
 
     .card .card-content-art span {
         display: flex;
-        align-items: center;
-        gap: 1rem !important;
+        align-items: baseline;
+        gap: 0.5px;
     }
 
     .card .operator-logo {
@@ -107,6 +110,7 @@
 
     .card-bt {
         margin-top: 2em;
+        padding: 1em;
     }
 
     .service-no {
@@ -119,6 +123,44 @@
         white-space: nowrap;
         font-size: 20px;
         width: fit-content;
+        transition-duration: 500ms;
+    }
+
+    .service-no-collapsible-btn {
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .service-no-collapsible-btn:hover .service-no {
+        transform: translateY(-2px);
+        transition-duration: 500ms;
+        background-color: #c7e3fb;
+    }
+
+    .service-no-collapsible-btn i {
+        display: inline-block;
+        transition: transform 0.3s ease;
+    }
+
+    .service-no-collapsible-btn.active i {
+        transform: rotate(180deg);
+    }
+
+    .service-options-collapse {
+        transition: max-height 0.35s ease, opacity 0.35s ease;
+        overflow: hidden;
+        opacity: 0;
+    }
+
+    .service-options-collapse.show {
+        opacity: 1;
     }
 
     body.dark-mode a.ib-svc:hover {
@@ -135,10 +177,10 @@
 
     .bus-time {
         display: inline-flex;
-        width: 125px;
+        width: 75px;
         text-align: center;
-        margin-right: 0em;
-        font-size: 20px;
+        margin-right: 2px;
+        font-size: 24px;
         font-weight: bold;
         margin-top: 2px;
         margin-bottom: 2px;
@@ -165,7 +207,7 @@
         color: #000;
         font-weight: bold;
         font-size: 20px;
-        padding: 5px 4px;
+        padding: 3px 4px;
         border-radius: 5px;
         gap: 10px;
         cursor: default;
@@ -188,7 +230,7 @@
 
     .bus-stop-code-text,
     body.dark-mode .bus-stop-code-text {
-        font-size: 25px;
+        font-size: 20px;
         font-weight: bold;
         color: #000;
         background-color: #fff;
@@ -212,7 +254,8 @@
     }
 
     #collapse-map-btn,
-    #current-location-btn {
+    #current-location-btn,
+    #recenter-map-btn {
         padding: 10px;
         margin-bottom: 1em;
         margin-right: 1em
@@ -261,12 +304,10 @@
         0%,
         100% {
             border-color: #94d40b;
-            box-shadow: 0 0 3px rgba(148, 212, 11, 0.2);
         }
 
         50% {
             border-color: rgb(104, 151, 2);
-            box-shadow: 0 0 8px rgba(104, 151, 2, 0.4);
         }
     }
 
@@ -315,14 +356,10 @@
         0%,
         100% {
             border-color: #b0e63c;
-            box-shadow: 0 0 3px #b0e63c6e;
-            border-radius: 10px;
         }
 
         50% {
             border-color: #6ea100;
-            box-shadow: 0 0 8px #cefa6e8a;
-            border-radius: 10px;
         }
     }
 
@@ -337,6 +374,27 @@
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
+    /* Bus Service Timings Button Styles */
+    a.btn.btn-primary {
+        transition: all 0.3s ease;
+    }
+
+    a.btn.btn-primary:hover {
+        background-color: #c7e3fb !important;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    body.dark-mode a.btn.btn-primary {
+        background-color: #7db603 !important;
+        color: #000 !important;
+    }
+
+    body.dark-mode a.btn.btn-primary:hover {
+        background-color: #94d40b !important;
+        color: #000 !important;
+    }
+
     body.dark-mode .card .card-header {
         background-color: #0000002c;
         border-radius: 15px;
@@ -348,6 +406,7 @@
         flex-direction: column;
         gap: 0;
         justify-content: flex-start;
+
     }
 
     .card .card-header .destination-code {
@@ -356,11 +415,37 @@
         margin-top: 0.6rem;
         line-height: 1.2;
         cursor: default;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
     }
 
     .busNo-card {
-        flex-wrap: wrap;
+        /* flex-wrap: wrap; */
         gap: 0.5rem;
+    }
+
+    .spinner,
+    .spinner-border {
+        display: inline-block;
+        width: 32px;
+        height: 32px;
+        color: #1f84a2;
+        box-sizing: border-box;
+        padding: 3px;
+        overflow: visible;
+    }
+
+    .spinner circle,
+    .spinner-border circle {
+        fill: none;
+        stroke: currentColor;
+        cx: 50%;
+        cy: 50%;
+        r: 50%;
+        stroke-width: 11;
+        stroke-linecap: round;
+        transform-origin: center;
     }
 
     body.dark-mode .card .card-header .destination-code {
@@ -371,6 +456,16 @@
         background-color: #7db603;
         color: #000 !important;
         width: fit-content;
+    }
+
+    body.dark-mode .service-no-collapsible-btn {
+        color: inherit;
+    }
+
+    body.dark-mode .service-no-collapsible-btn:hover .service-no {
+        transform: translateY(-3px);
+        background-color: #52718d;
+        color: #fff !important;
     }
 
     body.dark-mode .leaflet-touch .leaflet-bar a {
@@ -414,6 +509,17 @@
         .ib-svc {
             clip-path: polygon(22% 0%, 100% 0%, 100% 100%, 22% 100%, 0% 50%);
         }
+
+        .card-bt {
+            margin-top: 2em;
+            padding: 0em;
+        }
+
+        .card {
+            scroll-margin-top: 200px;
+            scroll-margin-bottom: 200px;
+        }
+
     }
 
     @media (min-width: 440px) and (max-width: 768px) {
@@ -428,6 +534,11 @@
     }
 
     @media (min-width: 769px) and (max-width: 1024px) {
+        .col-xl-3 {
+            flex: 0 0 auto;
+            width: 50%;
+        }
+
         #incoming-buses-grid {
             grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)) !important;
         }
@@ -451,18 +562,201 @@
         }
     }
 
+    /* Bus Load Legend Styling */
+    .bus-load-legend {
+        display: flex;
+        flex-direction: row;
+        gap: 2rem;
+        justify-content: center;
+        margin-top: 1.5em;
+        margin-bottom: 2em;
+        padding: 1rem;
+        background-color: #f9f9f9;
+        border-radius: 15px;
+        border: 1px solid #e0e0e0;
+        flex-wrap: wrap;
+    }
+
+    body.dark-mode .bus-load-legend {
+        background-color: #1c1f2b;
+        border: 1px solid #2b2b2b33;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .bus-load-legend .fleet-legend {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 0.5rem;
+        justify-content: left;
+        background-color: transparent;
+        border: none;
+        padding: 0;
+        margin: 0;
+        flex: 1;
+        min-width: 0;
+    }
+
+    .bus-load-legend .fleet-legend span {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5em;
+        border-radius: 15px;
+        font-weight: 600;
+        font-size: 14px;
+        background-color: #f8f8f8;
+        box-shadow: none;
+        border: 1px solid #ddd;
+        transition: transform 0.3s ease;
+        white-space: nowrap;
+    }
+
+    body.dark-mode .bus-load-legend .fleet-legend span {
+        background: none;
+        box-shadow: none;
+        border: 1px solid #bfbfbf;
+    }
+
+    .bus-load-legend .fleet-legend span:hover {
+        transform: translateY(-2px);
+    }
+
+    .load-indicators-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.0rem;
+        justify-content: flex-end;
+        flex: 1;
+        min-width: 250px;
+    }
+
+    .load-indicator {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 20px;
+        transition: transform 0.3s ease;
+    }
+
+    .load-indicator:hover {
+        transform: translateY(-2px);
+    }
+
+    .load-indicator.empty {
+        color: #28a745;
+        border-bottom: 3px solid #28a745;
+        font-size: 10px;
+        border-radius: 0px;
+        cursor: default;
+    }
+
+    .load-indicator.moderate {
+        color: #dfa908;
+        border-bottom: 3px solid #dfa908;
+        font-size: 10px;
+        border-radius: 0px;
+        cursor: default;
+    }
+
+    .load-indicator.full {
+        color: #dc3545;
+        border-bottom: 3px solid #dc3545;
+        font-size: 10px;
+        border-radius: 0px;
+        cursor: default;
+    }
+
+    .load-indicator i {
+        font-size: 1.2em;
+    }
+
+    .ib-time span.mins {
+        font-size: 0.7em;
+        margin-left: 0px;
+    }
+
+    .card .card-content-art span.mins {
+        font-size: 0.6em;
+        margin-left: 3px;
+    }
+
+    @media (min-width: 1200px) {
+        .col-xl-3 {
+            flex: 0 0 auto;
+            width: 33%;
+        }
+    }
+
+    @media (max-width: 954px) {
+        .bus-load-legend {
+            flex-direction: column;
+            gap: 1rem;
+            align-items: center;
+            padding: 0.8rem;
+            margin-top: 1em;
+            margin-bottom: 1.5em;
+        }
+
+        .bus-time {
+            font-size: 25px;
+        }
+    }
+
     @media (max-width: 576px) {
+        .bus-load-legend {
+            flex-direction: column;
+            gap: 1rem;
+            align-items: center;
+            padding: 0.8rem;
+            margin-top: 1em;
+            margin-bottom: 1.5em;
+        }
+
         .fleet-legend {
             display: flex;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             gap: 0.4rem;
             justify-content: center;
-            margin-top: 1em;
-            padding-bottom: 1em;
+            margin-top: 0;
+            padding-bottom: 0;
+            width: 100%;
         }
 
         .fleet-legend span {
             font-size: 12px;
+            padding: 0.4rem 0.6rem;
+        }
+
+        .bus-load-legend .fleet-legend {
+            width: 100%;
+            gap: 0.4rem;
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: center;
+            min-width: unset;
+        }
+
+        .load-indicators-group {
+            width: 100%;
+            gap: 1.0rem;
+            flex: none;
+            min-width: unset;
+            flex-wrap: nowrap;
+            text-align: center;
+            justify-content: center;
+        }
+
+        .load-indicator {
+            font-size: 12px;
+            padding: 0.4rem 0.8rem;
+            padding-top: 0px;
+            padding-bottom: 0px;
         }
 
         .img-fluid {
@@ -476,13 +770,30 @@
         }
 
         .load-indicator i {
-            font-size: 30px;
+            font-size: 25px;
+        }
+
+        .bus-time {
+            display: inline-flex;
+            width: 63px;
+            text-align: center;
+            margin-right: 0em;
+            font-size: 25px;
+            font-weight: bold;
+            margin-top: 2px;
+            margin-bottom: 2px;
+            cursor: default;
+        }
+
+        .card .card-content-art span.mins {
+            font-size: 0.6em;
+            margin-left: 2px;
         }
     }
 
     @media (max-width: 485px) {
         .card .card-content-art span {
-            font-size: 17px;
+            font-size: 20px;
         }
 
         .load-indicator i {
@@ -496,7 +807,7 @@
 
         .bus-stop-description,
         body.dark-mode .bus-stop-description {
-            font-size: 35px;
+            font-size: 30px;
             font-weight: bold;
             margin-left: 0px;
             margin-top: 10px;
@@ -508,6 +819,19 @@
             margin-left: 5px;
             margin-right: 5px;
         }
+
+        .bus-load-legend .fleet-legend {
+            width: 100%;
+            gap: 0.3rem;
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: center;
+            min-width: unset;
+        }
+
     }
 
     @media (max-width: 450px) {
@@ -516,11 +840,15 @@
         }
 
         #collapse-map-btn,
-        #current-location-btn {
+        #current-location-btn,
+        #recenter-map-btn {
             width: auto;
             padding: 10px;
             margin-bottom: 1em;
             margin-right: 1em
+        }
+        .btn-mar {
+            width: auto;
         }
     }
 
@@ -568,7 +896,7 @@
         }
     }
 
-    @media screen and (max-width: 381px) {
+    @media screen and (max-width: 380px) {
         .busNo-card {
             flex-wrap: wrap;
             gap: 0.1rem !important;
@@ -616,9 +944,10 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="./ann.html" class="nav-link">
+                    <a href="./ann.html" class="nav-link" id="ann-nav-desktop">
                         <i class="fa-regular fa-bullhorn"></i>
                         <span>Announcements</span>
+                        <span class="ann-indicator-dot"></span>
                     </a>
                 </li>
                 <li class="nav-item ">
@@ -649,9 +978,10 @@
                 </a>
             </li>
             <li>
-                <a href="./ann.html">
+                <a href="./ann.html" id="ann-nav-mobile">
                     <span class="icon">
                         <i class="fa-regular fa-bullhorn"></i>
+                        <span class="ann-indicator-dot"></span>
                     </span>
                 </a>
             </li>
@@ -717,10 +1047,13 @@
     <section class="bus-location-section">
         <div class="container">
             <button class="btn btn-busloc btn-sm" id="collapse-map-btn" title="Collapse Map">
-                <i class="fa-regular fa-chevron-up"></i>&nbsp;&nbsp;Collapse Map
+                <i class="fa-regular fa-close"></i>&nbsp;&nbsp;Close Map
             </button>
             <button class="btn btn-busloc btn-sm" id="current-location-btn" title="Go to Current Location">
-                <i class="fa-regular fa-location-crosshairs"></i>&nbsp;&nbsp;Current Location
+                <i class="fa-kit fa-lta-location"></i>&nbsp;&nbsp;Current Location
+            </button>
+            <button class="btn btn-busloc btn-sm" id="recenter-map-btn" title="Re-center map to show all buses">
+                <i class="fa-regular fa-expand"></i>&nbsp;&nbsp;Re-center
             </button>
             <div id="bus-map" style="height: 400px; width: 100%;"></div>
         </div>
@@ -728,21 +1061,37 @@
 
     <section class="about-me-summ clearfix" style="padding-bottom: 5em;">
         <div class="container">
-            <!-- Fleet Legend -->
-            <div class="fleet-legend">
-                <span>
-                    <i class="fa-kit fa-lta-bus"></i> Single
-                </span>
-                <span style="gap: 2px;">
-                    <i class="fa-kit fa-lta-bb"></i>&nbsp; Bendy
-                </span>
-                <span>
-                    <i class="fa-kit fa-lta-dd"></i> Double
-                </span>
+            <!-- Combined Legend Container -->
+            <div class="bus-load-legend">
+                <!-- Fleet Legend -->
+                <div class="fleet-legend">
+                    <span>
+                        <i class="fa-kit fa-lta-bus"></i> Single
+                    </span>
+                    <span style="gap: 2px;">
+                        <i class="fa-kit fa-lta-bb"></i>&nbsp; Bendy
+                    </span>
+                    <span>
+                        <i class="fa-kit fa-lta-dd"></i> Double
+                    </span>
+                </div>
+
+                <!-- Bus Load Legend -->
+                <div class="load-indicators-group">
+                    <span class="load-indicator empty">
+                        Seats Available
+                    </span>
+                    <span class="load-indicator moderate">
+                        Standing Available
+                    </span>
+                    <span class="load-indicator full">
+                        Limited Standing
+                    </span>
+                </div>
             </div>
 
             <!-- Incoming Buses Section -->
-            <div id="incoming-buses-section" style="display: none; margin-bottom: 2em;">
+            <div id="incoming-buses-section" style="display: none; margin-bottom: 1em;">
                 <h3 style="font-weight: bold; margin-bottom: 0.5rem;">
                     Incoming Buses
                 </h3>
@@ -759,8 +1108,6 @@
             <div class="row" id="bus-arrivals-container">
                 <div class="col-12 text-center">
                     <p id="loading-message" style="display: flex; align-items: center; justify-content: center;">
-                        <span class="spinner-border" role="status" style="margin-right: 1em;">
-                        </span>Loading Data...
                     </p>
                 </div>
             </div>
@@ -772,6 +1119,8 @@
         data-position="bottom" data-zindex="12345111111" id="cookiebanner" src="../js/cookies-banner.js"
         type="text/javascript">
         </script>
+
+    <script src="../js/cookies-theme-sync.js"></script>
 
     <script src="js/mob-navtabs.js"></script>
 
@@ -797,6 +1146,8 @@
 
     <script src="../js/pwa-config.js"></script>
 
+    <script src="js/onemap-config.js"></script>
+
     <script src="js/art.js"></script>
 
     <script>
@@ -809,5 +1160,9 @@
             });
         }
     </script>
+
+    <script src="./js/ann-indicator.js"></script>
+
+    <script src="../js/back-to-top.js"></script>
 </body>
 </html>

@@ -120,7 +120,7 @@ function initializeGeolocationSearch() {
 
         // Show spinner while waiting for location
         disableNavigation();
-        busStopsContainer.innerHTML = '<p class="pin-msg"><span class="spinner"></span>Searching for nearby bus stops...</p>';
+        busStopsContainer.innerHTML = '<p class="pin-msg"><svg class="spinner" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45"><animateTransform attributeName="transform" type="rotate" values="-90;810" keyTimes="0;1" dur="2s" repeatCount="indefinite" /><animate attributeName="stroke-dashoffset" values="0%;0%;-157.080%" calcMode="spline" keySplines="0.61, 1, 0.88, 1; 0.12, 0, 0.39, 0" keyTimes="0;0.5;1" dur="2s" repeatCount="indefinite" /><animate attributeName="stroke-dasharray" values="0% 314.159%;157.080% 157.080%;0% 314.159%" calcMode="spline" keySplines="0.61, 1, 0.88, 1; 0.12, 0, 0.39, 0" keyTimes="0;0.5;1" dur="2s" repeatCount="indefinite" /></circle></svg>Searching for nearby bus stops...</p>';
 
         navigator.geolocation.getCurrentPosition((position) => {
             const latitude = position.coords.latitude;
@@ -256,7 +256,7 @@ function displayBusStops(busStops, isCached = true) {
                 </div>
                 <div class="bus-stop-details">
                 <span class="bus-stop-description">${busStop.Description}</span>&nbsp;&nbsp;|&nbsp;
-                <span class="road-name">${busStop.RoadName}</span>&nbsp;|&nbsp;
+                <span class="road-name">${busStop.RoadName}</span>&nbsp;&nbsp;|&nbsp;
                 <span class="distance${idx === 0 ? ' distance-nearest' : ''}">${distance}</span>
                 </div>
             </div>
@@ -338,7 +338,7 @@ function handleRefreshClick() {
     // Disable navigation and show loading
     if (navbarContainer) navbarContainer.classList.add('nav-disabled');
     if (mobileBottomNav) mobileBottomNav.classList.add('nav-disabled');
-    busStopsContainer.innerHTML = '<p class="pin-msg"><span class="spinner"></span>Refreshing nearby bus stops...</p>';
+    busStopsContainer.innerHTML = '<p class="pin-msg"><svg class="spinner" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45"><animateTransform attributeName="transform" type="rotate" values="-90;810" keyTimes="0;1" dur="2s" repeatCount="indefinite" /><animate attributeName="stroke-dashoffset" values="0%;0%;-157.080%" calcMode="spline" keySplines="0.61, 1, 0.88, 1; 0.12, 0, 0.39, 0" keyTimes="0;0.5;1" dur="2s" repeatCount="indefinite" /><animate attributeName="stroke-dasharray" values="0% 314.159%;157.080% 157.080%;0% 314.159%" calcMode="spline" keySplines="0.61, 1, 0.88, 1; 0.12, 0, 0.39, 0" keyTimes="0;0.5;1" dur="2s" repeatCount="indefinite" /></circle></svg>Refreshing nearby bus stops...</p>';
     
     // Force a new location request (don't use cached location)
     if (!navigator.geolocation) {

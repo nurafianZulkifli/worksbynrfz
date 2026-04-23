@@ -180,8 +180,26 @@ body.dark-mode #check {
     display: none;
 }
 
+/* ---- Cookies Banner */
+body.dark-mode .cookiebanner {
+    background: #1c1f2b !important;
+    color: #e0e0e0 !important;
+}
+
 body.dark-mode .cookiebanner span {
-    color: #000;
+    color: #e0e0e0 !important;
+}
+
+body.dark-mode .cookiebanner a {
+    color: #80a8cc !important;
+}
+
+body.dark-mode .cookiebanner a:hover {
+    color: #a0c8ea !important;
+}
+
+body.dark-mode .cookiebanner-close {
+    color: #e0e0e0 !important;
 }
 
 /* ---- Progress Bar */

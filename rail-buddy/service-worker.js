@@ -13,7 +13,7 @@ const BASE_PATH = (() => {
   return match ? match[1] : '/';
 })();
 
-const CACHE_VERSION = 'v1';
+const CACHE_VERSION = 'v4.5';
 const CACHE_NAME = `rail-buddy-cache-${CACHE_VERSION}`;
 
 // Helper function to build paths with correct base

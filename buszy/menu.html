@@ -171,6 +171,7 @@
         display: flex;
         align-items: center;
         gap: 16px;
+        cursor: pointer;
     }
 
     .lg-menu i {
@@ -179,6 +180,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        cursor: pointer;
     }
 
     body.dark-mode .list-group-item {
@@ -425,9 +427,10 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="./ann.html" class="nav-link">
+                    <a href="./ann.html" class="nav-link" id="ann-nav-desktop">
                         <i class="fa-regular fa-bullhorn"></i>
                         <span>Announcements</span>
+                        <span class="ann-indicator-dot"></span>
                     </a>
                 </li>
                 <li class="nav-item ">
@@ -459,9 +462,10 @@
                 </a>
             </li>
             <li>
-                <a href="./ann.html">
+                <a href="./ann.html" id="ann-nav-mobile">
                     <span class="icon">
                         <i class="fa-regular fa-bullhorn"></i>
+                        <span class="ann-indicator-dot"></span>
                     </span>
                 </a>
             </li>
@@ -504,7 +508,7 @@
                                 <img src="assets/icon-512.png" alt="Buszy" class="app-branding-icon">
                             </div>
                             <h1 class="app-branding-title">Buszy</h1>
-                            <p class="app-branding-version">Version 4.0.15 (0008)</p>
+                            <p class="app-branding-version">Version 4.5.0 (2359)</p>
                         </div>
                     </div>
                 </div>
@@ -522,8 +526,7 @@
                 <h3 class="other-apps-heading">Other Apps</h3>
                 <div class="other-apps-grid">
                     <div class="other-apps-card">
-                        <a href="../rail-buddy/index.html"
-                            style="display: flex; align-items: center; gap: 16px; flex: 1; text-decoration: none; color: inherit;">
+                        <a href="../rail-buddy/index.html" style="display: flex; align-items: center; gap: 16px; flex: 1; text-decoration: none; color: inherit;">
                             <div class="other-apps-icon">
                                 <img src="../rail-buddy/assets/icon-512.png" alt="RailBuddy" width="48" height="48">
                             </div>
@@ -549,11 +552,11 @@
                     </div>
                 </a>
 
-                <a href="https://nurafianzulkifli.github.io/nrfz-dev/buszy/index.html"
+                <a href="abs.html" id="other-apps-link"
                     class="list-group-item list-group-item-action flex-column align-items-start">
                     <div class="d-flex">
                         <div>
-                            <h5 class="lg-menu"><i class="fa-regular fa-arrow-right"></i> Try out upcoming updates</h5>
+                            <h5 class="lg-menu"><i class="fa-kit fa-lta-bus-stop"></i> Bus Services</h5>
                         </div>
                     </div>
                 </a>
@@ -578,6 +581,7 @@
         data-message="This website uses cookies to provide necessary site functionality and to improve your experience. By using this website, you agree to our use of cookies.">
         </script>
 
+    <script src="../js/cookies-theme-sync.js"></script>
 
     <script src="js/mob-navtabs.js"></script>
 
@@ -602,6 +606,8 @@
     <script src="../js/utils.js"></script>
 
     <script src="js/menu.js"></script>
+
+    <script src="./js/ann-indicator.js"></script>
 
     <script src="../js/back-to-top.js"></script>
 

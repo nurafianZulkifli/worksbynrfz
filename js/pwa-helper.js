@@ -38,11 +38,14 @@ class PWAHelper {
     const swPath = this.config.swPath || '/service-worker.js';
     const scope = this.config.scope || '/';
 
+    console.log(`[${this.appName}] Registering service worker at ${swPath} with scope ${scope}`);
+
     navigator.serviceWorker.register(swPath, { scope })
       .then(registration => {
+        console.log(`[${this.appName}] Service Worker registered successfully`);
 
         // Check for updates every 60 seconds
-        setInterval(() => {
+        const updateInterval = setInterval(() => {
           registration.update().catch(err => {
             console.warn(`[${this.appName}] Update check failed:`, err);
           });
@@ -55,13 +58,18 @@ class PWAHelper {
 
           newWorker.addEventListener('statechange', () => {
             if (newWorker.state === 'activated') {
+              console.log(`[${this.appName}] Service Worker updated`);
               this.notifyUpdateAvailable();
             }
           });
         });
+
+        // Store registration for later access
+        this.swRegistration = registration;
       })
       .catch(error => {
         console.error(`[${this.appName}] Service Worker registration failed:`, error);
+        console.error(`[${this.appName}] Details - Path: ${swPath}, Scope: ${scope}`);
       });
   }
 
@@ -70,18 +78,33 @@ class PWAHelper {
    */
   setupInstallPrompt() {
     window.addEventListener('beforeinstallprompt', event => {
+      // Prevent the mini-infobar from appearing on mobile
       event.preventDefault();
+      
+      // Store the event for later use
       this.installPromptEvent = event;
+      console.log(`[${this.appName}] Install prompt event captured`);
       
       // Show install banner
       if (this.config.showInstallBanner !== false) {
-        this.showInstallPrompt();
+        // Only show if not already installed and not dismissed
+        const dismissedKey = `${this.appName.toLowerCase()}-install-dismissed`;
+        const isDismissed = sessionStorage.getItem(dismissedKey) === 'true';
+        
+        if (!this.isInstalled && !isDismissed) {
+          this.showInstallPrompt();
+        }
       }
     });
 
     window.addEventListener('appinstalled', () => {
       this.isInstalled = true;
       this.hideInstallPrompt();
+      
+      // Clear dismissal flag
+      sessionStorage.removeItem(`${this.appName.toLowerCase()}-install-dismissed`);
+      
+      console.log(`[${this.appName}] App installed successfully`);
       
       // Notify app if callback provided
       if (this.config.onInstalled) {
@@ -115,6 +138,9 @@ class PWAHelper {
       
       document.body.appendChild(banner);
       
+      // Check if cookies banner is present and adjust position
+      this.adjustBannerPositionForCookies(banner);
+      
       // Event listeners
       banner.querySelector('.pwa-install-btn').addEventListener('click', () => {
         this.promptInstall();
@@ -126,6 +152,23 @@ class PWAHelper {
       });
     } else {
       banner.style.display = 'block';
+      this.adjustBannerPositionForCookies(banner);
+    }
+  }
+
+  /**
+   * Adjust install banner position if cookies banner is visible
+   */
+  adjustBannerPositionForCookies(banner) {
+    const cookieBanner = document.querySelector('.cookiebanner');
+    
+    if (cookieBanner && cookieBanner.offsetHeight > 0) {
+      // Cookies banner is visible, shift install banner up
+      const cookieBannerHeight = cookieBanner.offsetHeight;
+      banner.style.bottom = `${cookieBannerHeight}px`;
+    } else {
+      // Cookies banner not visible or not present
+      banner.style.bottom = '0';
     }
   }
 
@@ -227,4 +270,9 @@ class PWAHelper {
 // Export for use
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = PWAHelper;
+}
+
+// Make available globally in browser
+if (typeof window !== 'undefined') {
+  window.PWAHelper = PWAHelper;
 }

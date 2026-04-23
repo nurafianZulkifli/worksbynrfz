@@ -1,5 +1,39 @@
 // Bus First & Last Timings Page
+
+// Get base path for the application
+function getBasePath() {
+    // If PWAConfig is available, use it
+    if (window.PWAConfig && window.PWAConfig.basePath) {
+        return window.PWAConfig.basePath;
+    }
+
+    // Otherwise, derive from the current pathname
+    // For GitHub Pages: /nrfz-dev/buszy/... -> /nrfz-dev/
+    // For local: /buszy/... -> /
+    const pathname = window.location.pathname;
+    const parts = pathname.split('/').filter(p => p); // Remove empty strings
+
+    // parts[0] should be the first directory level
+    // If parts[0] is 'buszy', we're at the root level (localhost)
+    // If parts[0] is something else and parts[1] is 'buszy', we're in a subdirectory (GitHub Pages)
+
+    if (parts.length >= 2 && parts[1] === 'buszy') {
+        // Format: /something/buszy/... -> /something/
+        return '/' + parts[0] + '/';
+    }
+
+    // For local or simple paths
+    return '/';
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
+    // Clear saved state on fresh load or refresh; only restore on back/forward navigation
+    const navType = performance.getEntriesByType('navigation')[0]?.type;
+    if (navType !== 'back_forward') {
+        sessionStorage.removeItem('flBusScrollPos');
+        sessionStorage.removeItem('flBusBusStop');
+    }
+
     let allBusStops = [];
     let filteredStops = [];
 
@@ -17,24 +51,41 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (cached) {
                 try {
                     const parsed = JSON.parse(cached);
-                    allBusStops = Array.isArray(parsed) ? parsed : [];
-                    console.log('Loaded bus stops from cache:', allBusStops.length);
+                    // Handle both array format and API response format { value: [...] }
+                    allBusStops = Array.isArray(parsed) ? parsed : (parsed.value || []);
+                    if (!Array.isArray(allBusStops)) {
+                        allBusStops = [];
+                    }
+                    console.log('[fl-bus.js] Loaded bus stops from cache:', allBusStops.length);
                 } catch (parseError) {
-                    console.warn('Failed to parse cached bus stops:', parseError);
+                    console.warn('[fl-bus.js] Failed to parse cached bus stops:', parseError);
                     allBusStops = [];
                 }
             } else {
-                // Fetch from API if not cached
-                const response = await fetch('https://bat-lta-9eb7bbf231a2.herokuapp.com/bus-stops?$skip=0&$top=5000');
-                const data = await response.json();
-                allBusStops = Array.isArray(data.value) ? data.value : [];
-                console.log('Loaded bus stops from API:', allBusStops.length);
+                // Fetch from API if not cached - fetch all using pagination like settings.js does
+                console.log('[fl-bus.js] Fetching bus stops from API...');
+                let skip = 0;
+                let hasMoreData = true;
+
+                while (hasMoreData) {
+                    const response = await fetch(`https://bat-lta-9eb7bbf231a2.herokuapp.com/bus-stops?$skip=${skip}`);
+                    const data = await response.json();
+                    
+                    if (!data.value || data.value.length === 0) {
+                        hasMoreData = false;
+                    } else {
+                        allBusStops = allBusStops.concat(data.value);
+                        skip += 500;
+                    }
+                }
+
+                console.log('[fl-bus.js] Loaded bus stops from API:', allBusStops.length);
                 localStorage.setItem('allBusStops', JSON.stringify(allBusStops));
             }
 
             populateDropdown(allBusStops);
         } catch (error) {
-            console.error('Error loading bus stops:', error);
+            console.error('[fl-bus.js] Error loading bus stops:', error);
             busStopDropdown.innerHTML = '<option value="">Error loading bus stops</option>';
         }
     }
@@ -118,8 +169,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         try {
             contentSection.classList.add('active');
             servicesContainer.classList.add('services-grid');
-            servicesContainer.innerHTML = '<div class="loading" style="grid-column: 1/-1;"><div class="spinner"></div><p>Loading...</p></div>';
-
+            servicesContainer.innerHTML = `
+            <div class="loading-stops">
+                <svg class="loading-spinner" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="45">
+                        <animateTransform attributeName="transform" type="rotate" values="-90;810" keyTimes="0;1" dur="2s" repeatCount="indefinite" />
+                        <animate attributeName="stroke-dashoffset" values="0%;0%;-157.080%" calcMode="spline" keySplines="0.61, 1, 0.88, 1; 0.12, 0, 0.39, 0" keyTimes="0;0.5;1" dur="2s" repeatCount="indefinite" />
+                        <animate attributeName="stroke-dasharray" values="0% 314.159%;157.080% 157.080%;0% 314.159%" calcMode="spline" keySplines="0.61, 1, 0.88, 1; 0.12, 0, 0.39, 0" keyTimes="0;0.5;1" dur="2s" repeatCount="indefinite" />
+                    </circle>
+                </svg>
+                <p>Loading bus stops...</p>
+            </div>
+        `;
             // Fetch first/last bus data from pre-generated JSON file
             // This avoids CORS, API, and backend complexity
             const jsonUrl = 'json/first-last-bus.json';
@@ -141,6 +202,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             if (!stopData) {
                 servicesContainer.innerHTML = `<div class="no-data" style="grid-column: 1/-1;">No data found for this bus stop. Data may need to be refreshed.</div>`;
+                // Restore scroll position after rendering
+                restoreScrollPosition();
                 return;
             }
 
@@ -148,6 +211,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             if (busServices.length === 0) {
                 servicesContainer.innerHTML = '<div class="no-data" style="grid-column: 1/-1;">No bus services found for this stop.</div>';
+                // Restore scroll position after rendering
+                restoreScrollPosition();
                 return;
             }
 
@@ -217,15 +282,48 @@ document.addEventListener('DOMContentLoaded', async () => {
                 servicesContainer.appendChild(card);
             });
 
+            // Check if there's a service parameter in the URL and highlight it
+            const serviceParam = new URLSearchParams(window.location.search).get('service');
+            if (serviceParam) {
+                setTimeout(() => {
+                    const targetCard = document.querySelector(`.service-card[data-service="${serviceParam}"]`);
+                    if (targetCard) {
+                        targetCard.classList.add('highlighted');
+                        // Scroll to the card
+                        targetCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }
+                }, 100);
+            }
+
+            // Restore scroll position after all content is rendered
+            restoreScrollPosition();
+
         } catch (error) {
             console.error('Error fetching bus timings:', error, error.stack);
             const errorMsg = error.message || 'Unknown error';
             servicesContainer.innerHTML = `<div class="no-data" style="grid-column: 1/-1;">Error loading bus timings: ${errorMsg}<br><small style="opacity: 0.7;">Check console for details.</small></div>`;
+            // Restore scroll position after error
+            restoreScrollPosition();
+        }
+    }
+
+    // Helper function to restore scroll position
+    function restoreScrollPosition() {
+        const savedScrollPos = sessionStorage.getItem('flBusScrollPos');
+        if (savedScrollPos) {
+            setTimeout(() => {
+                window.scrollTo(0, parseInt(savedScrollPos));
+                sessionStorage.removeItem('flBusScrollPos');
+            }, 50);
         }
     }
 
     // Helper function to capitalize each word
     function capitalizeWords(str) {
+        // Ensure str is a string
+        if (typeof str !== 'string') {
+            return String(str || '');
+        }
         const acronyms = ['MRT', 'TBI', 'LRT'];
         let result = str.toLowerCase().replace(/\b\w/g, char => char.toUpperCase());
         acronyms.forEach(acronym => {
@@ -252,11 +350,23 @@ document.addEventListener('DOMContentLoaded', async () => {
     function createServiceCard(service, destinationMap, customDestinationMap) {
         const card = document.createElement('div');
         card.className = 'service-card';
+        card.setAttribute('data-service', service.service);
 
-        // Service number header
-        const header = document.createElement('div');
+        // Service number header - now a link to bus-service.html
+        const header = document.createElement('a');
         header.className = 'service-header';
+        header.href = getBasePath() + 'buszy/bus-service.html?service=' + encodeURIComponent(service.service);
+        header.style.textDecoration = 'none';
+        header.style.color = 'inherit';
+        header.style.display = 'block';
+        header.style.cursor = 'pointer';
+        header.title = 'View service details';
         header.textContent = service.service || 'Unknown Service';
+        // Save scroll position and bus stop when clicking to navigate away
+        header.addEventListener('click', () => {
+            sessionStorage.setItem('flBusScrollPos', window.scrollY || document.documentElement.scrollTop);
+            sessionStorage.setItem('flBusBusStop', busStopDropdown.value);
+        });
         card.appendChild(header);
 
         // Route name with "To" prefix - using destination code mapping from art.js
@@ -264,7 +374,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         routeName.className = 'service-route';
         const destination = service.destinationCode || service.routeName;
         const destinationName = getDestinationName(destination, destinationMap, customDestinationMap);
-        routeName.textContent = destinationName ? `To ${capitalizeWords(destinationName)}` : '';
+        routeName.innerHTML = destinationName ? `<i class="fa-kit fa-lta-to-right"></i>&nbsp;${capitalizeWords(destinationName)}` : '';
         card.appendChild(routeName);
 
         // Timings
@@ -333,5 +443,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         busStopSearch.value = busStopCodeParam;
         clearSearch.classList.add('visible');
         displayBusStop(busStopCodeParam);
+    } else if (navType === 'back_forward') {
+        // Restore bus stop and selection if returning via back button
+        const savedBusStop = sessionStorage.getItem('flBusBusStop');
+        if (savedBusStop) {
+            busStopDropdown.value = savedBusStop;
+            busStopSearch.value = savedBusStop;
+            clearSearch.classList.add('visible');
+            displayBusStop(savedBusStop);
+        }
     }
 });
