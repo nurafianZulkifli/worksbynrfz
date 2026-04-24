@@ -511,36 +511,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         searchInput.addEventListener('input', applyPinnedSearchFilter);
     }
 
-    // Long-press handler for mobile — initiates drag from anywhere on the item
+    // Long-press handler for mobile to show/hide drag handle
     function handleTouchStart(e) {
         const item = e.target.closest('.list-group-item');
         if (!item) return;
-        // Touching the handle directly is handled by dragStart
-        if (e.target.closest('.js-drag-handle')) return;
 
-        const startX = e.touches[0].clientX;
-        const startY = e.touches[0].clientY;
         longPressItem = item;
-
         longPressTimer = setTimeout(() => {
-            if (!longPressItem) return;
-            longPressTimer = null;
-
-            longPressItem.classList.add('handle-visible');
-
-            // Initiate drag from the held position
-            draggableItem = longPressItem;
-            pointerStartX = startX;
-            pointerStartY = startY;
-            longPressItem = null;
-
-            setItemsGap();
-            disablePageScroll();
-            initDraggableItem();
-            initItemsState();
-            prevRect = draggableItem.getBoundingClientRect();
-
-            document.addEventListener('touchmove', drag, { passive: false });
+            if (longPressItem) {
+                longPressItem.classList.toggle('handle-visible');
+                longPressItem = null;
+            }
         }, 500);
     }
 
