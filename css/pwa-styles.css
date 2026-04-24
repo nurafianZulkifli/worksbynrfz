@@ -217,3 +217,67 @@
     padding: 6px 12px;
   }
 }
+
+/* ===== PWA Splash Screen ===== */
+#pwa-splash {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.5s ease;
+    pointer-events: all;
+    overflow: hidden;
+}
+
+body.dark-mode #pwa-splash {
+    background-color: #121521;
+}
+
+#pwa-splash.hide {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#pwa-splash .splash-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#pwa-splash .splash-icon {
+    width: 100px;
+    height: 100px;
+}
+
+#pwa-splash .splash-name {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-top: 10px;
+    color: #333;
+    letter-spacing: 0.5px;
+}
+
+body.dark-mode #pwa-splash .splash-name {
+    color: #fff;
+}
+
+#pwa-splash .splash-hero {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: url('../img/bg-img/hero-bg.png') center bottom / cover no-repeat;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.5) 30%, black 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.5) 30%, black 100%);
+}
+
+body.dark-mode #pwa-splash .splash-hero {
+    background-image: url('../img/bg-img/hero-bg-dark.png');
+}

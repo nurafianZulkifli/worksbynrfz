@@ -364,6 +364,29 @@
 
 
 <body>
+    <!-- Apply dark mode before splash renders to avoid flash -->
+    <script>
+        (function () {
+            var pref = localStorage.getItem('theme-preference') || 'system';
+            var isDark = pref === 'dark' || (pref === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            if (isDark) document.body.classList.add('dark-mode');
+        })();
+    </script>
+
+    <!-- PWA Splash Screen: only show on fresh launch -->
+    <script>
+        if (sessionStorage.getItem('splashShown-wbnrfz')) {
+            document.documentElement.style.setProperty('--splash-display', 'none');
+        }
+    </script>
+    <div id="pwa-splash" style="display: var(--splash-display, flex);">
+        <div class="splash-content">
+            <img src="./img/core-img/icon-512.png" alt="Works by NRFZ" class="splash-icon">
+            <span class="splash-name">Works by NRFZ</span>
+        </div>
+        <div class="splash-hero"></div>
+    </div>
+
     <!-- Navigation Bar -->
     <nav class="navbar-container">
         <div class="navbar">
@@ -482,6 +505,29 @@
     <script src="js/pwa-init-main.js"></script>
 
     <script src="js/back-to-top.js"></script>
+
+    <script>
+        // Dismiss PWA splash screen after page load
+        (function () {
+            function hideSplash() {
+                var splash = document.getElementById('pwa-splash');
+                if (!splash) return;
+                sessionStorage.setItem('splashShown-wbnrfz', '1');
+                splash.classList.add('hide');
+                setTimeout(function () {
+                    if (splash.parentNode) splash.parentNode.removeChild(splash);
+                }, 500);
+            }
+            if (sessionStorage.getItem('splashShown-wbnrfz')) return;
+            if (document.readyState === 'complete') {
+                setTimeout(hideSplash, 600);
+            } else {
+                window.addEventListener('load', function () {
+                    setTimeout(hideSplash, 600);
+                });
+            }
+        })();
+    </script>
 
 </body>
 
