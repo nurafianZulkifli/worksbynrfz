@@ -23,6 +23,11 @@ function initializeDefaultPreferences() {
         localStorage.setItem('showIncomingBuses', 'enabled');
     }
 
+    // Set default sort by arrival preference if not already set
+    if (!localStorage.getItem('sortByArrival')) {
+        localStorage.setItem('sortByArrival', 'enabled');
+    }
+
     // Set default refresh interval if not already set (in seconds)
     if (!localStorage.getItem('refreshInterval')) {
         localStorage.setItem('refreshInterval', '2');
@@ -83,6 +88,19 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('showIncomingBuses', isChecked ? 'enabled' : 'disabled');
             // Dispatch custom event to notify other pages
             window.dispatchEvent(new CustomEvent('showIncomingBusesChanged', { detail: { showIncomingBuses: isChecked } }));
+        });
+    }
+
+    // Handle sort by arrival time checkbox
+    const showByArrivalCheckbox = document.getElementById('show-by-arrival-time');
+    if (showByArrivalCheckbox) {
+        const sortByArrival = localStorage.getItem('sortByArrival') !== 'disabled';
+        showByArrivalCheckbox.checked = sortByArrival;
+
+        showByArrivalCheckbox.addEventListener('change', (event) => {
+            const isChecked = event.target.checked;
+            localStorage.setItem('sortByArrival', isChecked ? 'enabled' : 'disabled');
+            window.dispatchEvent(new CustomEvent('sortByArrivalChanged', { detail: { sortByArrival: isChecked } }));
         });
     }
 

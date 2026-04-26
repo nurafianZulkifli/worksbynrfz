@@ -512,6 +512,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         searchInput.addEventListener('input', applyPinnedSearchFilter);
     }
 
+    // Track whether we pushed a history entry for drag mode
+    let dragModeHistoryPushed = false;
+
     // Enter drag-rearrange mode: dims the page, highlights chosen item, shows all handles
     function enterDragMode(selectedItem) {
         if (dragModeActive) return;
@@ -522,22 +525,31 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         // Push a history entry so the back button can dismiss drag mode
         history.pushState({ dragMode: true }, '');
+        dragModeHistoryPushed = true;
     }
 
     // Exit drag-rearrange mode: restore page, remove highlights
-    function exitDragMode() {
+    // Pass skipHistory=true when the back button itself triggered the exit
+    function exitDragMode(skipHistory = false) {
         if (!dragModeActive) return;
         dragModeActive = false;
         document.body.classList.remove('drag-mode');
         getAllItems().forEach(item => {
             item.classList.remove('drag-selected', 'handle-visible');
         });
+        // Clean up the history entry we pushed so one back press leaves the page
+        if (!skipHistory && dragModeHistoryPushed) {
+            dragModeHistoryPushed = false;
+            history.back();
+        } else {
+            dragModeHistoryPushed = false;
+        }
     }
 
     // Back button dismisses drag mode instead of navigating away
     window.addEventListener('popstate', (e) => {
         if (dragModeActive) {
-            exitDragMode();
+            exitDragMode(true); // back button already consumed the entry
         }
     });
 
@@ -595,9 +607,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // Suppress context menu while in drag-rearrange mode
+    // Suppress context menu on the bookmarks container at all times
+    // (prevents native long-press menu from interrupting drag-mode activation
+    //  and prevents the SVG handle from triggering image save dialogs)
     document.addEventListener('contextmenu', (e) => {
-        if (dragModeActive) e.preventDefault();
+        if (e.target.closest('#bookmarks-container')) e.preventDefault();
     });
 
     // Setup drag to reorder listeners

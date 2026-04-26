@@ -168,9 +168,30 @@
         align-items: center;
     }
 
+    #did-you-mean {
+        margin-top: 1.0em;
+        margin-bottom: 2em;
+        font-size: 17px;
+        color: #ccc;
+        padding: 0 0.25rem;
+    }
+
+    #did-you-mean a {
+        color: #94d40b;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    #did-you-mean a:hover {
+        text-decoration: underline;
+    }
+
+    body.dark-mode #did-you-mean { color: #aaa; }
+    body.dark-mode #did-you-mean a { color: #a8e63a; }
+
     /* Cover Search Wrapper */
-    .cover-search-wrapper {
-        background: transparent;
+    .cover-search-wrapper {        background: transparent;
         padding: 0;
         padding-top: 40px;
         max-width: 100%;
@@ -919,6 +940,7 @@
                                 <i class="fa-solid fa-chevron-right"></i>
                             </button>
                         </div>
+                        <div id="did-you-mean" style="display:none;"></div>
                     </div>
                 </div>
             </div>
@@ -1055,51 +1077,96 @@
         document.addEventListener('DOMContentLoaded', () => {
             const searchInput = document.getElementById('bus-stop-search');
             const busServiceTab = document.getElementById('bus-service-tab');
+            const didYouMeanEl = document.getElementById('did-you-mean');
 
             if (!searchInput || !busServiceTab) return;
+
+            // Load service numbers from JSON for exact-case lookup
+            let serviceNumbers = [];
+            const basePath = (window.PWAConfig && window.PWAConfig.basePath) ? window.PWAConfig.basePath : '/';
+            fetch(basePath + 'buszy/json/bus-service-data.json')
+                .then(r => r.json())
+                .then(data => {
+                    serviceNumbers = data.map(s => s.n);
+                    // Re-run after data loads in case input was already restored
+                    if (searchInput.value) updateDidYouMean(searchInput.value);
+                })
+                .catch(() => {});
 
             // Restore service number from sessionStorage if it exists (for back navigation)
             const savedService = sessionStorage.getItem('lastServiceSearch');
             if (savedService) {
                 searchInput.value = savedService;
                 busServiceTab.style.display = 'inline-flex';
-                // Clear after restoring so it doesn't persist across sessions
                 sessionStorage.removeItem('lastServiceSearch');
+                // Grey out button if suggestion needed — re-evaluated once JSON loads too
+                updateDidYouMean(savedService);
             }
 
-            // Function to detect if input is a service number (max 4 digits/letters)
+            // Detect if input looks like a service number
             function isServiceNumber(text) {
                 const cleaned = text.trim();
-                // Match patterns like: 307, 100A, 1000, etc. (1-4 digits max, optional single letter)
                 return /^\d{1,4}[a-zA-Z]?$/.test(cleaned);
             }
 
-            // Update button visibility on input change
-            searchInput.addEventListener('input', () => {
-                if (isServiceNumber(searchInput.value)) {
-                    busServiceTab.style.display = 'inline-flex';
+            // Find exact or suggested service number from loaded data
+            function resolveServiceNumber(typed) {
+                const trimmed = typed.trim();
+                if (serviceNumbers.includes(trimmed)) return { exact: trimmed, suggestion: null };
+                const lower = trimmed.toLowerCase();
+                const match = serviceNumbers.find(n => n.toLowerCase() === lower);
+                if (match) return { exact: null, suggestion: match };
+                return { exact: null, suggestion: null };
+            }
+
+            function navigateToService(serviceNo) {
+                sessionStorage.setItem('lastServiceSearch', serviceNo);
+                searchInput.select();
+                setTimeout(() => {
+                    window.location.href = `${basePath}buszy/bus-service.html?service=${encodeURIComponent(serviceNo)}`;
+                }, 100);
+            }
+
+            function updateDidYouMean(val) {
+                if (!didYouMeanEl || serviceNumbers.length === 0) return;
+                const { exact, suggestion } = resolveServiceNumber(val);
+                if (suggestion) {
+                    didYouMeanEl.style.display = 'block';
+                    didYouMeanEl.innerHTML = `Did you mean Bus Service <a id="dym-link">${suggestion}</a>?`;
+                    document.getElementById('dym-link').addEventListener('click', (e) => {
+                        e.preventDefault();
+                        navigateToService(suggestion);
+                    });
+                    busServiceTab.disabled = true;
+                    busServiceTab.style.opacity = '0.4';
+                    busServiceTab.style.cursor = 'not-allowed';
                 } else {
-                    busServiceTab.style.display = 'none';
+                    didYouMeanEl.style.display = 'none';
+                    busServiceTab.disabled = false;
+                    busServiceTab.style.opacity = '';
+                    busServiceTab.style.cursor = '';
                 }
+            }
+
+            // Update button and did-you-mean on input change
+            searchInput.addEventListener('input', () => {
+                const val = searchInput.value;
+                if (!isServiceNumber(val)) {
+                    busServiceTab.style.display = 'none';
+                    if (didYouMeanEl) didYouMeanEl.style.display = 'none';
+                    return;
+                }
+                busServiceTab.style.display = 'inline-flex';
+                updateDidYouMean(val);
             });
 
-            // Handle button click
+            // Handle Bus Service button click — use exact or suggested casing, never force uppercase
             busServiceTab.addEventListener('click', (e) => {
                 e.preventDefault();
-                const serviceNumber = searchInput.value.trim().toUpperCase();
-                if (isServiceNumber(serviceNumber)) {
-                    // Save service number to sessionStorage for back navigation
-                    sessionStorage.setItem('lastServiceSearch', serviceNumber);
-
-                    // Highlight the service number text
-                    searchInput.select();
-
-                    // Navigate to bus service page with proper base path
-                    const basePath = (window.PWAConfig && window.PWAConfig.basePath) ? window.PWAConfig.basePath : '/';
-                    setTimeout(() => {
-                        window.location.href = `${basePath}buszy/bus-service.html?service=${encodeURIComponent(serviceNumber)}`;
-                    }, 100);
-                }
+                const val = searchInput.value.trim();
+                if (!isServiceNumber(val)) return;
+                const { exact, suggestion } = resolveServiceNumber(val);
+                navigateToService(exact || suggestion || val);
             });
         });
 
