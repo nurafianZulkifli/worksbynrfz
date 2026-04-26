@@ -643,7 +643,7 @@ table th {
     touch-action: none;
     user-select: none;
     cursor: grab;
-    
+
     /* Hide and collapse by default */
     max-width: 0;
     margin-right: 0;
@@ -653,13 +653,7 @@ table th {
     transition: max-width 0.25s ease, margin-right 0.25s ease, opacity 0.25s ease, visibility 0.25s ease;
 }
 
-.list-group-item:hover .js-drag-handle {
-    /* Show and expand on hover */
-    max-width: 32px;
-    margin-right: 6px;
-    opacity: 1;
-    visibility: visible;
-}
+/* Grip handle is hidden outside of re-arrange mode */
 
 .list-group-item.is-idle {
     transition: 0.25s ease transform;
@@ -689,6 +683,34 @@ table th {
     margin-right: 6px;
     opacity: 1;
     visibility: visible;
+}
+
+/* ── Drag rearrange mode ───────────────────────────────────── */
+
+/* Show drag handle only on the selected item */
+body.drag-mode .list-group-item.drag-selected .js-drag-handle {
+    max-width: 32px;
+    margin-right: 6px;
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Dim and disable all other items in drag mode */
+body.drag-mode .list-group-item:not(.drag-selected) {
+    opacity: 0.25;
+    pointer-events: none;
+    filter: blur(1px);
+}
+
+/* Highlight the item chosen to be re-arranged and bring it to the front */
+.list-group-item.drag-selected {
+    background-color: #d9ddf1;
+    border: 2px solid #8496ad;
+    box-shadow: 0 0 15px #8190a1, 0 2px 4px #0000004d;
+    position: relative;
+    z-index: 2;
+    transform: scale(1.02);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .spinner,
@@ -1223,6 +1245,12 @@ body.dark-mode .list-group-item.handle-visible .js-drag-handle {
     visibility: visible;
 }
 
+body.dark-mode .list-group-item.drag-selected {
+    background-color: #393e53;
+    border: 2px solid #91a5be;
+    box-shadow: 0 0 15px #8190a1, 0 2px 4px #0000004d;
+}
+
 body.dark-mode .list-group-item:hover {
     background-color: #334250;
     transform: translateY(-2px);
@@ -1412,10 +1440,12 @@ body.dark-mode .list-group-item {
         box-shadow: 0 0 0 0 rgba(241, 57, 11, 0.7);
         border-radius: 25px;
     }
+
     50% {
         box-shadow: 0 0 0 10px rgba(222, 101, 46, 0);
         border-radius: 25px;
     }
+
     100% {
         box-shadow: 0 0 0 0 rgba(222, 101, 46, 0);
         border-radius: 25px;
@@ -1431,7 +1461,7 @@ body.dark-mode .list-group-item {
     display: flex !important;
     align-items: center;
     justify-content: center;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)) !important;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2)) !important;
     transition: filter 0.2s ease !important;
 }
 
@@ -1443,7 +1473,7 @@ body.dark-mode .list-group-item {
 
 .bus-marker:hover,
 .location-marker:hover {
-    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4)) brightness(1.15) !important;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4)) brightness(1.15) !important;
 }
 
 .bus-marker.marker-pulse {
@@ -1475,9 +1505,12 @@ body.dark-mode .list-group-item {
 }
 
 @keyframes pulse-new {
-    0%, 100% {
+
+    0%,
+    100% {
         box-shadow: 0 0 0 0 rgba(255, 107, 53, 0.7);
     }
+
     50% {
         box-shadow: 0 0 0 6px rgba(255, 107, 53, 0);
     }
@@ -1519,9 +1552,12 @@ body.dark-mode .ann-badge.modified {
 }
 
 @keyframes pulse-dot {
-    0%, 100% {
+
+    0%,
+    100% {
         box-shadow: 0 0 0 0 rgba(255, 107, 53, 0.7);
     }
+
     50% {
         box-shadow: 0 0 0 6px rgba(255, 107, 53, 0);
     }
