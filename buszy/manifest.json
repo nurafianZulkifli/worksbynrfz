@@ -29,7 +29,7 @@
       "name": "Bus Services",
       "short_name": "Bus Services",
       "description": "All Bus Services",
-      "url": "./bus-service.html",
+      "url": "./abs.html",
       "icons": [
         {
           "src": "./assets/icon-192.png",
