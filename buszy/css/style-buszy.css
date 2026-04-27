@@ -125,6 +125,8 @@ body.dark-mode .mobile-bottom-nav {
 
 .page-title-wrapper>div>div:first-child {
     margin-bottom: 0px;
+    flex: 1;
+    min-width: 0;
 }
 
 li.breadcrumb-item a:hover,

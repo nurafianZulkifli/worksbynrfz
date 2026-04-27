@@ -321,7 +321,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         </span>
                         <span class="bus-stop-description">${busStop.Description}</span>
                         <a id="view-all-timings-btn" href="${getBasePath() + 'buszy/first-last.html?BusStopCode=' + encodeURIComponent(busStopCode)}" class="title-timings-btn" title="View all service timings at this stop">
-                            <i class="fa-regular fa-chevron-right"></i>
+                            <i class="fa-regular fa-clock"></i>&nbsp;Timings
                         </a>
                     </div>
                 `;
@@ -343,7 +343,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             </span>
                             <span class="bus-stop-description">${description}</span>
                             <a id="view-all-timings-btn" href="${getBasePath() + 'buszy/first-last.html?BusStopCode=' + encodeURIComponent(busStopCode)}" class="title-timings-btn" title="View all service timings at this stop">
-                                <i class="fa-regular fa-chevron-right"></i>
+                                <i class="fa-regular fa-chevron-right"></i>&nbsp;Timings
                             </a>
                         </div>
                     `;
