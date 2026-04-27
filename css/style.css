@@ -2278,7 +2278,7 @@ h2.page-title {
 
 select:focus {
     outline: none;
-    border-color: #007bff;
+    border-color: #107d9c;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
     border-radius: 25px;
 }
