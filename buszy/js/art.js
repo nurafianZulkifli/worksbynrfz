@@ -92,6 +92,27 @@ let activeMapServiceNo = null; // Track which service is currently shown on the 
 let busMarkers = []; // [{marker, lat, lng, estimatedArrival, busLabel}] for live position updates
 let mapRefreshIntervalId = null; // Dedicated fast interval for map position updates
 
+// Manage the bottom all-timings button (module-scope so fetchBusArrivals can call them)
+function showBottomTimingsBtn(code) {
+    const section = document.getElementById('all-timings-section');
+    const link = document.getElementById('all-timings-link');
+    if (!section || !link || !code || !code.trim()) return;
+    link.href = getBasePath() + 'buszy/first-last.html?BusStopCode=' + encodeURIComponent(code.trim());
+    section.style.display = '';
+}
+
+function hideBottomTimingsBtn() {
+    const section = document.getElementById('all-timings-section');
+    if (section) section.style.display = 'none';
+}
+
+function updateBottomTimingsBtn(code) {
+    const link = document.getElementById('all-timings-link');
+    if (link && code && code.trim()) {
+        link.href = getBasePath() + 'buszy/first-last.html?BusStopCode=' + encodeURIComponent(code.trim());
+    }
+}
+
 // Fetch only bus locations for the active map service and update markers in-place
 async function refreshActiveMapMarkers() {
     if (!activeMapServiceNo || !map || busMarkers.length === 0) return;
@@ -279,16 +300,32 @@ document.addEventListener('DOMContentLoaded', async () => {
     const searchInput = document.getElementById('bus-stop-search'); // Search input field
     const filterTitle = document.getElementById('filter-title'); // Title element
 
-    // Show/hide the "All Service Timings" button and update its href
-    function updateViewAllTimingsBtn(code) {
-        const btn = document.getElementById('view-all-timings-btn');
-        if (!btn) return;
-        if (code && code.trim() !== '') {
-            btn.href = getBasePath() + 'buszy/first-last.html?BusStopCode=' + encodeURIComponent(code.trim());
-            btn.style.display = '';
-        } else {
-            btn.style.display = 'none';
-        }
+    // Wire up the chevron toggle for the title collapse panel
+    function wireUpTitleCollapse() {
+        const btn = document.getElementById('title-collapse-btn');
+        const panel = document.getElementById('title-options-collapse');
+        if (!btn || !panel) return;
+        btn.addEventListener('click', () => {
+            const isVisible = panel.style.display !== 'none';
+            if (isVisible) {
+                panel.style.maxHeight = panel.scrollHeight + 'px';
+                panel.getBoundingClientRect();
+                panel.style.maxHeight = '0';
+                panel.style.opacity = '0';
+                panel.classList.remove('show');
+                btn.classList.remove('active');
+                panel.addEventListener('transitionend', () => { panel.style.display = 'none'; }, { once: true });
+            } else {
+                panel.style.display = 'block';
+                panel.style.maxHeight = '0';
+                panel.style.opacity = '0';
+                panel.getBoundingClientRect();
+                panel.style.maxHeight = panel.scrollHeight + 'px';
+                panel.style.opacity = '1';
+                panel.classList.add('show');
+                btn.classList.add('active');
+            }
+        });
     }
 
     // Get the BusStopCode from the URL
@@ -298,7 +335,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Only process if busStopCode is a non-empty string
     if (busStopCode && busStopCode.trim() !== '') {
         searchInput.value = busStopCode;
-        updateViewAllTimingsBtn(busStopCode);
 
         // Fetch the bus stop name from the /bus-stops endpoint
         try {
@@ -320,9 +356,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                             <span class="bus-stop-code-text">${busStop.BusStopCode}</span>
                         </span>
                         <span class="bus-stop-description">${busStop.Description}</span>
-                        <a id="view-all-timings-btn" href="${getBasePath() + 'buszy/first-last.html?BusStopCode=' + encodeURIComponent(busStopCode)}" class="title-timings-btn" title="View all service timings at this stop">
-                            <i class="fa-regular fa-clock"></i>&nbsp;Timings
-                        </a>
                     </div>
                 `;
             } else {
@@ -342,9 +375,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                                 <span class="bus-stop-code-text">${busStopCode}</span>
                             </span>
                             <span class="bus-stop-description">${description}</span>
-                            <a id="view-all-timings-btn" href="${getBasePath() + 'buszy/first-last.html?BusStopCode=' + encodeURIComponent(busStopCode)}" class="title-timings-btn" title="View all service timings at this stop">
-                                <i class="fa-regular fa-chevron-right"></i>&nbsp;Timings
-                            </a>
                         </div>
                     `;
                 } else {
@@ -372,7 +402,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         window.history.replaceState({}, document.title, url.toString());
-        updateViewAllTimingsBtn(currentValue);
+        updateBottomTimingsBtn(currentValue);
     };
 
     searchInput.addEventListener('input', debounce(() => {
@@ -499,6 +529,7 @@ async function fetchBusArrivals() {
             if (incomingSection) {
                 incomingSection.style.display = 'none';
             }
+            hideBottomTimingsBtn();
             return;
         }
 
@@ -554,6 +585,7 @@ async function fetchBusArrivals() {
                     </div>
                 `;
             }
+            hideBottomTimingsBtn();
             return;
         }
 
@@ -788,6 +820,7 @@ async function fetchBusArrivals() {
             container.innerHTML = newHTML;
             didUpdate = true;
             renderedBusStopCode = searchInput;
+            showBottomTimingsBtn(searchInput);
 
             // Restore expanded state without animation
             expandedServices.forEach(serviceNo => {
