@@ -279,6 +279,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     const searchInput = document.getElementById('bus-stop-search'); // Search input field
     const filterTitle = document.getElementById('filter-title'); // Title element
 
+    // Show/hide the "All Service Timings" button and update its href
+    function updateViewAllTimingsBtn(code) {
+        const btn = document.getElementById('view-all-timings-btn');
+        if (!btn) return;
+        if (code && code.trim() !== '') {
+            btn.href = getBasePath() + 'buszy/first-last.html?BusStopCode=' + encodeURIComponent(code.trim());
+            btn.style.display = '';
+        } else {
+            btn.style.display = 'none';
+        }
+    }
+
     // Get the BusStopCode from the URL
     const urlParams = new URLSearchParams(window.location.search);
     const busStopCode = urlParams.get('BusStopCode');
@@ -286,6 +298,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Only process if busStopCode is a non-empty string
     if (busStopCode && busStopCode.trim() !== '') {
         searchInput.value = busStopCode;
+        updateViewAllTimingsBtn(busStopCode);
 
         // Fetch the bus stop name from the /bus-stops endpoint
         try {
@@ -307,6 +320,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                             <span class="bus-stop-code-text">${busStop.BusStopCode}</span>
                         </span>
                         <span class="bus-stop-description">${busStop.Description}</span>
+                        <a id="view-all-timings-btn" href="${getBasePath() + 'buszy/first-last.html?BusStopCode=' + encodeURIComponent(busStopCode)}" class="title-timings-btn" title="View all service timings at this stop">
+                            <i class="fa-regular fa-chevron-right"></i>
+                        </a>
                     </div>
                 `;
             } else {
@@ -326,6 +342,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                                 <span class="bus-stop-code-text">${busStopCode}</span>
                             </span>
                             <span class="bus-stop-description">${description}</span>
+                            <a id="view-all-timings-btn" href="${getBasePath() + 'buszy/first-last.html?BusStopCode=' + encodeURIComponent(busStopCode)}" class="title-timings-btn" title="View all service timings at this stop">
+                                <i class="fa-regular fa-chevron-right"></i>
+                            </a>
                         </div>
                     `;
                 } else {
@@ -353,6 +372,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         window.history.replaceState({}, document.title, url.toString());
+        updateViewAllTimingsBtn(currentValue);
     };
 
     searchInput.addEventListener('input', debounce(() => {
