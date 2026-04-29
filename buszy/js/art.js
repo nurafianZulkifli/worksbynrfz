@@ -849,7 +849,7 @@ async function fetchBusArrivals() {
                     const collapseSection = document.querySelector(`.service-options-collapse[data-service="${serviceNo}"]`);
 
                     if (collapseSection) {
-                        const isVisible = collapseSection.style.display !== 'none';
+                        const isVisible = collapseSection.classList.contains('show');
 
                         if (isVisible) {
                             // Animate height to 0, then hide
@@ -860,12 +860,18 @@ async function fetchBusArrivals() {
                             collapseSection.style.opacity = '0';
                             collapseSection.classList.remove('show');
                             button.classList.remove('active');
-                            collapseSection.addEventListener('transitionend', () => {
-                                collapseSection.style.display = 'none';
-                            }, {
-                                once: true
+                            collapseSection._pendingHide = true;
+                            collapseSection.addEventListener('transitionend', function onCollapseEnd(e) {
+                                if (e.propertyName !== 'max-height') return;
+                                collapseSection.removeEventListener('transitionend', onCollapseEnd);
+                                if (collapseSection._pendingHide) {
+                                    collapseSection.style.display = 'none';
+                                    collapseSection._pendingHide = false;
+                                }
                             });
                         } else {
+                            // Cancel any pending hide from an interrupted close animation
+                            collapseSection._pendingHide = false;
                             // Show then animate height in
                             collapseSection.style.display = 'block';
                             collapseSection.style.maxHeight = '0';
