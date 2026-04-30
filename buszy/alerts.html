@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="57TuruPNu5wqSSia_cUehl5t9Gh1AbxrHNPcMiFx-aQ" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Bus Service Alerts | Buszy</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    <meta property="og:image" content="https://i.imgur.com/i8n9KYs.png" />
+
+    <link rel="icon" href="../buszy/assets/icon-512.png">
+
+    <script src="https://kit.fontawesome.com/965e82ac01.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="css/style-buszy.css">
+    <link rel="stylesheet" href="../css/style-breakpoints.css">
+    <link rel="stylesheet" href="../css/dark-mode.css">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WN76281P3Q"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'G-WN76281P3Q');
+    </script>
+
+</head>
+
+<style>
+    #cv-bat-subp {
+        height: 10vh;
+    }
+
+    .list-group-item {
+        transition-duration: 800ms;
+        border-radius: 20px;
+        margin-top: 1em;
+        font-size: 20px;
+        border: 1px solid #2b2b2b33;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
+        padding-top: 1em;
+        padding-bottom: 1em;
+    }
+
+    .alert-item-content {
+        color: #000;
+        font-size: 16px;
+        overflow-wrap: break-word;
+        line-height: 1.7;
+        margin-bottom: 0rem !important;
+    }
+
+    .alert-item-content a {
+        color: #000;
+        text-decoration: underline;
+        font-weight: bold;
+    }
+
+    body.dark-mode .alert-item-content {
+        color: #fff;
+        font-size: 16px;
+        overflow-wrap: break-word;
+        line-height: 1.7;
+        margin-bottom: 0rem !important;
+        text-align: left;
+    }
+
+    body.dark-mode .alert-item-content a {
+        color: #fff;
+        text-decoration: underline;
+        font-weight: bold;
+    }
+
+    .lg-ann {
+        font-size: 18px;
+        margin-bottom: 0.5em;
+    }
+
+    .lg-date {
+        font-size: 14px;
+        color: #000;
+    }
+
+    body.dark-mode .lg-date {
+        color: #fff;
+    }
+
+    .bus-service-code {
+        display: inline-flex;
+        align-items: center;
+        background-color: #94d40b;
+        color: #000;
+        font-weight: bold;
+        font-size: 15px;
+        padding: 5px 4px;
+        border-radius: 5px;
+        gap: 10px;
+        margin-right: 0.5em;
+        margin-bottom: 0.5em;
+    }
+
+    body.dark-mode .bus-service-code {
+        display: inline-flex;
+        align-items: center;
+        background-color: #7db603;
+        color: #000;
+        font-weight: bold;
+        font-size: 15px;
+        padding: 5px 4px;
+        border-radius: 5px;
+        gap: 10px;
+        margin-right: 0.5em;
+        margin-bottom: 0.5em;
+    }
+
+    .bus-service-code-text {
+        font-size: 15px;
+        font-weight: bold;
+        color: #000;
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+        padding: 2px 6px;
+    }
+
+    body.dark-mode .bus-service-code-text {
+        color: #000;
+    }
+
+    .bus-codes-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5em;
+        margin-bottom: 0em;
+    }
+
+    @media (max-width: 450px) {
+        .btn-mar {
+            width: auto;
+        }
+    }
+
+    .footer {
+        display: none;
+    }
+
+   .alerts-btn {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1009;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 50px;
+        height: 50px;
+        background-color: #fff;
+        color: #000;
+        border-radius: 50%;
+        font-size: 24px;
+        cursor: pointer;
+        text-decoration: none;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transition: all 0.3s ease;
+    }
+
+    .alerts-btn:hover {
+        background-color: #cbe5fb;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+        transform: scale(1.05);
+    }
+
+    .alerts-btn:active {
+        transform: scale(0.95);
+    }
+
+    body.dark-mode .alerts-btn {
+        background-color: #1a1f35be ;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
+        color: #fff;
+    }
+
+    body.dark-mode .alerts-btn:hover {
+        background-color: #5e7a95;
+    }
+
+    @media (max-width: 768px) {
+        .alerts-btn {
+            top: 15px;
+            right: 15px;
+            width: 45px;
+            height: 45px;
+            font-size: 20px;
+        }
+    }
+</style>
+
+
+<body>
+    <a href="./alerts.html" class="alerts-btn" aria-label="Bus service alerts" title="Alerts">
+        <i class="fa-regular fa-triangle-exclamation"></i>
+    </a>
+    <!-- Fixed Breadcrumb at very top (mobile/tablet only) -->
+    <div class="breadcrumb-fixed-placeholder">
+        <nav aria-label="breadcrumb" style="margin-bottom:0;">
+            <ol class="breadcrumb breadcrumb-fixed" id="floating-breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="./">
+                        <i class="fa-regular fa-house"></i>
+                    </a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="#"><i class="fa-regular fa-triangle-exclamation"></i>
+                    </a>
+                </li>
+            </ol>
+        </nav>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar-container">
+        <div class="navbar">
+            <!-- Logo -->
+            <a href="./"><img src="./assets/logo.png" alt="logo" class="logo" /></a>
+
+            <!-- Navigation Links -->
+            <ul class="navbar-nav" id="navbarNav">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">
+                        <i class="fa-sharp fa-regular fa-house"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="./first-last.html" class="nav-link">
+                        <i class="fa-regular fa-clock"></i>
+                        <span>Timings</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="./ann.html" class="nav-link">
+                        <i class="fa-regular fa-bullhorn"></i>
+                        <span>Announcements</span>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a href="./menu.html" class="nav-link">
+                        <i class="fa-regular fa-bars"></i>
+                        <span>Menu</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Mobile Bottom Navigation Bar -->
+    <nav class="mobile-bottom-nav">
+        <ul>
+            <li>
+                <a href="index.html">
+                    <span class="icon">
+                        <i class="fa-sharp fa-regular fa-house"></i>
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a href="./first-last.html">
+                    <span class="icon">
+                        <i class="fa-regular fa-clock"></i>
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a href="./ann.html">
+                    <span class="icon">
+                        <i class="fa-regular fa-bullhorn"></i>
+                    </span>
+                </a>
+            </li>
+            <li class="active">
+                <a href="#">
+                    <span class="icon">
+                        <i class="fa-regular fa-triangle-exclamation"></i>
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a href="./menu.html">
+                    <span class="icon">
+                        <i class="fa-regular fa-bars"></i>
+                    </span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!------------------------------------------------------------------------ Start of Sections ------------------------------------------------------------------------>
+
+    <!-- Title/Breadcrumbs -->
+    <section class="about-me-sum clearfix">
+        <div class="wbnrfz_eicw">
+            <div class="page-header-section">
+                <div class="container container-xxl container-mobile container-mobile-header">
+                    <div class="breadcrumb-wrapper">
+                        <nav aria-label="breadcrumb" class="breadcrumb-desktop" style="display:none;">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="./">
+                                        <i class="fa-regular fa-house"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="menu.html"><i class="fa-regular fa-bars"></i>
+                                    </a>
+                                </li>
+                            </ol>
+                        </nav>
+                        <div class="page-title-wrapper">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                                <div>
+                                    <h1 class="page-title" id="filter-title">Bus Service Alerts</h1>
+                                </div>
+                                <div id="alerts-last-updated" style="font-size: 0.9em; color: #999; margin: 0;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Contents -->
+    <section class="about-me-summ clearfix" style="padding-bottom: 5em;">
+        <div class="container">
+            <div class="list-group" id="alerts-content">
+                <div class="alerts-loading" style="text-align: center; padding: 3em 1em; display: flex; align-items: center; justify-content: center; gap: 1em;">
+                    <svg class="spinner" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="status"
+                        style="width: 30px; height: 30px;">
+                        <circle cx="50" cy="50" r="45"></circle>
+                    </svg>
+                    Loading alerts...
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Helper: convert URLs in text to clickable links
+        function linkify(text) {
+            const urlRegex = /(https?:\/\/[\w\-._~:/?#[\]@!$&'()*+,;=%]+)|(www\.[\w\-._~:/?#[\]@!$&'()*+,;=%]+)|(go\.gov\.sg\/[\w\-._~:/?#[\]@!$&'()*+,;=%]+)/gi;
+            let linked = text.replace(urlRegex, function(url) {
+                let href = url;
+                if (url.match(/^go\.gov\.sg\//i)) {
+                    href = 'https://' + url;
+                } else if (!href.match(/^https?:\/\//i)) {
+                    href = 'http://' + href;
+                }
+                return `<a href="${href}" target="_blank" rel="noopener noreferrer">${url}</a>`;
+            });
+            return linked.replace(/\n/g, '<br>');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show last updated time
+            const now = new Date();
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            let hours = now.getHours();
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+            const mins = now.getMinutes().toString().padStart(2, '0');
+            const formatted = `Last updated: ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()} ${hours}:${mins} ${ampm}`;
+            const updatedDiv = document.querySelector('#alerts-last-updated');
+            if (updatedDiv) updatedDiv.textContent = formatted;
+
+            // Fetch alerts
+            fetch('https://bat-lta-9eb7bbf231a2.herokuapp.com/train-service-alerts')
+                .then(r => r.json())
+                .then(data => {
+                    if (!data || !data.value) {
+                        showNoAlerts();
+                        return;
+                    }
+
+                    // Support both array and object for value
+                    let alerts = [];
+                    if (Array.isArray(data.value)) {
+                        alerts = data.value;
+                    } else if (typeof data.value === 'object') {
+                        alerts = [data.value];
+                    }
+
+                    // Filter for bus service alerts only (those containing "Due to... bus services... are affected")
+                    let busAlerts = [];
+                    alerts.forEach(alert => {
+                        if (alert.Message && Array.isArray(alert.Message)) {
+                            alert.Message.forEach(messageObj => {
+                                const msg = messageObj.Content || '';
+                                // Check if message contains "bus services" or "bus service" and mentions being affected
+                                if (msg.includes('bus service') && (msg.includes('affected') || msg.includes('diverted'))) {
+                                    busAlerts.push({
+                                        content: msg,
+                                        status: alert.Status,
+                                        createdDate: messageObj.CreatedDate
+                                    });
+                                }
+                            });
+                        }
+                    });
+
+                    if (busAlerts.length === 0) {
+                        showNoAlerts();
+                    } else {
+                        displayAlerts(busAlerts);
+                    }
+                })
+                .catch(err => {
+                    console.error('Error fetching alerts:', err);
+                    showErrorMessage('Failed to load alerts. Please try again later.');
+                });
+
+            function extractBusServiceCodes(text) {
+                const codeRegex = /\b(\d{3,4}[a-z]?)\b/gi;
+                const matches = text.match(codeRegex) || [];
+                const codes = [...new Set(matches)].filter(code => {
+                    const num = parseInt(code);
+                    return num >= 100 && num <= 999;
+                });
+                return codes;
+            }
+
+            function displayAlerts(alerts) {
+                const content = document.getElementById('alerts-content');
+                content.innerHTML = '';
+
+                alerts.forEach((alert, index) => {
+                    const linkedContent = linkify(alert.content);
+                    const alertDate = new Date(alert.createdDate);
+                    const day = alertDate.getDate().toString().padStart(2, '0');
+                    const month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][alertDate.getMonth()];
+                    const year = alertDate.getFullYear();
+                    const dateStr = `${day} ${month} ${year}`;
+                    
+                    const codes = extractBusServiceCodes(alert.content);
+                    let codesHTML = '';
+                    if (codes.length > 0) {
+                        codesHTML = '<div class="bus-codes-container">';
+                        codes.forEach(code => {
+                            codesHTML += `<div class="bus-service-code"><span class="bus-service-code-text">${code}</span></div>`;
+                        });
+                        codesHTML += '</div>';
+                    }
+
+                    const alertDiv = document.createElement('div');
+                    alertDiv.className = 'list-group-item list-group-item-action flex-column align-items-start';
+                    alertDiv.innerHTML = `
+                        <div class="d-flex w-100">
+                            <div class="w-100">
+                                <small class="lg-date">Bus Services Affected:</small>
+                            </div>
+                        </div>
+                        ${codesHTML}
+                        <p class="mb-1 alert-item-content">${linkedContent}</p>
+                    `;
+                    content.appendChild(alertDiv);
+
+                    if (index < alerts.length - 1) {
+                        const hr = document.createElement('hr');
+                        content.appendChild(hr);
+                    }
+                });
+            }
+
+            function showNoAlerts() {
+                const content = document.getElementById('alerts-content');
+                content.innerHTML = '<div style="text-align: center; padding: 3em 1em; color: #999; font-size: 1.1em;"><i class="fa-regular fa-check-circle"></i> No bus service alerts at the moment</div>';
+            }
+
+            function showErrorMessage(message) {
+                const content = document.getElementById('alerts-content');
+                content.innerHTML = `<div style="text-align: center; padding: 3em 1em; color: #999; font-size: 1.1em;"><i class="fa-regular fa-exclamation-circle"></i> ${message}</div>`;
+            }
+        });
+    </script>
+
+        <script src="buszy-subp.js"></script>
+</body>
+
+</html>
