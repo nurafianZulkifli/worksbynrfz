@@ -685,8 +685,17 @@ async function fetchBusArrivals() {
                 </div>
             `;
             }).join('');
-            // Only update if content has changed
-            if (incomingGrid.innerHTML !== newIncomingHTML) {
+            // Only update ib-time elements in place; fall back to full rebuild if count changed
+            const existingIbTimes = incomingGrid.querySelectorAll('.ib-time');
+            if (existingIbTimes.length === topFourBuses.length) {
+                topFourBuses.forEach((bus, i) => {
+                    const ibTime = existingIbTimes[i];
+                    if (ibTime.innerHTML !== bus.TimeStr) {
+                        ibTime.innerHTML = bus.TimeStr;
+                    }
+                    ibTime.classList.toggle('arrived', bus.TimeStr.includes('Arr'));
+                });
+            } else {
                 incomingGrid.innerHTML = newIncomingHTML;
             }
         } else {
@@ -709,33 +718,21 @@ async function fetchBusArrivals() {
                     if (card) container.appendChild(card);
                 });
             }
+            // Only update span.bus-time elements in place
             data.Services.forEach((service) => {
                 const hasNextBus = service.NextBus && typeof service.NextBus === 'object' && Object.keys(service.NextBus).length > 0;
                 const hasNextBus2 = service.NextBus2 && typeof service.NextBus2 === 'object' && Object.keys(service.NextBus2).length > 0;
-                const cardContentArt = container.querySelector(`.card-bt[data-service="${service.ServiceNo}"] .card-content-art`);
-                if (cardContentArt) {
-                    const newContentHTML = `
-                            ${hasNextBus ? `
-                            <div class="busNo-card d-flex justify-content-between">
-                                <span class="bus-time">${service.NextBus?.EstimatedArrival ? formatArrivalTimeOrArr(service.NextBus.EstimatedArrival, now) : '--'}</span>
-                                <span style="display: flex; align-items: center; gap: 0.3rem; flex-wrap: wrap;">
-                                    ${getLoadIcon(service.NextBus?.Load, service.NextBus?.Type)}
-                                </span>
-                            </div>
-                            ` : `<div style="padding: 0.5rem; color: #999; font-size: 0.9rem;">No arrival data</div>`}
-                            ${hasNextBus2 ? `
-                            <div class="busNo-card d-flex justify-content-between">
-                                <span class="bus-time">${service.NextBus2?.EstimatedArrival ? formatArrivalTimeOrArr(service.NextBus2.EstimatedArrival, now) : '--'}</span>
-                                <span style="display: flex; align-items: center; gap: 0.3rem; flex-wrap: wrap;">
-                                    ${getLoadIcon(service.NextBus2?.Load, service.NextBus2?.Type)}
-                                </span>
-                            </div>
-                            ` : ''}
-                        `;
-                    if (cardContentArt.innerHTML !== newContentHTML) {
-                        cardContentArt.innerHTML = newContentHTML;
+                const cardBt = container.querySelector(`.card-bt[data-service="${service.ServiceNo}"]`);
+                if (!cardBt) return;
+                const busTimeSpans = cardBt.querySelectorAll('span.bus-time');
+                const times = [];
+                if (hasNextBus) times.push(service.NextBus?.EstimatedArrival ? formatArrivalTimeOrArr(service.NextBus.EstimatedArrival, now) : '--');
+                if (hasNextBus2) times.push(service.NextBus2?.EstimatedArrival ? formatArrivalTimeOrArr(service.NextBus2.EstimatedArrival, now) : '--');
+                busTimeSpans.forEach((span, i) => {
+                    if (times[i] !== undefined && span.innerHTML !== times[i]) {
+                        span.innerHTML = times[i];
                     }
-                }
+                });
             });
             return;
         }

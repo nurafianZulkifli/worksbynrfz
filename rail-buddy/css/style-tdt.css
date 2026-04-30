@@ -600,3 +600,11 @@ body.dark-mode .ann-badge.modified {
 body.dark-mode .ann-indicator-dot {
     background-color: #ff6b35;
 }
+
+.ann-header-btn {
+    color: #555;
+}
+
+body.dark-mode .ann-header-btn {
+    color: #ccc;
+}

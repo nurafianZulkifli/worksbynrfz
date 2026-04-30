@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', function() {
       border-radius: 40px;
       margin: 0 0 32px 0;
       padding: 24px 28px;
-      font-size: 1.08em;
+      font-size: 18px;
       color: #222;
       box-shadow: 0 2px 8px 0 rgba(0,0,0,0.04);
       max-width: 100vw;

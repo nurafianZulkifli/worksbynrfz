@@ -66,7 +66,7 @@
     }
 
     .custom-list-item img {
-        height: 40px;
+        height: 35px;
         width: auto;
         flex-shrink: 0;
     }
@@ -298,7 +298,13 @@
     <section class="tsu">
         <div class="container container-xxl container-mobile container-mobile-header">
 
-            <h2>Line Status</h2>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h2 style="margin: 0;">Line Status</h2>
+                <a href="./ann.html" class="ann-header-btn" style="position: relative; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: none; border: none; font-size: 1.3rem; text-decoration: none;" title="Announcements">
+                    <i class="fa-regular fa-bullhorn"></i>
+                    <span class="ann-indicator-dot"></span>
+                </a>
+            </div>
             <div class='alert-last-updated' style='margin-top:12px;font-size:0.98em;color:#888;'></div>
 
             <a href="./networks/nsl.html" class="custom-list-item">
