@@ -19,7 +19,7 @@ fetch(new URL('../js/version.json', import.meta.url || location.href).href)
     console.warn('[AppVersion] Could not load versions, using defaults:', error);
     // Fallback to defaults
     window.APP_VERSIONS = {
-      buszy: '4.5.2',
-      railbuddy: '4.5.2'
+      buszy: '4.5.3',
+      railbuddy: '4.5.3'
     };
   });
