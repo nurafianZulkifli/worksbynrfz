@@ -202,6 +202,29 @@
             font-size: 20px;
         }
     }
+
+    .spinner,
+    .spinner-border {
+        display: inline-block;
+        width: 32px;
+        height: 32px;
+        color: #1f84a2;
+        box-sizing: border-box;
+        padding: 3px;
+        overflow: visible;
+    }
+
+    .spinner circle,
+    .spinner-border circle {
+        fill: none;
+        stroke: currentColor;
+        cx: 50%;
+        cy: 50%;
+        r: 50%;
+        stroke-width: 11;
+        stroke-linecap: round;
+        transform-origin: center;
+    }
 </style>
 
 
@@ -431,11 +454,11 @@
                 });
 
             function extractBusServiceCodes(text) {
-                const codeRegex = /\b(\d{3,4}[a-z]?)\b/gi;
+                const codeRegex = /\b(\d{2,4}[a-z]?)\b/gi;
                 const matches = text.match(codeRegex) || [];
                 const codes = [...new Set(matches)].filter(code => {
                     const num = parseInt(code);
-                    return num >= 100 && num <= 999;
+                    return num >= 10 && num <= 9999;
                 });
                 return codes;
             }
@@ -447,15 +470,17 @@
                 alerts.forEach((alert, index) => {
                     const linkedContent = linkify(alert.content);
                     const alertDate = new Date(alert.createdDate);
-                    const day = alertDate.getDate().toString().padStart(2, '0');
-                    const month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][alertDate.getMonth()];
-                    const year = alertDate.getFullYear();
-                    const dateStr = `${day} ${month} ${year}`;
+                    
+                    // Format time as HH:MM
+                    let hours = alertDate.getHours();
+                    const mins = alertDate.getMinutes().toString().padStart(2, '0');
+                    hours = hours.toString().padStart(2, '0');
+                    const timeStr = `${hours}:${mins}`;
                     
                     const codes = extractBusServiceCodes(alert.content);
                     let codesHTML = '';
                     if (codes.length > 0) {
-                        codesHTML = '<div class="bus-codes-container">';
+                        codesHTML = '<div class="bus-codes-container" style="margin: 0.5em 0;">';
                         codes.forEach(code => {
                             codesHTML += `<div class="bus-service-code"><span class="bus-service-code-text">${code}</span></div>`;
                         });
@@ -465,13 +490,11 @@
                     const alertDiv = document.createElement('div');
                     alertDiv.className = 'list-group-item list-group-item-action flex-column align-items-start';
                     alertDiv.innerHTML = `
-                        <div class="d-flex w-100">
-                            <div class="w-100">
-                                <small class="lg-date">Bus Services Affected:</small>
-                            </div>
+                        <div style="width: 100%; margin-bottom: 0.5em;">
+                            <small class="lg-date">Bus Services Affected:</small>
                         </div>
                         ${codesHTML}
-                        <p class="mb-1 alert-item-content">${linkedContent}</p>
+                        <p class="mb-1 alert-item-content"><strong>${timeStr}-</strong>${linkedContent}</p>
                     `;
                     content.appendChild(alertDiv);
 
