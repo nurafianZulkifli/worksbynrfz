@@ -504,7 +504,7 @@
                                 <img src="assets/icon-512.png" alt="RailBuddy" class="app-branding-icon">
                             </div>
                             <h1 class="app-branding-title">RailBuddy</h1>
-                            <p class="app-branding-version" id="app-version-display">Version 4.5.2</p>
+                            <p class="app-branding-version" id="app-version-display"></p>
                         </div>
                     </div>
                 </div>
@@ -598,8 +598,6 @@
 
     <script src="../js/app-version.js"></script>
 
-    <script src="../js/app-version.js"></script>
-
     <script type="text/javascript" id="cookiebanner" src="../js/cookies-banner.js" data-position="bottom"
         data-bg="#f2f3e5" data-fg="#000" data-font-family="Onest, sans-serif" data-zindex="12345111111"
         data-message="This website uses cookies to provide necessary site functionality and to improve your experience. By using this website, you agree to our use of cookies.">
@@ -608,13 +606,21 @@
     <script src="../js/cookies-theme-sync.js"></script>
     
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        function displayVersion() {
             const versionEl = document.getElementById('app-version-display');
-            if (versionEl && window.APP_VERSIONS) {
-                const version = window.APP_VERSIONS.railbuddy || '4.5.2';
-                versionEl.textContent = `Version ${version}`;
+            if (versionEl && window.APP_VERSIONS && window.APP_VERSIONS.railbuddy) {
+                versionEl.textContent = `Version ${window.APP_VERSIONS.railbuddy}`;
             }
-        });
+        }
+        
+        // Listen for version loading event from app-version.js
+        window.addEventListener('versionsLoaded', displayVersion);
+        
+        // Also try on DOMContentLoaded in case event already fired
+        document.addEventListener('DOMContentLoaded', displayVersion);
+        
+        // Fallback: check after a short delay
+        setTimeout(displayVersion, 500);
     </script>
 
     <script src="js/mob-navtabs.js"></script>

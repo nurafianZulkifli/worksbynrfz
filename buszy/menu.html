@@ -590,13 +590,21 @@
     <script src="../js/cookies-theme-sync.js"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        function displayVersion() {
             const versionEl = document.getElementById('app-version-display');
-            if (versionEl && window.APP_VERSIONS) {
-                const version = window.APP_VERSIONS.buszy || '4.5.2';
-                versionEl.textContent = `Version ${version}`;
+            if (versionEl && window.APP_VERSIONS && window.APP_VERSIONS.buszy) {
+                versionEl.textContent = `Version ${window.APP_VERSIONS.buszy}`;
             }
-        });
+        }
+        
+        // Listen for version loading event from app-version.js
+        window.addEventListener('versionsLoaded', displayVersion);
+        
+        // Also try on DOMContentLoaded in case event already fired
+        document.addEventListener('DOMContentLoaded', displayVersion);
+        
+        // Fallback: check after a short delay
+        setTimeout(displayVersion, 500);
     </script>
 
     <script src="js/mob-navtabs.js"></script>
