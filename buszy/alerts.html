@@ -212,6 +212,7 @@
         box-sizing: border-box;
         padding: 3px;
         overflow: visible;
+        animation: spinner-spin 1s linear infinite;
     }
 
     .spinner circle,
@@ -224,6 +225,24 @@
         stroke-width: 11;
         stroke-linecap: round;
         transform-origin: center;
+    }
+
+    @keyframes spinner-spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    body.dark-mode .spinner,
+    body.dark-mode .spinner-border {
+        color: #1f84a2;
+    }
+
+    body.dark-mode .alerts-loading {
+        color: #fff !important;
     }
 </style>
 
@@ -367,7 +386,7 @@
     <section class="about-me-summ clearfix" style="padding-bottom: 5em;">
         <div class="container">
             <div class="list-group" id="alerts-content">
-                <div class="alerts-loading" style="text-align: center; padding: 3em 1em; display: flex; align-items: center; justify-content: center; gap: 1em;">
+                <div class="alerts-loading" style="text-align: center; padding: 3em 1em; display: flex; align-items: center; justify-content: center; gap: 1em; color: inherit;">
                     <svg class="spinner" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="status"
                         style="width: 30px; height: 30px;">
                         <circle cx="50" cy="50" r="45"></circle>
@@ -494,14 +513,9 @@
                             <small class="lg-date">Bus Services Affected:</small>
                         </div>
                         ${codesHTML}
-                        <p class="mb-1 alert-item-content"><strong>${timeStr}-</strong>${linkedContent}</p>
+                        <p class="mb-1 alert-item-content">${linkedContent}</p>
                     `;
                     content.appendChild(alertDiv);
-
-                    if (index < alerts.length - 1) {
-                        const hr = document.createElement('hr');
-                        content.appendChild(hr);
-                    }
                 });
             }
 
