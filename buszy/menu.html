@@ -37,8 +37,6 @@
 </head>
 
 <style>
-
-
     .about-me-summ.clearfix {
         padding-top: 1.5em;
         padding-bottom: 5em;
@@ -530,7 +528,8 @@
                 <h3 class="other-apps-heading">Other Apps</h3>
                 <div class="other-apps-grid">
                     <div class="other-apps-card">
-                        <a href="../rail-buddy/index.html" style="display: flex; align-items: center; gap: 16px; flex: 1; text-decoration: none; color: inherit;">
+                        <a href="../rail-buddy/index.html"
+                            style="display: flex; align-items: center; gap: 16px; flex: 1; text-decoration: none; color: inherit;">
                             <div class="other-apps-icon">
                                 <img src="../rail-buddy/assets/icon-512.png" alt="RailBuddy" width="48" height="48">
                             </div>
@@ -555,6 +554,16 @@
                         </div>
                     </div>
                 </a>
+
+                <a href="ann.html" class="list-group-item list-group-item-action" id="ann-nav-link">
+                    <div class="d-flex" style="justify-content: space-between; align-items: center;">
+                        <div>
+                            <h5 class="lg-menu"><i class="fa-regular fa-bullhorn"></i> Announcements</h5>
+                        </div>
+                        <span class="ann-indicator-dot"></span>
+                    </div>
+                </a>
+
 
                 <a href="abs.html" id="other-apps-link"
                     class="list-group-item list-group-item-action flex-column align-items-start">
@@ -596,13 +605,13 @@
                 versionEl.textContent = `Version ${window.APP_VERSIONS.buszy}`;
             }
         }
-        
+
         // Listen for version loading event from app-version.js
         window.addEventListener('versionsLoaded', displayVersion);
-        
+
         // Also try on DOMContentLoaded in case event already fired
         document.addEventListener('DOMContentLoaded', displayVersion);
-        
+
         // Fallback: check after a short delay
         setTimeout(displayVersion, 500);
     </script>
