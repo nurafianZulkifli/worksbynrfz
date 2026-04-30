@@ -2,6 +2,7 @@
  * Buszy Service Worker
  * Handles caching and offline functionality for Buszy app
  * Dynamically detects base path for GitHub Pages and Heroku compatibility
+ * Dynamically loads version from version.json
  */
 
 // Detect base path dynamically
@@ -13,8 +14,26 @@ const BASE_PATH = (() => {
   return match ? match[1] : '/';
 })();
 
-const CACHE_VERSION = 'v4.5.2';
-const CACHE_NAME = `buszy-cache-${CACHE_VERSION}`;
+// Default cache version (fallback if version.json is unavailable)
+let CACHE_VERSION = 'v4.5.2';
+let CACHE_NAME = `buszy-cache-${CACHE_VERSION}`;
+
+// Fetch version from version.json
+async function loadCacheVersion() {
+  try {
+    const versionPath = BASE_PATH + 'js/version.json';
+    const response = await fetch(versionPath);
+    if (response.ok) {
+      const data = await response.json();
+      const version = data.buszy || '4.5.2';
+      CACHE_VERSION = `v${version}`;
+      CACHE_NAME = `buszy-cache-${CACHE_VERSION}`;
+      console.log('[Buszy SW] Cache version loaded:', CACHE_VERSION);
+    }
+  } catch (error) {
+    console.warn('[Buszy SW] Could not load version.json, using default:', error);
+  }
+}
 
 // Helper function to build paths with correct base
 function buildPath(path) {
@@ -75,9 +94,11 @@ const STATIC_ASSETS = [
 // Install: cache Buszy assets
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => {
-      return cache.addAll(STATIC_ASSETS).catch(err => {
-        console.warn('[Buszy SW] Some assets could not be cached:', err);
+    loadCacheVersion().then(() => {
+      return caches.open(CACHE_NAME).then(cache => {
+        return cache.addAll(STATIC_ASSETS).catch(err => {
+          console.warn('[Buszy SW] Some assets could not be cached:', err);
+        });
       });
     })
   );
@@ -87,15 +108,17 @@ self.addEventListener('install', event => {
 // Activate: cleanup old caches
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames
-          .filter(name => name.startsWith('buszy-cache-') && name !== CACHE_NAME)
-          .map(cacheName => {
-            console.log('[Buszy SW] Deleting old cache:', cacheName);
-            return caches.delete(cacheName);
-          })
-      );
+    loadCacheVersion().then(() => {
+      return caches.keys().then(cacheNames => {
+        return Promise.all(
+          cacheNames
+            .filter(name => name.startsWith('buszy-cache-') && name !== CACHE_NAME)
+            .map(cacheName => {
+              console.log('[Buszy SW] Deleting old cache:', cacheName);
+              return caches.delete(cacheName);
+            })
+        );
+      });
     })
   );
   self.clients.claim();
