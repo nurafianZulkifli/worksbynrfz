@@ -805,3 +805,9 @@ body.dark-mode .flickity-prev-next-button svg {
 body.dark-mode .flickity-prev-next-button .arrow {
     fill: #fff !important;
 }
+
+body.dark-mode #bus-stop-search {
+    background-color: #1c1f2b6e;
+    border: 2px solid #525872;
+    color: #e0e0e0;
+}

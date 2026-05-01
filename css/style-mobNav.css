@@ -246,7 +246,7 @@ body.dark-mode .list-group-item:hover {
         pointer-events: none;
     }
 
-      .mobile-bottom-nav::before {
+    .mobile-bottom-nav::before {
         content: '';
         position: absolute;
         left: 0;
@@ -332,5 +332,9 @@ body.dark-mode .list-group-item:hover {
     body.dark-mode .mobile-bottom-nav .label,
     body.dark-mode .mobile-bottom-nav .icon {
         color: #fff;
+    }
+
+    .mobile-bottom-nav {
+        padding-bottom: env(safe-area-inset-bottom);
     }
 }

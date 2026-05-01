@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="57TuruPNu5wqSSia_cUehl5t9Gh1AbxrHNPcMiFx-aQ" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover">
     <title>Arrival Timings | Buszy</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
@@ -180,10 +180,10 @@
 
     .bus-time {
         display: inline-flex;
-        width: 75px;
+        width: 85px;
         text-align: center;
         margin-right: 2px;
-        font-size: 24px;
+        font-size: 25px;
         font-weight: bold;
         margin-top: 2px;
         margin-bottom: 2px;
@@ -248,7 +248,6 @@
         font-size: 35px;
         font-weight: bold;
         margin-left: 12px;
-        margin-right: 12px;
         cursor: default;
         flex: 1;
         min-width: 0;
@@ -522,7 +521,7 @@
 
     @media (max-width: 768px) {
         #incoming-buses-grid {
-            grid-template-columns: repeat(auto-fit, minmax(60px, -1fr)) !important;
+            grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)) !important;
             overflow-x: visible;
             overflow-y: hidden;
             gap: 0.5rem;
@@ -544,9 +543,9 @@
 
     }
 
-    @media (min-width: 440px) and (max-width: 768px) {
+    @media (min-width: 440px) and (max-width: 767px) {
         #incoming-buses-grid {
-            grid-template-columns: repeat(auto-fit, minmax(100px, -1fr)) !important;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)) !important;
             overflow-x: visible !important;
         }
 
@@ -555,7 +554,7 @@
         }
     }
 
-    @media (min-width: 769px) and (max-width: 1024px) {
+    @media (min-width: 768px) and (max-width: 1024px) {
         .col-xl-3 {
             flex: 0 0 auto;
             width: 50%;
@@ -563,6 +562,34 @@
 
         #incoming-buses-grid {
             grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)) !important;
+        }
+    }
+
+    @media (min-width: 768px) and (max-width: 880px) {
+        .bus-time {
+            width: 68px;
+            font-size: 22px;
+        }
+
+        .card .card-content-art {
+            gap: 0.4rem;
+        }
+
+        .card .operator-logo {
+            width: 38px;
+        }
+
+        .card {
+            padding: 0.75rem;
+        }
+
+        .card .card-header {
+            font-size: 1rem;
+        }
+
+        .service-no {
+            font-size: 17px;
+            padding: 4px 8px;
         }
     }
 
@@ -582,6 +609,13 @@
             flex: 0 0 auto;
             width: 33%;
         }
+
+        .bus-time {
+            width: 55px;
+            font-size: 20px;
+            vertical-align: middle;
+        }
+
     }
 
     /* Bus Load Legend Styling */
@@ -830,8 +864,8 @@
         body.dark-mode .bus-stop-description {
             font-size: 30px;
             font-weight: bold;
-            margin-left: 0px;
-            margin-top: 10px;
+            margin-left: 12px;
+            margin-top: 0px;
             cursor: default;
         }
 
@@ -927,9 +961,6 @@
 </style>
 
 <body>
-    <a href="./alerts.html" class="alerts-btn" aria-label="Bus service alerts" title="Alerts">
-        <i class="fa-regular fa-triangle-exclamation"></i>
-    </a>
     <!-- Fixed Breadcrumb at very top (mobile/tablet only) -->
     <div class="breadcrumb-fixed-placeholder">
         <nav aria-label="breadcrumb" style="margin-bottom:0;">
@@ -993,6 +1024,7 @@
                     <span class="icon">
                         <i class="fa-sharp fa-regular fa-house"></i>
                     </span>
+                    <span class="label">Home</span>
                 </a>
             </li>
             <li>
@@ -1000,6 +1032,7 @@
                     <span class="icon">
                         <i class="fa-regular fa-clock"></i>
                     </span>
+                    <span class="label">Timings</span>
                 </a>
             </li>
             <li>
@@ -1008,6 +1041,7 @@
                         <i class="fa-regular fa-triangle-exclamation"></i>
                         <span class="alerts-indicator-dot"></span>
                     </span>
+                    <span class="label">Alerts</span>
                 </a>
             </li>
             <li>
@@ -1015,6 +1049,7 @@
                     <span class="icon">
                         <i class="fa-regular fa-bars"></i>
                     </span>
+                    <span class="label">Menu</span>
                 </a>
             </li>
         </ul>
@@ -1158,6 +1193,10 @@
 
     <script src="js/mob-navtabs-tooltip.js"></script>
 
+    <script src="js/haptic.js"></script>
+    <script src="js/wake-lock.js"></script>
+    <script src="js/pull-to-refresh.js"></script>
+
     <script src="buszy-subp.js"></script>
 
     <script src="../js/jquery.min.js"></script>
@@ -1183,6 +1222,13 @@
     <script src="js/art.js"></script>
 
     <script>
+        // Init pull-to-refresh — calls the globally-defined fetchBusArrivals
+        if (typeof initPullToRefresh === 'function') {
+            initPullToRefresh(function () {
+                if (typeof fetchBusArrivals === 'function') fetchBusArrivals();
+            });
+        }
+
         // Collapse map button logic
         const collapseBtn = document.getElementById('collapse-map-btn');
         const mapSection = document.querySelector('.bus-location-section');

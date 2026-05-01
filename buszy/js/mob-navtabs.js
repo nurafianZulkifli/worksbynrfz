@@ -4,22 +4,23 @@
             var nav = document.querySelector('.mobile-bottom-nav');
             var ticking = false;
             var isHidden = false;
+            var scrollThreshold = 8;
 
             function onScroll() {
                 var currentScrollY = window.scrollY;
                 if (window.innerWidth > 600) return; // Only on mobile
-                if (currentScrollY > lastScrollY + 4) {
-                    // Scrolling down
+                if (currentScrollY > lastScrollY + scrollThreshold) {
+                    // Scrolling down — hide quickly
                     if (!isHidden) {
+                        nav.classList.add('nav-hiding');
                         nav.style.transform = 'translateY(100%)';
-                        nav.style.transition = 'transform 0.3s cubic-bezier(.4,0,.2,1)';
                         isHidden = true;
                     }
-                } else if (currentScrollY < lastScrollY - 4) {
-                    // Scrolling up
+                } else if (currentScrollY < lastScrollY - scrollThreshold) {
+                    // Scrolling up — show smoothly
                     if (isHidden) {
+                        nav.classList.remove('nav-hiding');
                         nav.style.transform = 'translateY(0)';
-                        nav.style.transition = 'transform 0.3s cubic-bezier(.4,0,.2,1)';
                         isHidden = false;
                     }
                 }

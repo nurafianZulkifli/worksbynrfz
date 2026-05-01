@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="57TuruPNu5wqSSia_cUehl5t9Gh1AbxrHNPcMiFx-aQ" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover">
     <title>Pinned Bus Stops | Buszy</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
@@ -107,18 +107,45 @@
         width: 100%;
     }
 
-   .alerts-btn {
+    .alerts-btn {
         display: flex;
         align-items: center;
         justify-content: center;
         width: 40px;
         height: 40px;
-        color: #000;
         border-radius: 50%;
         font-size: 18px;
         cursor: pointer;
         text-decoration: none;
         transition: all 0.3s ease;
+        color: #acacac;
+        background-color: #ffffff86;
+        border: 2px solid #acacac;
+    }
+
+    .alerts-btn:has(.ann-indicator-dot.show) {
+        border-color: #e63946;
+        color: #e63946;
+        animation: pulse-ann-btn 2s infinite;
+    }
+
+    @keyframes pulse-ann-btn {
+        0%, 100% { border-color: #ff6b35; }
+        50% { border-color: rgba(255, 107, 53, 0.4); }
+    }
+
+    .alerts-btn .ann-indicator-dot,
+    .alerts-btn .ann-indicator-dot.show {
+        width: 0 !important;
+        height: 0 !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        margin: 0 !important;
+    }
+
+    body.dark-mode .alerts-btn:has(.ann-indicator-dot.show) {
+        border-color: #ff6b35;
+        color: #ff6b35;
     }
 
     .alerts-btn:active {
@@ -126,7 +153,9 @@
     }
 
     body.dark-mode .alerts-btn {
-        color: #fff;
+        color: #606062;
+        background-color: #1c1f2b6e;
+        border: 2px solid #525872;
     }
 
     .footer {
@@ -209,11 +238,17 @@
         text-decoration: underline;
     }
 
-    body.dark-mode #did-you-mean { color: #aaa; }
-    body.dark-mode #did-you-mean a { color: #a8e63a; }
+    body.dark-mode #did-you-mean {
+        color: #aaa;
+    }
+
+    body.dark-mode #did-you-mean a {
+        color: #a8e63a;
+    }
 
     /* Cover Search Wrapper */
-    .cover-search-wrapper {        background: transparent;
+    .cover-search-wrapper {
+        background: transparent;
         padding: 0;
         padding-top: 40px;
         max-width: 100%;
@@ -270,7 +305,7 @@
 
     .search-box {
         width: 100%;
-        padding: 12px 20px;
+        padding: 8px 20px;
         padding-left: 40px;
         font-size: 1rem;
         border: 1px solid rgba(255, 255, 255, 0.3);
@@ -750,6 +785,8 @@
             padding-left: 32px;
             padding-right: 32px;
             font-size: 0.85rem;
+            background-color: #ffffff86;
+            border: 2px solid #acacac;
         }
 
         .category-tabs {
@@ -890,6 +927,7 @@
                     <span class="icon">
                         <i class="fa-sharp fa-regular fa-house"></i>
                     </span>
+                    <span class="label">Home</span>
                 </a>
             </li>
             <li>
@@ -897,6 +935,7 @@
                     <span class="icon">
                         <i class="fa-regular fa-clock"></i>
                     </span>
+                    <span class="label">Timings</span>
                 </a>
             </li>
             <li>
@@ -905,6 +944,7 @@
                         <i class="fa-regular fa-triangle-exclamation"></i>
                         <span class="alerts-indicator-dot"></span>
                     </span>
+                    <span class="label">Alerts</span>
                 </a>
             </li>
             <li>
@@ -912,6 +952,7 @@
                     <span class="icon">
                         <i class="fa-regular fa-bars"></i>
                     </span>
+                    <span class="label">Menu</span>
                 </a>
             </li>
         </ul>
@@ -935,7 +976,8 @@
                                 <button class="search-clear" id="search-clear" aria-label="Clear search">
                                     <i class="fa-regular fa-xmark"></i>
                                 </button>
-                                <a href="./ann.html" class="alerts-btn" aria-label="Announcements" title="Announcements" style="position: relative; top: auto; right: auto; width: 50px; height: 42px; font-size: 18px; margin-left: 12px;">
+                                <a href="./ann.html" class="alerts-btn" aria-label="Announcements" title="Announcements"
+                                    style="position: relative; top: auto; right: auto; width: 50px; height: 42px; font-size: 18px; margin-left: 12px;">
                                     <i class="fa-regular fa-bullhorn"></i>
                                     <span class="ann-indicator-dot"></span>
                                 </a>
@@ -1037,6 +1079,8 @@
 
     <script src="./js/mob-navtabs-tooltip.js"></script>
 
+    <script src="./js/haptic.js"></script>
+
     <script src="./buszy-subp.js"></script>
 
     <script src="../js/jquery.min.js"></script>
@@ -1118,7 +1162,7 @@
                     // Re-run after data loads in case input was already restored
                     if (searchInput.value) updateDidYouMean(searchInput.value);
                 })
-                .catch(() => {});
+                .catch(() => { });
 
             // Restore service number from sessionStorage if it exists (for back navigation)
             const savedService = sessionStorage.getItem('lastServiceSearch');

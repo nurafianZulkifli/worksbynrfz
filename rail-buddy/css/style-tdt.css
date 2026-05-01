@@ -374,10 +374,10 @@ body.dark-mode .list-group-item:hover {
         border-radius: 50px;
         box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
         display: flex;
-        margin: 20px 45px;
+        margin: 20px 20px;
         padding: 0 4px;
         width: 100%;
-        max-width: 270px;
+        max-width: 340px;
         justify-content: space-between;
         pointer-events: auto;
     }
@@ -396,11 +396,21 @@ body.dark-mode .list-group-item:hover {
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: 16px 0 16px 0;
+        padding: 0;
         margin: 4px 2px;
         border-radius: 50px;
         transition: background 0.2s;
         cursor: pointer;
+    }
+
+    .mobile-bottom-nav li a {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 6px 0 6px;
+        width: 100%;
+        text-decoration: none;
     }
 
     .mobile-bottom-nav li.active {
@@ -411,7 +421,7 @@ body.dark-mode .list-group-item:hover {
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 2px;
+        margin-bottom: 5px;
         color: #000;
     }
 
@@ -545,9 +555,12 @@ body.dark-mode .error-message {
 }
 
 @keyframes pulse-new {
-    0%, 100% {
+
+    0%,
+    100% {
         box-shadow: 0 0 0 0 rgba(255, 107, 53, 0.7);
     }
+
     50% {
         box-shadow: 0 0 0 6px rgba(255, 107, 53, 0);
     }
@@ -589,9 +602,12 @@ body.dark-mode .ann-badge.modified {
 }
 
 @keyframes pulse-dot {
-    0%, 100% {
+
+    0%,
+    100% {
         box-shadow: 0 0 0 0 rgba(255, 107, 53, 0.7);
     }
+
     50% {
         box-shadow: 0 0 0 6px rgba(255, 107, 53, 0);
     }
@@ -599,6 +615,39 @@ body.dark-mode .ann-badge.modified {
 
 body.dark-mode .ann-indicator-dot {
     background-color: #ff6b35;
+}
+
+/* ann-header-btn circular button: border ring instead of dot */
+.ann-header-btn:has(.ann-indicator-dot.show) {
+    box-shadow: 0 0 0 2px #ff6b35;
+    animation: pulse-ann-border 2s infinite;
+}
+
+body.dark-mode .ann-header-btn:has(.ann-indicator-dot.show) {
+    border-color: #ff6b35;
+    color: #ff6b35;
+}
+
+@keyframes pulse-ann-border {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 2px #ff6b35;
+    }
+
+    50% {
+        box-shadow: 0 0 0 2.5px rgba(255, 107, 53, 0.35);
+    }
+}
+
+/* Hide the dot inside the circular button — border takes its place */
+.ann-header-btn .ann-indicator-dot,
+.ann-header-btn .ann-indicator-dot.show {
+    width: 0 !important;
+    height: 0 !important;
+    margin-left: 0 !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
 }
 
 .ann-header-btn {

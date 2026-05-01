@@ -1,4 +1,101 @@
 /* ===== PWA Splash Screen ===== */
+
+/* ===== Native-feel: prevent text selection on interactive elements ===== */
+button,
+.bus-stop,
+.list-group-item,
+.mobile-bottom-nav li,
+.nav-link,
+.breadcrumb-item a {
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* ===== Pull-to-refresh indicator ===== */
+#ptr-indicator {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%) translateY(0px) scale(0.6) rotate(0deg);
+    width: 40px;
+    height: 40px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    color: #1f84a2;
+    opacity: 0;
+    transition: box-shadow 0.2s ease;
+    will-change: transform, opacity;
+    pointer-events: none;
+}
+
+body.dark-mode #ptr-indicator {
+    background: #1c1f2b;
+    color: #7db603;
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.5);
+}
+
+#ptr-indicator svg {
+    width: 22px;
+    height: 22px;
+    transition: stroke 0.2s;
+}
+
+#ptr-indicator.ptr-ready {
+    color: #7db603;
+    box-shadow: 0 4px 20px rgba(125, 182, 3, 0.35);
+}
+
+#ptr-indicator.ptr-spinning svg {
+    animation: ptr-spin 0.6s linear infinite;
+}
+
+#ptr-indicator.ptr-hiding {
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    opacity: 0 !important;
+    transform: translateX(-50%) translateY(0px) scale(0.5) rotate(0deg) !important;
+}
+
+@keyframes ptr-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ===== Native-feel: card & button press states ===== */
+.card:active {
+    transform: scale(0.985);
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08) !important;
+}
+
+.service-no-collapsible-btn:active .service-no {
+    transform: scale(0.95);
+    transition: transform 0.1s ease;
+}
+
+a.ib-svc:active {
+    transform: scale(0.94) !important;
+    transition: transform 0.1s ease !important;
+}
+
+#collapse-map-btn:active,
+#current-location-btn:active,
+#recenter-map-btn:active,
+button:active {
+    transform: scale(0.93);
+    transition: transform 0.1s ease;
+    opacity: 0.85;
+}
+
+.mobile-bottom-nav li:active {
+    transform: scale(0.88);
+    transition: transform 0.1s ease;
+    opacity: 0.8;
+}
+
 #pwa-splash {
     position: fixed;
     inset: 0;
@@ -277,6 +374,14 @@ body.dark-mode li.breadcrumb-item a {
         display: flex !important;
         justify-content: center;
         pointer-events: none;
+        padding-bottom: env(safe-area-inset-bottom);
+        will-change: transform;
+        transform: translateZ(0);
+        transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+    }
+
+    .mobile-bottom-nav.nav-hiding {
+        transition: transform 0.22s cubic-bezier(0.4, 0, 1, 1);
     }
 
     .mobile-bottom-nav::before {
@@ -285,7 +390,7 @@ body.dark-mode li.breadcrumb-item a {
         left: 0;
         right: 0;
         bottom: 0;
-        height: 120px;
+        height: calc(120px + env(safe-area-inset-bottom));
         background: linear-gradient(to top, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 100%);
         -webkit-backdrop-filter: blur(20px);
         backdrop-filter: blur(20px);
@@ -305,10 +410,10 @@ body.dark-mode li.breadcrumb-item a {
         border-radius: 50px;
         box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
         display: flex;
-        margin: 20px 45px;
+        margin: 20px 20px;
         padding: 0 4px;
         width: 100%;
-        max-width: 270px;
+        max-width: 340px;
         justify-content: space-between;
         pointer-events: auto;
     }
@@ -326,11 +431,21 @@ body.dark-mode li.breadcrumb-item a {
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: 16px 0 16px 0;
+        padding: 0;
         margin: 4px 2px;
         border-radius: 50px;
         transition: background 0.2s;
         cursor: pointer;
+    }
+
+    .mobile-bottom-nav li a {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 6px 0 6px;
+        width: 100%;
+        text-decoration: none;
     }
 
     .mobile-bottom-nav li.active {
@@ -341,16 +456,17 @@ body.dark-mode li.breadcrumb-item a {
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 2px;
+        margin-bottom: 5px;
         color: #000;
     }
 
     .mobile-bottom-nav li.active .label {
         color: #fff;
-        font-weight: bold;
+        font-weight: 600;
     }
 
-    .mobile-bottom-nav li.active .icon i {
+    .mobile-bottom-nav li.active .icon i,
+    .mobile-bottom-nav li.active a .icon i {
         color: #fff;
     }
 
@@ -1611,4 +1727,40 @@ body.dark-mode .ann-indicator-dot {
 
 body.dark-mode .alerts-indicator-dot {
     background-color: #e63946;
+}
+
+/* Mobile bottom nav: border ring on icon instead of dot */
+.mobile-bottom-nav li:has(.alerts-indicator-dot.show) .icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px #e63946;
+    animation: pulse-alerts-border 2s infinite;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Desktop navbar: border ring on the alerts nav-link */
+#ann-nav-desktop:has(.alerts-indicator-dot.show) {
+    box-shadow: 0 0 0 2px #e63946;
+    border-radius: 50px;
+    animation: pulse-alerts-border 2s infinite;
+}
+
+@keyframes pulse-alerts-border {
+    0%, 100% { box-shadow: 0 0 0 2px #e63946; }
+    50% { box-shadow: 0 0 0 2.5px rgba(230, 57, 70, 0.35); }
+}
+
+/* Hide the dot everywhere — border ring takes its place */
+.mobile-bottom-nav .alerts-indicator-dot,
+.mobile-bottom-nav .alerts-indicator-dot.show,
+#ann-nav-desktop .alerts-indicator-dot,
+#ann-nav-desktop .alerts-indicator-dot.show {
+    width: 0 !important;
+    height: 0 !important;
+    margin-left: 0 !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
 }
