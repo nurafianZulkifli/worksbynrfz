@@ -8,6 +8,7 @@ let totalPages = 1;
 const limit = 10;
 let filteredServices = [];
 let isSearchActive = false;
+let currentTypeFilter = '';
 
 // Get base path for the application
 function getBasePath() {
@@ -45,6 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     loadBusServices();
     setupSearchFilter();
+    setupTypeFilter();
 
     // Restore search input value from sessionStorage (state saved before navigating away)
     const savedSearch = sessionStorage.getItem('absvcSearch');
@@ -338,10 +340,47 @@ function setupPaginationButtons() {
     });
 }
 
+function getFilteredServices() {
+    const searchInput = document.getElementById('service-search');
+    const searchTerm = (searchInput?.value || '').toLowerCase();
+
+    return allServices.filter(service => {
+        const matchesType = !currentTypeFilter || (service.t || '') === currentTypeFilter;
+        if (!matchesType) return false;
+
+        if (!searchTerm) return true;
+
+        const serviceNum = (service.n || '').toLowerCase();
+        const type = (service.t || '').toLowerCase();
+        const start = (service.ts || '').toLowerCase();
+        const end = (service.te || '').toLowerCase();
+        const remarks = (service.r || '').toLowerCase();
+
+        return serviceNum.includes(searchTerm) ||
+               type.includes(searchTerm) ||
+               start.includes(searchTerm) ||
+               end.includes(searchTerm) ||
+               remarks.includes(searchTerm);
+    });
+}
+
+function setupTypeFilter() {
+    const buttons = document.querySelectorAll('.type-filter-btn');
+    buttons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            buttons.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            currentTypeFilter = this.dataset.type;
+            currentPage = 1;
+            displayServices(getFilteredServices(), true);
+        });
+    });
+}
+
 function setupSearchFilter() {
     const searchInput = document.getElementById('service-search');
     const clearButton = document.getElementById('search-clear');
-    
+
     if (searchInput) {
         searchInput.addEventListener('input', function(e) {
             const searchTerm = e.target.value.toLowerCase();
@@ -350,27 +389,10 @@ function setupSearchFilter() {
             if (clearButton) {
                 clearButton.style.display = e.target.value.length > 0 ? 'flex' : 'none';
             }
-            
-            const filtered = allServices.filter(service => {
-                const serviceNum = (service.n || '').toLowerCase();
-                const type = (service.t || '').toLowerCase();
-                const start = (service.ts || '').toLowerCase();
-                const end = (service.te || '').toLowerCase();
-                const remarks = (service.r || '').toLowerCase();
-                
-                return serviceNum.includes(searchTerm) ||
-                       type.includes(searchTerm) ||
-                       start.includes(searchTerm) ||
-                       end.includes(searchTerm) ||
-                       remarks.includes(searchTerm);
-            });
-            
-            // Reset to page 1 when searching
+
             currentPage = 1;
             isSearchActive = searchTerm.length > 0;
-            
-            // Display filtered results with pagination
-            displayServices(filtered, true);
+            displayServices(getFilteredServices(), true);
         });
     }
 
@@ -418,7 +440,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const updateLoadingMessage = () => {
         loadingMessageElement.innerHTML = `
                 <svg class="spinner" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="status" style="margin-right: 1em;">
-                    <circle cx="50" cy="50" r="45">
+                    <circle cx="50" cy="50" r="45" stroke-dasharray="0% 314.159%">
                         <animateTransform attributeName="transform" type="rotate" values="-90;810" keyTimes="0;1" dur="2s" repeatCount="indefinite" />
                         <animate attributeName="stroke-dashoffset" values="0%;0%;-157.080%" calcMode="spline" keySplines="0.61, 1, 0.88, 1; 0.12, 0, 0.39, 0" keyTimes="0;0.5;1" dur="2s" repeatCount="indefinite" />
                         <animate attributeName="stroke-dasharray" values="0% 314.159%;157.080% 157.080%;0% 314.159%" calcMode="spline" keySplines="0.61, 1, 0.88, 1; 0.12, 0, 0.39, 0" keyTimes="0;0.5;1" dur="2s" repeatCount="indefinite" />

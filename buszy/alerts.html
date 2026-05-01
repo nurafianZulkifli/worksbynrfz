@@ -153,7 +153,7 @@
         display: none;
     }
 
-   .alerts-btn {
+    .alerts-btn {
         position: fixed;
         top: 20px;
         right: 20px;
@@ -184,7 +184,7 @@
     }
 
     body.dark-mode .alerts-btn {
-        background-color: #1a1f35be ;
+        background-color: #1a1f35be;
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
         color: #fff;
     }
@@ -203,34 +203,36 @@
         }
     }
 
-    .spinner,
-    .spinner-border {
-        display: inline-block;
-        width: 32px;
-        height: 32px;
-        color: #1f84a2;
-        animation: spinner-spin 0.75s linear infinite;
-        transform-box: fill-box;
-        transform-origin: center;
+    .no-alerts,
+    .error-message {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border-radius: 25px;
+        padding-top: 0.5em;
+        padding-bottom: 0.5em;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 2em;
+        padding-left: 1em;
+        cursor: default !important;
     }
 
-    .spinner circle,
-    .spinner-border circle {
-        fill: none;
-        stroke: currentColor;
-        stroke-linecap: round;
-        stroke-dasharray: 188 63;
+    body.dark-mode .no-alerts {
+        background-color: #1c1f2b;
+        color: #fff;
+        border: 1px solid #2b2b2b33;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
-    @keyframes spinner-spin {
-        to {
-            transform: rotate(360deg);
-        }
-    }
-
-    body.dark-mode .spinner,
-    body.dark-mode .spinner-border {
-        color: #1f84a2;
+    body.dark-mode .error-message {
+        background-color: #1c1f2b;
+        color: #fff;
+        border: 1px solid #2b2b2b33;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
     body.dark-mode .alerts-loading {
@@ -247,10 +249,6 @@
                 <li class="breadcrumb-item">
                     <a href="./">
                         <i class="fa-regular fa-house"></i>
-                    </a>
-                </li>
-                <li class="breadcrumb-item">
-                    <a href="#"><i class="fa-regular fa-triangle-exclamation"></i>
                     </a>
                 </li>
             </ol>
@@ -368,162 +366,26 @@
     <section class="about-me-summ clearfix" style="padding-bottom: 5em;">
         <div class="container">
             <div class="list-group" id="alerts-content">
-                <div class="alerts-loading" style="text-align: center; padding: 3em 1em; display: flex; align-items: center; justify-content: center; gap: 1em; color: inherit;">
+                <div class="alerts-loading"
+                    style="text-align: center; padding: 3em 1em; display: flex; align-items: center; justify-content: center; gap: 1em; color: inherit;">
                     <svg class="spinner" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="status"
-                        style="width: 30px; height: 30px;">
-                        <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round"></circle>
+                        style="margin-right: 1em;">
+                        <circle cx="50" cy="50" r="45" stroke-dasharray="0% 314.159%">
+                            <animateTransform attributeName="transform" type="rotate" values="-90;810" keyTimes="0;1"
+                                dur="2s" repeatCount="indefinite" />
+                            <animate attributeName="stroke-dashoffset" values="0%;0%;-157.080%" calcMode="spline"
+                                keySplines="0.61, 1, 0.88, 1; 0.12, 0, 0.39, 0" keyTimes="0;0.5;1" dur="2s"
+                                repeatCount="indefinite" />
+                            <animate attributeName="stroke-dasharray" values="0% 314.159%;157.080% 157.080%;0% 314.159%"
+                                calcMode="spline" keySplines="0.61, 1, 0.88, 1; 0.12, 0, 0.39, 0" keyTimes="0;0.5;1"
+                                dur="2s" repeatCount="indefinite" />
+                        </circle>
                     </svg>
                     Loading alerts...
                 </div>
             </div>
         </div>
     </section>
-
-    <script>
-        // Helper: convert URLs in text to clickable links
-        function linkify(text) {
-            const urlRegex = /(https?:\/\/[\w\-._~:/?#[\]@!$&'()*+,;=%]+)|(www\.[\w\-._~:/?#[\]@!$&'()*+,;=%]+)|(go\.gov\.sg\/[\w\-._~:/?#[\]@!$&'()*+,;=%]+)/gi;
-            let linked = text.replace(urlRegex, function(url) {
-                let href = url;
-                if (url.match(/^go\.gov\.sg\//i)) {
-                    href = 'https://' + url;
-                } else if (!href.match(/^https?:\/\//i)) {
-                    href = 'http://' + href;
-                }
-                return `<a href="${href}" target="_blank" rel="noopener noreferrer">${url}</a>`;
-            });
-            return linked.replace(/\n/g, '<br>');
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            // Show last updated time
-            const now = new Date();
-            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-            let hours = now.getHours();
-            const ampm = hours >= 12 ? 'PM' : 'AM';
-            hours = hours % 12;
-            hours = hours ? hours : 12;
-            const mins = now.getMinutes().toString().padStart(2, '0');
-            const formatted = `Last updated: ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()} ${hours}:${mins} ${ampm}`;
-            const updatedDiv = document.querySelector('#alerts-last-updated');
-            if (updatedDiv) updatedDiv.textContent = formatted;
-
-            // Fetch alerts
-            fetch('https://bat-lta-9eb7bbf231a2.herokuapp.com/train-service-alerts')
-                .then(r => r.json())
-                .then(data => {
-                    if (!data || !data.value) {
-                        showNoAlerts();
-                        return;
-                    }
-
-                    // Support both array and object for value
-                    let alerts = [];
-                    if (Array.isArray(data.value)) {
-                        alerts = data.value;
-                    } else if (typeof data.value === 'object') {
-                        alerts = [data.value];
-                    }
-
-                    // Filter for bus service alerts only (those containing "Due to... bus services... are affected")
-                    let busAlerts = [];
-                    alerts.forEach(alert => {
-                        if (alert.Message && Array.isArray(alert.Message)) {
-                            alert.Message.forEach(messageObj => {
-                                const msg = messageObj.Content || '';
-                                // Check if message contains "bus services" or "bus service" and mentions being affected
-                                if (msg.includes('bus service') && (msg.includes('affected') || msg.includes('diverted'))) {
-                                    busAlerts.push({
-                                        content: msg,
-                                        status: alert.Status,
-                                        createdDate: messageObj.CreatedDate
-                                    });
-                                }
-                            });
-                        }
-                    });
-
-                    if (busAlerts.length === 0) {
-                        showNoAlerts();
-                    } else {
-                        displayAlerts(busAlerts);
-                    }
-                })
-                .catch(err => {
-                    console.error('Error fetching alerts:', err);
-                    showErrorMessage('Failed to load alerts. Please try again later.');
-                });
-
-            function extractBusServiceCodes(text) {
-                // Extract only the portion mentioning "bus services"
-                const busServicesRegex = /bus services?\s*[:\-]?\s*([^.]+?)(?:\s+(?:are|is)\s+(?:affected|diverted|disrupted)|\s*$)/i;
-                const match = text.match(busServicesRegex);
-                
-                if (!match) {
-                    return [];
-                }
-                
-                // Get the portion after "bus services" but before "are affected/diverted/etc"
-                const servicesText = match[1];
-                
-                // Extract service codes from this portion: numbers (2-4 digits) optionally followed by a letter
-                const codeRegex = /\b(\d{2,4}[a-z]?)\b/gi;
-                const matches = servicesText.match(codeRegex) || [];
-                const codes = [...new Set(matches)].filter(code => {
-                    const num = parseInt(code);
-                    return num >= 10 && num <= 9999;
-                });
-                return codes;
-            }
-
-            function displayAlerts(alerts) {
-                const content = document.getElementById('alerts-content');
-                content.innerHTML = '';
-
-                alerts.forEach((alert, index) => {
-                    const linkedContent = linkify(alert.content);
-                    const alertDate = new Date(alert.createdDate);
-                    
-                    // Format time as HH:MM
-                    let hours = alertDate.getHours();
-                    const mins = alertDate.getMinutes().toString().padStart(2, '0');
-                    hours = hours.toString().padStart(2, '0');
-                    const timeStr = `${hours}:${mins}`;
-                    
-                    const codes = extractBusServiceCodes(alert.content);
-                    let codesHTML = '';
-                    if (codes.length > 0) {
-                        codesHTML = '<div class="bus-codes-container" style="margin: 0.5em 0;">';
-                        codes.forEach(code => {
-                            codesHTML += `<div class="bus-service-code"><span class="bus-service-code-text">${code}</span></div>`;
-                        });
-                        codesHTML += '</div>';
-                    }
-
-                    const alertDiv = document.createElement('div');
-                    alertDiv.className = 'list-group-item list-group-item-action flex-column align-items-start';
-                    alertDiv.innerHTML = `
-                        <div style="width: 100%; margin-bottom: 0.5em;">
-                            <small class="lg-date">Bus Services Affected:</small>
-                        </div>
-                        ${codesHTML}
-                        <p class="mb-1 alert-item-content">${linkedContent}</p>
-                    `;
-                    content.appendChild(alertDiv);
-                });
-            }
-
-            function showNoAlerts() {
-                const content = document.getElementById('alerts-content');
-                content.innerHTML = '<div style="text-align: center; padding: 3em 1em; color: #999; font-size: 1.1em;"><i class="fa-regular fa-check-circle"></i> No bus service alerts at the moment</div>';
-            }
-
-            function showErrorMessage(message) {
-                const content = document.getElementById('alerts-content');
-                content.innerHTML = `<div style="text-align: center; padding: 3em 1em; color: #999; font-size: 1.1em;"><i class="fa-regular fa-exclamation-circle"></i> ${message}</div>`;
-            }
-        });
-    </script>
 
     <script type="text/javascript" id="cookiebanner" src="../js/cookies-banner.js" data-position="bottom"
         data-bg="#f2f3e5" data-fg="#000" data-font-family="Onest, sans-serif" data-zindex="12345111111"
@@ -554,7 +416,7 @@
 
     <script src="../js/utils.js"></script>
 
-    <script src="js/ann.js"></script>
+    <script src="js/bs-alerts.js"></script>
 
     <script src="../js/back-to-top.js"></script>
 </body>
