@@ -2,28 +2,11 @@
 // :: Announcement Indicator Dot ::
 // ****************************
 
-/**
- * Check if there are any unread announcements
- * and show indicator dots on announcement links
- */
-function updateAnnounceIndicatorDots() {
-    const HAS_UNREAD_KEY = 'buszy_has_unread';
-    const STORAGE_KEY = 'buszy_ann_state';
-    
-    // First check if the flag is explicitly set
-    const flagValue = localStorage.getItem(HAS_UNREAD_KEY);
-    let hasUnread;
-    
-    if (flagValue !== null) {
-        // Flag is set, use it
-        hasUnread = flagValue === 'true';
-    } else {
-        // Flag not set yet - this is first load, default to showing dots
-        // The ann.html page will set this flag when it loads
-        hasUnread = true;
-    }
-    
-    // Update indicator dots
+const NEW_ITEM_DAYS = 7;
+const ANN_STORAGE_KEY = 'buszy_ann_state';
+const ANN_HAS_UNREAD_KEY = 'buszy_has_unread';
+
+function applyDots(hasUnread) {
     const dots = document.querySelectorAll('.ann-indicator-dot');
     dots.forEach(dot => {
         if (hasUnread) {
@@ -32,6 +15,50 @@ function updateAnnounceIndicatorDots() {
             dot.classList.remove('show');
         }
     });
+}
+
+/**
+ * Fetch ann.html in the background and compute unread status directly
+ * from announcement items, bypassing any stale cached flag.
+ */
+async function computeUnreadFromSource() {
+    try {
+        const response = await fetch('./ann.html', { cache: 'default' });
+        const html = await response.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+
+        const items = doc.querySelectorAll('.list-group-item[data-ann-id][data-ann-date]');
+        const storedState = JSON.parse(localStorage.getItem(ANN_STORAGE_KEY) || '{}');
+        const now = new Date();
+        let hasUnread = false;
+
+        items.forEach(item => {
+            const id = item.getAttribute('data-ann-id');
+            const dateStr = item.getAttribute('data-ann-date');
+            const annDate = new Date(dateStr);
+            const daysSince = (now - annDate) / (1000 * 60 * 60 * 24);
+
+            if (daysSince <= NEW_ITEM_DAYS && !storedState[id]?.hash) {
+                hasUnread = true;
+            }
+        });
+
+        localStorage.setItem(ANN_HAS_UNREAD_KEY, hasUnread);
+        applyDots(hasUnread);
+    } catch (e) {
+        // Fetch failed — fall back to cached flag
+    }
+}
+
+function updateAnnounceIndicatorDots() {
+    const flagValue = localStorage.getItem(ANN_HAS_UNREAD_KEY);
+
+    // Apply cached value immediately so there's no delay
+    applyDots(flagValue === null || flagValue === 'true');
+
+    // Always recompute in background to catch new announcements
+    computeUnreadFromSource();
 }
 
 // Initialize on page load
@@ -44,9 +71,9 @@ if (document.readyState !== 'loading') {
     updateAnnounceIndicatorDots();
 }
 
-// Watch for changes to localStorage (in case announcements page updates)
+// Watch for changes to localStorage (e.g. when ann.html marks items as read)
 window.addEventListener('storage', function(e) {
-    if (e.key === 'buszy_has_unread' || e.key === 'buszy_ann_state' || e.key === null) {
+    if (e.key === ANN_HAS_UNREAD_KEY || e.key === ANN_STORAGE_KEY || e.key === null) {
         updateAnnounceIndicatorDots();
     }
 });

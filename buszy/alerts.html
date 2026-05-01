@@ -210,6 +210,8 @@
         height: 32px;
         color: #1f84a2;
         animation: spinner-spin 0.75s linear infinite;
+        transform-box: fill-box;
+        transform-origin: center;
     }
 
     .spinner circle,
@@ -217,6 +219,7 @@
         fill: none;
         stroke: currentColor;
         stroke-linecap: round;
+        stroke-dasharray: 188 63;
     }
 
     @keyframes spinner-spin {
