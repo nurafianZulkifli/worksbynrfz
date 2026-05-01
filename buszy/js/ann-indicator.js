@@ -18,11 +18,9 @@ function updateAnnounceIndicatorDots() {
         // Flag is set, use it
         hasUnread = flagValue === 'true';
     } else {
-        // Flag not set yet - check if there's ann state and calculate unread status
-        const storedState = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-        // If we have stored state but no flag, that means we've visited ann.html before
-        // and the state should be reliable. If we have no state at all, assume true (optimistic)
-        hasUnread = Object.keys(storedState).length === 0;
+        // Flag not set yet - this is first load, default to showing dots
+        // The ann.html page will set this flag when it loads
+        hasUnread = true;
     }
     
     // Update indicator dots
