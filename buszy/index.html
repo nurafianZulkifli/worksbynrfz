@@ -294,6 +294,13 @@
         align-items: center;
     }
 
+    .search-input-wrapper {
+        position: relative;
+        flex: 1;
+        display: flex;
+        align-items: center;
+    }
+
     .search-icon {
         position: absolute;
         left: 12px;
@@ -305,8 +312,7 @@
 
     .search-box {
         width: 100%;
-        padding: 8px 20px;
-        padding-left: 40px;
+        padding: 8px 40px 8px 40px;
         font-size: 1rem;
         border: 1px solid rgba(255, 255, 255, 0.3);
         border-radius: 25px;
@@ -334,12 +340,12 @@
         align-items: center;
         justify-content: center;
         border: none;
-        background: #e8e8e8;
+        background: #d0d0d0;
         color: #555;
         border-radius: 50%;
-        width: 28px;
-        height: 28px;
-        font-size: 1rem;
+        width: 24px;
+        height: 24px;
+        font-size: 0.85rem;
         cursor: pointer;
         padding: 0;
         transition: background 0.2s;
@@ -970,14 +976,16 @@
 
                         <div class="search-container">
                             <div class="search-wrapper">
-                                <i class="fa-regular fa-magnifying-glass search-icon"></i>
-                                <input type="text" class="search-box" id="bus-stop-search"
-                                    placeholder="Search bus stops by name or code">
-                                <button class="search-clear" id="search-clear" aria-label="Clear search">
-                                    <i class="fa-regular fa-xmark"></i>
-                                </button>
+                                <div class="search-input-wrapper">
+                                    <i class="fa-regular fa-magnifying-glass search-icon"></i>
+                                    <input type="text" class="search-box" id="bus-stop-search"
+                                        placeholder="Search bus stops by name or code">
+                                    <button class="search-clear" id="search-clear" aria-label="Clear search">
+                                        <i class="fa-regular fa-xmark"></i>
+                                    </button>
+                                </div>
                                 <a href="./ann.html" class="alerts-btn" aria-label="Announcements" title="Announcements"
-                                    style="position: relative; top: auto; right: auto; width: 50px; height: 42px; font-size: 18px; margin-left: 12px;">
+                                    style="position: relative; top: auto; right: auto; width: 46px; height: 46px; font-size: 18px; margin-left: 12px;">
                                     <i class="fa-regular fa-bullhorn"></i>
                                     <span class="ann-indicator-dot"></span>
                                 </a>

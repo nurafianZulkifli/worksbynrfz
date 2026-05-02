@@ -1729,38 +1729,18 @@ body.dark-mode .alerts-indicator-dot {
     background-color: #e63946;
 }
 
-/* Mobile bottom nav: border ring on icon instead of dot */
-.mobile-bottom-nav li:has(.alerts-indicator-dot.show) .icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    box-shadow: 0 0 0 2px #e63946;
-    animation: pulse-alerts-border 2s infinite;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+/* Mobile bottom nav: dot badge on icon */
+.mobile-bottom-nav li .icon {
+    position: relative;
 }
 
-/* Desktop navbar: border ring on the alerts nav-link */
-#ann-nav-desktop:has(.alerts-indicator-dot.show) {
-    box-shadow: 0 0 0 2px #e63946;
-    border-radius: 50px;
-    animation: pulse-alerts-border 2s infinite;
-}
-
-@keyframes pulse-alerts-border {
-    0%, 100% { box-shadow: 0 0 0 2px #e63946; }
-    50% { box-shadow: 0 0 0 2.5px rgba(230, 57, 70, 0.35); }
-}
-
-/* Hide the dot everywhere — border ring takes its place */
-.mobile-bottom-nav .alerts-indicator-dot,
-.mobile-bottom-nav .alerts-indicator-dot.show,
-#ann-nav-desktop .alerts-indicator-dot,
-#ann-nav-desktop .alerts-indicator-dot.show {
-    width: 0 !important;
-    height: 0 !important;
-    margin-left: 0 !important;
-    opacity: 0 !important;
-    visibility: hidden !important;
+.mobile-bottom-nav .alerts-indicator-dot.show {
+    position: absolute;
+    top: -2px;
+    right: -4px;
+    width: 8px;
+    height: 8px;
+    margin-left: 0;
+    opacity: 1;
+    visibility: visible;
 }
