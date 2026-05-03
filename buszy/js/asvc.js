@@ -220,6 +220,8 @@ function displayServices(services, isFiltered = false) {
         container.innerHTML = '<div class="no-services"><p><i class="fa-regular fa-circle-info"></i> No bus services found.</p></div>';
         document.getElementById('prev-button').style.display = 'none';
         document.getElementById('next-button').style.display = 'none';
+        const pi = document.getElementById('page-indicator');
+        if (pi) pi.style.display = 'none';
         return;
     }
     
