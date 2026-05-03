@@ -120,14 +120,19 @@ document.addEventListener('DOMContentLoaded', function() {
                     const icon = item.querySelector('.status-icon');
                     if (icon) {
                       const isMajor = /major/i.test(msg);
-                      if (alert.Status === 1 && !isMajor) {
-                        icon.style.background = '#ffb300'; // amber
-                        icon.innerHTML = '<i class="fa-regular fa-triangle-exclamation"></i>'; // warning sign
-                        icon.style.color = '#000';
-                      } else if (alert.Status === 2 || (alert.Status === 1 && isMajor)) {
+                      const isMinor = /minor/i.test(msg);
+                      if (isMajor) {
                         icon.style.background = '#e53935'; // red
                         icon.innerHTML = '<i class="fa-regular fa-diamond-exclamation"></i>'; // critical sign
                         icon.style.color = '#fff';
+                      } else if (isMinor) {
+                        icon.style.background = '#ffb300'; // amber
+                        icon.innerHTML = '<i class="fa-regular fa-diamond-exclamation"></i>'; // warning sign
+                        icon.style.color = '#000';
+                      } else {
+                        icon.style.background = '#cabfa4'; // grey
+                        icon.innerHTML = '<i class="fa-regular fa-traffic-cone"></i>';
+                        icon.style.color = '#000';
                       }
                     }
                     // Show alert message below the item

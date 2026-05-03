@@ -76,11 +76,11 @@ function renderDisruptionsByMonth() {
       statusIcon = '<i class="fa-regular fa-diamond-exclamation"></i>';
       statusClass = 'status-major';
     } else if (item.title && item.title.toLowerCase().includes('minor')) {
-      statusIcon = '<i class="fa-regular fa-triangle-exclamation"></i>';
+      statusIcon = '<i class="fa-regular fa-diamond-exclamation"></i>';
       statusClass = 'status-minor';
     } else {
       statusIcon = '<i class="fa-regular fa-triangle-exclamation"></i>';
-      statusClass = 'status-minor';
+      statusClass = 'status-other';
     }
     // Status icon for resolved/ongoing
     let resolvedIcon = '';

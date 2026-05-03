@@ -7,13 +7,13 @@
         "to": "Bayshore",
         "start": "2026-05-03",
         "end": "2026-05-03",
-        "status": "Ongoing",
+        "status": "Resolved",
         "tags": [
-            "Delay"
+            "Disruption","Signalling Fault"
         ]
     },
     {
-        "type": "Disruption",
+        "type": "Delay",
         "title": "SK Minor Delay - Inner Loop",
         "line": "SK",
         "from": "Renjong",
@@ -26,7 +26,7 @@
         ]
     },
     {
-        "type": "Disruption",
+        "type": "Delay",
         "title": "DTL Minor Delay - Bukit Panjang - Botanic Gardens",
         "line": "DTL",
         "from": "Bukit Panjang",
@@ -39,7 +39,7 @@
         ]
     },
     {
-        "type": "Disruption",
+        "type": "Delay",
         "title": "CCL Minor Delay - Bishan to Buona Vista",
         "line": "CCL",
         "from": "Bishan",
@@ -52,7 +52,7 @@
         ]
     },
     {
-        "type": "Disruption",
+        "type": "Delay",
         "title": "NSL Minor delay - Ang Mo Kio to Woodlands",
         "line": "NSL",
         "from": "Ang Mo Kio",
@@ -66,8 +66,8 @@
         ]
     },
     {
-        "type": "Disruption",
-        "title": "CCL Delay - HarbourFront to Paya Lebar (Public Report)",
+        "type": "Delay",
+        "title": "CCL Minor Delay - HarbourFront to Paya Lebar (Public Report)",
         "line": "CCL",
         "from": [
             "Marina Bay",

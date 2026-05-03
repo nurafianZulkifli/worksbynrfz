@@ -67,8 +67,8 @@ async function renderDelaysBarChart() {
                 {
                     label: 'Minor Delay',
                     data: minorData,
-                    backgroundColor: 'rgba(255, 193, 7, 0.85)', // yellow/orange
-                    borderColor: 'rgba(255, 193, 7, 1)',
+                    backgroundColor: 'rgba(255, 140, 0, 0.85)', // orange
+                    borderColor: 'rgba(255, 140, 0, 1)',
                     borderWidth: 2,
                     borderRadius: 8,
                     stack: 'delays',
