@@ -114,7 +114,7 @@
     } else {
       const count = getCachedBusStopsCount();
       if (count > 0) {
-        console.log(`[Bus Stops Preloader] Bus stops already cached (${count} stops)`);
+        // console.log(`[Bus Stops Preloader] Bus stops already cached (${count} stops)`);
       }
     }
   }

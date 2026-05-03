@@ -251,6 +251,29 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
+    // Supplement with destination-codes.json entries not already in API data
+    try {
+        const basePath = (window.PWAConfig ? window.PWAConfig.basePath : '/');
+        const destResponse = await fetch(basePath + 'buszy/json/destination-codes.json');
+        if (destResponse.ok) {
+            const destCodes = await destResponse.json();
+            const existingCodes = new Set(allBusStops.map(s => s.BusStopCode));
+            const destEntries = Object.entries(destCodes)
+                .filter(([code]) => !existingCodes.has(code))
+                .map(([code, data]) => ({
+                    BusStopCode: code,
+                    Description: typeof data === 'string' ? data : (data.description || code),
+                    RoadName: typeof data === 'string' ? '' : (data.road || '')
+                }));
+            if (destEntries.length > 0) {
+                allBusStops = [...allBusStops, ...destEntries];
+                console.log(`Supplemented with ${destEntries.length} destination-code entries`);
+            }
+        }
+    } catch (e) {
+        console.warn('Could not load destination-codes.json:', e);
+    }
+
     totalPages = Math.ceil(allBusStops.length / limit);
     currentDisplayList = allBusStops; // Initialize display list to all stops
     

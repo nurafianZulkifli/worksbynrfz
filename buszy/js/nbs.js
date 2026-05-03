@@ -401,7 +401,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Use event delegation for refresh button - listen on nearby-content parent
     const nearbyContent = document.getElementById('nearby-content');
     if (nearbyContent) {
-        console.log('Setting up refresh button event listener on nearby-content');
+        // console.log('Setting up refresh button event listener on nearby-content');
         nearbyContent.addEventListener('click', (event) => {
             if (event.target.closest('#refresh-nearby-btn')) {
                 console.log('Refresh button click detected');

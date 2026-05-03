@@ -640,7 +640,8 @@ async function fetchBusArrivals() {
             }
             // Then try custom destination codes mapping
             if (customDestinationMap[destinationCode]) {
-                return customDestinationMap[destinationCode];
+                const entry = customDestinationMap[destinationCode];
+                return typeof entry === 'string' ? entry : (entry.description || destinationCode);
             }
             // Finally return the code itself if not found
             return destinationCode;
@@ -1508,7 +1509,7 @@ async function fetchBusLocations() {
         const mapSection = document.querySelector('.bus-location-section'); // Map section container
 
         if (!searchInput) {
-            console.warn('No Bus Stop Code provided.');
+            // console.warn('No Bus Stop Code provided.');
             if (mapSection) {
                 mapSection.style.display = 'none'; // Hide the map if no input is provided
             }
