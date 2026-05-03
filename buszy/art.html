@@ -1231,7 +1231,6 @@
 
     <script src="js/haptic.js"></script>
     <script src="js/wake-lock.js"></script>
-    <script src="js/pull-to-refresh.js"></script>
 
     <script src="buszy-subp.js"></script>
 
@@ -1258,13 +1257,6 @@
     <script src="js/art.js"></script>
 
     <script>
-        // Init pull-to-refresh — calls the globally-defined fetchBusArrivals
-        if (typeof initPullToRefresh === 'function') {
-            initPullToRefresh(function () {
-                if (typeof fetchBusArrivals === 'function') fetchBusArrivals();
-            });
-        }
-
         // Collapse map button logic
         const collapseBtn = document.getElementById('collapse-map-btn');
         const mapSection = document.querySelector('.bus-location-section');
