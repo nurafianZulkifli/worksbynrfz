@@ -119,11 +119,12 @@ document.addEventListener('DOMContentLoaded', function() {
                   if (img && img.alt === foundLine) {
                     const icon = item.querySelector('.status-icon');
                     if (icon) {
-                      if (alert.Status === 1) {
+                      const isMajor = /major/i.test(msg);
+                      if (alert.Status === 1 && !isMajor) {
                         icon.style.background = '#ffb300'; // amber
                         icon.innerHTML = '<i class="fa-regular fa-triangle-exclamation"></i>'; // warning sign
                         icon.style.color = '#000';
-                      } else if (alert.Status === 2) {
+                      } else if (alert.Status === 2 || (alert.Status === 1 && isMajor)) {
                         icon.style.background = '#e53935'; // red
                         icon.innerHTML = '<i class="fa-regular fa-diamond-exclamation"></i>'; // critical sign
                         icon.style.color = '#fff';

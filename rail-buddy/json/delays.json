@@ -1,4 +1,17 @@
 [
+        {
+        "type": "Disruption",
+        "title": "TEL Major Delay - Woodlands North to Bayshore",
+        "line": "TEL",
+        "from": "Woodlands North",
+        "to": "Bayshore",
+        "start": "2026-05-03",
+        "end": "2026-05-03",
+        "status": "Ongoing",
+        "tags": [
+            "Delay"
+        ]
+    },
     {
         "type": "Disruption",
         "title": "SK Minor Delay - Inner Loop",
