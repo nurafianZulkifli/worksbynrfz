@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="57TuruPNu5wqSSia_cUehl5t9Gh1AbxrHNPcMiFx-aQ" />
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover">
     <title>Bus Services | Buszy</title>
     <meta content="View all bus services available on Buszy" name="description">
     <meta content="bus services, routes, schedules" name="keywords">
@@ -38,8 +38,6 @@
         height: 10vh;
         position: relative;
     }
-
-
 
     .footer {
         display: none;
@@ -505,6 +503,17 @@
         border-color: #1f84a2;
     }
 
+    #page-indicator {
+        color: #000;
+        cursor: default;
+        font-size: 0.85rem;
+        min-width: 4.5em;
+        text-align: center;
+    }
+
+    body.dark-mode #page-indicator {
+        color: #fff;
+    }
 </style>
 
 <body>
@@ -691,26 +700,25 @@
                     <svg class="spinner" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="status"
                         style="margin-right: 1em;">
                         <circle cx="50" cy="50" r="45" stroke-dasharray="0% 314.159%">
-                            <animateTransform attributeName="transform" type="rotate" values="-90;810"
-                                keyTimes="0;1" dur="2s" repeatCount="indefinite" />
-                            <animate attributeName="stroke-dashoffset" values="0%;0%;-157.080%"
-                                calcMode="spline" keySplines="0.61, 1, 0.88, 1; 0.12, 0, 0.39, 0"
-                                keyTimes="0;0.5;1" dur="2s" repeatCount="indefinite" />
-                            <animate attributeName="stroke-dasharray"
-                                values="0% 314.159%;157.080% 157.080%;0% 314.159%" calcMode="spline"
+                            <animateTransform attributeName="transform" type="rotate" values="-90;810" keyTimes="0;1"
+                                dur="2s" repeatCount="indefinite" />
+                            <animate attributeName="stroke-dashoffset" values="0%;0%;-157.080%" calcMode="spline"
                                 keySplines="0.61, 1, 0.88, 1; 0.12, 0, 0.39, 0" keyTimes="0;0.5;1" dur="2s"
                                 repeatCount="indefinite" />
+                            <animate attributeName="stroke-dasharray" values="0% 314.159%;157.080% 157.080%;0% 314.159%"
+                                calcMode="spline" keySplines="0.61, 1, 0.88, 1; 0.12, 0, 0.39, 0" keyTimes="0;0.5;1"
+                                dur="2s" repeatCount="indefinite" />
                         </circle>
                     </svg>
                     Loading Bus Services...
                 </p>
             </div>
             <div class="pagination-buttons"
-                style="display: flex; gap: 10px; justify-content: center; margin-top: 2em; flex-wrap: nowrap;">
-                <button id="prev-button" class="btn pw-btn-prev btn-2 mt-15" style="display: none;"><i
+                style="display: flex; justify-content: center; align-items: center; gap: 1rem; margin-top: 2em;">
+                <button id="prev-button" class="btn pw-btn-prev btn-2"><i
                         class="fa-solid fa-arrow-left"></i></button>
-                <button id="next-button" class="btn pw-btn-next btn-2 mt-15" style="display: none;"><i
-                        class="fa-solid fa-arrow-right"></i></button>
+                <span id="page-indicator" style="display: none; font-size: 0.9rem; white-space: nowrap;"></span>
+                <button id="next-button" class="btn pw-btn-next btn-2"><i class="fa-solid fa-arrow-right"></i></button>
             </div>
         </div>
     </section>

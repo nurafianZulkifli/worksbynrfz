@@ -660,7 +660,6 @@ body.dark-mode .route-variant {
     border-radius: 12px;
     font-weight: 600;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
 }
 
 
@@ -669,7 +668,6 @@ body.dark-mode .route-variant {
 .express-variant-button:hover,
 .route-variant-button:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
     color: #000;
     background-color: #c7e3fb;
 }
@@ -693,7 +691,6 @@ body.dark-mode .short-bus-button,
 body.dark-mode .parent-bus-button,
 body.dark-mode .express-variant-button,
 body.dark-mode .route-variant-button {
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
     background-color: #7cb101;
 }
 
@@ -703,7 +700,6 @@ body.dark-mode .parent-bus-button:hover,
 body.dark-mode .express-variant-button:hover,
 body.dark-mode .route-variant-button:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
     color: #fff;
     background-color: #52718d;
 }
