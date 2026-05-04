@@ -50,7 +50,8 @@
                      alert.Message.forEach(messageObj => {
                          const msg = messageObj.Content || '';
                          // Check if message contains "bus services" or "bus service" and mentions being affected
-                         if (msg.includes('bus service') && (msg.includes('affected') || msg.includes('diverted'))) {
+                         const msgLower = msg.toLowerCase();
+                         if (msgLower.includes('bus service') && (msgLower.includes('affected') || msgLower.includes('diverted') || msgLower.includes('delayed'))) {
                              busAlerts.push({
                                  content: msg,
                                  status: alert.Status,
@@ -74,7 +75,7 @@
 
      function extractBusServiceCodes(text) {
          // Extract only the portion mentioning "bus services"
-         const busServicesRegex = /bus services?\s*[:\-]?\s*([^.]+?)(?:\s+(?:are|is)\s+(?:affected|diverted|disrupted)|\s*$)/i;
+         const busServicesRegex = /bus services?\s*[:\-]?\s*([^.]+?)(?:\s+(?:are|is)\s+(?:affected|diverted|disrupted|delayed)|\s*$)/i;
          const match = text.match(busServicesRegex);
 
          if (!match) {
