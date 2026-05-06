@@ -439,6 +439,33 @@ body.dark-mode .stops-no-results {
     box-shadow: 0 0 25px rgba(255, 215, 0, 0.6), 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
+/* GPS nearest stop highlight */
+.stop-item.nearest-stop {
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: #f0fad6;
+    border: 2px solid #7cb000;
+    box-shadow: 0 0 16px rgba(124, 176, 0, 0.45), 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.stop-item.nearest-stop:hover {
+    box-shadow: 0 0 24px rgba(124, 176, 0, 0.6), 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.nearest-stop-badge {
+    font-size: 0.72rem;
+    color: #4e7a00;
+    font-weight: 600;
+    padding: 2px 8px 2px 6px;
+    border-radius: 12px;
+    background: rgba(124, 176, 0, 0.15);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 0.35rem;
+    letter-spacing: 0.01em;
+}
+
 .bus-stop-info {
     display: flex;
     flex-direction: row;
@@ -540,6 +567,22 @@ body.dark-mode .stop-item.highlight-stop {
 body.dark-mode .stop-item.highlight-stop:hover {
     background-color: #4a5568;
     box-shadow: 0 0 25px rgba(129, 144, 161, 0.5), 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+body.dark-mode .stop-item.nearest-stop {
+    background-color: #1a2e0a;
+    border: 2px solid #7cb000;
+    box-shadow: 0 0 16px rgba(124, 176, 0, 0.35), 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .stop-item.nearest-stop:hover {
+    background-color: #203810;
+    box-shadow: 0 0 24px rgba(124, 176, 0, 0.5), 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .nearest-stop-badge {
+    color: #a8d44e;
+    background: rgba(124, 176, 0, 0.18);
 }
 
 body.dark-mode .bus-stop-code {

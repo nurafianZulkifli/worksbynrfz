@@ -38,11 +38,11 @@ class PWAHelper {
     const swPath = this.config.swPath || '/service-worker.js';
     const scope = this.config.scope || '/';
 
-    // console.log(`[${this.appName}] Registering service worker at ${swPath} with scope ${scope}`);
+    console.log(`[${this.appName}] Registering service worker at ${swPath} with scope ${scope}`);
 
     navigator.serviceWorker.register(swPath, { scope })
       .then(registration => {
-        // console.log(`[${this.appName}] Service Worker registered successfully`);
+        console.log(`[${this.appName}] Service Worker registered successfully`);
 
         // Check for updates every 60 seconds
         const updateInterval = setInterval(() => {
@@ -83,7 +83,7 @@ class PWAHelper {
       
       // Store the event for later use
       this.installPromptEvent = event;
-      // console.log(`[${this.appName}] Install prompt event captured`);
+      console.log(`[${this.appName}] Install prompt event captured`);
       
       // Show install banner
       if (this.config.showInstallBanner !== false) {

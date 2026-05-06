@@ -241,23 +241,30 @@ function displayBusStops(busStops, isCached = true) {
         const isPinned = pinnedBusStops.some((stop) => stop.BusStopCode === busStop.BusStopCode);
 
         const busStopElement = document.createElement('div');
-        busStopElement.className = 'bus-stop';
+        busStopElement.className = 'bus-stop' + (idx === 0 ? ' nearest-stop' : '');
         busStopElement.dataset.busStopCode = busStop.BusStopCode;
         
         // Build correct image path for GitHub Pages and Heroku
         const basePath = (window.PWAConfig ? window.PWAConfig.basePath : '/');
         const busIconPath = basePath + 'buszy/assets/bus-icon.png';
         
+        const distanceBadgeHtml = idx === 0
+            ? `<span class="nearest-stop-badge"><i class="fa-kit fa-lta-location"></i> Nearest · ${distance}</span>`
+            : `<span class="distance-badge"><i class="fa-kit fa-lta-location"></i> ${distance}</span>`;
+
         busStopElement.innerHTML = `
             <div class="bus-stop-info">
-                <div class="bus-stop-code">
-                    <img src="${busIconPath}" alt="Bus Icon">
-                    <span class="bus-stop-code-text">${busStop.BusStopCode}</span>
+                <div class="bus-stop-code-row">
+                    <div class="bus-stop-code">
+                        <img src="${busIconPath}" alt="Bus Icon">
+                        <span class="bus-stop-code-text">${busStop.BusStopCode}</span>
+                    </div>
+                    <span class="distance-mobile">${distanceBadgeHtml}</span>
                 </div>
                 <div class="bus-stop-details">
                 <span class="bus-stop-description">${busStop.Description}</span>&nbsp;&nbsp;|&nbsp;
-                <span class="road-name">${busStop.RoadName}</span>&nbsp;&nbsp;|&nbsp;
-                <span class="distance${idx === 0 ? ' distance-nearest' : ''}">${distance}</span>
+                <span class="road-name">${busStop.RoadName}</span>
+                &nbsp;&nbsp;&nbsp;<span class="distance-desktop">${distanceBadgeHtml}</span>
                 </div>
             </div>
             <button class="${isPinned ? 'btn btn-unpin btn-2' : 'btn btn-toPin btn-2'} pin-button">

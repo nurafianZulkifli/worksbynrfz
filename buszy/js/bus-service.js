@@ -228,7 +228,9 @@ async function fetchEnrichedStopsFromAPI(serviceNumber, stopCodes) {
                 .then(stopData => [
                     stopCode,
                     stopData.Description || stopCode,
-                    stopData.RoadName || ''
+                    stopData.RoadName || '',
+                    parseFloat(stopData.Latitude) || 0,
+                    parseFloat(stopData.Longitude) || 0
                 ])
                 .catch(async (error) => {
                     console.warn(`Failed to fetch stop ${stopCode}:`, error);
@@ -239,9 +241,9 @@ async function fetchEnrichedStopsFromAPI(serviceNumber, stopCodes) {
                         const description = typeof destCode === 'string' ? destCode : destCode.description;
                         const road = typeof destCode === 'string' ? '' : (destCode.road || '');
                         console.log(`Using destination code for ${stopCode}: ${description}`);
-                        return [stopCode, description, road];
+                        return [stopCode, description, road, 0, 0];
                     }
-                    return [stopCode, stopCode, ''];
+                    return [stopCode, stopCode, '', 0, 0];
                 })
             );
 
@@ -259,7 +261,7 @@ async function fetchEnrichedStopsFromAPI(serviceNumber, stopCodes) {
     } catch (error) {
         console.error('Error fetching enriched stops from API:', error);
         // Fallback: return stop codes only
-        return stopCodes.map(code => [code, code, '']);
+        return stopCodes.map(code => [code, code, '', 0, 0]);
     }
 }
 

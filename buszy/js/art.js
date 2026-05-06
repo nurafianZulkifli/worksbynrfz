@@ -1158,6 +1158,7 @@ async function fetchBusArrivals() {
                     window.location.href = url;
                 });
             });
+
         }
 
         // Live map update: if the map is visible for an active service, update marker positions in-place
@@ -1234,7 +1235,17 @@ async function fetchBusArrivals() {
 
         // If it's a connection error and we already have cards rendered, keep them visible
         // and show a non-intrusive offline banner instead
-        if (error instanceof TypeError && error.message.includes('fetch')) {
+        // Chrome: 'Failed to fetch', Safari/iOS: 'Load failed', Firefox: 'NetworkError when attempting to fetch resource.'
+        const msg = error.message || '';
+        const isNetworkError = error instanceof TypeError && (
+            !navigator.onLine ||
+            msg.toLowerCase().includes('fetch') ||
+            msg.toLowerCase().includes('load failed') ||
+            msg.toLowerCase().includes('networkerror') ||
+            msg.toLowerCase().includes('network request failed') ||
+            msg.toLowerCase().includes('failed to load')
+        );
+        if (isNetworkError) {
             if (renderedBusStopCode !== null) {
                 showOfflineBanner();
             } else {
