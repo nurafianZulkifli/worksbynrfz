@@ -12,7 +12,7 @@
       activeYear: now.getFullYear(),
       accounts: [{
         id,
-        name: 'Commitments',
+        name: 'My Account',
         allocated: 0,
         transactions: []
       }]
