@@ -111,7 +111,6 @@ body.dark-mode li.breadcrumb-item a {
     margin-left: 0.3em;
 }
 
-
 .list-group-item:first-child,
 .list-group-item:last-child {
     transition-duration: 800ms;
@@ -216,6 +215,171 @@ body.dark-mode .list-group-item:hover {
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+/* Mobile-Tablet */
+
+/* Error state styling */
+#stationDropdown.error {
+    border-color: #f44336 !important;
+    background-color: #ffebee !important;
+}
+
+body.dark-mode #stationDropdown.error {
+    border-color: #f44336 !important;
+    background-color: #5a1a1a !important;
+}
+
+.error-message {
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+body.dark-mode .error-message {
+    background: #5a1a1a !important;
+    border-color: #c33 !important;
+    color: #ff6b6b !important;
+}
+
+/* Announcement Indicator Badges */
+.ann-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    margin-left: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    border-radius: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.ann-badge.new {
+    background-color: #ff6b35;
+    color: #fff;
+    animation: pulse-new 2s infinite;
+}
+
+.ann-badge.modified {
+    background-color: #f7b32b;
+    color: #1a1a1a;
+}
+
+@keyframes pulse-new {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 107, 53, 0.7);
+    }
+
+    50% {
+        box-shadow: 0 0 0 6px rgba(255, 107, 53, 0);
+    }
+}
+
+body.dark-mode .ann-badge.new {
+    background-color: #ff6b35;
+    color: #fff;
+}
+
+body.dark-mode .ann-badge.modified {
+    background-color: #f7b32b;
+    color: #1a1a1a;
+}
+
+/* Announcement Indicator Dot */
+.ann-indicator-dot {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 0;
+    height: 0;
+    background-color: #ff6b35;
+    border-radius: 50%;
+    margin-left: 0;
+    animation: pulse-dot 2s infinite;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease, width 0.3s ease, height 0.3s ease, margin-left 0.3s ease;
+}
+
+.ann-indicator-dot.show {
+    width: 10px;
+    height: 10px;
+    margin-left: 6px;
+    opacity: 1;
+    visibility: visible;
+}
+
+@keyframes pulse-dot {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 107, 53, 0.7);
+    }
+
+    50% {
+        box-shadow: 0 0 0 6px rgba(255, 107, 53, 0);
+    }
+}
+
+body.dark-mode .ann-indicator-dot {
+    background-color: #ff6b35;
+}
+
+/* ann-header-btn circular button: border ring instead of dot */
+.ann-header-btn:has(.ann-indicator-dot.show) {
+    box-shadow: 0 0 0 2px #ff6b35;
+    animation: pulse-ann-border 2s infinite;
+}
+
+body.dark-mode .ann-header-btn:has(.ann-indicator-dot.show) {
+    border-color: #ff6b35;
+    color: #ff6b35;
+}
+
+@keyframes pulse-ann-border {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 2px #ff6b35;
+    }
+
+    50% {
+        box-shadow: 0 0 0 2.5px rgba(255, 107, 53, 0.35);
+    }
+}
+
+/* Hide the dot inside the circular button — border takes its place */
+.ann-header-btn .ann-indicator-dot,
+.ann-header-btn .ann-indicator-dot.show {
+    width: 0 !important;
+    height: 0 !important;
+    margin-left: 0 !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
+
+.ann-header-btn {
+    color: #555;
+}
+
+body.dark-mode .ann-header-btn {
+    color: #ccc;
+}
+
+/* ===== MEDIA QUERIES ===== */
+
 @media (min-width: 995px) {
     .page-header-section {
         padding-top: 7em;
@@ -245,8 +409,6 @@ body.dark-mode .list-group-item:hover {
     }
 }
 
-
-/* Mobile-Tablet */
 @media (max-width: 994px) {
     .container {
         max-width: 100vw !important;
@@ -495,165 +657,4 @@ body.dark-mode .list-group-item:hover {
     body.dark-mode .nav-tooltip::after {
         border-top-color: rgba(255, 255, 255, 0.9);
     }
-}
-
-/* Error state styling */
-#stationDropdown.error {
-    border-color: #f44336 !important;
-    background-color: #ffebee !important;
-}
-
-body.dark-mode #stationDropdown.error {
-    border-color: #f44336 !important;
-    background-color: #5a1a1a !important;
-}
-
-.error-message {
-    animation: slideIn 0.3s ease-out;
-}
-
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-body.dark-mode .error-message {
-    background: #5a1a1a !important;
-    border-color: #c33 !important;
-    color: #ff6b6b !important;
-}
-
-/* Announcement Indicator Badges */
-.ann-badge {
-    display: inline-block;
-    padding: 4px 10px;
-    margin-left: 8px;
-    font-size: 11px;
-    font-weight: 700;
-    border-radius: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    white-space: nowrap;
-}
-
-.ann-badge.new {
-    background-color: #ff6b35;
-    color: #fff;
-    animation: pulse-new 2s infinite;
-}
-
-.ann-badge.modified {
-    background-color: #f7b32b;
-    color: #1a1a1a;
-}
-
-@keyframes pulse-new {
-
-    0%,
-    100% {
-        box-shadow: 0 0 0 0 rgba(255, 107, 53, 0.7);
-    }
-
-    50% {
-        box-shadow: 0 0 0 6px rgba(255, 107, 53, 0);
-    }
-}
-
-body.dark-mode .ann-badge.new {
-    background-color: #ff6b35;
-    color: #fff;
-}
-
-body.dark-mode .ann-badge.modified {
-    background-color: #f7b32b;
-    color: #1a1a1a;
-}
-
-/* Announcement Indicator Dot */
-.ann-indicator-dot {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    width: 0;
-    height: 0;
-    background-color: #ff6b35;
-    border-radius: 50%;
-    margin-left: 0;
-    animation: pulse-dot 2s infinite;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease, width 0.3s ease, height 0.3s ease, margin-left 0.3s ease;
-}
-
-.ann-indicator-dot.show {
-    width: 10px;
-    height: 10px;
-    margin-left: 6px;
-    opacity: 1;
-    visibility: visible;
-}
-
-@keyframes pulse-dot {
-
-    0%,
-    100% {
-        box-shadow: 0 0 0 0 rgba(255, 107, 53, 0.7);
-    }
-
-    50% {
-        box-shadow: 0 0 0 6px rgba(255, 107, 53, 0);
-    }
-}
-
-body.dark-mode .ann-indicator-dot {
-    background-color: #ff6b35;
-}
-
-/* ann-header-btn circular button: border ring instead of dot */
-.ann-header-btn:has(.ann-indicator-dot.show) {
-    box-shadow: 0 0 0 2px #ff6b35;
-    animation: pulse-ann-border 2s infinite;
-}
-
-body.dark-mode .ann-header-btn:has(.ann-indicator-dot.show) {
-    border-color: #ff6b35;
-    color: #ff6b35;
-}
-
-@keyframes pulse-ann-border {
-
-    0%,
-    100% {
-        box-shadow: 0 0 0 2px #ff6b35;
-    }
-
-    50% {
-        box-shadow: 0 0 0 2.5px rgba(255, 107, 53, 0.35);
-    }
-}
-
-/* Hide the dot inside the circular button — border takes its place */
-.ann-header-btn .ann-indicator-dot,
-.ann-header-btn .ann-indicator-dot.show {
-    width: 0 !important;
-    height: 0 !important;
-    margin-left: 0 !important;
-    opacity: 0 !important;
-    visibility: hidden !important;
-}
-
-.ann-header-btn {
-    color: #555;
-}
-
-body.dark-mode .ann-header-btn {
-    color: #ccc;
 }
