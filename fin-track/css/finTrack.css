@@ -959,11 +959,10 @@ body.dark-mode .mobile-bottom-nav {
 }
 
 .acct-dropdown {
-    display: none;
     position: fixed;
     top: 36%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(0.96);
     background: #fff;
     border: 1px solid #e5e7eb;
     border-radius: 16px;
@@ -973,10 +972,15 @@ body.dark-mode .mobile-bottom-nav {
     max-width: 340px;
     width: 90vw;
     z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s;
 }
 
 .acct-dropdown.open {
-    display: block;
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
 }
 
 .acct-dropdown-footer {

@@ -196,21 +196,21 @@
   }
   function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
   function iconClass(cat) {
-    if (cat === 'ATM') return 'atm';
+    if (cat === 'Memberships') return 'atm';
     if (cat === 'Transfer') return 'income';
     if (cat === 'Bills') return 'bills';
-    if (['Point-of-Sale','Food','Transport'].includes(cat)) return 'pos';
+    if (['Subscriptions','Memberships','Food','Transport'].includes(cat)) return 'pos';
     return 'other';
   }
   function iconEmoji(cat) {
     const map = {
-      'Point-of-Sale': '<i class="fa-regular fa-bag-shopping"></i>',
-      'ATM':           '<i class="fa-regular fa-building-columns"></i>',
+      'Subscriptions': '<i class="fa-regular fa-credit-card"></i>',
+      'Memberships':   '<i class="fa-regular fa-user"></i>',
       'Transfer':      '<i class="fa-regular fa-money-bill-transfer"></i>',
       'Bills':         '<i class="fa-regular fa-file-invoice"></i>',
       'Food':          '<i class="fa-regular fa-utensils"></i>',
       'Transport':     '<i class="fa-regular fa-bus"></i>',
-      'Others':        '<i class="fa-regular fa-credit-card"></i>'
+      'Others':        '<i class="fa-regular fa-money-bill"></i>'
     };
     return map[cat] || '<i class="fa-regular fa-credit-card"></i>';
   }
@@ -563,13 +563,6 @@
   function guideFinish() {
     localStorage.setItem(GUIDE_KEY, '1');
     closeOverlay('guideOverlay');
-    // Move install banner to bottom now that guide is done
-    const banner = document.getElementById('fintrack-install-banner');
-    if (banner) {
-      banner.style.transition = 'top 0.4s ease, bottom 0.4s ease';
-      banner.style.top = 'auto';
-      banner.style.bottom = '0';
-    }
   }
 
   // Show guide only on first visit
