@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover">
+    <title>Settings – Fin Track</title>
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Fin Track">
+
+    <script src="https://kit.fontawesome.com/965e82ac01.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="css/finTrack.css">
+    <link rel="stylesheet" href="../css/pwa-styles.css">
+    <link rel="stylesheet" href="../css/style-breakpoints.css">
+    <link rel="stylesheet" href="../css/dark-mode.css">
+
+    <link rel="apple-touch-startup-image" href="../img/bg-img/hero-bg-dark.png">
+    <link rel="manifest" href="./manifest.json">
+
+</head>
+<body>
+    <!-- Apply dark mode before render to avoid flash -->
+    <script>
+        (function () {
+            var pref = localStorage.getItem('theme-preference') || 'system';
+            var isDark = pref === 'dark' || (pref === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            if (isDark) document.body.classList.add('dark-mode');
+        })();
+    </script>
+
+    <!-- Fixed Breadcrumb (mobile/tablet only) -->
+    <div class="breadcrumb-fixed-placeholder">
+        <nav aria-label="breadcrumb" style="margin-bottom:0;">
+            <ol class="breadcrumb breadcrumb-fixed" id="floating-breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="index.html"><i class="fa-regular fa-house"></i></a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="index.html"><i class="fa-regular fa-bars"></i></a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="#"><i class="fa-regular fa-gear"></i></a>
+                </li>
+            </ol>
+        </nav>
+    </div>
+
+    <!-- Desktop Navbar -->
+    <nav class="navbar-container">
+        <div class="navbar">
+            <a href="../index.html">
+                <img src="assets/logo.png" alt="logo" class="logo" onerror="this.style.display='none'">
+            </a>
+            <ul class="navbar-nav" id="navbarNav">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">
+                        <i class="fa-regular fa-chart-line"></i>
+                        <span>Overview</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="index.html#addAccount" class="nav-link">
+                        <i class="fa-regular fa-plus"></i>
+                        <span>Add</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="menu.html" class="nav-link active">
+                        <i class="fa-regular fa-bars"></i>
+                        <span>Menu</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-bottom-nav">
+        <ul>
+            <li>
+                <a href="index.html">
+                    <span class="icon"><i class="fa-regular fa-chart-line"></i></span>
+                    <span class="label">Overview</span>
+                </a>
+            </li>
+            <li>
+                <a href="index.html#addAccount">
+                    <span class="icon"><i class="fa-regular fa-plus"></i></span>
+                    <span class="label">Add</span>
+                </a>
+            </li>
+            <li class="active">
+                <a href="menu.html">
+                    <span class="icon"><i class="fa-regular fa-bars"></i></span>
+                    <span class="label">Menu</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!------------------------------------------------------------------------ Start of Sections ------------------------------------------------------------------------>
+    <!-- Title/Breadcrumbs -->
+    <section class="about-me-sum clearfix">
+        <div class="wbnrfz_eicw">
+            <div class="page-header-section">
+                <div class="container container-xxl container-mobile container-mobile-header">
+                    <div class="breadcrumb-wrapper">
+                        <nav aria-label="breadcrumb" class="breadcrumb-desktop" style="display:none;">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="index.html">
+                                        <i class="fa-regular fa-house"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="menu.html"><i class="fa-regular fa-bars"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="#"><i class="fa-regular fa-gear"></i>
+                                    </a>
+                                </li>
+                            </ol>
+                        </nav>
+                        <div class="page-title-wrapper">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                                <div>
+                                    <h1 class="page-title" id="filter-title">Settings</h1>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            </div>
+        </div>
+    </section>
+
+    <hr>
+
+    <!-- Main Content -->
+    <section class="ft-main" id="ft-main">
+        <div class="container">
+            <h2 class="text-center" style="padding-top: 0em; margin-bottom: 1em;">Account Settings</h2>
+
+            <!-- Account Settings -->
+            <div class="settings-page-section">
+                <div class="settings-info-box">
+                    <i class="fa-regular fa-circle-info"></i>&nbsp;Edit the name and budget for your current account.
+                </div>
+                <div class="settings-form-group">
+                    <label>Account Name</label>
+                    <input type="text" id="settingsAcctName" placeholder="e.g. Commitments Account"
+                        autocomplete="off" />
+                </div>
+                <div class="settings-form-group">
+                    <label>Allocated Amount (SGD)</label>
+                    <input type="number" id="settingsAllocated" placeholder="0.00" min="0" step="0.01" />
+                </div>
+                <div class="settings-form-row">
+                    <div class="settings-form-group">
+                        <label>Month</label>
+                        <select id="settingsMonth">
+                            <option value="0">January</option>
+                            <option value="1">February</option>
+                            <option value="2">March</option>
+                            <option value="3">April</option>
+                            <option value="4">May</option>
+                            <option value="5">June</option>
+                            <option value="6">July</option>
+                            <option value="7">August</option>
+                            <option value="8">September</option>
+                            <option value="9">October</option>
+                            <option value="10">November</option>
+                            <option value="11">December</option>
+                        </select>
+                    </div>
+                    <div class="settings-form-group">
+                        <label>Year</label>
+                        <input type="number" id="settingsYear" placeholder="2026" min="2020" max="2099" />
+                    </div>
+                </div>
+                <div class="settings-action-buttons">
+                    <button class="settings-btn-danger" onclick="deleteAccount()">
+                        <i class="fa-regular fa-trash"></i>&nbsp;Delete Account
+                    </button>
+                    <button class="settings-btn-primary" onclick="saveSettings()">
+                        <i class="fa-regular fa-check"></i>&nbsp;Save Changes
+                    </button>
+                </div>
+            </div>
+
+            <h2 class="text-center" style="padding-top: 1em; margin-bottom: 1em;">Data</h2>
+
+            <!-- Data Import/Export -->
+            <div class="settings-page-section">
+                <div class="settings-section-title">
+                    <i class="fa-regular fa-arrow-up-arrow-down"></i>
+                    Import / Export Data
+                </div>
+                <div class="settings-info-box">
+                    <i class="fa-regular fa-circle-info"></i>&nbsp;Backup your accounts or migrate data to another
+                    device.
+                </div>
+                <div class="import-export-buttons">
+                    <button class="import-export-btn" onclick="exportData()">
+                        <i class="fa-regular fa-download"></i>
+                        <span>Export All Data</span>
+                    </button>
+                    <button class="import-export-btn" onclick="document.getElementById('fileInput').click()">
+                        <i class="fa-regular fa-upload"></i>
+                        <span>Import Data</span>
+                    </button>
+                </div>
+                <input type="file" id="fileInput" accept=".json" onchange="importData(event)" />
+            </div>
+
+        </div>
+    </section>
+
+    <div class="container" style="margin-top: 2em; margin-bottom: 4em;">
+        <h2 class="text-center" style="padding-top: 1em; margin-bottom: 0.5em;">Display Options</h2>
+        <ul class="list-group">
+            <a href="" class="list-group-item list-group-item-action" id="theme-toggle-desktop">
+                <div class="d-flex">
+                    <div>
+                        <h5 class="lg-menu"><i class="fa-regular fa-sun-bright" id="theme-icon-desktop"></i>&nbsp;
+                            <span id="theme-text-desktop">Theme: Light</span>
+                        </h5>
+                    </div>
+                </div>
+            </a>
+        </ul>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script src="js/ft-subp.js"></script>
+
+    <script>
+        const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+        function load() {
+            try {
+                const s = JSON.parse(localStorage.getItem('fintrack'));
+                if (!s) return null;
+                return s;
+            } catch { return null; }
+        }
+
+        function save(state) {
+            localStorage.setItem('fintrack', JSON.stringify(state));
+        }
+
+        function activeAccount(state) {
+            return state.accounts.find(a => a.id === state.activeAccountId) || state.accounts[0];
+        }
+
+        function showToast(msg) {
+            const el = document.getElementById('toast');
+            el.textContent = msg;
+            el.classList.add('show');
+            clearTimeout(window.toastTimer);
+            window.toastTimer = setTimeout(() => el.classList.remove('show'), 2200);
+        }
+
+        function initSettings() {
+            const state = load();
+            if (!state || !state.accounts || state.accounts.length === 0) {
+                // No accounts yet – still allow settings/import to work
+                return;
+            }
+            const acct = activeAccount(state);
+            document.getElementById('settingsAcctName').value = acct.name;
+            document.getElementById('settingsAllocated').value = acct.allocated;
+            document.getElementById('settingsMonth').value = state.activeMonth;
+            document.getElementById('settingsYear').value = state.activeYear;
+        }
+
+        function saveSettings() {
+            const state = load();
+            if (!state) { showToast('Error: No data found'); return; }
+            const name = document.getElementById('settingsAcctName').value.trim();
+            const alloc = parseFloat(document.getElementById('settingsAllocated').value);
+            const month = parseInt(document.getElementById('settingsMonth').value);
+            const year = parseInt(document.getElementById('settingsYear').value);
+            if (!name) { showToast('Enter an account name'); return; }
+            if (!alloc || alloc <= 0) { showToast('Enter a valid allocated amount'); return; }
+            if (!year || year < 2020) { showToast('Enter a valid year'); return; }
+            const acct = activeAccount(state);
+            acct.name = name;
+            acct.allocated = alloc;
+            state.activeMonth = month;
+            state.activeYear = year;
+            save(state);
+            showToast('Settings saved');
+        }
+
+        function deleteAccount() {
+            const state = load();
+            if (!state) { showToast('Error: No data found'); return; }
+            const acct = activeAccount(state);
+            if (!confirm('Delete "' + acct.name + '" and all its transactions?')) return;
+            state.accounts = state.accounts.filter(a => a.id !== state.activeAccountId);
+            if (state.accounts.length === 0) {
+                localStorage.removeItem('fintrack');
+            } else {
+                if (state.activeAccountId !== state.accounts[0].id) {
+                    state.activeAccountId = state.accounts[0].id;
+                }
+                save(state);
+            }
+            showToast('Account deleted');
+            setTimeout(() => { window.location.href = 'index.html'; }, 500);
+        }
+
+        function exportData() {
+            const state = load();
+            if (!state) { showToast('Error: No data to export'); return; }
+            const json = JSON.stringify(state, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'fintrack-backup-' + new Date().toISOString().slice(0, 10) + '.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast('Data exported');
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (!imported.accounts || !Array.isArray(imported.accounts)) {
+                        showToast('Invalid file format');
+                        return;
+                    }
+                    if (!confirm('This will replace all your current accounts. Continue?')) return;
+                    // Strip archived flags, cycleStartDate and resetOffset so all transactions count
+                    imported.accounts.forEach(function(a) {
+                        delete a.cycleStartDate;
+                        delete a.resetOffset;
+                        if (a.transactions) a.transactions.forEach(function(t) { delete t.archived; });
+                    });
+                    imported._migrated = true;
+                    save(imported);
+                    showToast('Data imported successfully');
+                    setTimeout(() => { window.location.href = 'index.html'; }, 500);
+                } catch (err) {
+                    showToast('Error reading file');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // Initialize on load
+        initSettings();
+    </script>
+
+    <script src="../js/cookies-theme-sync.js"></script>
+    <script src="../js/mob-navtabs.js"></script>
+
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./service-worker.js', { scope: './' })
+                .then(reg => {
+                    console.log('Fin Track Service Worker registered', reg);
+                })
+                .catch(err => {
+                    console.warn('Fin Track Service Worker registration failed:', err);
+                });
+        }
+    </script>
+</body>
+</html>

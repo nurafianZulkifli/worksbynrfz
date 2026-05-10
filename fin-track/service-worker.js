@@ -1,0 +1,189 @@
+/**
+ * Fin Track Service Worker
+ * Handles caching and offline functionality for Fin Track app
+ * Dynamically detects base path for GitHub Pages and Heroku compatibility
+ * Dynamically loads version from version.json
+ */
+
+// Detect base path dynamically
+const BASE_PATH = (() => {
+  // Get the scope from the service worker registration
+  const scope = self.registration.scope;
+  // Extract base path from scope (e.g., '/nrfz-dev/fin-track/' -> '/nrfz-dev/')
+  const match = scope.match(/^(.*\/)fin-track\/$/);
+  return match ? match[1] : '/';
+})();
+
+// Default cache version (fallback if version.json is unavailable)
+let CACHE_VERSION = 'v1.0.0';
+let CACHE_NAME = `fintrack-cache-${CACHE_VERSION}`;
+
+// Fetch version from version.json
+async function loadCacheVersion() {
+  try {
+    const versionPath = BASE_PATH + 'js/version.json';
+    const response = await fetch(versionPath);
+    if (response.ok) {
+      const data = await response.json();
+      const version = data.fintrack || '1.0.0';
+      CACHE_VERSION = `v${version}`;
+      CACHE_NAME = `fintrack-cache-${CACHE_VERSION}`;
+      console.log('[Fin Track SW] Cache version loaded:', CACHE_VERSION);
+    }
+  } catch (error) {
+    console.warn('[Fin Track SW] Could not load version.json, using default:', error);
+  }
+}
+
+// Helper function to build paths with correct base
+function buildPath(path) {
+  return BASE_PATH + path.replace(/^\//, '');
+}
+
+// Fin Track-specific assets to cache
+const STATIC_ASSETS = [
+  // Fin Track entry
+  buildPath('fin-track/'),
+  buildPath('fin-track/index.html'),
+  buildPath('fin-track/manifest.json'),
+  buildPath('fin-track/settings.html'),
+  
+  // Fin Track styles
+  buildPath('fin-track/css/finTrack.css'),
+  
+  // Fin Track scripts
+  buildPath('fin-track/js/finTrack.js'),
+  
+  // Fin Track assets
+  buildPath('fin-track/assets/'),
+  
+  // Shared utilities
+  buildPath('js/utils.js'),
+  buildPath('js/pwa-helper.js'),
+  buildPath('js/pwa-config.js'),
+  buildPath('js/cookies-theme-sync.js'),
+  
+  // Shared CSS
+  buildPath('css/style.css'),
+  buildPath('css/dark-mode.css'),
+  buildPath('css/style-breakpoints.css'),
+  buildPath('css/pwa-styles.css'),
+  buildPath('css/bootstrap.min.css'),
+  
+  // Shared JS libraries
+  buildPath('js/bootstrap.min.js'),
+  buildPath('js/jquery.min.js'),
+  buildPath('js/popper.min.js'),
+  
+  // Icons
+  buildPath('img/core-img/favicon.png'),
+  buildPath('fin-track/assets/icon-192.png'),
+  buildPath('fin-track/assets/icon-512.png')
+];
+
+// Install: cache Fin Track assets
+self.addEventListener('install', event => {
+  event.waitUntil(
+    loadCacheVersion().then(() => {
+      return caches.open(CACHE_NAME).then(cache => {
+        return cache.addAll(STATIC_ASSETS).catch(err => {
+          console.warn('[Fin Track SW] Some assets could not be cached:', err);
+        });
+      });
+    })
+  );
+  self.skipWaiting();
+});
+
+// Activate: cleanup old caches
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    loadCacheVersion().then(() => {
+      return caches.keys().then(cacheNames => {
+        return Promise.all(
+          cacheNames
+            .filter(name => name.startsWith('fintrack-cache-') && name !== CACHE_NAME)
+            .map(cacheName => {
+              console.log('[Fin Track SW] Deleting old cache:', cacheName);
+              return caches.delete(cacheName);
+            })
+        );
+      });
+    })
+  );
+  self.clients.claim();
+});
+
+// Fetch: serve from cache, fallback to network
+self.addEventListener('fetch', event => {
+  const { request } = event;
+  const url = new URL(request.url);
+  const fintrackScope = BASE_PATH + 'fin-track/';
+  
+  // Only handle GET requests within Fin Track scope
+  if (request.method !== 'GET' || !url.pathname.startsWith(fintrackScope)) {
+    return;
+  }
+  
+  // Cache first strategy
+  event.respondWith(
+    caches.match(request).then(response => {
+      if (response) {
+        return response;
+      }
+      
+      return fetch(request).then(response => {
+        if (!response || response.status !== 200 || response.type === 'error') {
+          return response;
+        }
+        
+        // Cache successful responses
+        if (shouldCache(request.url)) {
+          const respCopy = response.clone();
+          caches.open(CACHE_NAME).then(cache => {
+            cache.put(request, respCopy);
+          });
+        }
+        
+        return response;
+      }).catch(() => {
+        // Offline fallback
+        return new Response('Offline - content not available', {
+          status: 503,
+          statusText: 'Service Unavailable',
+          headers: new Headers({
+            'Content-Type': 'text/plain'
+          })
+        });
+      });
+    })
+  );
+});
+
+// Determine if URL should be cached
+function shouldCache(url) {
+  const cacheableExtensions = ['.js', '.css', '.png', '.jpg', '.jpeg', '.svg', '.gif', '.json'];
+  return cacheableExtensions.some(ext => url.endsWith(ext)) || url.endsWith('/');
+}
+
+// Message handler
+self.addEventListener('message', event => {
+  if (!event.data) return;
+  
+  console.log('[Fin Track SW] Message received:', event.data.type);
+  
+  switch (event.data.type) {
+    case 'SKIP_WAITING':
+      self.skipWaiting();
+      break;
+    
+    case 'CLEAR_CACHE':
+      caches.delete(CACHE_NAME).then(() => {
+        console.log('[Fin Track SW] Cache cleared');
+      });
+      break;
+    
+    default:
+      console.log('[Fin Track SW] Unknown message type:', event.data.type);
+  }
+});

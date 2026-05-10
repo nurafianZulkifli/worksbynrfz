@@ -34,7 +34,8 @@ fetch(versionJsonUrl)
     // Fallback to defaults
     window.APP_VERSIONS = {
       buszy: '4.5.x',
-      railbuddy: '4.5.x'
+      railbuddy: '4.5.x',
+      finTrack: '0.1.x',
     };
     window.dispatchEvent(new CustomEvent('versionsLoaded', { detail: window.APP_VERSIONS }));
   });

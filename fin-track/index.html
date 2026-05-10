@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover">
+    <title>Fin Track</title>
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Fin Track">
+
+    <script src="https://kit.fontawesome.com/965e82ac01.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="css/finTrack.css">
+    <link rel="stylesheet" href="../css/pwa-styles.css">
+    <link rel="stylesheet" href="../css/style-breakpoints.css">
+    <link rel="stylesheet" href="../css/dark-mode.css">
+
+    <link rel="icon" href="./assets/icon-192.png" type="image/png">
+    <link rel="apple-touch-startup-image" href="../img/bg-img/hero-bg-dark.png">
+    <link rel="manifest" href="./manifest.json">
+
+</head>
+<body>
+    <!-- Apply dark mode before splash renders to avoid flash -->
+    <script>
+        (function () {
+            var pref = localStorage.getItem('theme-preference') || 'system';
+            var isDark = pref === 'dark' || (pref === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            if (isDark) document.body.classList.add('dark-mode');
+        })();
+    </script>
+
+    <!-- PWA Splash Screen: only show on fresh launch -->
+    <script>
+        if (sessionStorage.getItem('splashShown-fintrack')) {
+            document.documentElement.style.setProperty('--splash-display', 'none');
+        }
+    </script>
+    <div id="pwa-splash" style="display: var(--splash-display, flex);">
+        <div class="splash-content">
+            <img src="./assets/icon-512.png" alt="Fin Track" class="splash-icon">
+            <span class="splash-name">Fin Track</span>
+        </div>
+        <div class="splash-hero"></div>
+    </div>
+
+    <!-- Desktop Navbar -->
+    <nav class="navbar-container">
+        <div class="navbar">
+            <a href="../index.html">
+                <img src="assets/logo.png" alt="logo" class="logo" onerror="this.style.display='none'">
+            </a>
+            <ul class="navbar-nav" id="navbarNav">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active">
+                        <i class="fa-regular fa-chart-line"></i>
+                        <span>Overview</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="openAdd(); return false;">
+                        <i class="fa-regular fa-plus"></i>
+                        <span>Add</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="menu.html" class="nav-link">
+                        <i class="fa-regular fa-bars"></i>
+                        <span>Menu</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-bottom-nav">
+        <ul>
+            <li class="active">
+                <a href="#">
+                    <span class="icon"><i class="fa-regular fa-chart-line"></i></span>
+                    <span class="label">Overview</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" onclick="openAdd(); return false;">
+                    <span class="icon"><i class="fa-regular fa-plus"></i></span>
+                    <span class="label">Add</span>
+                </a>
+            </li>
+            <li>
+                <a href="menu.html">
+                    <span class="icon"><i class="fa-regular fa-bars"></i></span>
+                    <span class="label">Menu</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Cover Section -->
+    <section class="breadcrumb-area-eicw-cover bg-img bg-overlay" id="cv-ft">
+        <div class="container">
+            <div class="row h-100 align-items-center justify-content-center">
+
+                    <div class="ft-cover-wrapper">
+                        <div class="ft-greeting" id="ftGreeting"></div>
+                        <div class="acct-switcher-wrap">
+                            <button class="acct-switcher-btn" id="acctSwitcherBtn" onclick="openAccountSwitcher()">
+                                <span id="acctSwitcherName">Account</span>
+                                <i class="fa-regular fa-chevron-down" style="font-size:0.75em; opacity:0.7;"></i>
+                            </button>
+                        </div>
+                        <div class="month-tabs-wrapper">
+                            <div class="month-tabs-container" id="monthTabs"></div>
+                            <button class="month-scroll-indicator" id="monthScrollIndicator" aria-label="Scroll tabs" onclick="document.getElementById('monthTabs').scrollBy({left: 150, behavior: 'smooth'})">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Main content -->
+    <section class="ft-main" id="ft-main">
+        <div class="container">
+
+            <!-- Balance Card Header with Add Button -->
+            <div style="display: flex; flex-direction: column; margin-bottom: 20px;">
+                <div class="balance-card">
+                <div class="balance-row">
+                    <div class="balance-item">
+                        <span class="balance-label">Allocated</span>
+                        <span class="balance-amount" id="allocatedDisplay">SGD 0.00</span>
+                    </div>
+                    <div class="balance-item">
+                        <span class="balance-label">Used</span>
+                        <span class="balance-amount negative" id="spentDisplay">SGD 0.00</span>
+                    </div>
+                    <div class="balance-item">
+                        <span class="balance-label">Remaining</span>
+                        <span class="balance-amount positive" id="remainingDisplay">SGD 0.00</span>
+                    </div>
+                </div>
+                <div class="progress-wrap">
+                    <div class="ft-progress-bar" id="progressBar" style="width:0%"></div>
+                </div>
+                <div class="progress-legend">
+                    <span id="progressPct">0% used</span>
+                    <span id="progressLeft">SGD 0.00 left</span>
+                </div>
+                <div style="margin-top:14px; text-align:right;">
+                    <button class="reset-month-btn" onclick="resetMonth()">
+                        <i class="fa-regular fa-rotate-right"></i> New Month Reset
+                    </button>
+                </div>
+            </div>
+
+            <!-- Transactions list -->
+            <div class="ft-section-heading">Transactions</div>
+            <div id="txnSection" style="padding-bottom: 120px;"></div>
+
+        </div>
+    </section>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Add/Edit Transaction Modal (Bootstrap) -->
+    <div class="modal fade" id="addModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content ft-modal-content">
+                <div class="modal-body">
+                    <div class="sheet-title" id="sheetTitle">Add Transaction</div>
+                    <div class="type-toggle">
+                        <button class="type-btn active-debit" id="typeDebit" onclick="setType('debit')">
+                            <i class="fa-regular fa-minus"></i> Deductions
+                        </button>
+                        <button class="type-btn" id="typeCredit" onclick="setType('credit')">
+                            <i class="fa-regular fa-plus"></i> Additions
+                        </button>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <input type="text" id="txnName" placeholder="e.g. NTUC groceries" autocomplete="off" />
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Amount (SGD)</label>
+                            <input type="number" id="txnAmount" placeholder="0.00" min="0" step="0.01" />
+                        </div>
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select id="txnCat">
+                                <option value="Subscriptions">Subscriptions</option>
+                                <option value="Memberships">Memberships</option>
+                                <option value="Transfer">Transfer</option>
+                                <option value="Bills">Bills</option>
+                                <option value="Food">Food</option>
+                                <option value="Transport">Transport</option>
+                                <option value="Others">Others</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input type="date" id="txnDate" />
+                    </div>
+                    <div class="sheet-actions">
+                        <button class="sht-btn sht-btn-danger" id="deleteBtn"
+                            style="display:none; flex:0 0 auto; padding: 12px 18px;" onclick="deleteCurrentTxn()">
+                            <i class="fa-regular fa-trash"></i>
+                        </button>
+                        <button class="sht-btn sht-btn-ghost" onclick="closeTxnModal()">Cancel</button>
+                        <button class="sht-btn sht-btn-primary" onclick="saveTxn()">
+                            <i class="fa-regular fa-check"></i> Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Bottom Sheet -->
+    <div class="overlay" id="settingsOverlay" onclick="closeOnBackdrop(event,'settingsOverlay')">
+        <div class="sheet">
+            <div class="sheet-handle"></div>
+            <div class="sheet-title"><i class="fa-regular fa-gear"></i>&nbsp;Settings</div>
+            <div class="settings-info">
+                <i class="fa-regular fa-circle-info"></i>&nbsp;Set your account name and total allocated budget. Spent
+                and remaining are tracked cumulatively across all months.
+            </div>
+            <div id="firstTimeImpex" style="display:none; margin-bottom:14px;">
+                <div class="settings-info" style="background:#f0fdf4; border-color:#86efac; color:#166534;">
+                    <i class="fa-regular fa-file-import"></i>&nbsp;Have existing data?
+                    <a href="settings.html" style="color:#166534; font-weight:700; text-decoration:underline;">Import it from Settings</a> instead.
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Account Name</label>
+                <input type="text" id="settingsAcctName" placeholder="e.g. Commitments Account" autocomplete="off" />
+            </div>
+            <div class="form-group">
+                <label>Allocated Amount (SGD)</label>
+                <input type="number" id="settingsAllocated" placeholder="560.55" min="0" step="0.01" />
+            </div>
+            <div class="form-group">
+                <label>Month</label>
+                <select id="settingsMonth">
+                    <option value="0">January</option>
+                    <option value="1">February</option>
+                    <option value="2">March</option>
+                    <option value="3">April</option>
+                    <option value="4">May</option>
+                    <option value="5">June</option>
+                    <option value="6">July</option>
+                    <option value="7">August</option>
+                    <option value="8">September</option>
+                    <option value="9">October</option>
+                    <option value="10">November</option>
+                    <option value="11">December</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Year</label>
+                <input type="number" id="settingsYear" placeholder="2026" min="2020" max="2099" />
+            </div>
+            <div class="sheet-actions">
+                <button class="sht-btn sht-btn-danger" id="deleteAccountBtn"
+                    style="display:none; flex:0 0 auto; padding: 12px 18px;" onclick="deleteAccount()">
+                    <i class="fa-regular fa-trash"></i>
+                </button>
+                <button class="sht-btn sht-btn-ghost" onclick="closeOverlay('settingsOverlay')">Cancel</button>
+                <button class="sht-btn sht-btn-primary" onclick="saveSettings()">
+                    <i class="fa-regular fa-check"></i> Save
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Account Bottom Sheet -->
+    <div class="overlay" id="addAccountOverlay" onclick="closeOnBackdrop(event,'addAccountOverlay')">
+        <div class="sheet">
+            <div class="sheet-handle"></div>
+            <div class="sheet-title"><i class="fa-regular fa-plus"></i>&nbsp;New Account</div>
+            <div class="form-group">
+                <label>Account Name</label>
+                <input type="text" id="newAcctName" placeholder="e.g. Savings Account" autocomplete="off" />
+            </div>
+            <div class="form-group">
+                <label>Allocated Amount (SGD)</label>
+                <input type="number" id="newAcctAllocated" placeholder="0.00" min="0" step="0.01" />
+            </div>
+            <div class="sheet-actions">
+                <button class="sht-btn sht-btn-ghost" onclick="closeOverlay('addAccountOverlay')">Cancel</button>
+                <button class="sht-btn sht-btn-primary" onclick="saveAccount()">
+                    <i class="fa-regular fa-check"></i> Create
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/pwa-config.js"></script>
+
+    <script>
+        if (window.PWAConfig) {
+            const basePath = window.PWAConfig.basePath;
+            const bgElement = document.getElementById('cv-ft');
+
+            const _themePreference = localStorage.getItem('theme-preference') || 'system';
+            const _prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            let isDarkMode = false;
+
+            if (_themePreference === 'dark') {
+                isDarkMode = true;
+            } else if (_themePreference === 'light') {
+                isDarkMode = false;
+            } else if (_themePreference === 'system') {
+                isDarkMode = _prefersDark;
+            }
+        }
+    </script>
+
+    <!-- Account Switcher Dropdown (body-level to escape stacking contexts) -->
+    <div class="acct-dropdown" id="acctDropdown">
+        <div id="acctList"></div>
+        <div class="acct-dropdown-footer">
+            <button class="sht-btn sht-btn-primary" onclick="closeAccountDropdown(); openAddAccount();">
+                <i class="fa-regular fa-plus"></i>&nbsp;New Account
+            </button>
+        </div>
+    </div>
+
+    <script src="js/finTrack.js"></script>
+
+    <script src="../js/cookies-theme-sync.js"></script>
+
+    <!-- Dismiss PWA Splash Screen -->
+    <script>
+        (function () {
+            function hideSplash() {
+                var splash = document.getElementById('pwa-splash');
+                if (!splash) return;
+                sessionStorage.setItem('splashShown-fintrack', '1');
+                splash.classList.add('hide');
+                setTimeout(function () {
+                    if (splash.parentNode) splash.parentNode.removeChild(splash);
+                }, 500);
+            }
+            if (sessionStorage.getItem('splashShown-fintrack')) return;
+            if (document.readyState === 'complete') {
+                setTimeout(hideSplash, 600);
+            } else {
+                window.addEventListener('load', function () {
+                    setTimeout(hideSplash, 600);
+                });
+            }
+        })();
+    </script>
+
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./service-worker.js', { scope: './' })
+                .then(reg => {
+                    console.log('Fin Track Service Worker registered', reg);
+                })
+                .catch(err => {
+                    console.warn('Fin Track Service Worker registration failed:', err);
+                });
+        }
+    </script>
+</body>
+</html>
