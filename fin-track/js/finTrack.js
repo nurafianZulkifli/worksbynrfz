@@ -563,6 +563,13 @@
   function guideFinish() {
     localStorage.setItem(GUIDE_KEY, '1');
     closeOverlay('guideOverlay');
+    // Move install banner to bottom now that guide is done
+    const banner = document.getElementById('fintrack-install-banner');
+    if (banner) {
+      banner.style.transition = 'top 0.4s ease, bottom 0.4s ease';
+      banner.style.top = 'auto';
+      banner.style.bottom = '0';
+    }
   }
 
   // Show guide only on first visit
