@@ -51,7 +51,7 @@
     <!-- Desktop Navbar -->
     <nav class="navbar-container">
         <div class="navbar">
-            <a href="../index.html">
+            <a href="index.html">
                 <img src="assets/logo.png" alt="logo" class="logo" onerror="this.style.display='none'">
             </a>
             <ul class="navbar-nav" id="navbarNav">
@@ -106,21 +106,22 @@
         <div class="container">
             <div class="row h-100 align-items-center justify-content-center">
 
-                    <div class="ft-cover-wrapper">
-                        <div class="ft-greeting" id="ftGreeting"></div>
-                        <div class="acct-switcher-wrap">
-                            <button class="acct-switcher-btn" id="acctSwitcherBtn" onclick="openAccountSwitcher()">
-                                <span id="acctSwitcherName">Account</span>
-                                <i class="fa-regular fa-chevron-down" style="font-size:0.75em; opacity:0.7;"></i>
-                            </button>
-                        </div>
-                        <div class="month-tabs-wrapper">
-                            <div class="month-tabs-container" id="monthTabs"></div>
-                            <button class="month-scroll-indicator" id="monthScrollIndicator" aria-label="Scroll tabs" onclick="document.getElementById('monthTabs').scrollBy({left: 150, behavior: 'smooth'})">
-                                <i class="fa-solid fa-chevron-right"></i>
-                            </button>
-                        </div>
+                <div class="ft-cover-wrapper">
+                    <div class="ft-greeting" id="ftGreeting"></div>
+                    <div class="acct-switcher-wrap">
+                        <button class="acct-switcher-btn" id="acctSwitcherBtn" onclick="openAccountSwitcher()">
+                            <span id="acctSwitcherName">Account</span>
+                            <i class="fa-regular fa-chevron-down" style="font-size:0.75em; opacity:0.7;"></i>
+                        </button>
                     </div>
+                    <div class="month-tabs-wrapper">
+                        <div class="month-tabs-container" id="monthTabs"></div>
+                        <button class="month-scroll-indicator" id="monthScrollIndicator" aria-label="Scroll tabs"
+                            onclick="document.getElementById('monthTabs').scrollBy({left: 150, behavior: 'smooth'})">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
 
             </div>
         </div>
@@ -133,46 +134,131 @@
             <!-- Balance Card Header with Add Button -->
             <div style="display: flex; flex-direction: column; margin-bottom: 20px;">
                 <div class="balance-card">
-                <div class="balance-row">
-                    <div class="balance-item">
-                        <span class="balance-label">Allocated</span>
-                        <span class="balance-amount" id="allocatedDisplay">SGD 0.00</span>
+                    <div class="balance-row">
+                        <div class="balance-item">
+                            <span class="balance-label">Allocated</span>
+                            <span class="balance-amount" id="allocatedDisplay">SGD 0.00</span>
+                        </div>
+                        <div class="balance-item">
+                            <span class="balance-label">Used</span>
+                            <span class="balance-amount negative" id="spentDisplay">SGD 0.00</span>
+                        </div>
+                        <div class="balance-item">
+                            <span class="balance-label">Remaining</span>
+                            <span class="balance-amount positive" id="remainingDisplay">SGD 0.00</span>
+                        </div>
                     </div>
-                    <div class="balance-item">
-                        <span class="balance-label">Used</span>
-                        <span class="balance-amount negative" id="spentDisplay">SGD 0.00</span>
+                    <div class="progress-wrap">
+                        <div class="ft-progress-bar" id="progressBar" style="width:0%"></div>
                     </div>
-                    <div class="balance-item">
-                        <span class="balance-label">Remaining</span>
-                        <span class="balance-amount positive" id="remainingDisplay">SGD 0.00</span>
+                    <div class="progress-legend">
+                        <span id="progressPct">0% used</span>
+                        <span id="progressLeft">SGD 0.00 left</span>
+                    </div>
+                    <div style="margin-top:14px; text-align:right;">
+                        <button class="reset-month-btn" onclick="resetMonth()">
+                            <i class="fa-regular fa-rotate-right"></i> New Month Reset
+                        </button>
                     </div>
                 </div>
-                <div class="progress-wrap">
-                    <div class="ft-progress-bar" id="progressBar" style="width:0%"></div>
-                </div>
-                <div class="progress-legend">
-                    <span id="progressPct">0% used</span>
-                    <span id="progressLeft">SGD 0.00 left</span>
-                </div>
-                <div style="margin-top:14px; text-align:right;">
-                    <button class="reset-month-btn" onclick="resetMonth()">
-                        <i class="fa-regular fa-rotate-right"></i> New Month Reset
-                    </button>
-                </div>
+
+                <!-- Transactions list -->
+                <div class="ft-section-heading">Transactions</div>
+                <div id="txnSection" style="padding-bottom: 120px;"></div>
+
             </div>
-
-            <!-- Transactions list -->
-            <div class="ft-section-heading">Transactions</div>
-            <div id="txnSection" style="padding-bottom: 120px;"></div>
-
-        </div>
     </section>
 
     <!-- Toast -->
     <div class="toast" id="toast"></div>
 
+    <!-- First-Time Guide Overlay -->
+    <div class="overlay" id="guideOverlay">
+        <div class="guide-sheet">
+            <div class="guide-steps-wrap" id="guideStepsWrap">
+
+                <!-- Step 1: Rename account -->
+                <div class="guide-step active" id="guideStep1">
+                    <div class="guide-icon-wrap guide-icon-green">
+                        <i class="fa-regular fa-gear"></i>
+                    </div>
+                    <div class="guide-step-label">Step 1 of 3</div>
+                    <div class="guide-step-title">Set Up Your Account</div>
+                    <div class="guide-step-body">
+                        Tap the account name button at the top of the screen to open the account switcher, then open
+                        <strong>Menu > Settings</strong> to rename your account and set your <strong>monthly allocated
+                            budget</strong>.
+                        <div class="guide-tip">
+                            <i class="fa-regular fa-lightbulb"></i>
+                            You can create multiple accounts — one for each budget category, like <em>Commitments</em>
+                            or <em>Fun Money</em>.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Add transactions -->
+                <div class="guide-step" id="guideStep2">
+                    <div class="guide-icon-wrap guide-icon-blue">
+                        <i class="fa-regular fa-plus"></i>
+                    </div>
+                    <div class="guide-step-label">Step 2 of 3</div>
+                    <div class="guide-step-title">Track Your Spending</div>
+                    <div class="guide-step-body">
+                        Tap <strong>Add</strong> (the + button) to log a transaction. Choose <strong>Deductions</strong>
+                        for expenses and <strong>Additions</strong> for income or top-ups. Every entry is tagged to the
+                        current month automatically.
+                        <div class="guide-tip">
+                            <i class="fa-regular fa-lightbulb"></i>
+                            Your <strong>Allocated</strong> amount is the budget ceiling. <strong>Used</strong> tracks
+                            total spending, and <strong>Remaining</strong> shows what's left.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: New Month Reset -->
+                <div class="guide-step" id="guideStep3">
+                    <div class="guide-icon-wrap guide-icon-teal">
+                        <i class="fa-regular fa-rotate-right"></i>
+                    </div>
+                    <div class="guide-step-label">Step 3 of 3</div>
+                    <div class="guide-step-title">New Month Reset</div>
+                    <div class="guide-step-body">
+                        At the start of a new month, tap <strong>New Month Reset</strong> on the main screen. This
+                        restarts your balance from zero — but <strong>all your transaction history is kept</strong> and
+                        still browsable via the month tabs.
+                        <div class="guide-tip">
+                            <i class="fa-regular fa-lightbulb"></i>
+                            The reset doesn't delete anything. It simply sets a new baseline so your current balance
+                            reflects only this month's activity.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Dots -->
+            <div class="guide-dots">
+                <span class="guide-dot active" id="guideDot1"></span>
+                <span class="guide-dot" id="guideDot2"></span>
+                <span class="guide-dot" id="guideDot3"></span>
+            </div>
+
+            <!-- Actions -->
+            <div class="guide-actions">
+                <button class="sht-btn sht-btn-ghost" id="guidePrevBtn" onclick="guidePrev()" style="display:none;">
+                    <i class="fa-regular fa-chevron-left"></i> Back
+                </button>
+                <button class="sht-btn sht-btn-ghost guide-skip-btn" onclick="guideFinish()">Skip</button>
+                <button class="sht-btn sht-btn-primary" id="guideNextBtn" onclick="guideNext()">
+                    Next <i class="fa-regular fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Add/Edit Transaction Modal (Bootstrap) -->
-    <div class="modal fade" id="addModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal fade" id="addModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
+        data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content ft-modal-content">
                 <div class="modal-body">
@@ -238,7 +324,8 @@
             <div id="firstTimeImpex" style="display:none; margin-bottom:14px;">
                 <div class="settings-info" style="background:#f0fdf4; border-color:#86efac; color:#166534;">
                     <i class="fa-regular fa-file-import"></i>&nbsp;Have existing data?
-                    <a href="settings.html" style="color:#166534; font-weight:700; text-decoration:underline;">Import it from Settings</a> instead.
+                    <a href="settings.html" style="color:#166534; font-weight:700; text-decoration:underline;">Import it
+                        from Settings</a> instead.
                 </div>
             </div>
             <div class="form-group">
@@ -307,6 +394,7 @@
 
     <script src="../js/bootstrap.min.js"></script>
     <script src="../js/pwa-config.js"></script>
+    <script src="../js/pwa-helper.js"></script>
 
     <script>
         if (window.PWAConfig) {
@@ -364,17 +452,7 @@
         })();
     </script>
 
-    <!-- Service Worker Registration -->
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./service-worker.js', { scope: './' })
-                .then(reg => {
-                    console.log('Fin Track Service Worker registered', reg);
-                })
-                .catch(err => {
-                    console.warn('Fin Track Service Worker registration failed:', err);
-                });
-        }
-    </script>
+    <!-- Service Worker Registration & Install Banner -->
+    <script src="js/pwa-init.js"></script>
 </body>
 </html>

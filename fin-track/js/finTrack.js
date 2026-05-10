@@ -12,7 +12,7 @@
       activeYear: now.getFullYear(),
       accounts: [{
         id,
-        name: 'My Account',
+        name: 'Commitments',
         allocated: 0,
         transactions: []
       }]
@@ -518,6 +518,53 @@
   if (window.location.hash === '#addAccount') {
     history.replaceState(null, '', window.location.pathname);
     setTimeout(openAddAccount, 100);
+  }
+
+  // ── First-Time Guide ───────────────────────────────────────────────────
+  let _guideStep = 1;
+  const GUIDE_KEY = 'fintrack-guide-done';
+
+  function guideTo(step) {
+    const total = 3;
+    _guideStep = step;
+    for (let i = 1; i <= total; i++) {
+      const s = document.getElementById('guideStep' + i);
+      const d = document.getElementById('guideDot' + i);
+      if (s) s.classList.toggle('active', i === step);
+      if (d) d.classList.toggle('active', i === step);
+    }
+    const prevBtn = document.getElementById('guidePrevBtn');
+    const nextBtn = document.getElementById('guideNextBtn');
+    if (prevBtn) prevBtn.style.display = step > 1 ? '' : 'none';
+    if (nextBtn) {
+      if (step === total) {
+        nextBtn.innerHTML = '<i class="fa-regular fa-check"></i> Get Started';
+        nextBtn.onclick = guideFinish;
+      } else {
+        nextBtn.innerHTML = 'Next <i class="fa-regular fa-chevron-right"></i>';
+        nextBtn.onclick = guideNext;
+      }
+    }
+  }
+
+  function guideNext() {
+    if (_guideStep < 3) guideTo(_guideStep + 1);
+    else guideFinish();
+  }
+
+  function guidePrev() {
+    if (_guideStep > 1) guideTo(_guideStep - 1);
+  }
+
+  function guideFinish() {
+    localStorage.setItem(GUIDE_KEY, '1');
+    closeOverlay('guideOverlay');
+  }
+
+  // Show guide only on first visit
+  if (!localStorage.getItem(GUIDE_KEY)) {
+    guideTo(1);
+    setTimeout(function () { openOverlay('guideOverlay'); }, 800);
   }
 
   // ── Month Tabs Scroll Indicator ─────────────────────────────────────────

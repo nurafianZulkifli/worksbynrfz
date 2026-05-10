@@ -1186,8 +1186,10 @@ body.dark-mode li.breadcrumb-item a {
 }
 
 body.dark-mode .settings-page-section {
-    background: #1e2236;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    background-color: #1c1f2b;
+    color: #fff !important;
+    border: 1px solid #2b2b2b33;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .settings-section-title {
@@ -1267,7 +1269,7 @@ body.dark-mode .settings-form-group select:focus {
 .settings-action-buttons {
     display: flex;
     gap: 12px;
-    margin-top: 16px;
+    margin-top: 3em;
 }
 
 .settings-action-buttons button {
@@ -1446,6 +1448,196 @@ body.dark-mode .list-group-item {
 
 body.dark-mode .fa-chevron-down {
     color: #fff;
+}
+
+/* ===== FIRST-TIME GUIDE ===== */
+.guide-sheet {
+    background: #fff;
+    border-radius: 24px 24px 0 0;
+    padding: 28px 24px 24px;
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-height: 92dvh;
+    overflow-y: auto;
+}
+
+body.dark-mode .guide-sheet {
+    background: #1c1f2b;
+}
+
+.guide-steps-wrap {
+    position: relative;
+    min-height: 320px;
+}
+
+.guide-step {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+    animation: guideFadeIn 0.28s ease;
+}
+
+.guide-step.active {
+    display: flex;
+}
+
+@keyframes guideFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.guide-icon-wrap {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.9rem;
+    margin-bottom: 4px;
+    flex-shrink: 0;
+}
+
+.guide-icon-green {
+    background: #d1fae5;
+    color: #059669;
+}
+
+.guide-icon-blue {
+    background: #dbeafe;
+    color: #2563eb;
+}
+
+.guide-icon-teal {
+    background: #ccfbf1;
+    color: #0d9488;
+}
+
+body.dark-mode .guide-icon-green {
+    background: #064e3b;
+    color: #34d399;
+}
+
+body.dark-mode .guide-icon-blue {
+    background: #1e3a5f;
+    color: #60a5fa;
+}
+
+body.dark-mode .guide-icon-teal {
+    background: #134e4a;
+    color: #2dd4bf;
+}
+
+.guide-step-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #9ca3af;
+}
+
+.guide-step-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #111827;
+    line-height: 1.3;
+}
+
+body.dark-mode .guide-step-title {
+    color: #f3f4f6;
+}
+
+.guide-step-body {
+    font-size: 0.95rem;
+    color: #4b5563;
+    line-height: 1.65;
+    max-width: 380px;
+}
+
+body.dark-mode .guide-step-body {
+    color: #9ca3af;
+}
+
+.guide-tip {
+    margin-top: 14px;
+    padding: 12px 14px;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    color: #166534;
+    text-align: left;
+    line-height: 1.5;
+}
+
+body.dark-mode .guide-tip {
+    background: #052e16;
+    border-color: #14532d;
+    color: #86efac;
+}
+
+.guide-tip i {
+    margin-right: 5px;
+}
+
+.guide-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.guide-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #d1d5db;
+    transition: background 0.25s, width 0.25s;
+    display: inline-block;
+}
+
+.guide-dot.active {
+    background: #42c07e;
+    width: 22px;
+    border-radius: 4px;
+}
+
+body.dark-mode .guide-dot {
+    background: #374151;
+}
+
+body.dark-mode .guide-dot.active {
+    background: #34d399;
+}
+
+.guide-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.guide-skip-btn {
+    margin-right: auto;
+    color: #9ca3af !important;
+    border-color: transparent !important;
+    padding-left: 0 !important;
+}
+
+body.dark-mode .guide-skip-btn {
+    color: #6b7280 !important;
 }
 
 /* ===== MEDIA QUERIES ===== */
@@ -1748,6 +1940,10 @@ body.dark-mode .fa-chevron-down {
 
     .acct-switcher-btn {
         font-size: 15px;
+    }
+
+    .settings-action-buttons {
+        flex-direction: column-reverse;
     }
 }
 
