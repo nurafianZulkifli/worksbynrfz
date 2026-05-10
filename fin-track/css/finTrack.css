@@ -1,3 +1,7 @@
+#scrollUp {
+    background-color: #41b28f;
+}
+
 .nav-link.active {
     background: #007093;
     background: linear-gradient(90deg, #42c07e 0%, #239690 100%);
