@@ -82,7 +82,7 @@
     const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     const dateStr = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]}`;
-    el.innerHTML = `<span class="ft-greeting-text">${greet}</span><span class="ft-greeting-date">${dateStr}</span>`;
+    el.innerHTML = `<span class="ft-greeting-text">${greet}</span>`;
   }
 
   function renderAccountSwitcher() {
