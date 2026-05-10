@@ -1654,13 +1654,13 @@ body.dark-mode .guide-dot.active {
 
 .guide-skip-btn {
     margin-right: auto;
-    color: #9ca3af !important;
+    color: #000 !important;
     border-color: transparent !important;
-    padding-left: 0 !important;
 }
 
 body.dark-mode .guide-skip-btn {
-    color: #6b7280 !important;
+    color: #fff !important;
+    border-color: #3a3f58 !important;
 }
 
 /* ===== MEDIA QUERIES ===== */

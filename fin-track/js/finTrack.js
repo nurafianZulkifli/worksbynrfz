@@ -542,7 +542,7 @@
     if (prevBtn) prevBtn.style.display = step > 1 ? '' : 'none';
     if (nextBtn) {
       if (step === total) {
-        nextBtn.innerHTML = '<i class="fa-regular fa-check"></i> Get Started';
+        nextBtn.innerHTML = '<i class="fa-regular fa-check"></i> Done';
         nextBtn.onclick = guideFinish;
       } else {
         nextBtn.innerHTML = 'Next <i class="fa-regular fa-chevron-right"></i>';
