@@ -1,6 +1,6 @@
 /**
- * Fin Track PWA Initialization
- * Configures and initializes PWA functionality for the Fin Track app
+ * FinTrack PWA Initialization
+ * Configures and initializes PWA functionality for the FinTrack app
  */
 
 window.addEventListener('load', () => {
@@ -25,7 +25,7 @@ window.addEventListener('load', () => {
       showInstallBanner: true,
       onInstalled: () => {
         if (window.gtag) {
-          window.gtag('event', 'app_install', { app_name: 'Fin Track' });
+          window.gtag('event', 'app_install', { app_name: 'FinTrack' });
         }
       }
     });

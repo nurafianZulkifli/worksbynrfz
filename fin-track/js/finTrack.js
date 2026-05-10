@@ -519,6 +519,10 @@
     history.replaceState(null, '', window.location.pathname);
     setTimeout(openAddAccount, 100);
   }
+  if (window.location.hash === '#addTransaction') {
+    history.replaceState(null, '', window.location.pathname);
+    setTimeout(openAdd, 300);
+  }
 
   // ── First-Time Guide ───────────────────────────────────────────────────
   let _guideStep = 1;

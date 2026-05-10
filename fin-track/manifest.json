@@ -1,7 +1,7 @@
 {
   "id": "fin-track",
-  "name": "Fin Track",
-  "short_name": "Fin Track",
+  "name": "FinTrack",
+  "short_name": "FinTrack",
   "description": "Personal finance tracking with account management, budget monitoring, and transaction history",
   "start_url": "./",
   "scope": "./",

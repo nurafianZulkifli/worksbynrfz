@@ -1,6 +1,6 @@
 /**
- * Fin Track Service Worker
- * Handles caching and offline functionality for Fin Track app
+ * FinTrack Service Worker
+ * Handles caching and offline functionality for FinTrack app
  * Dynamically detects base path for GitHub Pages and Heroku compatibility
  * Dynamically loads version from version.json
  */
@@ -28,10 +28,10 @@ async function loadCacheVersion() {
       const version = data.fintrack || '1.0.0';
       CACHE_VERSION = `v${version}`;
       CACHE_NAME = `fintrack-cache-${CACHE_VERSION}`;
-      console.log('[Fin Track SW] Cache version loaded:', CACHE_VERSION);
+      console.log('[FinTrack SW] Cache version loaded:', CACHE_VERSION);
     }
   } catch (error) {
-    console.warn('[Fin Track SW] Could not load version.json, using default:', error);
+    console.warn('[FinTrack SW] Could not load version.json, using default:', error);
   }
 }
 
@@ -40,21 +40,21 @@ function buildPath(path) {
   return BASE_PATH + path.replace(/^\//, '');
 }
 
-// Fin Track-specific assets to cache
+// FinTrack-specific assets to cache
 const STATIC_ASSETS = [
-  // Fin Track entry
+  // FinTrack entry
   buildPath('fin-track/'),
   buildPath('fin-track/index.html'),
   buildPath('fin-track/manifest.json'),
   buildPath('fin-track/settings.html'),
   
-  // Fin Track styles
+  // FinTrack styles
   buildPath('fin-track/css/finTrack.css'),
   
-  // Fin Track scripts
+  // FinTrack scripts
   buildPath('fin-track/js/finTrack.js'),
   
-  // Fin Track assets
+  // FinTrack assets
   buildPath('fin-track/assets/'),
   
   // Shared utilities
@@ -81,13 +81,13 @@ const STATIC_ASSETS = [
   buildPath('fin-track/assets/icon-512.png')
 ];
 
-// Install: cache Fin Track assets
+// Install: cache FinTrack assets
 self.addEventListener('install', event => {
   event.waitUntil(
     loadCacheVersion().then(() => {
       return caches.open(CACHE_NAME).then(cache => {
         return cache.addAll(STATIC_ASSETS).catch(err => {
-          console.warn('[Fin Track SW] Some assets could not be cached:', err);
+          console.warn('[FinTrack SW] Some assets could not be cached:', err);
         });
       });
     })
@@ -104,7 +104,7 @@ self.addEventListener('activate', event => {
           cacheNames
             .filter(name => name.startsWith('fintrack-cache-') && name !== CACHE_NAME)
             .map(cacheName => {
-              console.log('[Fin Track SW] Deleting old cache:', cacheName);
+              console.log('[FinTrack SW] Deleting old cache:', cacheName);
               return caches.delete(cacheName);
             })
         );
@@ -120,7 +120,7 @@ self.addEventListener('fetch', event => {
   const url = new URL(request.url);
   const fintrackScope = BASE_PATH + 'fin-track/';
   
-  // Only handle GET requests within Fin Track scope
+  // Only handle GET requests within FinTrack scope
   if (request.method !== 'GET' || !url.pathname.startsWith(fintrackScope)) {
     return;
   }
@@ -170,7 +170,7 @@ function shouldCache(url) {
 self.addEventListener('message', event => {
   if (!event.data) return;
   
-  console.log('[Fin Track SW] Message received:', event.data.type);
+  console.log('[FinTrack SW] Message received:', event.data.type);
   
   switch (event.data.type) {
     case 'SKIP_WAITING':
@@ -179,11 +179,11 @@ self.addEventListener('message', event => {
     
     case 'CLEAR_CACHE':
       caches.delete(CACHE_NAME).then(() => {
-        console.log('[Fin Track SW] Cache cleared');
+        console.log('[FinTrack SW] Cache cleared');
       });
       break;
     
     default:
-      console.log('[Fin Track SW] Unknown message type:', event.data.type);
+      console.log('[FinTrack SW] Unknown message type:', event.data.type);
   }
 });

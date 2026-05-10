@@ -8,7 +8,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Fin Track">
+    <meta name="apple-mobile-web-app-title" content="FinTrack">
 
     <script src="https://kit.fontawesome.com/965e82ac01.js" crossorigin="anonymous"></script>
 
@@ -65,7 +65,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="index.html#addAccount" class="nav-link">
+                    <a href="index.html#addTransaction" class="nav-link">
                         <i class="fa-regular fa-plus"></i>
                         <span>Add</span>
                     </a>
@@ -90,7 +90,7 @@
                 </a>
             </li>
             <li>
-                <a href="index.html#addAccount">
+                <a href="index.html#addTransaction">
                     <span class="icon"><i class="fa-regular fa-plus"></i></span>
                     <span class="label">Add</span>
                 </a>
@@ -288,8 +288,18 @@
         }
 
         function saveSettings() {
-            const state = load();
-            if (!state) { showToast('Error: No data found'); return; }
+            let state = load();
+            if (!state || !state.accounts || state.accounts.length === 0) {
+                // First-time user: create a default state
+                const id = Date.now().toString(36) + Math.random().toString(36).slice(2);
+                const now = new Date();
+                state = {
+                    activeAccountId: id,
+                    activeMonth: now.getMonth(),
+                    activeYear: now.getFullYear(),
+                    accounts: [{ id, name: 'Commitments', allocated: 0, transactions: [] }]
+                };
+            }
             const name = document.getElementById('settingsAcctName').value.trim();
             const alloc = parseFloat(document.getElementById('settingsAllocated').value);
             const month = parseInt(document.getElementById('settingsMonth').value);
@@ -308,7 +318,7 @@
 
         function deleteAccount() {
             const state = load();
-            if (!state) { showToast('Error: No data found'); return; }
+            if (!state || !state.accounts || state.accounts.length === 0) { showToast('No account to delete'); return; }
             const acct = activeAccount(state);
             if (!confirm('Delete "' + acct.name + '" and all its transactions?')) return;
             state.accounts = state.accounts.filter(a => a.id !== state.activeAccountId);
@@ -381,10 +391,10 @@
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('./service-worker.js', { scope: './' })
                 .then(reg => {
-                    console.log('Fin Track Service Worker registered', reg);
+                    console.log('FinTrack Service Worker registered', reg);
                 })
                 .catch(err => {
-                    console.warn('Fin Track Service Worker registration failed:', err);
+                    console.warn('FinTrack Service Worker registration failed:', err);
                 });
         }
     </script>
