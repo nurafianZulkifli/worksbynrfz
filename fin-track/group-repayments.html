@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover">
+    <title>Group Split | FinTrack</title>
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="FinTrack">
+
+    <script src="https://kit.fontawesome.com/965e82ac01.js" crossorigin="anonymous"></script>
+
+    <link rel="icon" href="./assets/icon-512.png">
+
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="css/finTrack.css">
+    <link rel="stylesheet" href="../css/pwa-styles.css">
+    <link rel="stylesheet" href="../css/style-breakpoints.css">
+    <link rel="stylesheet" href="../css/dark-mode.css">
+
+    <link rel="apple-touch-startup-image" href="../img/bg-img/hero-bg-dark.png">
+    <link rel="manifest" href="./manifest.json">
+
+    <style>
+        /* Cover section */
+        #cv-gr {
+            background:
+                linear-gradient(135deg, rgba(40, 124, 81, 0.82) 0%, rgba(16, 80, 77, 0.82) 100%),
+                url('../assets/hero-bg.png') center center / cover no-repeat;
+            height: 46vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        body.dark-mode #cv-gr {
+            background:
+                linear-gradient(135deg, rgba(40, 124, 81, 0.82) 0%, rgba(16, 80, 77, 0.82) 100%),
+                url('../assets/hero-bg-dark.png') center center / cover no-repeat;
+        }
+
+        #cv-gr::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 100%;
+            width: 100vw;
+            margin-left: calc(-50vw + 50%);
+            background: linear-gradient(to bottom,
+                    rgba(236, 236, 234, 0) 0%,
+                    rgba(236, 236, 234, 0) 40%,
+                    rgba(236, 236, 234, 0.3) 55%,
+                    rgba(236, 236, 234, 0.6) 68%,
+                    rgba(236, 236, 234, 0.85) 80%,
+                    rgba(236, 236, 234, 1) 90%,
+                    rgba(236, 236, 234, 1) 100%);
+            -webkit-backdrop-filter: blur(25px);
+            backdrop-filter: blur(25px);
+            -webkit-mask-image: linear-gradient(to top, black 0%, black 40%, rgba(0, 0, 0, 0.6) 60%, rgba(0, 0, 0, 0.2) 80%, transparent 100%);
+            mask-image: linear-gradient(to top, black 0%, black 53%, rgba(0, 0, 0, 0.6) 60%, rgba(0, 0, 0, 0.2) 80%, transparent 100%);
+            z-index: -1;
+        }
+
+        body.dark-mode #cv-gr::before {
+            background: linear-gradient(to bottom,
+                    rgba(18, 21, 33, 0) 0%,
+                    rgba(18, 21, 33, 0) 40%,
+                    rgba(18, 21, 33, 0.3) 55%,
+                    rgba(18, 21, 33, 0.6) 68%,
+                    rgba(18, 21, 33, 0.85) 80%,
+                    rgba(18, 21, 33, 1) 90%,
+                    rgba(18, 21, 33, 1) 100%);
+        }
+
+        #cv-gr .container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+        }
+
+        /* Total badge in cover */
+        .gr-total-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(66, 192, 126, 0.18);
+            border: 1px solid rgba(66, 192, 126, 0.35);
+            color: #c6f6de;
+            border-radius: 99px;
+            padding: 4px 12px;
+            font-size: 0.77rem;
+            font-weight: 600;
+            margin-top: 6px;
+        }
+
+        /* People bar */
+        .gr-people-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 4px 2px 8px;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            flex-wrap: nowrap;
+        }
+
+        .gr-people-bar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .gr-person-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #f0f7fd;
+            border: 1.5px solid #d1e8f7;
+            color: #1e4a7a;
+            border-radius: 99px;
+            padding: 6px 10px 6px 14px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            white-space: nowrap;
+            flex-shrink: 0;
+            cursor: default;
+        }
+
+        body.dark-mode .gr-person-chip {
+            background: #1e2a4a;
+            border-color: #2d4a7a;
+            color: #93c5fd;
+        }
+
+        .gr-person-chip .chip-remove {
+            background: none;
+            border: none;
+            color: #9ca3af;
+            cursor: pointer;
+            padding: 0;
+            font-size: 0.65rem;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            transition: background 0.15s, color 0.15s;
+        }
+
+        .gr-person-chip .chip-remove:hover {
+            background: #fca5a5;
+            color: #dc2626;
+        }
+
+        .gr-add-person-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(90deg, #42c07e 0%, #239690 100%);
+            border: none;
+            color: #fff;
+            border-radius: 99px;
+            padding: 7px 16px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            white-space: nowrap;
+            flex-shrink: 0;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+            transition: all 0.2s;
+        }
+
+        .gr-add-person-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+        }
+
+        .gr-add-person-btn:active {
+            transform: scale(0.95);
+            opacity: 0.85;
+        }
+
+        /* Section bar label */
+        .gr-bar-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            cursor: default;
+        }
+
+        body.dark-mode .gr-bar-label {
+            color: #a0a0b0;
+        }
+
+        /* Grand total card */
+        .gr-grand-total {
+            background: linear-gradient(135deg, #42c07e 0%, #239690 100%);
+            border-radius: 18px;
+            padding: 16px 20px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 16px rgba(35, 150, 144, 0.3);
+        }
+
+        .gr-grand-total-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            opacity: 0.85;
+        }
+
+        .gr-grand-total-amount {
+            font-size: 1.6rem;
+            font-weight: 800;
+        }
+
+        /* Table wrapper */
+        .gr-table-wrap {
+            overflow-x: auto;
+            border-radius: 20px;
+            border: 1px solid rgba(43, 43, 43, 0.15);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 12px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        body.dark-mode .gr-table-wrap {
+            border-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .gr-table {
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
+            min-width: max-content;
+            background: #fff;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        body.dark-mode .gr-table {
+            background: #1c1f2b;
+        }
+
+        .gr-table th {
+            padding: 12px 14px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #6b7280;
+            background: #f9fafb;
+            border-bottom: 2px solid rgba(43, 43, 43, 0.12);
+            white-space: nowrap;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+
+        body.dark-mode .gr-table th {
+            background: #252840;
+            color: #a0a0b0;
+            border-bottom-color: rgba(255, 255, 255, 0.08);
+        }
+
+        /* Item column header — sticky left */
+        .gr-table th.col-item {
+            text-align: left;
+            position: sticky;
+            left: 0;
+            z-index: 3;
+            background: #f9fafb;
+        }
+
+        body.dark-mode .gr-table th.col-item {
+            background: #252840;
+        }
+
+        .gr-table td {
+            padding: 11px 14px;
+            border-bottom: 1px solid rgba(43, 43, 43, 0.08);
+            font-size: 0.87rem;
+            white-space: nowrap;
+            text-align: center;
+            background: #fff;
+            color: #1e1e2e;
+        }
+
+        body.dark-mode .gr-table td {
+            background: #1c1f2b;
+            color: #e0e0f0;
+            border-bottom-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .gr-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .gr-table tbody tr:not(.gr-total-row):hover td {
+            background: #f0f7fd;
+        }
+
+        body.dark-mode .gr-table tbody tr:not(.gr-total-row):hover td {
+            background: #22263a;
+        }
+
+        /* Item name column — sticky left */
+        .gr-table td.col-item {
+            position: sticky;
+            left: 0;
+            z-index: 1;
+            text-align: left;
+            min-width: 160px;
+            max-width: 200px;
+            background: #fff;
+        }
+
+        body.dark-mode .gr-table td.col-item {
+            background: #1c1f2b;
+        }
+
+        /* Sticky column shadow */
+        .gr-table th.col-item,
+        .gr-table td.col-item {
+            box-shadow: 2px 0 6px rgba(0, 0, 0, 0.06);
+        }
+
+        body.dark-mode .gr-table th.col-item,
+        body.dark-mode .gr-table td.col-item {
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.25);
+        }
+
+        .gr-item-name {
+            font-weight: 600;
+            font-size: 0.87rem;
+            color: #1e1e2e;
+        }
+
+        body.dark-mode .gr-item-name {
+            color: #e0e0f0;
+        }
+
+        .gr-item-meta {
+            font-size: 0.7rem;
+            color: #6b7280;
+            margin-top: 1px;
+        }
+
+        body.dark-mode .gr-item-meta {
+            color: #a0a0b0;
+        }
+
+        /* Person share cell — clickable toggle */
+        .gr-person-cell {
+            cursor: pointer;
+            border-radius: 10px;
+            padding: 6px 10px;
+            min-width: 68px;
+            transition: all 0.15s;
+            user-select: none;
+            -webkit-user-select: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.82rem;
+        }
+
+        .gr-person-cell.included {
+            background: rgba(66, 192, 126, 0.12);
+            color: #16a34a;
+            font-weight: 700;
+        }
+
+        body.dark-mode .gr-person-cell.included {
+            background: rgba(66, 192, 126, 0.18);
+            color: #4ade80;
+        }
+
+        .gr-person-cell.excluded {
+            background: rgba(107, 114, 128, 0.08);
+            color: #d1d5db;
+            font-weight: 500;
+        }
+
+        body.dark-mode .gr-person-cell.excluded {
+            background: rgba(255, 255, 255, 0.03);
+            color: #374151;
+        }
+
+        .gr-person-cell:hover {
+            transform: scale(1.06);
+        }
+
+        .gr-person-cell:active {
+            transform: scale(0.93);
+        }
+
+        /* Total row */
+        .gr-total-row td {
+            font-weight: 700;
+            font-size: 0.88rem;
+            background: #f9fafb !important;
+            border-top: 2px solid rgba(43, 43, 43, 0.12);
+        }
+
+        body.dark-mode .gr-total-row td {
+            background: #252840 !important;
+            border-top-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .gr-total-row td.col-item {
+            font-size: 0.72rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: #6b7280;
+            background: #f9fafb !important;
+        }
+
+        body.dark-mode .gr-total-row td.col-item {
+            color: #a0a0b0;
+            background: #252840 !important;
+        }
+
+        .gr-person-total {
+            color: #239690;
+            font-weight: 800;
+        }
+
+        body.dark-mode .gr-person-total {
+            color: #4ade80;
+        }
+
+        /* Item row edit button */
+        .gr-item-edit-btn {
+            background: none;
+            border: none;
+            color: #d1d5db;
+            cursor: pointer;
+            padding: 4px 6px;
+            font-size: 0.75rem;
+            border-radius: 6px;
+            transition: color 0.15s, background 0.15s;
+            flex-shrink: 0;
+        }
+
+        .gr-item-edit-btn:hover {
+            color: #107d9c;
+            background: rgba(16, 125, 156, 0.08);
+        }
+
+        /* Empty state */
+        .gr-empty {
+            text-align: center;
+            padding: 44px 20px;
+            color: #9ca3af;
+            font-size: 0.88rem;
+            line-height: 1.5;
+        }
+
+        .gr-empty i {
+            font-size: 2.2rem;
+            margin-bottom: 12px;
+            display: block;
+            opacity: 0.35;
+        }
+
+        body.dark-mode .gr-empty {
+            color: #6b7280;
+        }
+
+        /* People bar section wrapper */
+        .gr-people-section {
+            margin-bottom: 24px;
+        }
+
+        /* Tip note */
+        .gr-tap-tip {
+            font-size: 0.72rem;
+            color: #9ca3af;
+            text-align: center;
+            margin-bottom: 14px;
+            font-style: italic;
+        }
+
+        body.dark-mode .gr-tap-tip {
+            color: #6b7280;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Apply dark mode before render to avoid flash -->
+    <script>
+        (function () {
+            var pref = localStorage.getItem('theme-preference') || 'system';
+            var isDark = pref === 'dark' || (pref === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            if (isDark) document.body.classList.add('dark-mode');
+        })();
+    </script>
+
+    <!-- Fixed Breadcrumb (mobile only) -->
+    <div class="breadcrumb-fixed-placeholder">
+        <nav aria-label="breadcrumb" style="margin-bottom:0;">
+            <ol class="breadcrumb breadcrumb-fixed" id="floating-breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="index.html"><i class="fa-regular fa-house"></i></a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="menu.html"><i class="fa-regular fa-bars"></i></a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="#"><i class="fa-regular fa-users"></i></a>
+                </li>
+            </ol>
+        </nav>
+    </div>
+
+    <!-- Desktop Navbar -->
+    <nav class="navbar-container">
+        <div class="navbar">
+            <a href="index.html">
+                <img src="assets/logo.png" alt="logo" class="logo" onerror="this.style.display='none'">
+            </a>
+            <ul class="navbar-nav" id="navbarNav">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">
+                        <i class="fa-regular fa-money-bills-simple"></i>
+                        <span>Transactions</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="repayments.html" class="nav-link">
+                        <i class="fa-regular fa-money-bill-transfer"></i>
+                        <span>Repayments</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="menu.html" class="nav-link active">
+                        <i class="fa-regular fa-bars"></i>
+                        <span>Menu</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-bottom-nav">
+        <ul>
+            <li>
+                <a href="index.html">
+                    <span class="icon"><i class="fa-regular fa-money-bills-simple"></i></span>
+                    <span class="label">Transactions</span>
+                </a>
+            </li>
+            <li>
+                <a href="repayments.html">
+                    <span class="icon"><i class="fa-regular fa-money-bill-transfer"></i></span>
+                    <span class="label">Repayments</span>
+                </a>
+            </li>
+            <li class="active">
+                <a href="menu.html">
+                    <span class="icon"><i class="fa-regular fa-bars"></i></span>
+                    <span class="label">Menu</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Cover Section -->
+    <section class="breadcrumb-area-eicw-cover bg-img bg-overlay" id="cv-gr">
+        <div class="container">
+            <div class="row h-100 align-items-center justify-content-center">
+                <div class="ft-cover-wrapper">
+                    <div class="ft-greeting" id="grGreeting"></div>
+                    <div class="acct-switcher-wrap">
+                        <button class="acct-switcher-btn" id="sessionSwitcherBtn" onclick="openSessionDropdown()">
+                            <span id="sessionSwitcherName">Select Session</span>
+                            <i class="fa-regular fa-chevron-down" style="font-size:0.75em; opacity:0.7;"></i>
+                        </button>
+                    </div>
+                    <div id="grCoverBadge"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="ft-main" id="ft-main">
+        <div class="container">
+            <div style="display:flex; flex-direction:column; margin-bottom:20px; padding-bottom:120px;">
+
+                <!-- People Section -->
+                <div class="gr-people-section">
+                    <div class="gr-bar-label">People</div>
+                    <div class="gr-people-bar" id="grPeopleBar"></div>
+                </div>
+
+                <!-- Grand Total Card -->
+                <div id="grGrandTotalCard" style="display:none;">
+                    <div class="gr-grand-total">
+                        <div>
+                            <div class="gr-grand-total-label">Total Bill</div>
+                            <div class="gr-grand-total-amount" id="grGrandTotalAmt">SGD 0.00</div>
+                        </div>
+                        <i class="fa-regular fa-receipt" style="font-size:2rem; opacity:0.6;"></i>
+                    </div>
+                </div>
+
+                <!-- Items Table -->
+                <div id="grTableSection">
+                    <div class="rp-list-header" style="margin-bottom:10px;">
+                        <div class="ft-section-heading" style="margin-bottom:0;">Items</div>
+                        <button class="ft-add-btn" onclick="openAddItem()">
+                            <i class="fa-regular fa-plus"></i>&nbsp;Add Item
+                        </button>
+                    </div>
+                    <div id="grTapTip" class="gr-tap-tip" style="display:none;">
+                        Tap a cell to toggle whether that person had the item
+                    </div>
+                    <div id="grTableWrap"></div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Session Dropdown Backdrop -->
+    <div class="acct-dropdown-overlay" id="sessionDropdownOverlay" onclick="closeSessionDropdown()"></div>
+
+    <!-- Session Dropdown -->
+    <div class="acct-dropdown" id="sessionDropdown">
+        <div id="sessionList"></div>
+        <div class="acct-dropdown-footer">
+            <button class="sht-btn sht-btn-primary" onclick="closeSessionDropdown(); openAddSession();">
+                <i class="fa-regular fa-plus"></i>&nbsp;New Session
+            </button>
+        </div>
+    </div>
+
+    <!-- Add / Edit Session Modal -->
+    <div class="modal fade" id="sessionModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
+        data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content ft-modal-content">
+                <div class="modal-body">
+                    <div class="sheet-title" id="sessionSheetTitle">
+                        <i class="fa-regular fa-users"></i>&nbsp;New Session
+                    </div>
+                    <div class="form-group">
+                        <label>Session Name</label>
+                        <input type="text" id="sessionNameInput" placeholder="e.g. Dinner at ABC, Trip to XYZ"
+                            autocomplete="off" />
+                    </div>
+                    <div class="sheet-actions">
+                        <button class="sht-btn sht-btn-danger" id="deleteSessionBtn"
+                            style="display:none; flex:0 0 auto; padding:12px 18px;" onclick="deleteSession()">
+                            <i class="fa-regular fa-trash"></i>
+                        </button>
+                        <button class="sht-btn sht-btn-ghost" onclick="closeSessionModal()">Cancel</button>
+                        <button class="sht-btn sht-btn-primary" onclick="saveSession()">
+                            <i class="fa-regular fa-check"></i>&nbsp;Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add / Edit Item Modal -->
+    <div class="modal fade" id="itemModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
+        data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content ft-modal-content">
+                <div class="modal-body">
+                    <div class="sheet-title" id="itemSheetTitle">
+                        <i class="fa-regular fa-cart-shopping"></i>&nbsp;Add Item
+                    </div>
+                    <div class="form-group">
+                        <label>Item Name</label>
+                        <input type="text" id="itemNameInput" placeholder="e.g. Pizza, Drinks" autocomplete="off" />
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Unit Price (SGD)</label>
+                            <input type="number" id="itemPriceInput" placeholder="0.00" min="0" step="0.01" />
+                        </div>
+                        <div class="form-group">
+                            <label>Quantity</label>
+                            <input type="number" id="itemQtyInput" placeholder="1" min="1" step="1" value="1" />
+                        </div>
+                    </div>
+                    <div class="sheet-actions">
+                        <button class="sht-btn sht-btn-danger" id="deleteItemBtn"
+                            style="display:none; flex:0 0 auto; padding:12px 18px;" onclick="deleteItem()">
+                            <i class="fa-regular fa-trash"></i>
+                        </button>
+                        <button class="sht-btn sht-btn-ghost" onclick="closeItemModal()">Cancel</button>
+                        <button class="sht-btn sht-btn-primary" onclick="saveItem()">
+                            <i class="fa-regular fa-check"></i>&nbsp;Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Person Modal -->
+    <div class="modal fade" id="personModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
+        data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content ft-modal-content">
+                <div class="modal-body">
+                    <div class="sheet-title">
+                        <i class="fa-regular fa-user-plus"></i>&nbsp;Add Person
+                    </div>
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" id="personNameInput" placeholder="e.g. Alice" autocomplete="off" />
+                    </div>
+                    <div class="sheet-actions">
+                        <button class="sht-btn sht-btn-ghost" onclick="closePersonModal()">Cancel</button>
+                        <button class="sht-btn sht-btn-primary" onclick="savePerson()">
+                            <i class="fa-regular fa-check"></i>&nbsp;Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/ft-subp.js"></script>
+    <script src="js/mob-navtabs.js"></script>
+    <script src="js/mob-navtabs-tooltip.js"></script>
+    <script src="js/haptic.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+
+    <script src="js/group-repayments.js"></script>
+</body>
+
+</html>

@@ -103,7 +103,7 @@
 
             // Loan meta (date + note)
             const metaEl = document.getElementById('loanMetaDisplay');
-            let metaHtml = `<div class="loan-date-label">Lent on ${fmtDate(loan.date)}</div>`;
+            let metaHtml = `<div class="loan-date-label">Loan Date: ${fmtDate(loan.date)}</div>`;
             if (loan.note) metaHtml += `<div class="loan-note-display">${esc(loan.note)}</div>`;
             metaEl.innerHTML = metaHtml;
 
