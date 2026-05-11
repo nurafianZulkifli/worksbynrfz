@@ -341,7 +341,7 @@ body.dark-mode .progress-wrap {
 }
 
 .ft-progress-bar.warn {
-    background: linear-gradient(84deg, #f59e0b, #d97706);
+    background: linear-gradient(84deg, #f59e0b, #a83e00);
 }
 
 .ft-progress-bar.danger {
