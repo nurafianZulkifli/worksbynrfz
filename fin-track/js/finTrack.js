@@ -106,7 +106,8 @@
     const container = document.getElementById('monthTabs');
     container.innerHTML = tabs.reverse().map(({m, y}) => {
       const active = m === state.activeMonth && y === state.activeYear;
-      return `<button class="month-btn${active?' active':''}" onclick="setMonth(${m},${y})">${MONTHS[m]}</button>`;
+      const label = y !== curY ? `${MONTHS[m]} '${String(y).slice(2)}` : MONTHS[m];
+      return `<button class="month-btn${active?' active':''}" onclick="setMonth(${m},${y})">${label}</button>`;
     }).join('');
     // Scroll active tab into view
     const activeBtn = container.querySelector('.month-btn.active');
