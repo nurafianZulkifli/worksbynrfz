@@ -156,7 +156,7 @@ function grRenderItemsList(sess) {
     if (!wrap) return;
 
     if (!sess || !(sess.items || []).length) {
-        wrap.innerHTML = `<div class="gr-empty">
+        wrap.innerHTML = `<div class="empty-state">
             <i class="fa-regular fa-cart-shopping"></i>
             <div>${!sess ? 'Create a session to get started.' : 'Add items to split the bill.'}</div>
         </div>`;
