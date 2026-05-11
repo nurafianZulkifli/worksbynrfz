@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover">
+    <title>Repayments | FinTrack</title>
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="FinTrack">
+
+    <script src="https://kit.fontawesome.com/965e82ac01.js" crossorigin="anonymous"></script>
+
+    <link rel="icon" href="./assets/icon-512.png">
+
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="css/finTrack.css">
+    <link rel="stylesheet" href="../css/pwa-styles.css">
+    <link rel="stylesheet" href="../css/style-breakpoints.css">
+    <link rel="stylesheet" href="../css/dark-mode.css">
+
+    <link rel="apple-touch-startup-image" href="../img/bg-img/hero-bg-dark.png">
+    <link rel="manifest" href="./manifest.json">
+
+    <style>
+        /* Repayments cover section */
+        #cv-rp {
+            background:
+                linear-gradient(135deg, rgba(40, 124, 81, 0.82) 0%, rgba(16, 80, 77, 0.82) 100%),
+                url('assets/hero-bg.png') center center / cover no-repeat;
+            height: 46vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        body.dark-mode #cv-rp {
+            background:
+                linear-gradient(135deg, rgba(40, 124, 81, 0.82) 0%, rgba(16, 80, 77, 0.82) 100%),
+                url('assets/hero-bg-dark.png') center center / cover no-repeat;
+        }
+
+        #cv-rp::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 100%;
+            width: 100vw;
+            margin-left: calc(-50vw + 50%);
+            background: linear-gradient(to bottom,
+                    rgba(236, 236, 234, 0) 0%,
+                    rgba(236, 236, 234, 0) 30%,
+                    rgba(236, 236, 234, 0.4) 55%,
+                    rgba(236, 236, 234, 0.75) 72%,
+                    rgba(236, 236, 234, 0.95) 88%,
+                    rgba(236, 236, 234, 1) 100%);
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+            -webkit-mask-image: linear-gradient(to top, black 0%, black 40%, rgba(0, 0, 0, 0.5) 60%, rgba(0, 0, 0, 0.15) 80%, transparent 100%);
+            mask-image: linear-gradient(to top, black 0%, black 40%, rgba(0, 0, 0, 0.5) 60%, rgba(0, 0, 0, 0.15) 80%, transparent 100%);
+            z-index: 1;
+        }
+
+        body.dark-mode #cv-rp::before {
+            background: linear-gradient(to bottom,
+                    rgba(18, 21, 33, 0) 0%,
+                    rgba(18, 21, 33, 0) 30%,
+                    rgba(18, 21, 33, 0.4) 55%,
+                    rgba(18, 21, 33, 0.75) 72%,
+                    rgba(18, 21, 33, 0.95) 88%,
+                    rgba(18, 21, 33, 1) 100%);
+        }
+
+        #cv-rp .container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+        }
+
+        /* Page title inside cover */
+        .rp-cover-title {
+            color: rgba(255, 255, 255, 0.92);
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            margin-bottom: 10px;
+            opacity: 0.85;
+        }
+
+        /* Loan summary badge in cover */
+        .rp-cover-badge {
+            color: rgba(255, 255, 255, 0.82);
+            font-size: 0.78rem;
+            font-weight: 500;
+            margin-top: 4px;
+        }
+
+        /* Outstanding amount badge */
+        .outstanding-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(220, 38, 38, 0.18);
+            border: 1px solid rgba(220, 38, 38, 0.35);
+            color: #fca5a5;
+            border-radius: 99px;
+            padding: 4px 12px;
+            font-size: 0.77rem;
+            font-weight: 600;
+            margin-top: 6px;
+        }
+
+        .outstanding-badge.fully-repaid {
+            background: rgba(22, 163, 74, 0.18);
+            border-color: rgba(22, 163, 74, 0.35);
+            color: #86efac;
+        }
+
+        /* Loan date sub-label */
+        .loan-date-label {
+            font-size: 0.72rem;
+            color: #6b7280;
+            margin-top: 2px;
+        }
+
+        body.dark-mode .loan-date-label {
+            color: #a0a0b0;
+        }
+
+        /* Repayment progress bar — use green always for repayment context */
+        .rp-progress-bar-wrap {
+            background: #f3f4f6;
+            border-radius: 99px;
+            height: 8px;
+            overflow: hidden;
+        }
+
+        body.dark-mode .rp-progress-bar-wrap {
+            background: #2e3244;
+        }
+
+        .rp-progress-fill {
+            height: 100%;
+            border-radius: 99px;
+            background: linear-gradient(90deg, #42c07e 0%, #239690 100%);
+            transition: width 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        /* Action row below summary */
+        .rp-card-actions {
+            margin-top: 14px;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        /* Note text in txn-item */
+        .rp-no-loans {
+            text-align: center;
+            padding: 56px 20px 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .rp-no-loans i {
+            font-size: 2.8rem;
+            color: #9ca3af;
+        }
+
+        body.dark-mode .rp-no-loans i {
+            color: #6b7280;
+        }
+
+        .rp-no-loans-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #374151;
+        }
+
+        body.dark-mode .rp-no-loans-title {
+            color: #c9cade;
+        }
+
+        .rp-no-loans-desc {
+            font-size: 0.85rem;
+            color: #6b7280;
+            max-width: 260px;
+            line-height: 1.5;
+        }
+
+        body.dark-mode .rp-no-loans-desc {
+            color: #9ca3af;
+        }
+
+        /* Loan note in summary */
+        .loan-note-display {
+            font-size: 0.78rem;
+            color: #6b7280;
+            margin-top: 6px;
+            font-style: italic;
+        }
+
+        body.dark-mode .loan-note-display {
+            color: #a0a0b0;
+        }
+
+        /* Loan switcher button highlight pulse */
+        @keyframes loanBtnPulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(66, 192, 126, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.233);
+                background: #ffffffb4;
+            }
+
+            40% {
+                box-shadow: 0 0 0 10px rgba(66, 192, 126, 0), inset 0 1px 0 rgba(255, 255, 255, 0.233);
+                background: #c6f6de;
+            }
+
+            60% {
+                box-shadow: 0 0 0 0 rgba(66, 192, 126, 0), inset 0 1px 0 rgba(255, 255, 255, 0.233);
+                background: #ffffffb4;
+            }
+
+            80% {
+                box-shadow: 0 0 0 8px rgba(66, 192, 126, 0), inset 0 1px 0 rgba(255, 255, 255, 0.233);
+                background: #c6f6de;
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(66, 192, 126, 0), inset 0 1px 0 rgba(255, 255, 255, 0.233);
+                background: #ffffffb4;
+            }
+        }
+
+        .loan-switcher-highlight {
+            animation: loanBtnPulse 0.9s ease-out 2;
+        }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Apply dark mode before render to avoid flash -->
+    <script>
+        (function () {
+            var pref = localStorage.getItem('theme-preference') || 'system';
+            var isDark = pref === 'dark' || (pref === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            if (isDark) document.body.classList.add('dark-mode');
+        })();
+    </script>
+
+    <!-- Desktop Navbar -->
+    <nav class="navbar-container">
+        <div class="navbar">
+            <a href="index.html">
+                <img src="assets/logo.png" alt="logo" class="logo" onerror="this.style.display='none'">
+            </a>
+            <ul class="navbar-nav" id="navbarNav">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">
+                        <i class="fa-regular fa-money-bills-simple"></i>
+                        <span>Transactions</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="repayments.html" class="nav-link active">
+                        <i class="fa-regular fa-money-bill-transfer"></i>
+                        <span>Repayments</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="menu.html" class="nav-link">
+                        <i class="fa-regular fa-bars"></i>
+                        <span>Menu</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-bottom-nav">
+        <ul>
+            <li>
+                <a href="index.html">
+                    <span class="icon"><i class="fa-regular fa-money-bills-simple"></i></span>
+                    <span class="label">Transactions</span>
+                </a>
+            </li>
+            <li class="active">
+                <a href="repayments.html">
+                    <span class="icon"><i class="fa-regular fa-money-bill-transfer"></i></span>
+                    <span class="label">Repayments</span>
+                </a>
+            </li>
+            <li>
+                <a href="menu.html">
+                    <span class="icon"><i class="fa-regular fa-bars"></i></span>
+                    <span class="label">Menu</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Cover Section with Loan Switcher -->
+    <section class="breadcrumb-area-eicw-cover bg-img bg-overlay" id="cv-rp">
+        <div class="container">
+            <div class="row h-100 align-items-center justify-content-center">
+                <div class="ft-cover-wrapper">
+                    <div class="ft-greeting" id="ftGreeting"></div>
+                    <div class="acct-switcher-wrap">
+                        <button class="acct-switcher-btn" id="loanSwitcherBtn" onclick="openLoanSwitcher()">
+                            <span id="loanSwitcherName">Select Loan</span>
+                            <i class="fa-regular fa-chevron-down" style="font-size:0.75em; opacity:0.7;"></i>
+                        </button>
+                    </div>
+                    <div id="coverBadge"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="ft-main" id="ft-main">
+        <div class="container">
+            <div style="display: flex; flex-direction: column; margin-bottom: 20px;">
+
+                <!-- Summary Card -->
+                <div class="balance-card" id="summaryCard">
+                    <div class="balance-row">
+                        <div class="balance-item">
+                            <span class="balance-label">Lent</span>
+                            <span class="balance-amount" id="lentDisplay">SGD 0.00</span>
+                        </div>
+                        <div class="balance-item" style="text-align:center;">
+                            <span class="balance-label">Repaid</span>
+                            <span class="balance-amount positive" id="repaidDisplay">SGD 0.00</span>
+                        </div>
+                        <div class="balance-item" style="text-align:right;">
+                            <span class="balance-label">Outstanding</span>
+                            <span class="balance-amount" id="outstandingDisplay">SGD 0.00</span>
+                        </div>
+                    </div>
+                    <div id="loanMetaDisplay"></div>
+                    <div class="rp-progress-bar-wrap" style="margin-top:14px;">
+                        <div class="rp-progress-fill" id="rpProgressBar" style="width:0%"></div>
+                    </div>
+                    <div class="progress-legend">
+                        <span id="rpProgressPct">0% repaid</span>
+                        <span id="rpProgressLeft">SGD 0.00 outstanding</span>
+                    </div>
+                    <div class="rp-card-actions">
+                        <button class="reset-month-btn" onclick="openEditLoan()">
+                            <i class="fa-regular fa-pen"></i>&nbsp;Edit Loan
+                        </button>
+                        <button class="reset-month-btn" id="markRepaidBtn" style="border-color:#16a34a; color:#16a34a;"
+                            onclick="markFullyRepaid()">
+                            <i class="fa-regular fa-check-double"></i>&nbsp;Mark Fully Repaid
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Repayment History Header -->
+                <div class="rp-list-header">
+                    <div class="ft-section-heading" style="margin-bottom:0;">Repayment History</div>
+                    <button class="ft-add-btn" onclick="openAddRepayment()">
+                        <i class="fa-regular fa-plus"></i>&nbsp;Add
+                    </button>
+                </div>
+
+                <!-- Repayments List -->
+                <div id="rpSection" style="padding-bottom: 120px;"></div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <!-- First-Time Guide Overlay -->
+    <div class="overlay" id="rpGuideOverlay">
+        <div class="guide-sheet">
+            <div class="guide-steps-wrap" id="rpGuideStepsWrap">
+
+                <!-- Step 1: Add a loan -->
+                <div class="guide-step active" id="rpGuideStep1">
+                    <div class="guide-icon-wrap guide-icon-blue">
+                        <i class="fa-regular fa-hand-holding-dollar"></i>
+                    </div>
+                    <div class="guide-step-label">Step 1 of 2</div>
+                    <div class="guide-step-title">Add a Loan</div>
+                    <div class="guide-step-body">
+                        Tap the <strong>borrower name button</strong> at the top to open the loan switcher, then tap
+                        <strong>New Loan</strong> to record who borrowed money, how much, and when.
+                        <div class="guide-tip">
+                            <i class="fa-regular fa-lightbulb"></i>
+                            You can track multiple loans at once — switch between them anytime using the name button.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Record repayments -->
+                <div class="guide-step" id="rpGuideStep2">
+                    <div class="guide-icon-wrap guide-icon-green">
+                        <i class="fa-regular fa-money-bill-transfer"></i>
+                    </div>
+                    <div class="guide-step-label">Step 2 of 2</div>
+                    <div class="guide-step-title">Track Repayments</div>
+                    <div class="guide-step-body">
+                        Each time you receive money back, tap <strong>Add</strong> to log the amount and date.
+                        The progress bar shows how much has been repaid so far.
+                        <div class="guide-tip">
+                            <i class="fa-regular fa-lightbulb"></i>
+                            Use <strong>Mark Fully Repaid</strong> to close out a loan in one tap — it records the
+                            remaining balance automatically.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Dots -->
+            <div class="guide-dots">
+                <span class="guide-dot active" id="rpGuideDot1"></span>
+                <span class="guide-dot" id="rpGuideDot2"></span>
+            </div>
+
+            <!-- Actions -->
+            <div class="guide-actions">
+                <button class="sht-btn sht-btn-ghost" id="rpGuidePrevBtn" onclick="rpGuidePrev()" style="display:none;">
+                    <i class="fa-regular fa-chevron-left"></i> Back
+                </button>
+                <button class="sht-btn sht-btn-ghost guide-skip-btn" onclick="rpGuideFinish()">
+                    <i class="fa-regular fa-x"></i> Skip
+                </button>
+                <button class="sht-btn sht-btn-primary" id="rpGuideNextBtn" onclick="rpGuideNext()">
+                    Next <i class="fa-regular fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="acct-dropdown" id="loanDropdown">
+        <div id="loanList"></div>
+        <div class="acct-dropdown-footer">
+            <button class="sht-btn sht-btn-primary" onclick="closeLoanDropdown(); openAddLoan();">
+                <i class="fa-regular fa-plus"></i>&nbsp;New Loan
+            </button>
+        </div>
+    </div>
+
+    <!-- Add / Edit Loan Bottom Sheet -->
+    <div class="overlay" id="loanOverlay" onclick="closeOnBackdrop(event,'loanOverlay')">
+        <div class="sheet">
+            <div class="sheet-handle"></div>
+            <div class="sheet-title" id="loanSheetTitle">
+                <i class="fa-regular fa-hand-holding-dollar"></i>&nbsp;New Loan
+            </div>
+            <div class="form-group">
+                <label>Borrower Name</label>
+                <input type="text" id="loanName" placeholder="e.g. Alice" autocomplete="off" />
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Amount Lent (SGD)</label>
+                    <input type="number" id="loanAmount" placeholder="0.00" min="0" step="0.01" />
+                </div>
+                <div class="form-group">
+                    <label>Date Lent</label>
+                    <input type="date" id="loanDate" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Note (optional)</label>
+                <input type="text" id="loanNote" placeholder="e.g. For rent deposit" autocomplete="off" />
+            </div>
+            <div class="sheet-actions">
+                <button class="sht-btn sht-btn-danger" id="deleteLoanBtn"
+                    style="display:none; flex:0 0 auto; padding: 12px 18px;" onclick="deleteLoan()">
+                    <i class="fa-regular fa-trash"></i>
+                </button>
+                <button class="sht-btn sht-btn-ghost" onclick="closeOverlay('loanOverlay')">Cancel</button>
+                <button class="sht-btn sht-btn-primary" onclick="saveLoan()">
+                    <i class="fa-regular fa-check"></i>&nbsp;Save
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add / Edit Repayment Modal (Bootstrap) -->
+    <div class="modal fade" id="repaymentModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
+        data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content ft-modal-content">
+                <div class="modal-body">
+                    <div class="sheet-title" id="rpSheetTitle">
+                        <i class="fa-regular fa-money-bill-transfer"></i>&nbsp;Add Repayment
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Amount (SGD)</label>
+                            <input type="number" id="rpAmount" placeholder="0.00" min="0" step="0.01" />
+                        </div>
+                        <div class="form-group">
+                            <label>Date Received</label>
+                            <input type="date" id="rpDate" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Note (optional)</label>
+                        <input type="text" id="rpNote" placeholder="e.g. Cash, PayNow" autocomplete="off" />
+                    </div>
+                    <div class="sheet-actions">
+                        <button class="sht-btn sht-btn-danger" id="deleteRpBtn"
+                            style="display:none; flex:0 0 auto; padding: 12px 18px;" onclick="deleteRepayment()">
+                            <i class="fa-regular fa-trash"></i>
+                        </button>
+                        <button class="sht-btn sht-btn-ghost" onclick="closeRpModal()">Cancel</button>
+                        <button class="sht-btn sht-btn-primary" onclick="saveRepayment()">
+                            <i class="fa-regular fa-check"></i>&nbsp;Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/ft-subp.js"></script>
+    <script src="js/mob-navtabs.js"></script>
+    <script src="js/mob-navtabs-tooltip.js"></script>
+    <script src="js/haptic.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+
+    <script src="js/repayments.js"></script>
+
+</body>
+</html>

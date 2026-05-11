@@ -57,14 +57,14 @@
             <ul class="navbar-nav" id="navbarNav">
                 <li class="nav-item">
                     <a href="#" class="nav-link active">
-                        <i class="fa-regular fa-chart-line"></i>
-                        <span>Overview</span>
+                        <i class="fa-regular fa-money-bills-simple"></i>
+                        <span>Transactions</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link" onclick="openAdd(); return false;">
-                        <i class="fa-regular fa-plus"></i>
-                        <span>Add</span>
+                    <a href="repayments.html" class="nav-link">
+                        <i class="fa-regular fa-money-bill-transfer"></i>
+                        <span>Repayments</span>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -82,14 +82,14 @@
         <ul>
             <li class="active">
                 <a href="#">
-                    <span class="icon"><i class="fa-regular fa-chart-line"></i></span>
-                    <span class="label">Overview</span>
+                    <span class="icon"><i class="fa-regular fa-money-bills-simple"></i></span>
+                    <span class="label">Transactions</span>
                 </a>
             </li>
             <li>
-                <a href="#" onclick="openAdd(); return false;">
-                    <span class="icon"><i class="fa-regular fa-plus"></i></span>
-                    <span class="label">Add</span>
+                <a href="repayments.html">
+                    <span class="icon"><i class="fa-regular fa-money-bill-transfer"></i></span>
+                    <span class="label">Repayments</span>
                 </a>
             </li>
             <li>
@@ -163,7 +163,12 @@
                 </div>
 
                 <!-- Transactions list -->
-                <div class="ft-section-heading">Transactions</div>
+                <div class="rp-list-header">
+                    <div class="ft-section-heading" style="margin-bottom:0;">Transactions</div>
+                    <button class="ft-add-btn" onclick="openAdd()">
+                        <i class="fa-regular fa-plus"></i>&nbsp;Add
+                    </button>
+                </div>
                 <div id="txnSection" style="padding-bottom: 120px;"></div>
 
             </div>

@@ -439,6 +439,15 @@ body.dark-mode .progress-legend {
     margin-bottom: 12px;
 }
 
+/* Section heading row with inline action button */
+.rp-list-header {
+    margin-bottom: 16px;
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    align-items: center;
+}
+
 body.dark-mode .ft-section-heading {
     color: #e0e0f0;
 }
