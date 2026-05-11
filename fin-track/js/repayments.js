@@ -128,9 +128,6 @@
                         <i class="fa-regular fa-hand-holding-dollar"></i>
                         <div class="rp-no-loans-title">No loans yet</div>
                         <div class="rp-no-loans-desc">Tap the name above to add a loan — track who borrowed, how much, and when they pay you back.</div>
-                        <button class="ft-add-btn" onclick="addFirstLoan()">
-                            <i class="fa-regular fa-plus"></i>&nbsp;Add a Loan
-                        </button>
                     </div>`;
                 return;
             }
@@ -268,6 +265,10 @@
         // ── Add / Edit Loan ──────────────────────────────────────────────────────
         let editingLoanId = null;
 
+        function _getLoanModal() {
+            return bootstrap.Modal.getOrCreateInstance(document.getElementById('loanModal'));
+        }
+
         function openAddLoan() {
             editingLoanId = null;
             document.getElementById('loanSheetTitle').innerHTML = '<i class="fa-regular fa-hand-holding-dollar"></i>&nbsp;New Loan';
@@ -276,7 +277,7 @@
             document.getElementById('loanDate').value = new Date().toISOString().slice(0, 10);
             document.getElementById('loanNote').value = '';
             document.getElementById('deleteLoanBtn').style.display = 'none';
-            openOverlay('loanOverlay');
+            _getLoanModal().show();
             setTimeout(() => document.getElementById('loanName').focus(), 300);
         }
 
@@ -290,7 +291,11 @@
             document.getElementById('loanDate').value = loan.date;
             document.getElementById('loanNote').value = loan.note || '';
             document.getElementById('deleteLoanBtn').style.display = '';
-            openOverlay('loanOverlay');
+            _getLoanModal().show();
+        }
+
+        function closeLoanModal() {
+            _getLoanModal().hide();
         }
 
         function saveLoan() {
@@ -314,7 +319,7 @@
                 showToast('Loan added');
             }
 
-            saveState(); closeOverlay('loanOverlay'); renderAll();
+            saveState(); closeLoanModal(); renderAll();
         }
 
         function deleteLoan() {
@@ -335,7 +340,7 @@
             saveState();
             const dropdownOpen = document.getElementById('loanDropdown').classList.contains('open');
             if (dropdownOpen) renderLoanList();
-            closeOverlay('loanOverlay');
+            closeLoanModal();
             renderAll();
             showToast('Loan deleted');
         }
@@ -415,6 +420,17 @@
         // Lock <html> scroll when modal opens (matches index.html pattern)
         (function () {
             const el = document.getElementById('repaymentModal');
+            if (!el) return;
+            el.addEventListener('show.bs.modal', function () {
+                document.documentElement.style.overflow = 'hidden';
+            });
+            el.addEventListener('hidden.bs.modal', function () {
+                document.documentElement.style.overflow = '';
+            });
+        })();
+
+        (function () {
+            const el = document.getElementById('loanModal');
             if (!el) return;
             el.addEventListener('show.bs.modal', function () {
                 document.documentElement.style.overflow = 'hidden';

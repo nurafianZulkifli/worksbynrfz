@@ -129,6 +129,7 @@
             font-size: 1.1rem;
             font-weight: 700;
             color: #374151;
+            cursor: default;
         }
 
         body.dark-mode .rp-no-loans-title {
@@ -140,6 +141,7 @@
             color: #6b7280;
             max-width: 260px;
             line-height: 1.5;
+            cursor: default;
         }
 
         body.dark-mode .rp-no-loans-desc {
@@ -405,40 +407,44 @@
         </div>
     </div>
 
-    <!-- Add / Edit Loan Bottom Sheet -->
-    <div class="overlay" id="loanOverlay" onclick="closeOnBackdrop(event,'loanOverlay')">
-        <div class="sheet">
-            <div class="sheet-handle"></div>
-            <div class="sheet-title" id="loanSheetTitle">
-                <i class="fa-regular fa-hand-holding-dollar"></i>&nbsp;New Loan
-            </div>
-            <div class="form-group">
-                <label>Loan Name</label>
-                <input type="text" id="loanName" placeholder="e.g. Alice/Paylater" autocomplete="off" />
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Loan Amount (SGD)</label>
-                    <input type="number" id="loanAmount" placeholder="0.00" min="0" step="0.01" />
+    <!-- Add / Edit Loan Modal (Bootstrap) -->
+    <div class="modal fade" id="loanModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
+        data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content ft-modal-content">
+                <div class="modal-body">
+                    <div class="sheet-title" id="loanSheetTitle">
+                        <i class="fa-regular fa-hand-holding-dollar"></i>&nbsp;New Loan
+                    </div>
+                    <div class="form-group">
+                        <label>Loan Name</label>
+                        <input type="text" id="loanName" placeholder="e.g. Alice/Paylater" autocomplete="off" />
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Loan Amount (SGD)</label>
+                            <input type="number" id="loanAmount" placeholder="0.00" min="0" step="0.01" />
+                        </div>
+                        <div class="form-group">
+                            <label>Loan Date</label>
+                            <input type="date" id="loanDate" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Note (optional)</label>
+                        <input type="text" id="loanNote" placeholder="e.g. For rent deposit" autocomplete="off" />
+                    </div>
+                    <div class="sheet-actions">
+                        <button class="sht-btn sht-btn-danger" id="deleteLoanBtn"
+                            style="display:none; flex:0 0 auto; padding: 12px 18px;" onclick="deleteLoan()">
+                            <i class="fa-regular fa-trash"></i>
+                        </button>
+                        <button class="sht-btn sht-btn-ghost" onclick="closeLoanModal()">Cancel</button>
+                        <button class="sht-btn sht-btn-primary" onclick="saveLoan()">
+                            <i class="fa-regular fa-check"></i>&nbsp;Save
+                        </button>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Loan Date</label>
-                    <input type="date" id="loanDate" />
-                </div>
-            </div>
-            <div class="form-group">
-                <label>Note (optional)</label>
-                <input type="text" id="loanNote" placeholder="e.g. For rent deposit" autocomplete="off" />
-            </div>
-            <div class="sheet-actions">
-                <button class="sht-btn sht-btn-danger" id="deleteLoanBtn"
-                    style="display:none; flex:0 0 auto; padding: 12px 18px;" onclick="deleteLoan()">
-                    <i class="fa-regular fa-trash"></i>
-                </button>
-                <button class="sht-btn sht-btn-ghost" onclick="closeOverlay('loanOverlay')">Cancel</button>
-                <button class="sht-btn sht-btn-primary" onclick="saveLoan()">
-                    <i class="fa-regular fa-check"></i>&nbsp;Save
-                </button>
             </div>
         </div>
     </div>

@@ -295,6 +295,7 @@ body.dark-mode .balance-card {
     letter-spacing: 0.7px;
     color: #6b7280;
     font-weight: 600;
+    cursor: default;
 }
 
 body.dark-mode .balance-label {
@@ -305,6 +306,7 @@ body.dark-mode .balance-label {
     font-size: 1.5rem;
     font-weight: 800;
     color: #1e1e2e;
+    cursor: default;
 }
 
 body.dark-mode .balance-amount {
@@ -353,6 +355,7 @@ body.dark-mode .progress-wrap {
     font-size: 0.75rem;
     color: #6b7280;
     font-weight: 500;
+    cursor: default;
 }
 
 .reset-month-btn {
@@ -423,6 +426,7 @@ body.dark-mode .progress-legend {
     font-weight: 700;
     color: #1e1e2e;
     margin-bottom: 12px;
+    cursor: default;
 }
 
 /* Section heading row with inline action button */
@@ -447,6 +451,7 @@ body.dark-mode .ft-section-heading {
     letter-spacing: 0.5px;
     margin-bottom: 8px;
     padding-left: 4px;
+    cursor: default;
 }
 
 body.dark-mode .txn-date-label {
@@ -1165,13 +1170,6 @@ body.dark-mode .acct-delete-btn:hover {
 
 body.dark-mode .page-header-section {
     background: #121521 !important;
-}
-
-.page-title {
-    font-size: 2.2rem;
-    font-weight: 700;
-    color: #111827;
-    margin: 0 0 4px 0;
 }
 
 body.dark-mode .page-title {
