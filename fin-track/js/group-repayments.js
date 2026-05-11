@@ -1,6 +1,18 @@
 // ── Storage Key ───────────────────────────────────────────────────────────
 const GR_STORAGE_KEY = 'fintrack-group-split';
 
+// ── Avatar gradients ──────────────────────────────────────────────────────
+const GR_GRADIENTS = [
+    'linear-gradient(135deg, #42c07e 0%, #239690 100%)',
+    'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+    'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+    'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+    'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)',
+    'linear-gradient(135deg, #ffd89b 0%, #19547b 100%)',
+    'linear-gradient(135deg, #96fbc4 0%, #f9f586 100%)',
+];
+
 // ── Helpers ───────────────────────────────────────────────────────────────
 function grUid() { return Date.now().toString(36) + Math.random().toString(36).slice(2); }
 function grFmt(n) { return 'SGD ' + parseFloat(n || 0).toFixed(2); }
@@ -63,7 +75,7 @@ function grRenderAll() {
     grRenderSwitcherName();
     grRenderCoverBadge();
     grRenderPeopleBar();
-    grRenderTable();
+    grRenderContent();
 }
 
 function grRenderGreeting() {
@@ -108,9 +120,9 @@ function grRenderPeopleBar() {
 
     let html = '';
     (sess.people || []).forEach((name, idx) => {
-        html += `<div class="gr-person-chip">
+        html += `<div class="gr-person-chip" onclick="grOpenEditPerson(${idx})" style="cursor:pointer;">
             ${grEsc(name)}
-            <button class="chip-remove" onclick="grRemovePerson(${idx})" title="Remove ${grEsc(name)}">
+            <button class="chip-remove" onclick="event.stopPropagation(); grRemovePerson(${idx})" title="Remove ${grEsc(name)}">
                 <i class="fa-solid fa-xmark"></i>
             </button>
         </div>`;
@@ -123,100 +135,103 @@ function grRenderPeopleBar() {
     bar.innerHTML = html;
 }
 
-function grRenderTable() {
+function grRenderContent() {
     const sess = grActiveSession();
-    const wrap = document.getElementById('grTableWrap');
+
+    // Grand total card
     const grandCard = document.getElementById('grGrandTotalCard');
     const grandAmt = document.getElementById('grGrandTotalAmt');
-    const tapTip = document.getElementById('grTapTip');
+    if (grandCard) {
+        const hasItems = sess && (sess.items || []).length > 0;
+        grandCard.style.display = hasItems ? '' : 'none';
+        if (hasItems && grandAmt) grandAmt.textContent = grFmt(grGrandTotal(sess));
+    }
+
+    grRenderItemsList(sess);
+    grRenderPersonCards(sess);
+}
+
+function grRenderItemsList(sess) {
+    const wrap = document.getElementById('grItemsList');
     if (!wrap) return;
 
-    if (!sess) {
-        wrap.innerHTML = `<div class="gr-empty">
-            <i class="fa-regular fa-users"></i>
-            <div>Create a session to start splitting bills.</div>
-        </div>`;
-        if (grandCard) grandCard.style.display = 'none';
-        if (tapTip) tapTip.style.display = 'none';
-        return;
-    }
-
-    const people = sess.people || [];
-    const items = sess.items || [];
-
-    if (grandCard) {
-        if (items.length) {
-            grandCard.style.display = '';
-            if (grandAmt) grandAmt.textContent = grFmt(grGrandTotal(sess));
-        } else {
-            grandCard.style.display = 'none';
-        }
-    }
-
-    if (tapTip) {
-        tapTip.style.display = (items.length && people.length) ? '' : 'none';
-    }
-
-    if (!items.length) {
+    if (!sess || !(sess.items || []).length) {
         wrap.innerHTML = `<div class="gr-empty">
             <i class="fa-regular fa-cart-shopping"></i>
-            <div>${people.length ? 'Add items to start splitting.' : 'Add people and items to start splitting.'}</div>
+            <div>${!sess ? 'Create a session to get started.' : 'Add items to split the bill.'}</div>
         </div>`;
         return;
     }
 
-    // Build table
-    let html = `<div class="gr-table-wrap"><table class="gr-table"><thead><tr>`;
-    html += `<th class="col-item">Item</th>`;
-    html += `<th>Total</th>`;
-    people.forEach(name => {
-        html += `<th>${grEsc(name)}</th>`;
-    });
-    html += `</tr></thead><tbody>`;
-
-    items.forEach(item => {
+    let html = '<div class="txn-group-card">';
+    sess.items.forEach(item => {
         const total = grItemTotal(item);
-        html += `<tr>`;
-        // Item name cell with edit button
-        html += `<td class="col-item">
-            <div style="display:flex; align-items:center; gap:6px; justify-content:space-between;">
-                <div>
-                    <div class="gr-item-name">${grEsc(item.name)}</div>
-                    <div class="gr-item-meta">${grFmtShort(item.price)} &times; ${item.qty}</div>
-                </div>
-                <button class="gr-item-edit-btn" onclick="grOpenEditItem('${item.id}')" title="Edit item">
-                    <i class="fa-regular fa-pen"></i>
-                </button>
+        const count = (item.included || []).filter(v => v !== false).length;
+        html += `<div class="txn-item" onclick="grOpenEditItem('${item.id}')">
+            <div class="txn-icon" style="background:#f0fdf4;">
+                <i class="fa-regular fa-utensils" style="color:#16a34a;"></i>
             </div>
-        </td>`;
-        // Row total
-        html += `<td><strong>${grFmtShort(total)}</strong></td>`;
-        // Per-person cells
-        people.forEach((_, pIdx) => {
-            const included = item.included[pIdx] !== false;
-            const share = grPersonShare(item, pIdx);
-            html += `<td>
-                <div class="gr-person-cell ${included ? 'included' : 'excluded'}"
-                     onclick="grToggleIncluded('${item.id}', ${pIdx})">
-                    ${included ? grFmtShort(share) : '&mdash;'}
-                </div>
-            </td>`;
-        });
-        html += `</tr>`;
+            <div class="txn-info">
+                <div class="txn-name">${grEsc(item.name)}</div>
+                <div class="txn-cat">${grFmtShort(item.price)} &times; ${item.qty} &bull; ${count} ${count === 1 ? 'person' : 'people'}</div>
+            </div>
+            <div class="txn-amount debit">${grFmtShort(total)}</div>
+        </div>`;
     });
-
-    // Totals row
-    html += `<tr class="gr-total-row">`;
-    html += `<td class="col-item">Total</td>`;
-    html += `<td>${grFmtShort(grGrandTotal(sess))}</td>`;
-    people.forEach((_, pIdx) => {
-        const total = grPersonTotal(sess, pIdx);
-        html += `<td><span class="gr-person-total">${grFmtShort(total)}</span></td>`;
-    });
-    html += `</tr>`;
-
-    html += `</tbody></table></div>`;
+    html += '</div>';
     wrap.innerHTML = html;
+}
+
+function grRenderPersonCards(sess) {
+    const wrap = document.getElementById('grPersonCards');
+    const section = document.getElementById('grSummarySection');
+    if (!wrap || !section) return;
+
+    if (!sess || !(sess.people || []).length || !(sess.items || []).length) {
+        section.style.display = 'none';
+        return;
+    }
+
+    section.style.display = '';
+    let html = '';
+
+    (sess.people || []).forEach((name, pIdx) => {
+        const total = grPersonTotal(sess, pIdx);
+        const gradient = GR_GRADIENTS[pIdx % GR_GRADIENTS.length];
+        const initial = name.charAt(0).toUpperCase();
+
+        const breakdownRows = (sess.items || [])
+            .filter(item => (item.included || [])[pIdx] !== false)
+            .map(item => {
+                const share = grPersonShare(item, pIdx);
+                return `<div class="gr-person-breakdown-row">
+                    <span class="gr-person-breakdown-name">${grEsc(item.name)}</span>
+                    <span class="gr-person-breakdown-amount">${grFmtShort(share)}</span>
+                </div>`;
+            }).join('');
+            
+
+        html += `<div class="gr-person-card collapsed" id="grPersonCard-${pIdx}">
+            <div class="gr-person-card-header" onclick="grTogglePersonCard(${pIdx})">
+                <div class="gr-person-avatar" style="background:${gradient}">${initial}</div>
+                <div class="gr-person-card-info">
+                    <div class="gr-person-card-name">${grEsc(name)}</div>
+                </div>
+                <div class="gr-person-card-total">${grFmt(total)}</div>
+                <i class="fa-regular fa-chevron-down gr-person-card-chevron"></i>
+            </div>
+            <div class="gr-person-card-body">
+                ${breakdownRows || `<div style="color:#9ca3af; font-size:0.82rem; padding:8px 0;">Not sharing any items</div>`}
+            </div>
+        </div>`;
+    });
+
+    wrap.innerHTML = html;
+}
+
+function grTogglePersonCard(idx) {
+    const card = document.getElementById(`grPersonCard-${idx}`);
+    if (card) card.classList.toggle('collapsed');
 }
 
 // ── Session Dropdown ──────────────────────────────────────────────────────
@@ -326,11 +341,27 @@ function closeSessionModal() {
 
 // ── Person Modal ──────────────────────────────────────────────────────────
 let grPersonModal;
+let grEditingPersonIdx = null;
 
 function grOpenPersonModal() {
     const sess = grActiveSession();
     if (!sess) { grShowToast('Create a session first'); return; }
+    grEditingPersonIdx = null;
+    document.getElementById('personSheetTitle').innerHTML = '<i class="fa-regular fa-user-plus"></i>&nbsp;Add Person';
     document.getElementById('personNameInput').value = '';
+    document.getElementById('deletePersonBtn').style.display = 'none';
+    if (!grPersonModal) grPersonModal = new bootstrap.Modal(document.getElementById('personModal'));
+    grPersonModal.show();
+    setTimeout(() => document.getElementById('personNameInput').focus(), 400);
+}
+
+function grOpenEditPerson(idx) {
+    const sess = grActiveSession();
+    if (!sess) return;
+    grEditingPersonIdx = idx;
+    document.getElementById('personSheetTitle').innerHTML = '<i class="fa-regular fa-user-pen"></i>&nbsp;Edit Person';
+    document.getElementById('personNameInput').value = sess.people[idx];
+    document.getElementById('deletePersonBtn').style.display = 'flex';
     if (!grPersonModal) grPersonModal = new bootstrap.Modal(document.getElementById('personModal'));
     grPersonModal.show();
     setTimeout(() => document.getElementById('personNameInput').focus(), 400);
@@ -341,19 +372,39 @@ function savePerson() {
     if (!sess) return;
     const name = document.getElementById('personNameInput').value.trim();
     if (!name) { grShowToast('Please enter a name'); return; }
-    if (sess.people.includes(name)) { grShowToast('Name already in list'); return; }
 
-    sess.people.push(name);
-    // Extend all existing items' included arrays
-    sess.items.forEach(item => {
-        while (item.included.length < sess.people.length) {
-            item.included.push(true);
-        }
-    });
+    if (grEditingPersonIdx !== null) {
+        // Editing existing
+        const oldName = sess.people[grEditingPersonIdx];
+        if (name !== oldName && sess.people.includes(name)) { grShowToast('Name already in list'); return; }
+        sess.people[grEditingPersonIdx] = name;
+        grSaveState();
+        closePersonModal();
+        grRenderAll();
+        grShowToast('Name updated');
+    } else {
+        // Adding new
+        if (sess.people.includes(name)) { grShowToast('Name already in list'); return; }
+        sess.people.push(name);
+        sess.items.forEach(item => {
+            while (item.included.length < sess.people.length) item.included.push(true);
+        });
+        grSaveState();
+        closePersonModal();
+        grRenderAll();
+    }
+}
 
+function deletePerson() {
+    const sess = grActiveSession();
+    if (!sess || grEditingPersonIdx === null) return;
+    const name = sess.people[grEditingPersonIdx];
+    sess.people.splice(grEditingPersonIdx, 1);
+    sess.items.forEach(item => item.included.splice(grEditingPersonIdx, 1));
     grSaveState();
     closePersonModal();
     grRenderAll();
+    grShowToast(`${name} removed`);
 }
 
 function grRemovePerson(idx) {
@@ -374,6 +425,43 @@ function closePersonModal() {
 // ── Item Modal ────────────────────────────────────────────────────────────
 let grItemModal;
 
+function grPopulateItemPeopleToggles(sess, editingItem) {
+    const group = document.getElementById('itemPeopleGroup');
+    const container = document.getElementById('itemPeopleCheckboxes');
+    if (!group || !container) return;
+
+    if (!sess || !(sess.people || []).length) {
+        group.style.display = 'none';
+        return;
+    }
+
+    group.style.display = '';
+    let html = '';
+    sess.people.forEach((name, idx) => {
+        const checked = editingItem ? editingItem.included[idx] !== false : true;
+        html += `<div class="gr-person-toggle-row ${checked ? 'checked' : ''}"
+                     id="grToggleRow-${idx}"
+                     data-checked="${checked}"
+                     onclick="grToggleRow(${idx})">
+            <span class="gr-toggle-name">${grEsc(name)}</span>
+            <span class="gr-toggle-check">
+                ${checked ? '<i class="fa-solid fa-check" style="font-size:0.7rem;"></i>' : ''}
+            </span>
+        </div>`;
+    });
+    container.innerHTML = html;
+}
+
+function grToggleRow(idx) {
+    const row = document.getElementById(`grToggleRow-${idx}`);
+    if (!row) return;
+    const newChecked = row.dataset.checked !== 'true';
+    row.dataset.checked = String(newChecked);
+    row.classList.toggle('checked', newChecked);
+    const checkSpan = row.querySelector('.gr-toggle-check');
+    if (checkSpan) checkSpan.innerHTML = newChecked ? '<i class="fa-solid fa-check" style="font-size:0.7rem;"></i>' : '';
+}
+
 function openAddItem() {
     const sess = grActiveSession();
     if (!sess) { grShowToast('Create a session first'); return; }
@@ -383,6 +471,7 @@ function openAddItem() {
     document.getElementById('itemPriceInput').value = '';
     document.getElementById('itemQtyInput').value = '1';
     document.getElementById('deleteItemBtn').style.display = 'none';
+    grPopulateItemPeopleToggles(sess, null);
     if (!grItemModal) grItemModal = new bootstrap.Modal(document.getElementById('itemModal'));
     grItemModal.show();
     setTimeout(() => document.getElementById('itemNameInput').focus(), 400);
@@ -399,6 +488,7 @@ function grOpenEditItem(id) {
     document.getElementById('itemPriceInput').value = item.price;
     document.getElementById('itemQtyInput').value = item.qty;
     document.getElementById('deleteItemBtn').style.display = 'flex';
+    grPopulateItemPeopleToggles(sess, item);
     if (!grItemModal) grItemModal = new bootstrap.Modal(document.getElementById('itemModal'));
     grItemModal.show();
     setTimeout(() => document.getElementById('itemNameInput').focus(), 400);
@@ -414,11 +504,15 @@ function saveItem() {
     if (!name) { grShowToast('Please enter an item name'); return; }
     if (isNaN(price) || price < 0) { grShowToast('Please enter a valid price'); return; }
 
+    const included = (sess.people || []).map((_, idx) => {
+        const row = document.getElementById(`grToggleRow-${idx}`);
+        return row ? row.dataset.checked !== 'false' : true;
+    });
+
     if (grEditingItemId) {
         const item = sess.items.find(i => i.id === grEditingItemId);
-        if (item) { item.name = name; item.price = price; item.qty = qty; }
+        if (item) { item.name = name; item.price = price; item.qty = qty; item.included = included; }
     } else {
-        const included = (sess.people || []).map(() => true);
         sess.items.push({ id: grUid(), name, price, qty, included });
     }
 
@@ -441,20 +535,6 @@ function deleteItem() {
 
 function closeItemModal() {
     if (grItemModal) grItemModal.hide();
-}
-
-// ── Toggle Person per Item ────────────────────────────────────────────────
-function grToggleIncluded(itemId, personIdx) {
-    const sess = grActiveSession();
-    if (!sess) return;
-    const item = sess.items.find(i => i.id === itemId);
-    if (!item) return;
-    // Ensure array covers this person index
-    while (item.included.length <= personIdx) item.included.push(true);
-    item.included[personIdx] = (item.included[personIdx] === false) ? true : false;
-    grSaveState();
-    grRenderTable();
-    grRenderCoverBadge();
 }
 
 // ── Toast ─────────────────────────────────────────────────────────────────
