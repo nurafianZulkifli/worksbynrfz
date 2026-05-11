@@ -40,7 +40,7 @@ body.dark-mode #cv-rp {
 
 .ft-greeting-text {
     color: rgba(255, 255, 255, 0.9);
-    font-size: calc(1.005rem + .9vw);
+    font-size: calc(1.325rem + .9vw);
     line-height: 1.3;
     font-weight: 600;
     cursor: default;
@@ -1671,6 +1671,12 @@ body.dark-mode .guide-skip-btn {
 }
 
 /* ===== MEDIA QUERIES ===== */
+
+@media (min-width: 1200px) {
+    .ft-greeting-text {
+        font-size: 2rem;
+    }
+}
 
 @media (max-width: 994px) {
     .ft-cover-wrapper {
