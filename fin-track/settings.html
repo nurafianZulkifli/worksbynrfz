@@ -337,7 +337,12 @@
         function exportData() {
             const state = load();
             if (!state) { showToast('Error: No data to export'); return; }
-            const json = JSON.stringify(state, null, 2);
+            const repayments = localStorage.getItem('fintrack-repayments');
+            const backup = {
+                fintrack: state,
+                'fintrack-repayments': repayments ? JSON.parse(repayments) : null
+            };
+            const json = JSON.stringify(backup, null, 2);
             const blob = new Blob([json], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -357,19 +362,31 @@
             reader.onload = function (e) {
                 try {
                     const imported = JSON.parse(e.target.result);
-                    if (!imported.accounts || !Array.isArray(imported.accounts)) {
+                    
+                    // Handle both old format (direct state) and new format (backup object)
+                    const state = imported.fintrack || imported;
+                    const repayments = imported['fintrack-repayments'];
+                    
+                    if (!state.accounts || !Array.isArray(state.accounts)) {
                         showToast('Invalid file format');
                         return;
                     }
-                    if (!confirm('This will replace all your current accounts. Continue?')) return;
+                    if (!confirm('This will replace all your current accounts and repayments. Continue?')) return;
+                    
                     // Strip archived flags, cycleStartDate and resetOffset so all transactions count
-                    imported.accounts.forEach(function(a) {
+                    state.accounts.forEach(function(a) {
                         delete a.cycleStartDate;
                         delete a.resetOffset;
                         if (a.transactions) a.transactions.forEach(function(t) { delete t.archived; });
                     });
-                    imported._migrated = true;
-                    save(imported);
+                    state._migrated = true;
+                    save(state);
+                    
+                    // Import repayments data if present
+                    if (repayments) {
+                        localStorage.setItem('fintrack-repayments', JSON.stringify(repayments));
+                    }
+                    
                     showToast('Data imported successfully');
                     setTimeout(() => { window.location.href = 'index.html'; }, 500);
                 } catch (err) {
