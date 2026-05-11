@@ -25,63 +25,6 @@
     <link rel="manifest" href="./manifest.json">
 
     <style>
-        /* Repayments cover section */
-        #cv-rp {
-            background:
-                linear-gradient(135deg, rgba(40, 124, 81, 0.82) 0%, rgba(16, 80, 77, 0.82) 100%),
-                url('assets/hero-bg.png') center center / cover no-repeat;
-            height: 46vh;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        body.dark-mode #cv-rp {
-            background:
-                linear-gradient(135deg, rgba(40, 124, 81, 0.82) 0%, rgba(16, 80, 77, 0.82) 100%),
-                url('assets/hero-bg-dark.png') center center / cover no-repeat;
-        }
-
-        #cv-rp::before {
-            content: "";
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            height: 100%;
-            width: 100vw;
-            margin-left: calc(-50vw + 50%);
-            background: linear-gradient(to bottom,
-                    rgba(236, 236, 234, 0) 0%,
-                    rgba(236, 236, 234, 0) 30%,
-                    rgba(236, 236, 234, 0.4) 55%,
-                    rgba(236, 236, 234, 0.75) 72%,
-                    rgba(236, 236, 234, 0.95) 88%,
-                    rgba(236, 236, 234, 1) 100%);
-            -webkit-backdrop-filter: blur(20px);
-            backdrop-filter: blur(20px);
-            -webkit-mask-image: linear-gradient(to top, black 0%, black 40%, rgba(0, 0, 0, 0.5) 60%, rgba(0, 0, 0, 0.15) 80%, transparent 100%);
-            mask-image: linear-gradient(to top, black 0%, black 40%, rgba(0, 0, 0, 0.5) 60%, rgba(0, 0, 0, 0.15) 80%, transparent 100%);
-            z-index: 1;
-        }
-
-        body.dark-mode #cv-rp::before {
-            background: linear-gradient(to bottom,
-                    rgba(18, 21, 33, 0) 0%,
-                    rgba(18, 21, 33, 0) 30%,
-                    rgba(18, 21, 33, 0.4) 55%,
-                    rgba(18, 21, 33, 0.75) 72%,
-                    rgba(18, 21, 33, 0.95) 88%,
-                    rgba(18, 21, 33, 1) 100%);
-        }
-
-        #cv-rp .container {
-            position: relative;
-            z-index: 2;
-            width: 100%;
-        }
 
         /* Page title inside cover */
         .rp-cover-title {
