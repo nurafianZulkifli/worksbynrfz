@@ -236,7 +236,7 @@ body.dark-mode .month-btn.active {
 
 /* Main content card section (overlaps cover like Buszy .pinned) */
 .ft-main {
-    margin-top: -2rem;
+    margin-top: -4rem;
     position: relative;
     z-index: 10;
 }
@@ -1746,7 +1746,7 @@ body.dark-mode .guide-skip-btn {
     }
 
     .ft-main {
-        margin-top: -2rem;
+        margin-top: -4rem;
     }
 
     .navbar,
@@ -1887,7 +1887,7 @@ body.dark-mode .guide-skip-btn {
     }
 
     .ft-main {
-        margin-top: 0rem;
+        margin-top: -2rem;
     }
 
     .balance-amount {
