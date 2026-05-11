@@ -213,15 +213,22 @@
         // ── Loan Switcher Dropdown ───────────────────────────────────────────────
         function openLoanSwitcher() {
             const dropdown = document.getElementById('loanDropdown');
+            const overlay = document.getElementById('loanDropdownOverlay');
             if (dropdown.classList.contains('open')) {
-                dropdown.classList.remove('open'); unlockScroll(); return;
+                dropdown.classList.remove('open');
+                overlay.classList.remove('open');
+                unlockScroll();
+                return;
             }
             renderLoanList();
-            dropdown.classList.add('open'); lockScroll();
+            dropdown.classList.add('open');
+            overlay.classList.add('open');
+            lockScroll();
         }
 
         function closeLoanDropdown() {
             document.getElementById('loanDropdown').classList.remove('open');
+            document.getElementById('loanDropdownOverlay').classList.remove('open');
             unlockScroll();
         }
 

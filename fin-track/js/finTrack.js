@@ -418,18 +418,22 @@
 
   function openAccountSwitcher() {
     const dropdown = document.getElementById('acctDropdown');
+    const overlay = document.getElementById('acctDropdownOverlay');
     if (dropdown.classList.contains('open')) {
       dropdown.classList.remove('open');
+      overlay.classList.remove('open');
       unlockScroll();
       return;
     }
     renderAccountList();
     dropdown.classList.add('open');
+    overlay.classList.add('open');
     lockScroll();
   }
 
   function closeAccountDropdown() {
     document.getElementById('acctDropdown').classList.remove('open');
+    document.getElementById('acctDropdownOverlay').classList.remove('open');
     unlockScroll();
   }
 
