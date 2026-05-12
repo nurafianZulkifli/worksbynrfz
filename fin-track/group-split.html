@@ -597,6 +597,86 @@
     <!-- Toast -->
     <div class="toast" id="toast"></div>
 
+    <!-- First-Time Guide Overlay -->
+    <div class="overlay" id="grGuideOverlay">
+        <div class="guide-sheet">
+            <div class="guide-steps-wrap" id="grGuideStepsWrap">
+
+                <!-- Step 1: Create a Session -->
+                <div class="guide-step active" id="grGuideStep1">
+                    <div class="guide-icon-wrap guide-icon-green">
+                        <i class="fa-regular fa-users"></i>
+                    </div>
+                    <div class="guide-step-label">Step 1 of 3</div>
+                    <div class="guide-step-title">Create a Session</div>
+                    <div class="guide-step-body">
+                        Tap the <strong>session name button</strong> at the top, then tap <strong>New Session</strong>
+                        to give your group outing a name — like <em>Dinner with Friends</em>.
+                        <div class="guide-tip">
+                            <i class="fa-regular fa-lightbulb"></i>
+                            You can create multiple sessions and switch between them anytime using the name button.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Add People -->
+                <div class="guide-step" id="grGuideStep2">
+                    <div class="guide-icon-wrap guide-icon-blue">
+                        <i class="fa-regular fa-user-plus"></i>
+                    </div>
+                    <div class="guide-step-label">Step 2 of 3</div>
+                    <div class="guide-step-title">Add People</div>
+                    <div class="guide-step-body">
+                        Tap <strong>Add</strong> in the people bar to add everyone you're splitting with.
+                        Each person gets their own card in the summary below.
+                        <div class="guide-tip">
+                            <i class="fa-regular fa-lightbulb"></i>
+                            Tap a person's chip to rename or remove them.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Add Items & Split -->
+                <div class="guide-step" id="grGuideStep3">
+                    <div class="guide-icon-wrap guide-icon-teal">
+                        <i class="fa-regular fa-utensils"></i>
+                    </div>
+                    <div class="guide-step-label">Step 3 of 3</div>
+                    <div class="guide-step-title">Add Items &amp; Split</div>
+                    <div class="guide-step-body">
+                        Tap <strong>Add Item</strong> to log each dish or expense. Choose who shares it —
+                        everyone is included by default, but you can deselect anyone.
+                        <div class="guide-tip">
+                            <i class="fa-regular fa-lightbulb"></i>
+                            The per-person breakdown updates instantly as you add items.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Dots -->
+            <div class="guide-dots">
+                <span class="guide-dot active" id="grGuideDot1"></span>
+                <span class="guide-dot" id="grGuideDot2"></span>
+                <span class="guide-dot" id="grGuideDot3"></span>
+            </div>
+
+            <!-- Actions -->
+            <div class="guide-actions">
+                <button class="sht-btn sht-btn-ghost" id="grGuidePrevBtn" onclick="grGuidePrev()" style="display:none;">
+                    <i class="fa-regular fa-chevron-left"></i> Back
+                </button>
+                <button class="sht-btn sht-btn-ghost guide-skip-btn" onclick="grGuideFinish()">
+                    <i class="fa-regular fa-x"></i> Skip
+                </button>
+                <button class="sht-btn sht-btn-primary" id="grGuideNextBtn" onclick="grGuideNext()">
+                    Next <i class="fa-regular fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Session Dropdown Backdrop -->
     <div class="acct-dropdown-overlay" id="sessionDropdownOverlay" onclick="closeSessionDropdown()"></div>
 

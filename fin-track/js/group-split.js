@@ -546,6 +546,48 @@ function grShowToast(msg) {
     setTimeout(() => t.classList.remove('show'), 2500);
 }
 
+// ── First-Time Guide ──────────────────────────────────────────────────────
+const GR_GUIDE_KEY = 'fintrack-gr-guide-done';
+let _grGuideStep = 1;
+const GR_GUIDE_TOTAL = 3;
+
+function grGuideTo(step) {
+    _grGuideStep = step;
+    for (let i = 1; i <= GR_GUIDE_TOTAL; i++) {
+        const s = document.getElementById('grGuideStep' + i);
+        const d = document.getElementById('grGuideDot' + i);
+        if (s) s.classList.toggle('active', i === step);
+        if (d) d.classList.toggle('active', i === step);
+    }
+    const prevBtn = document.getElementById('grGuidePrevBtn');
+    const nextBtn = document.getElementById('grGuideNextBtn');
+    if (prevBtn) prevBtn.style.display = step > 1 ? '' : 'none';
+    if (nextBtn) {
+        if (step === GR_GUIDE_TOTAL) {
+            nextBtn.innerHTML = '<i class="fa-regular fa-check"></i> Done';
+            nextBtn.onclick = grGuideFinish;
+        } else {
+            nextBtn.innerHTML = 'Next <i class="fa-regular fa-chevron-right"></i>';
+            nextBtn.onclick = grGuideNext;
+        }
+    }
+}
+
+function grGuideNext() {
+    if (_grGuideStep < GR_GUIDE_TOTAL) grGuideTo(_grGuideStep + 1);
+    else grGuideFinish();
+}
+
+function grGuidePrev() {
+    if (_grGuideStep > 1) grGuideTo(_grGuideStep - 1);
+}
+
+function grGuideFinish() {
+    localStorage.setItem(GR_GUIDE_KEY, '1');
+    const overlay = document.getElementById('grGuideOverlay');
+    if (overlay) overlay.classList.remove('open');
+}
+
 // ── Init ──────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
     // Ensure active session pointer is valid
@@ -554,4 +596,12 @@ document.addEventListener('DOMContentLoaded', () => {
         grSaveState();
     }
     grRenderAll();
+
+    if (!localStorage.getItem(GR_GUIDE_KEY)) {
+        grGuideTo(1);
+        setTimeout(function () {
+            const overlay = document.getElementById('grGuideOverlay');
+            if (overlay) overlay.classList.add('open');
+        }, 800);
+    }
 });
