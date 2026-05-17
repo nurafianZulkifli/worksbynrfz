@@ -32,6 +32,7 @@ async function computeUnreadFromSource() {
         const storedState = JSON.parse(localStorage.getItem(ANN_STORAGE_KEY) || '{}');
         const now = new Date();
         let hasUnread = false;
+        const isFirstVisit = Object.keys(storedState).length === 0;
 
         items.forEach(item => {
             const id = item.getAttribute('data-ann-id');
@@ -39,7 +40,9 @@ async function computeUnreadFromSource() {
             const annDate = new Date(dateStr);
             const daysSince = (now - annDate) / (1000 * 60 * 60 * 24);
 
-            if (daysSince <= NEW_ITEM_DAYS && !storedState[id]?.hash) {
+            // On first visit (no stored state), all items are unread regardless of age.
+            // On subsequent visits, only items within NEW_ITEM_DAYS that haven't been read count.
+            if (isFirstVisit || (daysSince <= NEW_ITEM_DAYS && !storedState[id]?.hash)) {
                 hasUnread = true;
             }
         });
