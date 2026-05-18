@@ -1,5 +1,19 @@
 [
-        {
+    {
+        "type": "Disruption",
+        "title": "BP Major Delay - Senja  - Bukit Panjang",
+        "line": "BP",
+        "from": "Senja",
+        "to": "Bukit Panjang",
+        "start": "2026-05-18",
+        "end": "2026-05-18",
+        "status": "Resolved",
+        "tags": [
+            "Disruption",
+            "Track Intrusion"
+        ]
+    },
+    {
         "type": "Disruption",
         "title": "TEL Major Delay - Woodlands North to Bayshore",
         "line": "TEL",
@@ -9,7 +23,8 @@
         "end": "2026-05-03",
         "status": "Resolved",
         "tags": [
-            "Disruption","Signalling Fault"
+            "Disruption",
+            "Signalling Fault"
         ]
     },
     {
