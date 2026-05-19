@@ -546,6 +546,14 @@ async function populateServiceData(serviceNumber, service) {
     // Service header
     document.getElementById('service-number').textContent = service.n;
     document.getElementById('service-title').textContent = service.op ? `${service.op} ${service.t} Service ${service.n}` : `Service ${service.n}`;
+
+    // Apply operator colour to service header
+    const headerEl = document.getElementById('service-header');
+    const operatorClassMap = { SBST: 'operator-sbst', SMRT: 'operator-smrt', GAS: 'operator-gas', TTS: 'operator-tts' };
+    headerEl.classList.remove('operator-sbst', 'operator-smrt', 'operator-gas', 'operator-tts');
+    if (service.op && operatorClassMap[service.op]) {
+        headerEl.classList.add(operatorClassMap[service.op]);
+    }
     
     // Attach the route info button handler
     attachRouteInfoButton(service.n);

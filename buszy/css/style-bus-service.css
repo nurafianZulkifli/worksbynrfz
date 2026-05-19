@@ -57,6 +57,7 @@ body.dark-mode #breadcrumb-service h2 {
     gap: 2rem;
     margin-bottom: 2rem;
     padding: 1.5rem;
+    /* Default: Neutral (LTA) — green */
     background: #a1c248;
     background: linear-gradient(90deg, rgba(161, 194, 72, 1) 0%, rgba(132, 179, 23, 1) 52%, rgba(179, 199, 68, 1) 100%);
     border-radius: 16px;
@@ -70,6 +71,68 @@ body.dark-mode .service-header {
     border-radius: 16px;
     color: #000;
     box-shadow: 3px 0 15px -1px rgba(0, 0, 0, 0.15);
+}
+
+/* SBST — SBS Transit (Purple) */
+.service-header.operator-sbst {
+    background: #d43cfa;
+    background: linear-gradient(47deg, rgb(191, 57, 224) 0%, rgba(80, 51, 161, 1) 100%);
+    color: #fff;
+}
+
+body.dark-mode .service-header.operator-sbst {
+    background: #d43cfa;
+    background: linear-gradient(47deg, rgb(132, 37, 156) 0%, rgb(63, 38, 131) 100%);
+    color: #fff;
+}
+
+/* SMRT — SMRT Buses (Red) */
+.service-header.operator-smrt {
+    background: #fa3f3c;
+    background: linear-gradient(47deg, rgb(236, 79, 77) 0%, rgb(199, 61, 107) 100%);
+    color: #fff;
+}
+
+body.dark-mode .service-header.operator-smrt {
+    background: #fa3f3c;
+    background: linear-gradient(47deg, rgb(184, 20, 17) 0%, rgb(122, 37, 66) 100%);
+    color: #fff;
+}
+
+/* GAS — Go-Ahead Singapore (Orange) */
+.service-header.operator-gas {
+    background: #d9ce04;
+    background: linear-gradient(47deg, rgb(238, 199, 23) 0%, rgba(242, 166, 0, 1) 100%);
+    color: #000;
+}
+
+.service-header.operator-gas .service-info h1,
+body.dark-mode .service-header.operator-gas .service-info h1 {
+    color: #000;
+}
+
+body.dark-mode .service-header.operator-gas {
+    background: #d9ce04;
+    background: linear-gradient(47deg, rgb(223, 186, 23) 0%, rgb(196, 135, 5) 100%);
+    color: #000;
+}
+
+/* TTS — Tower Transit Singapore (Green) */
+.service-header.operator-tts {
+    background: #1efa81;
+    background: linear-gradient(47deg, rgb(46, 151, 90) 0%, rgb(3, 141, 90) 100%);
+    color: #fff;
+}
+
+.service-header.operator-tts .service-info h1,
+body.dark-mode .service-header.operator-tts .service-info h1 {
+    color: #fff;
+}
+
+body.dark-mode .service-header.operator-tts {
+    background: #1abd63;
+    background: linear-gradient(47deg, rgb(21, 161, 84) 0%, rgb(5, 100, 65) 100%);
+    color: #fff;
 }
 
 .service-number-badge {
@@ -89,8 +152,14 @@ body.dark-mode .service-header {
     margin: 0;
     font-size: 1.8rem;
     font-weight: 700;
-    color: #000 !important;
+    color: #000;
     align-items: center;
+}
+
+/* Override text color for dark-background operators */
+.service-header.operator-sbst .service-info h1,
+.service-header.operator-smrt .service-info h1 {
+    color: #fff;
 }
 
 .open-route-info-btn {
@@ -110,6 +179,13 @@ body.dark-mode .service-header {
     gap: 0.6rem;
 }
 
+.service-header.operator-sbst .open-route-info-btn,
+.service-header.operator-smrt .open-route-info-btn,
+.service-header.operator-gas .open-route-info-btn,
+.service-header.operator-tts .open-route-info-btn {
+    color: #fff;
+}
+
 .open-route-info-btn:hover {
     background-color: rgba(255, 255, 255, 0.4);
     border-color: rgba(255, 255, 255, 0.8);
@@ -127,7 +203,14 @@ body.dark-mode .service-header {
     opacity: 0.95;
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: #000 !important;
+    color: #000;
+}
+
+.service-header.operator-sbst .service-type,
+.service-header.operator-smrt .service-type,
+.service-header.operator-gas .service-type,
+.service-header.operator-tts .service-type {
+    color: #fff;
 }
 
 /* Quick Info Cards - Using port-summary style */
