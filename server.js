@@ -392,7 +392,10 @@ for (const [key, watchers] of [...pushWatchers.entries()]) {
             data: { busStopCode, serviceNo, type: 'approaching', notifyMode: watcher.notifyMode || 'once' }
           });
           try {
-            await webpush.sendNotification(watcher.subscription, payload);
+            await webpush.sendNotification(watcher.subscription, payload, {
+              urgency: 'high',
+              TTL: watcher.threshold * 60  // expire after the threshold window passes
+            });
             watcher.notifiedUntil = now + 3 * 60 * 1000; // 3-minute cooldown
             console.log(`[Push] Notified approaching: stop=${busStopCode} svc=${serviceNo} eta=${etaMinutes}min mode=${watcher.notifyMode}`);
             // 'once' mode: remove this watcher after first notification
@@ -423,7 +426,10 @@ for (const [key, watchers] of [...pushWatchers.entries()]) {
             data: { busStopCode, serviceNo, type: 'arrived', notifyMode: watcher.notifyMode || 'once' }
           });
           try {
-            await webpush.sendNotification(watcher.subscription, payload);
+            await webpush.sendNotification(watcher.subscription, payload, {
+              urgency: 'high',
+              TTL: 120  // bus won't be at the stop for more than 2 minutes
+            });
             watcher.arrivedNotifiedUntil = now + 5 * 60 * 1000; // 5-minute cooldown
             console.log(`[Push] Notified arrived: stop=${busStopCode} svc=${serviceNo}`);
           } catch (err) {
