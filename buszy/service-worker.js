@@ -219,26 +219,34 @@ self.addEventListener('notificationclick', event => {
   event.notification.close();
   const { busStopCode, serviceNo } = event.notification.data || {};
   const scope = self.registration.scope; // e.g. "/buszy/" or "/nrfz-dev/buszy/"
-  let url = scope;
+  let targetUrl = scope;
   if (busStopCode) {
-    url = scope + 'art.html?BusStopCode=' + encodeURIComponent(busStopCode);
-    if (serviceNo) url += '&ServiceNo=' + encodeURIComponent(serviceNo);
+    targetUrl = scope + 'art.html?BusStopCode=' + encodeURIComponent(busStopCode);
+    if (serviceNo) targetUrl += '&ServiceNo=' + encodeURIComponent(serviceNo);
   }
 
-  event.waitUntil(
-    clients.matchAll({ type: 'window', includeUncontrolled: true }).then(windowClients => {
-      // Navigate an existing buszy tab to the right stop
-      for (const client of windowClients) {
-        if (client.url.includes('buszy') && 'navigate' in client) {
-          return client.navigate(url).then(c => {
-            if (c) { return c.focus(); }
-            return clients.openWindow(url);
-          });
-        }
-      }
-      return clients.openWindow(url);
-    })
-  );
+  event.waitUntil((async () => {
+    // Store the pending destination so any buszy page that loads can redirect correctly.
+    // This is the fallback for iOS where clients.openWindow() ignores the URL and
+    // always opens the manifest start_url (index.html) instead of art.html.
+    try {
+      const cache = await caches.open('buszy-notif-pending');
+      await cache.put('pending-nav', new Response(JSON.stringify({
+        busStopCode, serviceNo, url: targetUrl, ts: Date.now()
+      })));
+    } catch {}
+
+    const windowClients = await clients.matchAll({ type: 'window', includeUncontrolled: true });
+    const buszyClient = windowClients.find(c => c.url.includes('buszy'));
+    if (buszyClient) {
+      // postMessage is more reliable than client.navigate() across platforms
+      buszyClient.postMessage({ type: 'NOTIF_NAVIGATE', url: targetUrl });
+      return buszyClient.focus();
+    }
+
+    // No window open — open the target URL directly
+    return clients.openWindow(targetUrl);
+  })());
 });
 
 // ────────────────────────────────────────────────────────────────────

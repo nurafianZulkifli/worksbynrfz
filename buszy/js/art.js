@@ -244,9 +244,39 @@ function getBusStops() {
 // ****************************
 // :: Bus Arrivals Fetching and Display
 // ****************************
+
+// Handle NOTIF_NAVIGATE message from service worker notificationclick
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.addEventListener('message', event => {
+        if (event.data?.type === 'NOTIF_NAVIGATE' && event.data.url) {
+            window.location.href = event.data.url;
+        }
+    });
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
     // Re-register active push subscriptions with the server (restores after server restart/dyno wake)
     if (window.BuszyPushNotify) BuszyPushNotify.reRegisterAll();
+
+    // Check for a pending notification navigation stored by the service worker.
+    // Needed when the browser navigated to this page without query params (e.g. after
+    // a client.navigate() that dropped params, or a postMessage redirect chain).
+    if ('caches' in window && !new URLSearchParams(window.location.search).get('BusStopCode')) {
+        try {
+            const cache = await caches.open('buszy-notif-pending');
+            const resp = await cache.match('pending-nav');
+            if (resp) {
+                const pending = await resp.json();
+                await cache.delete('pending-nav');
+                if (pending.busStopCode && Date.now() - pending.ts < 30000) {
+                    let dest = 'art.html?BusStopCode=' + encodeURIComponent(pending.busStopCode);
+                    if (pending.serviceNo) dest += '&ServiceNo=' + encodeURIComponent(pending.serviceNo);
+                    window.location.replace(dest);
+                    return;
+                }
+            }
+        } catch {}
+    }
 
     // Apply fleet legend visibility setting
     function applyFleetLegendVisibility() {
