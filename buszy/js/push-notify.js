@@ -45,6 +45,14 @@
     return localStorage.getItem('buszy_notif_mode') || 'once';
   }
 
+  function getNotifWhen() {
+    const arriving = localStorage.getItem('buszy_notif_when_arriving') !== 'false';
+    const arrived  = localStorage.getItem('buszy_notif_when_arrived') === 'true';
+    if (arriving && arrived) return 'both';
+    if (arrived) return 'arrived';
+    return 'arriving';
+  }
+
   // ── VAPID helper ───────────────────────────────────────────────────
 
   function urlBase64ToUint8Array(base64String) {
@@ -110,7 +118,8 @@
           busStopCode: stopCode,
           serviceNo: serviceNo,
           threshold: thresholdMinutes || 1,
-          notifyMode: getNotifMode()
+          notifyMode: getNotifMode(),
+          notifyWhen: getNotifWhen()
         })
       });
       if (!res.ok) throw new Error('Server rejected: ' + res.status);
@@ -291,7 +300,8 @@
             busStopCode: stopCode,
             serviceNo: serviceNo,
             threshold: 1,
-            notifyMode: getNotifMode()
+            notifyMode: getNotifMode(),
+            notifyWhen: getNotifWhen()
           })
         });
       } catch { /* network unavailable — will retry on next load */ }

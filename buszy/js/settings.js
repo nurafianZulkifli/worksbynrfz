@@ -37,6 +37,14 @@ function initializeDefaultPreferences() {
     if (!localStorage.getItem('buszy_notif_mode')) {
         localStorage.setItem('buszy_notif_mode', 'once');
     }
+
+    // Set default notify-when preferences if not already set
+    if (!localStorage.getItem('buszy_notif_when_arriving')) {
+        localStorage.setItem('buszy_notif_when_arriving', 'true');
+    }
+    if (!localStorage.getItem('buszy_notif_when_arrived')) {
+        localStorage.setItem('buszy_notif_when_arrived', 'false');
+    }
 }
 
 // Initialize defaults on page load
@@ -138,6 +146,23 @@ document.addEventListener('DOMContentLoaded', () => {
             radio.addEventListener('change', (event) => {
                 localStorage.setItem('buszy_notif_mode', event.target.value);
             });
+        });
+    }
+
+    // Handle notify-when checkboxes
+    const notifWhenArriving = document.getElementById('notif-when-arriving');
+    if (notifWhenArriving) {
+        notifWhenArriving.checked = localStorage.getItem('buszy_notif_when_arriving') !== 'false';
+        notifWhenArriving.addEventListener('change', (event) => {
+            localStorage.setItem('buszy_notif_when_arriving', event.target.checked ? 'true' : 'false');
+        });
+    }
+
+    const notifWhenArrived = document.getElementById('notif-when-arrived');
+    if (notifWhenArrived) {
+        notifWhenArrived.checked = localStorage.getItem('buszy_notif_when_arrived') === 'true';
+        notifWhenArrived.addEventListener('change', (event) => {
+            localStorage.setItem('buszy_notif_when_arrived', event.target.checked ? 'true' : 'false');
         });
     }
 });
