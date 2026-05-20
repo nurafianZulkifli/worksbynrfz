@@ -243,6 +243,20 @@
 
   document.addEventListener('DOMContentLoaded', checkAndShowPermissionBanner);
 
+  // ── SW → page message: 'once' subscription fired, clean up client state ──
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.addEventListener('message', event => {
+      if (event.data?.type === 'NOTIF_ONCE_FIRED') {
+        const { busStopCode, serviceNo } = event.data;
+        removeTracked(busStopCode, serviceNo);
+        // Reset any visible notify button back to inactive
+        document.querySelectorAll(
+          `.notif-toggle-btn[data-stop="${busStopCode}"][data-service="${serviceNo}"]`
+        ).forEach(btn => setButtonInactive(btn));
+      }
+    });
+  }
+
   // ── Re-register all tracked subscriptions with the server ──────────
   // Called on every page load to restore subscriptions lost after a
   // server restart or Heroku dyno wake-up (in-memory state is gone).
@@ -259,6 +273,12 @@
     } catch { return; }
 
     if (!subscription) return; // not subscribed at browser level — nothing to restore
+
+    // 'once' subscriptions are removed by the server after firing;
+    // re-registering them would cause repeated notifications.
+    // Only re-register 'day' and 'always' modes.
+    const mode = getNotifMode();
+    if (mode === 'once') return;
 
     for (const key of subs) {
       const [stopCode, serviceNo] = key.split(':');
