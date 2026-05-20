@@ -367,6 +367,97 @@
         </div>
     </section>
 
+    <!-- First-Time Guide Overlay -->
+    <div class="overlay" id="guideOverlay">
+        <div class="guide-sheet">
+            <div class="guide-steps-wrap" id="guideStepsWrap">
+
+                <!-- Step 1: Line Status -->
+                <div class="guide-step active" id="guideStep1">
+                    <div class="guide-icon-wrap guide-icon-blue">
+                        <i class="fa-regular fa-train-subway"></i>
+                    </div>
+                    <div class="guide-step-label">Step 1 of 4</div>
+                    <div class="guide-step-title">Check Line Status</div>
+                    <div class="guide-step-body">
+                        The home screen shows real-time operational status for all <strong>MRT and LRT lines</strong>
+                        at a glance. Tap any line for full line and diagrams.
+                    </div>
+                </div>
+
+                <!-- Step 2: Station History -->
+                <div class="guide-step" id="guideStep2">
+                    <div class="guide-icon-wrap guide-icon-teal">
+                        <i class="fa-regular fa-clock-rotate-left"></i>
+                    </div>
+                    <div class="guide-step-label">Step 2 of 4</div>
+                    <div class="guide-step-title">Incident History</div>
+                    <div class="guide-step-body">
+                        The <strong>History</strong> tab stores a timeline of past incidents and disruptions across the MRT and LRT network, complete with timestamps and details.
+                        <div class="guide-tip">
+                            <i class="fa-regular fa-lightbulb"></i>
+                            Perfect for checking if that morning delay has been resolved or reviewing the timeline of a major disruption.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: First & Last Trains -->
+                <div class="guide-step" id="guideStep3">
+                    <div class="guide-icon-wrap guide-icon-green">
+                        <i class="fa-regular fa-clock"></i>
+                    </div>
+                    <div class="guide-step-label">Step 3 of 4</div>
+                    <div class="guide-step-title">First &amp; Last Trains</div>
+                    <div class="guide-step-body">
+                        Use the <strong>Timings</strong> tab to look up first and last train times for any
+                        station on any MRT or LRT line.
+                        <div class="guide-tip">
+                            <i class="fa-regular fa-lightbulb"></i>
+                            Great for planning early morning commutes or making sure you catch the last train home.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Settings -->
+                <div class="guide-step" id="guideStep4">
+                    <div class="guide-icon-wrap guide-icon-orange">
+                        <i class="fa-regular fa-gear"></i>
+                    </div>
+                    <div class="guide-step-label">Step 4 of 4</div>
+                    <div class="guide-step-title">Customise Settings</div>
+                    <div class="guide-step-body">
+                        Head to <strong>Menu &gt; Settings</strong> to switch between light, dark, or
+                        system-matched themes to suit your preference.
+                        <div class="guide-tip">
+                            <i class="fa-regular fa-lightbulb"></i>
+                            Choose <strong>System</strong> to have RailBuddy automatically follow your device's display setting — no manual switching needed.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Dots -->
+            <div class="guide-dots">
+                <span class="guide-dot active" id="guideDot1"></span>
+                <span class="guide-dot" id="guideDot2"></span>
+                <span class="guide-dot" id="guideDot3"></span>
+                <span class="guide-dot" id="guideDot4"></span>
+            </div>
+
+            <!-- Actions -->
+            <div class="guide-actions">
+                <button class="sht-btn sht-btn-ghost" id="guidePrevBtn" onclick="guidePrev()" style="display:none;">
+                    <i class="fa-regular fa-chevron-left"></i> Back
+                </button>
+                <button class="sht-btn sht-btn-ghost guide-skip-btn" onclick="guideFinish()"><i class="fa-regular fa-x"></i> Skip</button>
+                <button class="sht-btn sht-btn-primary" id="guideNextBtn" onclick="guideNext()">
+                    Next <i class="fa-regular fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script type="text/javascript" id="cookiebanner" src="../js/cookies-banner.js" data-position="bottom"
         data-bg="#f2f3e5" data-fg="#000" data-font-family="Onest, sans-serif" data-zindex="12345111111"
         data-message="This website uses cookies to provide necessary site functionality and to improve your experience. By using this website, you agree to our use of cookies.">
@@ -432,6 +523,76 @@
     </script>
 
     <script src="../js/back-to-top.js"></script>
+
+    <script>
+        // ── First-Time Guide ─────────────────────────────────────────────────────
+        (function () {
+            var _guideStep = 1;
+            var GUIDE_KEY = 'railbuddy-guide-done';
+            var TOTAL_STEPS = 4;
+
+            function lockScroll() {
+                document.documentElement.style.overflow = 'hidden';
+                document.body.style.overflow = 'hidden';
+            }
+
+            function unlockScroll() {
+                document.documentElement.style.overflow = '';
+                document.body.style.overflow = '';
+            }
+
+            function openGuideOverlay() {
+                document.getElementById('guideOverlay').classList.add('open');
+                lockScroll();
+            }
+
+            function closeGuideOverlay() {
+                document.getElementById('guideOverlay').classList.remove('open');
+                unlockScroll();
+            }
+
+            window.guideTo = function (step) {
+                _guideStep = step;
+                for (var i = 1; i <= TOTAL_STEPS; i++) {
+                    var s = document.getElementById('guideStep' + i);
+                    var d = document.getElementById('guideDot' + i);
+                    if (s) s.classList.toggle('active', i === step);
+                    if (d) d.classList.toggle('active', i === step);
+                }
+                var prevBtn = document.getElementById('guidePrevBtn');
+                var nextBtn = document.getElementById('guideNextBtn');
+                if (prevBtn) prevBtn.style.display = step > 1 ? '' : 'none';
+                if (nextBtn) {
+                    if (step === TOTAL_STEPS) {
+                        nextBtn.innerHTML = '<i class="fa-regular fa-check"></i> Done';
+                        nextBtn.onclick = window.guideFinish;
+                    } else {
+                        nextBtn.innerHTML = 'Next <i class="fa-regular fa-chevron-right"></i>';
+                        nextBtn.onclick = window.guideNext;
+                    }
+                }
+            };
+
+            window.guideNext = function () {
+                if (_guideStep < TOTAL_STEPS) window.guideTo(_guideStep + 1);
+                else window.guideFinish();
+            };
+
+            window.guidePrev = function () {
+                if (_guideStep > 1) window.guideTo(_guideStep - 1);
+            };
+
+            window.guideFinish = function () {
+                localStorage.setItem(GUIDE_KEY, '1');
+                closeGuideOverlay();
+            };
+
+            if (!localStorage.getItem(GUIDE_KEY)) {
+                window.guideTo(1);
+                setTimeout(openGuideOverlay, 800);
+            }
+        })();
+    </script>
 
 </body>
 

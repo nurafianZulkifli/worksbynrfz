@@ -1200,6 +1200,7 @@ async function fetchBusArrivals() {
                         BuszyPushNotify.toggle(stopCode, serviceNo, btn);
                     });
                 });
+
                 BuszyPushNotify.restoreButtonStates();
             }
 

@@ -32,6 +32,11 @@ function initializeDefaultPreferences() {
     if (!localStorage.getItem('refreshInterval')) {
         localStorage.setItem('refreshInterval', '2');
     }
+
+    // Set default notification mode if not already set
+    if (!localStorage.getItem('buszy_notif_mode')) {
+        localStorage.setItem('buszy_notif_mode', 'once');
+    }
 }
 
 // Initialize defaults on page load
@@ -120,6 +125,19 @@ document.addEventListener('DOMContentLoaded', () => {
             refreshIntervalValue.textContent = `${interval} sec`;
             // Dispatch custom event to notify other pages
             window.dispatchEvent(new CustomEvent('refreshIntervalChanged', { detail: { refreshInterval: parseFloat(interval) } }));
+        });
+    }
+
+    // Handle notification mode radio buttons
+    const notifModeRadios = document.querySelectorAll('input[name="notif-mode"]');
+    if (notifModeRadios.length) {
+        const savedMode = localStorage.getItem('buszy_notif_mode') || 'once';
+        const activeRadio = document.querySelector(`input[name="notif-mode"][value="${savedMode}"]`);
+        if (activeRadio) activeRadio.checked = true;
+        notifModeRadios.forEach(radio => {
+            radio.addEventListener('change', (event) => {
+                localStorage.setItem('buszy_notif_mode', event.target.value);
+            });
         });
     }
 });

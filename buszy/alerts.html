@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="57TuruPNu5wqSSia_cUehl5t9Gh1AbxrHNPcMiFx-aQ" />
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover">
     <title>Bus Service Alerts | Buszy</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
@@ -160,37 +160,23 @@
         gap: 12px;
         padding: 12px 18px;
         border-radius: 15px;
-        border: 1px solid;
+        background: #f9f9f9;
+        border: 1px solid #e0e0e0;
         margin-top: 0.75em;
         margin-bottom: 0.5em;
         font-size: 0.88rem;
     }
 
-    #notif-blocked-banner {
-        background: #fff3cd;
-        border-color: #ffc107;
-        color: #664d03;
-    }
-
-    #notif-prompt-banner {
-        background: #e8f4fd;
-        border-color: #90caf9;
-        color: #0d3349;
-    }
-
-    body.dark-mode #notif-blocked-banner {
-        background-color: #332b00;
-        border-color: #ffc107;
-        color: #ffe082;
-    }
-
+    body.dark-mode #notif-blocked-banner,
     body.dark-mode #notif-prompt-banner {
-        background-color: #0d2133;
-        border-color: #42a5f5;
-        color: #bbdefb;
+        background-color: #1c1f2b;
+        border: 1px solid rgba(27, 27, 27, 0.2);
+        color: #e0e0e0;
     }
 
-    .notif-banner-text { flex: 1; }
+    .notif-banner-text {
+        flex: 1;
+    }
 
     .notif-banner-actions {
         display: flex;
@@ -218,6 +204,10 @@
         transition: all 0.3s ease;
     }
 
+    .btn-group-sm>.btn, .btn-sm {
+        color: #000;
+    }
+
     .alerts-btn:hover {
         background-color: #cbe5fb;
         box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
@@ -231,6 +221,10 @@
     body.dark-mode .alerts-btn {
         background-color: #1a1f35be;
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
+        color: #fff;
+    }
+
+    body.dark-mode .btn-group-sm>.btn, body.dark-mode .btn-sm {
         color: #fff;
     }
 
@@ -422,9 +416,10 @@
                 <i class="fa-regular fa-bell-slash" style="font-size:1.3rem; flex-shrink:0;"></i>
                 <span class="notif-banner-text">
                     <strong>Notifications are blocked.</strong>
-                    To receive bus arrival alerts, allow notifications in your browser or app settings.
+                    To receive bus service alerts, allow notifications in your browser or app settings.
                 </span>
-                <button class="btn btn-sm" style="margin-left:auto; flex-shrink:0; opacity:0.6;" onclick="BuszyPushNotify.dismissBlockedBanner()" aria-label="Dismiss">
+                <button class="btn btn-sm" style="margin-left:auto; flex-shrink:0; opacity:0.6;"
+                    onclick="BuszyPushNotify.dismissBlockedBanner()" aria-label="Dismiss">
                     <i class="fa-regular fa-xmark"></i>
                 </button>
             </div>
@@ -438,7 +433,8 @@
                 </span>
                 <div class="notif-banner-actions">
                     <button class="btn btn-busloc btn-sm" onclick="BuszyPushNotify.enableFromBanner()">Enable</button>
-                    <button class="btn btn-sm" style="opacity:0.6;" onclick="BuszyPushNotify.dismissPromptBanner()">Not now</button>
+                    <button class="btn btn-sm" style="opacity:0.6;" onclick="BuszyPushNotify.dismissPromptBanner()">Not
+                        now</button>
                 </div>
             </div>
 

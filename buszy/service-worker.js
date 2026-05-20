@@ -198,7 +198,20 @@ self.addEventListener('push', event => {
     data: data.data || {}
   };
 
-  event.waitUntil(self.registration.showNotification(data.title, options));
+  const showNotif = self.registration.showNotification(data.title, options);
+
+  // For 'once' mode: notify open clients so they can clean up their UI
+  if (data.data?.notifyMode === 'once' && data.data?.busStopCode && data.data?.serviceNo) {
+    const notifyClients = self.clients.matchAll({ type: 'window', includeUncontrolled: true })
+      .then(clients => clients.forEach(c => c.postMessage({
+        type: 'NOTIF_ONCE_FIRED',
+        busStopCode: data.data.busStopCode,
+        serviceNo: data.data.serviceNo
+      })));
+    event.waitUntil(Promise.all([showNotif, notifyClients]));
+  } else {
+    event.waitUntil(showNotif);
+  }
 });
 
 // Handle notification tap — open or focus the arrivals page

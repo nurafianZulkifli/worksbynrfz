@@ -41,6 +41,10 @@
     saveSubs(s);
   }
 
+  function getNotifMode() {
+    return localStorage.getItem('buszy_notif_mode') || 'once';
+  }
+
   // ── VAPID helper ───────────────────────────────────────────────────
 
   function urlBase64ToUint8Array(base64String) {
@@ -105,7 +109,8 @@
           subscription: subscription.toJSON(),
           busStopCode: stopCode,
           serviceNo: serviceNo,
-          threshold: thresholdMinutes || 3
+          threshold: thresholdMinutes || 1,
+          notifyMode: getNotifMode()
         })
       });
       if (!res.ok) throw new Error('Server rejected: ' + res.status);
@@ -265,7 +270,8 @@
             subscription: subscription.toJSON(),
             busStopCode: stopCode,
             serviceNo: serviceNo,
-            threshold: 1
+            threshold: 1,
+            notifyMode: getNotifMode()
           })
         });
       } catch { /* network unavailable — will retry on next load */ }
