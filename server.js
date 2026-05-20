@@ -361,12 +361,13 @@ for (const [key, watchers] of [...pushWatchers.entries()]) {
           saveWatchers();
         }
 
-      let etaMinutes;
+      let etaMinutes, etaSeconds;
       try {
         const resp = await ltaApi.get(`/v3/BusArrival?BusStopCode=${busStopCode}&ServiceNo=${serviceNo}`);
         const service = resp.data.Services?.[0];
         if (!service || !service.NextBus?.EstimatedArrival) continue;
-        etaMinutes = Math.max(0, Math.floor((new Date(service.NextBus.EstimatedArrival) - now) / 60000));
+        etaSeconds = Math.max(0, Math.round((new Date(service.NextBus.EstimatedArrival) - now) / 1000));
+        etaMinutes = Math.floor(etaSeconds / 60);
       } catch {
         continue; // skip on API error
       }
@@ -380,13 +381,14 @@ for (const [key, watchers] of [...pushWatchers.entries()]) {
         }
 
         // Reset arrived cooldown while bus is still approaching (not yet at stop)
-        if (etaMinutes > 0) watcher.arrivedNotifiedUntil = 0;
+        if (etaSeconds > 0) watcher.arrivedNotifiedUntil = 0;
 
         // ── "Approaching" notification (within threshold but not yet at stop) ──
-        if (etaMinutes > 0 && now >= watcher.notifiedUntil) {
+        // Use etaSeconds so buses at <60s (etaMinutes=0) still get an approaching alert
+        if (etaSeconds > 0 && now >= watcher.notifiedUntil) {
           const payload = JSON.stringify({
             title: `Bus ${serviceNo} arriving soon`,
-            body: `Stop ${busStopCode} — arriving in ${etaMinutes} min`,
+            body: `Stop ${busStopCode} — arriving in ${etaMinutes > 0 ? etaMinutes + ' min' : '< 1 min'}`,
             data: { busStopCode, serviceNo, type: 'approaching', notifyMode: watcher.notifyMode || 'once' }
           });
           try {
@@ -414,7 +416,7 @@ for (const [key, watchers] of [...pushWatchers.entries()]) {
         }
 
         // ── "Arrived" notification (bus is at the stop, eta = 0) ──
-        if (etaMinutes === 0 && now >= (watcher.arrivedNotifiedUntil || 0)) {
+        if (etaSeconds === 0 && now >= (watcher.arrivedNotifiedUntil || 0)) {
           const payload = JSON.stringify({
             title: `Bus ${serviceNo} has arrived!`,
             body: `Stop ${busStopCode} — your bus is here`,

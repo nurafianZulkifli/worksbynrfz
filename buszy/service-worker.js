@@ -230,7 +230,10 @@ self.addEventListener('notificationclick', event => {
       // Navigate an existing buszy tab to the right stop
       for (const client of windowClients) {
         if (client.url.includes('buszy') && 'navigate' in client) {
-          return client.navigate(url).then(c => c && c.focus());
+          return client.navigate(url).then(c => {
+            if (c) { return c.focus(); }
+            return clients.openWindow(url);
+          });
         }
       }
       return clients.openWindow(url);
