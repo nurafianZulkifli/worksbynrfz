@@ -1159,6 +1159,17 @@ body.dark-mode .btn-busloc.notif-toggle-btn.notif-active {
     color: #000 !important;
 }
 
+/* Flash highlight when arriving from a push notification */
+@keyframes notif-highlight-pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(148, 212, 11, 0.7); }
+    50%  { box-shadow: 0 0 0 10px rgba(148, 212, 11, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(148, 212, 11, 0); }
+}
+.card-bt.notif-highlight .card {
+    animation: notif-highlight-pulse 0.7s ease-out 2;
+    outline: 2px solid #94d40b;
+}
+
 body.dark-mode .notif-toggle-btn.notif-active span {
     color: #000 !important;
 }

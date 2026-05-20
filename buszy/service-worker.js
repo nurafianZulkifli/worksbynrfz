@@ -176,7 +176,58 @@ function shouldCache(url) {
   return cacheableExtensions.some(ext => url.endsWith(ext)) || url.endsWith('/');
 }
 
-// Message handler
+// ── Push Notification Handlers ───────────────────────────────────────
+
+// Receive a push from the server and show a notification
+self.addEventListener('push', event => {
+  let data = { title: 'Bus arriving soon', body: '', data: {} };
+  try {
+    data = event.data ? event.data.json() : data;
+  } catch {
+    data.body = event.data ? event.data.text() : '';
+  }
+
+  const isArrived = data.data?.type === 'arrived';
+  const options = {
+    body: data.body,
+    icon: self.registration.scope + 'assets/icon-192.png',
+    badge: self.registration.scope + 'assets/icon-192.png',
+    tag: `buszy-arrival-${data.data?.serviceNo}-${data.data?.busStopCode}`,
+    renotify: true,
+    vibrate: isArrived ? [200, 100, 200, 100, 200] : [200, 100, 200],
+    data: data.data || {}
+  };
+
+  event.waitUntil(self.registration.showNotification(data.title, options));
+});
+
+// Handle notification tap — open or focus the arrivals page
+self.addEventListener('notificationclick', event => {
+  event.notification.close();
+  const { busStopCode, serviceNo } = event.notification.data || {};
+  const scope = self.registration.scope; // e.g. "/buszy/" or "/nrfz-dev/buszy/"
+  let url = scope;
+  if (busStopCode) {
+    url = scope + 'art.html?BusStopCode=' + encodeURIComponent(busStopCode);
+    if (serviceNo) url += '&ServiceNo=' + encodeURIComponent(serviceNo);
+  }
+
+  event.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then(windowClients => {
+      // Navigate an existing buszy tab to the right stop
+      for (const client of windowClients) {
+        if (client.url.includes('buszy') && 'navigate' in client) {
+          return client.navigate(url).then(c => c && c.focus());
+        }
+      }
+      return clients.openWindow(url);
+    })
+  );
+});
+
+// ────────────────────────────────────────────────────────────────────
+
+// Message handler (original)
 self.addEventListener('message', event => {
   if (!event.data) return;
   

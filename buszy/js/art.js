@@ -89,6 +89,7 @@ let busStopsPromise = null;
 let currentLocationMarker = null; // Track the current location marker across button clicks
 let currentLocationCircle = null; // Track the current location accuracy circle
 let activeMapServiceNo = null; // Track which service is currently shown on the map
+let scrollToServiceNo = new URLSearchParams(window.location.search).get('ServiceNo') || null; // Scroll to this service on first render
 let busMarkers = []; // [{marker, lat, lng, estimatedArrival, busLabel}] for live position updates
 let mapRefreshIntervalId = null; // Dedicated fast interval for map position updates
 
@@ -244,6 +245,9 @@ function getBusStops() {
 // :: Bus Arrivals Fetching and Display
 // ****************************
 document.addEventListener('DOMContentLoaded', async () => {
+    // Re-register active push subscriptions with the server (restores after server restart/dyno wake)
+    if (window.BuszyPushNotify) BuszyPushNotify.reRegisterAll();
+
     // Apply fleet legend visibility setting
     function applyFleetLegendVisibility() {
         const showFleetLegend = localStorage.getItem('showFleetLegend') !== 'disabled';
@@ -430,6 +434,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Start the refresh interval on page load
     startRefreshInterval();
     startMapRefreshInterval();
+
+    // Re-fetch immediately when the tab becomes visible again after being backgrounded.
+    // Browsers throttle setInterval heavily in background tabs, so the data can go stale.
+    // Restarting the interval also resets the timer so the next tick is a full interval away.
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+            hideOfflineBanner();
+            fetchBusArrivals();
+            startRefreshInterval();
+        }
+    });
 
     // Listen for refresh interval changes from settings
     window.addEventListener('refreshIntervalChanged', (event) => {
@@ -794,6 +809,9 @@ async function fetchBusArrivals() {
                                 ${!serviceExists(service.ServiceNo) ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : ''}>
                                 <i class="fa-kit fa-lta-bus-stop"></i>&nbsp;Route
                             </button>
+                            <button class="btn btn-busloc btn-sm notif-toggle-btn" data-service="${service.ServiceNo}" data-stop="${busStopCode}" title="Notify me when this bus is arriving">
+                                <i class="fa-regular fa-bell"></i>&nbsp;<span class="notif-label">Notify</span>
+                            </button>
                         </div>
                     </div>
                     <div class="card-body">
@@ -835,6 +853,19 @@ async function fetchBusArrivals() {
             didUpdate = true;
             renderedBusStopCode = searchInput;
             showBottomTimingsBtn(searchInput);
+
+            // If opened from a notification, scroll to and briefly highlight the notified service
+            if (scrollToServiceNo) {
+                const targetCard = container.querySelector(`.card-bt[data-service="${scrollToServiceNo}"]`);
+                if (targetCard) {
+                    setTimeout(() => {
+                        targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        targetCard.classList.add('notif-highlight');
+                        setTimeout(() => targetCard.classList.remove('notif-highlight'), 2000);
+                    }, 150);
+                }
+                scrollToServiceNo = null; // Only do this once
+            }
 
             // Restore expanded state without animation
             expandedServices.forEach(serviceNo => {
@@ -1158,6 +1189,19 @@ async function fetchBusArrivals() {
                     window.location.href = url;
                 });
             });
+
+            // Add event listeners to "Notify" buttons
+            if (window.BuszyPushNotify) {
+                const notifButtons = document.querySelectorAll('.notif-toggle-btn');
+                notifButtons.forEach((btn) => {
+                    btn.addEventListener('click', () => {
+                        const stopCode = btn.getAttribute('data-stop');
+                        const serviceNo = btn.getAttribute('data-service');
+                        BuszyPushNotify.toggle(stopCode, serviceNo, btn);
+                    });
+                });
+                BuszyPushNotify.restoreButtonStates();
+            }
 
         }
 

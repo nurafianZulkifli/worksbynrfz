@@ -153,6 +153,51 @@
         display: none;
     }
 
+    #notif-blocked-banner,
+    #notif-prompt-banner {
+        display: none;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 18px;
+        border-radius: 15px;
+        border: 1px solid;
+        margin-top: 0.75em;
+        margin-bottom: 0.5em;
+        font-size: 0.88rem;
+    }
+
+    #notif-blocked-banner {
+        background: #fff3cd;
+        border-color: #ffc107;
+        color: #664d03;
+    }
+
+    #notif-prompt-banner {
+        background: #e8f4fd;
+        border-color: #90caf9;
+        color: #0d3349;
+    }
+
+    body.dark-mode #notif-blocked-banner {
+        background-color: #332b00;
+        border-color: #ffc107;
+        color: #ffe082;
+    }
+
+    body.dark-mode #notif-prompt-banner {
+        background-color: #0d2133;
+        border-color: #42a5f5;
+        color: #bbdefb;
+    }
+
+    .notif-banner-text { flex: 1; }
+
+    .notif-banner-actions {
+        display: flex;
+        gap: 8px;
+        flex-shrink: 0;
+    }
+
     .alerts-btn {
         position: fixed;
         top: 20px;
@@ -372,6 +417,31 @@
     <!-- Section Contents -->
     <section class="about-me-summ clearfix" style="padding-bottom: 5em;">
         <div class="container">
+            <!-- Notification Blocked Banner -->
+            <div id="notif-blocked-banner">
+                <i class="fa-regular fa-bell-slash" style="font-size:1.3rem; flex-shrink:0;"></i>
+                <span class="notif-banner-text">
+                    <strong>Notifications are blocked.</strong>
+                    To receive bus arrival alerts, allow notifications in your browser or app settings.
+                </span>
+                <button class="btn btn-sm" style="margin-left:auto; flex-shrink:0; opacity:0.6;" onclick="BuszyPushNotify.dismissBlockedBanner()" aria-label="Dismiss">
+                    <i class="fa-regular fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Notification First-Load Prompt Banner -->
+            <div id="notif-prompt-banner">
+                <i class="fa-regular fa-bell" style="font-size:1.3rem; flex-shrink:0;"></i>
+                <span class="notif-banner-text">
+                    <strong>Get bus arrival alerts!</strong>
+                    Enable notifications to be notified when your bus is arriving.
+                </span>
+                <div class="notif-banner-actions">
+                    <button class="btn btn-busloc btn-sm" onclick="BuszyPushNotify.enableFromBanner()">Enable</button>
+                    <button class="btn btn-sm" style="opacity:0.6;" onclick="BuszyPushNotify.dismissPromptBanner()">Not now</button>
+                </div>
+            </div>
+
             <div class="list-group" id="alerts-content">
                 <div class="alerts-loading"
                     style="text-align: center; padding: 3em 1em; display: flex; align-items: center; justify-content: center; gap: 1em; color: inherit;">
@@ -424,6 +494,8 @@
     <script src="../js/dstabs.js"></script>
 
     <script src="../js/utils.js"></script>
+
+    <script src="js/push-notify.js"></script>
 
     <script src="js/bs-alerts.js"></script>
 
