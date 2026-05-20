@@ -446,6 +446,20 @@ for (const [key, watchers] of [...pushWatchers.entries()]) {
       }
     }
   }, 30_000);
+
+  // Keep the Heroku dyno awake while push subscriptions are active.
+  // Heroku eco/free dynos sleep after 30 min of no HTTP traffic, which kills the polling job.
+  // process.env.DYNO is only set on Heroku, so this only runs in production.
+  if (process.env.DYNO) {
+    const SELF_URL = process.env.APP_URL || 'https://bat-lta-9eb7bbf231a2.herokuapp.com';
+    setInterval(() => {
+      if (pushWatchers.size === 0) return;
+      https.get(SELF_URL + '/push/vapid-public-key').on('error', err => {
+        console.warn('[Push] Self-ping failed:', err.message);
+      });
+      console.log(`[Push] Self-ping sent (${pushWatchers.size} active watcher keys)`);
+    }, 25 * 60 * 1000); // every 25 minutes
+  }
 }
 
 // Serve static files (after all API routes to prevent conflicts)
