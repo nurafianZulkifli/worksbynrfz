@@ -188,13 +188,24 @@ self.addEventListener('push', event => {
   }
 
   const isArrived = data.data?.type === 'arrived';
+  const isAlert   = data.data?.type === 'service-alert';
+  const scope = self.registration.scope;
   const options = {
     body: data.body,
-    icon: self.registration.scope + 'assets/icon-192.png',
-    badge: self.registration.scope + 'assets/icon-192.png',
-    tag: `buszy-arrival-${data.data?.serviceNo}-${data.data?.busStopCode}`,
+    icon: scope + 'assets/icon-192.png',
+    badge: scope + 'assets/icon-192.png',
+    tag: isAlert
+      ? 'buszy-service-alert'
+      : `buszy-arrival-${data.data?.serviceNo}-${data.data?.busStopCode}`,
     renotify: true,
-    vibrate: isArrived ? [200, 100, 200, 100, 200] : [200, 100, 200],
+    requireInteraction: true,
+    silent: false,
+    vibrate: isArrived ? [300, 100, 300, 100, 300, 100, 300]
+           : isAlert   ? [400, 150, 400]
+           :             [300, 100, 300],
+    actions: isAlert
+      ? [{ action: 'view', title: 'View alerts' }]
+      : [{ action: 'view', title: 'View arrivals' }, { action: 'dismiss', title: 'Dismiss' }],
     data: data.data || {}
   };
 
@@ -214,9 +225,13 @@ self.addEventListener('push', event => {
   }
 });
 
-// Handle notification tap — open or focus the arrivals page
+// Handle notification tap / action button — open or focus the arrivals page
 self.addEventListener('notificationclick', event => {
   event.notification.close();
+
+  // 'dismiss' action — just close, no navigation
+  if (event.action === 'dismiss') return;
+
   const { busStopCode, serviceNo, type } = event.notification.data || {};
   const scope = self.registration.scope; // e.g. "/buszy/" or "/nrfz-dev/buszy/"
   let targetUrl = scope;
