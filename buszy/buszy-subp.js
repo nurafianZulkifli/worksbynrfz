@@ -153,8 +153,11 @@ if (typeof BroadcastChannel !== 'undefined') {
     const _bzPushCh = new BroadcastChannel('buszy-push');
     _bzPushCh.addEventListener('message', event => {
         if (event.data?.type === 'PUSH_RECEIVED') {
+            const { title, body, data } = event.data;
             _bzClearPendingNotif();
-            showPushBanner(event.data.title, event.data.body, event.data.data);
+            if (navigator.vibrate) navigator.vibrate([300, 100, 300, 100, 300]);
+            _bzShowOsNotif(title, body, data);  // re-fire from page context — may bypass push-event suppression
+            showPushBanner(title, body, data);
         }
     });
 }
@@ -163,8 +166,11 @@ if (typeof BroadcastChannel !== 'undefined') {
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.addEventListener('message', event => {
         if (event.data?.type === 'PUSH_RECEIVED') {
+            const { title, body, data } = event.data;
             _bzClearPendingNotif();
-            showPushBanner(event.data.title, event.data.body, event.data.data);
+            if (navigator.vibrate) navigator.vibrate([300, 100, 300, 100, 300]);
+            _bzShowOsNotif(title, body, data);
+            showPushBanner(title, body, data);
         }
     });
 }
@@ -187,6 +193,29 @@ function _bzCheckPendingNotif() {
 
 function _bzClearPendingNotif() {
     if ('caches' in window) caches.open('buszy-pending-notif').then(function(c) { c.delete('pending'); });
+}
+
+// Re-fire the OS notification from page context.
+// When called from a push event the browser may suppress the heads-up pop-up;
+// calling showNotification() from the page can bypass that suppression.
+function _bzShowOsNotif(title, body, data) {
+    if (!('serviceWorker' in navigator) || Notification.permission !== 'granted') return;
+    navigator.serviceWorker.ready.then(function(reg) {
+        var isAlert = data && data.type === 'service-alert';
+        reg.showNotification(title, {
+            body: body || '',
+            icon: './assets/icon-192.png',
+            badge: './assets/icon-192.png',
+            tag: isAlert
+                ? 'buszy-service-alert'
+                : 'buszy-arrival-' + ((data && data.serviceNo) || '') + '-' + ((data && data.busStopCode) || ''),
+            renotify: true,
+            requireInteraction: true,
+            silent: false,
+            vibrate: isAlert ? [400, 150, 400] : [300, 100, 300, 100, 300],
+            data: data || {}
+        }).catch(function() {});
+    }).catch(function() {});
 }
 
 _bzCheckPendingNotif();
