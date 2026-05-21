@@ -1,12 +1,85 @@
 /**
  * Buszy — Bus Service Alert Push Notifications
- * Handles subscribe/unsubscribe for service disruption alerts.
+ * Auto-subscribes users to service disruption alerts whenever
+ * notification permission is already granted. No button required.
  */
 (function () {
   'use strict';
 
   const PUSH_SERVER = 'https://bat-lta-9eb7bbf231a2.herokuapp.com';
-  const STORAGE_KEY = 'buszy_alert_subs';
+
+  async function getBuszyRegistration() {
+    if (!('serviceWorker' in navigator)) throw new Error('SW not supported');
+
+    const basePath = window.location.pathname.includes('/nrfz-dev/') ? '/nrfz-dev/' : '/';
+    const swPath = basePath + 'buszy/service-worker.js';
+    const scope  = basePath + 'buszy/';
+
+    const regs = await navigator.serviceWorker.getRegistrations();
+    let reg = regs.find(r => r.scope.includes('/buszy/'));
+
+    if (!reg) {
+      reg = await navigator.serviceWorker.register(swPath, { scope });
+    }
+
+    if (reg.active) return reg;
+
+    return new Promise((resolve, reject) => {
+      const sw = reg.installing || reg.waiting;
+      if (!sw) { reject(new Error('No SW to wait on')); return; }
+      sw.addEventListener('statechange', function handler() {
+        if (this.state === 'activated') { sw.removeEventListener('statechange', handler); resolve(reg); }
+        if (this.state === 'redundant') { sw.removeEventListener('statechange', handler); reject(new Error('SW became redundant')); }
+      });
+    });
+  }
+
+  function urlBase64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+    const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+    const raw = atob(base64);
+    const output = new Uint8Array(raw.length);
+    for (let i = 0; i < raw.length; i++) output[i] = raw.charCodeAt(i);
+    return output;
+  }
+
+  // Silently registers the user's push subscription with the alerts endpoint.
+  // Called on every page load — safe to call repeatedly (server upserts).
+  async function autoSubscribe() {
+    if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
+    if (Notification.permission !== 'granted') return;
+
+    let reg;
+    try { reg = await getBuszyRegistration(); } catch { return; }
+
+    // Reuse existing push subscription, or create one if needed
+    let subscription;
+    try {
+      subscription = await reg.pushManager.getSubscription();
+      if (!subscription) {
+        const res = await fetch(PUSH_SERVER + '/push/vapid-public-key');
+        if (!res.ok) return;
+        const vapidKey = await res.text();
+        subscription = await reg.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: urlBase64ToUint8Array(vapidKey)
+        });
+      }
+    } catch { return; }
+
+    try {
+      await fetch(PUSH_SERVER + '/push/subscribe-alerts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ subscription: subscription.toJSON() })
+      });
+    } catch { /* network unavailable — will retry on next load */ }
+  }
+
+  document.addEventListener('DOMContentLoaded', autoSubscribe);
+
+})();
+
 
   // ── Buszy SW registration ─────────────────────────────────────────
   // Explicitly finds or registers the buszy service worker so that push
