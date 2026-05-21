@@ -213,17 +213,28 @@ self.addEventListener('push', event => {
 
   const isOnce = data.data?.notifyMode === 'once' && data.data?.busStopCode && data.data?.serviceNo;
 
-  // Notify all open buszy clients:
-  //  • Always send PUSH_RECEIVED so the page can show an in-app banner
-  //    (browsers suppress OS pop-ups when the app is in the foreground)
-  //  • Also send NOTIF_ONCE_FIRED for 'once' mode cleanup
-  const notifyClients = self.clients.matchAll({ type: 'window', includeUncontrolled: true })
-    .then(clients => clients.forEach(c => {
-      c.postMessage({ type: 'PUSH_RECEIVED', title: data.title, body: data.body, data: data.data || {} });
-      if (isOnce) c.postMessage({ type: 'NOTIF_ONCE_FIRED', busStopCode: data.data.busStopCode, serviceNo: data.data.serviceNo });
-    }));
+  // Broadcast to all open pages via BroadcastChannel
+  // (more reliable than client.postMessage for foreground delivery)
+  const bc = new BroadcastChannel('buszy-push');
+  bc.postMessage({ type: 'PUSH_RECEIVED', title: data.title, body: data.body, data: data.data || {} });
+  bc.close();
 
-  event.waitUntil(Promise.all([showNotif, notifyClients]));
+  // Store notification so the page can show a banner even after backgrounding/closing
+  const storePending = caches.open('buszy-pending-notif').then(cache =>
+    cache.put('pending', new Response(JSON.stringify({
+      title: data.title, body: data.body, data: data.data || {}, ts: Date.now()
+    }), { headers: { 'Content-Type': 'application/json' } }))
+  ).catch(() => {});
+
+  // NOTIF_ONCE_FIRED: send to active clients for 'once' mode cleanup
+  const notifyOnce = isOnce
+    ? self.clients.matchAll({ type: 'window', includeUncontrolled: true })
+        .then(clients => clients.forEach(c =>
+          c.postMessage({ type: 'NOTIF_ONCE_FIRED', busStopCode: data.data.busStopCode, serviceNo: data.data.serviceNo })
+        ))
+    : Promise.resolve();
+
+  event.waitUntil(Promise.all([showNotif, storePending, notifyOnce]));
 });
 
 // Handle notification tap / action button — open or focus the arrivals page

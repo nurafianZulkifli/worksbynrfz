@@ -148,14 +148,49 @@ function updateThemeIcon(theme) {
 // When a push arrives while the app is open, browsers suppress the OS
 // pop-up banner. We show our own prominent banner instead.
 
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.addEventListener('message', event => {
+// Primary: BroadcastChannel (immediate, reliable delivery to foreground tabs)
+if (typeof BroadcastChannel !== 'undefined') {
+    const _bzPushCh = new BroadcastChannel('buszy-push');
+    _bzPushCh.addEventListener('message', event => {
         if (event.data?.type === 'PUSH_RECEIVED') {
-            const { title, body, data } = event.data;
-            showPushBanner(title, body, data);
+            _bzClearPendingNotif();
+            showPushBanner(event.data.title, event.data.body, event.data.data);
         }
     });
 }
+
+// Fallback: SW postMessage (belt-and-braces for older browsers)
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.addEventListener('message', event => {
+        if (event.data?.type === 'PUSH_RECEIVED') {
+            _bzClearPendingNotif();
+            showPushBanner(event.data.title, event.data.body, event.data.data);
+        }
+    });
+}
+
+// Background / closed-app: SW stores notification in Cache; we check here on load & focus
+function _bzCheckPendingNotif() {
+    if (document.hidden || !('caches' in window)) return;
+    caches.open('buszy-pending-notif').then(function(cache) {
+        cache.match('pending').then(function(resp) {
+            if (!resp) return;
+            cache.delete('pending');
+            resp.json().then(function(notif) {
+                if (Date.now() - notif.ts < 120000) { // only show if < 2 min old
+                    showPushBanner(notif.title, notif.body, notif.data);
+                }
+            });
+        });
+    });
+}
+
+function _bzClearPendingNotif() {
+    if ('caches' in window) caches.open('buszy-pending-notif').then(function(c) { c.delete('pending'); });
+}
+
+_bzCheckPendingNotif();
+document.addEventListener('visibilitychange', _bzCheckPendingNotif);
 
 function showPushBanner(title, body, data) {
     // Remove any existing banner immediately
