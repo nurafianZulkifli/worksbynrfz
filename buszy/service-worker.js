@@ -209,7 +209,17 @@ self.addEventListener('push', event => {
     data: data.data || {}
   };
 
-  const showNotif = self.registration.showNotification(data.title, options);
+  // Show OS notification from SW only when no buszy page is open.
+  // When a page IS open, it shows via BroadcastChannel → page context showNotification,
+  // which Android treats as a new notification (unique tag) → more likely to trigger heads-up.
+  const showNotif = self.clients.matchAll({ type: 'window', includeUncontrolled: true })
+    .then(clients => {
+      const hasOpenPage = clients.some(c => c.url.includes('/buszy/'));
+      if (!hasOpenPage) {
+        return self.registration.showNotification(data.title, options);
+      }
+      // Open page will handle the OS notification via BroadcastChannel
+    });
 
   const isOnce = data.data?.notifyMode === 'once' && data.data?.busStopCode && data.data?.serviceNo;
 

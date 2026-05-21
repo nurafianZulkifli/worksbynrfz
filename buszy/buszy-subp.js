@@ -198,22 +198,28 @@ function _bzClearPendingNotif() {
 // Re-fire the OS notification from page context.
 // When called from a push event the browser may suppress the heads-up pop-up;
 // calling showNotification() from the page can bypass that suppression.
+// Uses a fresh timestamp tag so Android treats it as a NEW notification → heads-up.
 function _bzShowOsNotif(title, body, data) {
     if (!('serviceWorker' in navigator) || Notification.permission !== 'granted') return;
     navigator.serviceWorker.ready.then(function(reg) {
         var isAlert = data && data.type === 'service-alert';
-        reg.showNotification(title, {
-            body: body || '',
-            icon: './assets/icon-192.png',
-            badge: './assets/icon-192.png',
-            tag: isAlert
-                ? 'buszy-service-alert'
-                : 'buszy-arrival-' + ((data && data.serviceNo) || '') + '-' + ((data && data.busStopCode) || ''),
-            renotify: true,
-            requireInteraction: true,
-            silent: false,
-            vibrate: isAlert ? [400, 150, 400] : [300, 100, 300, 100, 300],
-            data: data || {}
+        var baseTag = isAlert
+            ? 'buszy-service-alert'
+            : 'buszy-arrival-' + ((data && data.serviceNo) || '') + '-' + ((data && data.busStopCode) || '');
+        var freshTag = baseTag + '-' + Date.now();
+        // Close any existing notification for this stop/service, then show a brand-new one
+        reg.getNotifications().then(function(all) {
+            all.filter(function(n) { return n.tag.startsWith(baseTag); }).forEach(function(n) { n.close(); });
+            reg.showNotification(title, {
+                body: body || '',
+                icon: './assets/icon-192.png',
+                badge: './assets/icon-192.png',
+                tag: freshTag,
+                requireInteraction: true,
+                silent: false,
+                vibrate: isAlert ? [400, 150, 400] : [300, 100, 300, 100, 300],
+                data: data || {}
+            }).catch(function() {});
         }).catch(function() {});
     }).catch(function() {});
 }
