@@ -8,6 +8,37 @@
   const PUSH_SERVER = 'https://bat-lta-9eb7bbf231a2.herokuapp.com';
   const STORAGE_KEY = 'buszy_alert_subs';
 
+  // ── Buszy SW registration ─────────────────────────────────────────
+  // Explicitly finds or registers the buszy service worker so that push
+  // subscriptions work even when the user installed the root Works By NRFZ
+  // PWA instead of the Buszy standalone app.
+
+  async function getBuszyRegistration() {
+    if (!('serviceWorker' in navigator)) throw new Error('SW not supported');
+
+    const basePath = window.location.pathname.includes('/nrfz-dev/') ? '/nrfz-dev/' : '/';
+    const swPath = basePath + 'buszy/service-worker.js';
+    const scope  = basePath + 'buszy/';
+
+    const regs = await navigator.serviceWorker.getRegistrations();
+    let reg = regs.find(r => r.scope.includes('/buszy/'));
+
+    if (!reg) {
+      reg = await navigator.serviceWorker.register(swPath, { scope });
+    }
+
+    if (reg.active) return reg;
+
+    return new Promise((resolve, reject) => {
+      const sw = reg.installing || reg.waiting;
+      if (!sw) { reject(new Error('No SW to wait on')); return; }
+      sw.addEventListener('statechange', function handler() {
+        if (this.state === 'activated') { sw.removeEventListener('statechange', handler); resolve(reg); }
+        if (this.state === 'redundant') { sw.removeEventListener('statechange', handler); reject(new Error('SW became redundant')); }
+      });
+    });
+  }
+
   function isSubscribed() {
     return localStorage.getItem(STORAGE_KEY) === 'true';
   }
@@ -38,7 +69,7 @@
     }
 
     let reg;
-    try { reg = await navigator.serviceWorker.ready; } catch { return false; }
+    try { reg = await getBuszyRegistration(); } catch { return false; }
 
     let vapidKey;
     try {
@@ -79,7 +110,7 @@
 
   async function unsubscribe() {
     try {
-      const reg = await navigator.serviceWorker.ready;
+      const reg = await getBuszyRegistration();
       const subscription = await reg.pushManager.getSubscription();
       if (subscription) {
         await fetch(PUSH_SERVER + '/push/unsubscribe-alerts', {
@@ -120,7 +151,7 @@
     if (!isSubscribed()) return;
     if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
     try {
-      const reg = await navigator.serviceWorker.ready;
+      const reg = await getBuszyRegistration();
       const subscription = await reg.pushManager.getSubscription();
       if (!subscription) { setSubscribed(false); return; }
       await fetch(PUSH_SERVER + '/push/subscribe-alerts', {

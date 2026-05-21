@@ -53,6 +53,42 @@
     return 'arriving';
   }
 
+  // ── Buszy SW registration ─────────────────────────────────────────
+  // Explicitly finds or registers the buszy service worker so that push
+  // subscriptions work even when the user installed the root Works By NRFZ
+  // PWA instead of the Buszy standalone app.
+
+  async function getBuszyRegistration() {
+    if (!('serviceWorker' in navigator)) throw new Error('SW not supported');
+
+    // Detect base path (handles GitHub Pages sub-directory deployments)
+    const basePath = window.location.pathname.includes('/nrfz-dev/') ? '/nrfz-dev/' : '/';
+    const swPath = basePath + 'buszy/service-worker.js';
+    const scope  = basePath + 'buszy/';
+
+    // Return an existing buszy registration if available
+    const regs = await navigator.serviceWorker.getRegistrations();
+    let reg = regs.find(r => r.scope.includes('/buszy/'));
+
+    // If not yet registered, register it now
+    if (!reg) {
+      reg = await navigator.serviceWorker.register(swPath, { scope });
+    }
+
+    // Already active — done
+    if (reg.active) return reg;
+
+    // Wait for the SW to activate
+    return new Promise((resolve, reject) => {
+      const sw = reg.installing || reg.waiting;
+      if (!sw) { reject(new Error('No SW to wait on')); return; }
+      sw.addEventListener('statechange', function handler() {
+        if (this.state === 'activated') { sw.removeEventListener('statechange', handler); resolve(reg); }
+        if (this.state === 'redundant') { sw.removeEventListener('statechange', handler); reject(new Error('SW became redundant')); }
+      });
+    });
+  }
+
   // ── VAPID helper ───────────────────────────────────────────────────
 
   function urlBase64ToUint8Array(base64String) {
@@ -80,7 +116,7 @@
 
     let reg;
     try {
-      reg = await navigator.serviceWorker.ready;
+      reg = await getBuszyRegistration();
     } catch {
       alert('Service worker is not ready. Please refresh and try again.');
       return false;
@@ -137,7 +173,7 @@
 
   async function unsubscribe(stopCode, serviceNo) {
     try {
-      const reg = await navigator.serviceWorker.ready;
+      const reg = await getBuszyRegistration();
       const subscription = await reg.pushManager.getSubscription();
       if (subscription) {
         await fetch(PUSH_SERVER + '/push/unsubscribe', {
@@ -277,7 +313,7 @@
 
     let subscription;
     try {
-      const reg = await navigator.serviceWorker.ready;
+      const reg = await getBuszyRegistration();
       subscription = await reg.pushManager.getSubscription();
     } catch { return; }
 
