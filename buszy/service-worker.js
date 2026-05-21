@@ -217,10 +217,12 @@ self.addEventListener('push', event => {
 // Handle notification tap — open or focus the arrivals page
 self.addEventListener('notificationclick', event => {
   event.notification.close();
-  const { busStopCode, serviceNo } = event.notification.data || {};
+  const { busStopCode, serviceNo, type } = event.notification.data || {};
   const scope = self.registration.scope; // e.g. "/buszy/" or "/nrfz-dev/buszy/"
   let targetUrl = scope;
-  if (busStopCode) {
+  if (type === 'service-alert') {
+    targetUrl = scope + 'alerts.html';
+  } else if (busStopCode) {
     targetUrl = scope + 'art.html?BusStopCode=' + encodeURIComponent(busStopCode);
     if (serviceNo) targetUrl += '&ServiceNo=' + encodeURIComponent(serviceNo);
   }

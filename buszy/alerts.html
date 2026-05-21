@@ -407,8 +407,12 @@
                         <div class="page-title-wrapper">
                             <div
                                 style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-                                <div>
+                                <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
                                     <h1 class="page-title" id="filter-title">Bus Service Alerts</h1>
+                                    <button id="alert-notif-btn" class="btn btn-busloc btn-sm notif-toggle-btn" style="border-radius: 10px;">
+                                        <i class="fa-regular fa-bell"></i>
+                                        <span class="notif-label" style="margin-left: 4px;">Notify me</span>
+                                    </button>
                                 </div>
                                 <div id="alerts-last-updated" style="font-size: 0.9em; color: #999; margin: 0;"></div>
                             </div>
@@ -503,6 +507,8 @@
     <script src="../js/utils.js"></script>
 
     <script src="js/push-notify.js"></script>
+
+    <script src="js/alert-notify.js"></script>
 
     <script src="js/bs-alerts.js"></script>
 

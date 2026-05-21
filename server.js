@@ -52,6 +52,32 @@ function saveWatchers() {
 
 loadWatchers();
 
+// ── Service Alert Push Subscriptions ────────────────────────────────
+// Simple array — every subscriber gets every new bus service alert.
+const ALERT_SUBS_FILE = path.join(__dirname, '.alert-subs.json');
+const alertWatchers = [];       // [{ subscription }]
+let lastAlertTs = Date.now();   // Watermark so existing alerts don't fire on first run.
+
+function loadAlertWatchers() {
+  try {
+    const raw = fs.readFileSync(ALERT_SUBS_FILE, 'utf8');
+    const data = JSON.parse(raw);
+    alertWatchers.push(...(data.watchers || []));
+    if (data.lastAlertTs) lastAlertTs = data.lastAlertTs;
+    console.log(`[AlertPush] Loaded ${alertWatchers.length} alert subscribers`);
+  } catch { /* file missing — start fresh */ }
+}
+
+function saveAlertWatchers() {
+  try {
+    fs.writeFileSync(ALERT_SUBS_FILE, JSON.stringify({ watchers: alertWatchers, lastAlertTs }), 'utf8');
+  } catch (e) {
+    console.warn('[AlertPush] Could not persist alert subscriptions:', e.message);
+  }
+}
+
+loadAlertWatchers();
+
 // Reuse TCP connections to DataMall (avoids TLS handshake on every request)
 const ltaApi = axios.create({
   baseURL: 'https://datamall2.mytransport.sg/ltaodataservice',
@@ -342,6 +368,34 @@ app.post('/push/unsubscribe', express.json(), (req, res) => {
   res.json({ ok: true });
 });
 
+// Subscribe to bus service alert push notifications
+app.post('/push/subscribe-alerts', express.json(), (req, res) => {
+  if (!pushEnabled) return res.status(503).json({ error: 'Push notifications not configured' });
+  const { subscription } = req.body;
+  if (!subscription || !subscription.endpoint) {
+    return res.status(400).json({ error: 'Missing subscription' });
+  }
+  const idx = alertWatchers.findIndex(w => w.subscription.endpoint === subscription.endpoint);
+  if (idx < 0) alertWatchers.push({ subscription });
+  else alertWatchers[idx].subscription = subscription;
+  saveAlertWatchers();
+  console.log(`[AlertPush] Subscribed: ${alertWatchers.length} total subscribers`);
+  res.status(201).json({ ok: true });
+});
+
+// Unsubscribe from bus service alert push notifications
+app.post('/push/unsubscribe-alerts', express.json(), (req, res) => {
+  const { subscription } = req.body;
+  if (!subscription || !subscription.endpoint) {
+    return res.status(400).json({ error: 'Missing subscription' });
+  }
+  const idx = alertWatchers.findIndex(w => w.subscription.endpoint === subscription.endpoint);
+  if (idx >= 0) alertWatchers.splice(idx, 1);
+  saveAlertWatchers();
+  console.log(`[AlertPush] Unsubscribed: ${alertWatchers.length} total subscribers`);
+  res.json({ ok: true });
+});
+
 // ── Bus Arrival Polling Job ──────────────────────────────────────────
 // Checks every 30 seconds; sends a push when the next bus is within threshold.
 // A 3-minute cooldown prevents repeated notifications for the same arrival.
@@ -457,6 +511,70 @@ for (const [key, watchers] of [...pushWatchers.entries()]) {
       }
     }
   }, 30_000);
+
+  // ── Service Alert Polling Job ──────────────────────────────────────
+  // Checks every 2 minutes for new bus service alerts and notifies subscribers.
+  setInterval(async () => {
+    if (alertWatchers.length === 0) return;
+    try {
+      const resp = await ltaApi.get('/TrainServiceAlerts');
+      const data = resp.data;
+      if (!data || !data.value) return;
+
+      const alerts = Array.isArray(data.value) ? data.value : [data.value];
+      const newAlerts = [];
+      let maxTs = lastAlertTs;
+
+      for (const alert of alerts) {
+        if (!alert.Message || !Array.isArray(alert.Message)) continue;
+        for (const msgObj of alert.Message) {
+          const msgLower = (msgObj.Content || '').toLowerCase();
+          if (!msgLower.includes('bus service') ||
+              (!msgLower.includes('affected') && !msgLower.includes('diverted') && !msgLower.includes('delayed'))) continue;
+          const ts = msgObj.CreatedDate ? new Date(msgObj.CreatedDate).getTime() : 0;
+          if (ts > lastAlertTs) {
+            newAlerts.push({ content: msgObj.Content, ts });
+            if (ts > maxTs) maxTs = ts;
+          }
+        }
+      }
+
+      if (newAlerts.length === 0) return;
+      lastAlertTs = maxTs;
+      saveAlertWatchers();
+
+      // Extract up to 5 service codes from the first new alert for the notification body
+      const raw = newAlerts[0].content;
+      const busServicesRegex = /bus services?\s*[:\-]?\s*([^.]+?)(?:\s+(?:are|is)\s+(?:affected|diverted|disrupted|delayed)|\s*$)/i;
+      const codeMatch = raw.match(busServicesRegex);
+      let codes = '';
+      if (codeMatch) {
+        const matches = [...codeMatch[1].matchAll(/\b(\d{2,4}[A-Za-z]?)\b/g)].map(m => m[1]);
+        const filtered = [...new Set(matches)].filter(c => { const n = parseInt(c); return n >= 10 && n <= 9999; });
+        codes = filtered.slice(0, 5).join(', ');
+      }
+      const body = codes ? `Services ${codes} affected` : 'A bus service is affected. Tap for details.';
+      const payload = JSON.stringify({
+        title: 'Bus Service Alert',
+        body,
+        data: { type: 'service-alert' }
+      });
+
+      for (let i = alertWatchers.length - 1; i >= 0; i--) {
+        try {
+          await webpush.sendNotification(alertWatchers[i].subscription, payload, { urgency: 'high', TTL: 3600 });
+        } catch (err) {
+          if (err.statusCode === 410 || err.statusCode === 404) {
+            alertWatchers.splice(i, 1);
+            saveAlertWatchers();
+          }
+        }
+      }
+      console.log(`[AlertPush] Sent to ${alertWatchers.length} subscribers: ${body}`);
+    } catch (e) {
+      console.warn('[AlertPush] Polling error:', e.message);
+    }
+  }, 2 * 60 * 1000); // every 2 minutes
 
   // Keep the Heroku dyno awake while push subscriptions are active.
   // Heroku eco/free dynos sleep after 30 min of no HTTP traffic, which kills the polling job.
