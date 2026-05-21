@@ -143,3 +143,79 @@ function updateThemeIcon(theme) {
         if (themeIconMobile) themeIconMobile.classList.remove('animate');
     }, 300); // Match the duration of the CSS transition
 }
+
+// ── In-app push notification banner ──────────────────────────────────
+// When a push arrives while the app is open, browsers suppress the OS
+// pop-up banner. We show our own prominent banner instead.
+
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.addEventListener('message', event => {
+        if (event.data?.type === 'PUSH_RECEIVED') {
+            const { title, body, data } = event.data;
+            showPushBanner(title, body, data);
+        }
+    });
+}
+
+function showPushBanner(title, body, data) {
+    // Remove any existing banner immediately
+    const existing = document.getElementById('bz-push-banner');
+    if (existing) {
+        clearTimeout(existing._dismissTimer);
+        existing.remove();
+    }
+
+    // Build the navigation target
+    const isAlert = data?.type === 'service-alert';
+    let navUrl = './alerts.html';
+    if (!isAlert && data?.busStopCode) {
+        navUrl = './art.html?BusStopCode=' + encodeURIComponent(data.busStopCode);
+        if (data.serviceNo) navUrl += '&ServiceNo=' + encodeURIComponent(data.serviceNo);
+    }
+
+    const banner = document.createElement('div');
+    banner.id = 'bz-push-banner';
+    banner.className = 'bz-push-banner';
+    banner.innerHTML =
+        '<img class="bz-push-banner-icon" src="./assets/icon-192.png" alt="">' +
+        '<div class="bz-push-banner-text">' +
+            '<div class="bz-push-banner-title">' + _bzEscHtml(title) + '</div>' +
+            '<div class="bz-push-banner-body">' + _bzEscHtml(body) + '</div>' +
+        '</div>' +
+        '<button class="bz-push-banner-close" aria-label="Dismiss">\u00d7</button>' +
+        '<div class="bz-push-banner-progress"></div>';
+
+    document.body.appendChild(banner);
+
+    // Trigger slide-in on next paint
+    requestAnimationFrame(() => requestAnimationFrame(() => banner.classList.add('show')));
+
+    // Tap banner body → navigate
+    banner.addEventListener('click', e => {
+        if (e.target.closest('.bz-push-banner-close')) return;
+        window.location.href = navUrl;
+    });
+
+    // Close button
+    banner.querySelector('.bz-push-banner-close').addEventListener('click', e => {
+        e.stopPropagation();
+        _bzDismissBanner(banner);
+    });
+
+    // Auto-dismiss after 6 s
+    banner._dismissTimer = setTimeout(() => _bzDismissBanner(banner), 6000);
+}
+
+function _bzDismissBanner(banner) {
+    clearTimeout(banner._dismissTimer);
+    banner.classList.remove('show');
+    banner.addEventListener('transitionend', () => banner.remove(), { once: true });
+}
+
+function _bzEscHtml(str) {
+    return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+}

@@ -211,18 +211,19 @@ self.addEventListener('push', event => {
 
   const showNotif = self.registration.showNotification(data.title, options);
 
-  // For 'once' mode: notify open clients so they can clean up their UI
-  if (data.data?.notifyMode === 'once' && data.data?.busStopCode && data.data?.serviceNo) {
-    const notifyClients = self.clients.matchAll({ type: 'window', includeUncontrolled: true })
-      .then(clients => clients.forEach(c => c.postMessage({
-        type: 'NOTIF_ONCE_FIRED',
-        busStopCode: data.data.busStopCode,
-        serviceNo: data.data.serviceNo
-      })));
-    event.waitUntil(Promise.all([showNotif, notifyClients]));
-  } else {
-    event.waitUntil(showNotif);
-  }
+  const isOnce = data.data?.notifyMode === 'once' && data.data?.busStopCode && data.data?.serviceNo;
+
+  // Notify all open buszy clients:
+  //  • Always send PUSH_RECEIVED so the page can show an in-app banner
+  //    (browsers suppress OS pop-ups when the app is in the foreground)
+  //  • Also send NOTIF_ONCE_FIRED for 'once' mode cleanup
+  const notifyClients = self.clients.matchAll({ type: 'window', includeUncontrolled: true })
+    .then(clients => clients.forEach(c => {
+      c.postMessage({ type: 'PUSH_RECEIVED', title: data.title, body: data.body, data: data.data || {} });
+      if (isOnce) c.postMessage({ type: 'NOTIF_ONCE_FIRED', busStopCode: data.data.busStopCode, serviceNo: data.data.serviceNo });
+    }));
+
+  event.waitUntil(Promise.all([showNotif, notifyClients]));
 });
 
 // Handle notification tap / action button — open or focus the arrivals page
