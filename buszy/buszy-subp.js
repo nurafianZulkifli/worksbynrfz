@@ -148,6 +148,19 @@ function updateThemeIcon(theme) {
 // When a push arrives while the app is open, browsers suppress the OS
 // pop-up banner. We show our own prominent banner instead.
 
+// Cleans up a 'notify once' subscription from local tracking after it fires.
+// Works on all pages (not just art.html/alerts.html where push-notify.js is loaded).
+function _bzCleanOnceTracked(busStopCode, serviceNo) {
+    if (!busStopCode || !serviceNo) return;
+    try {
+        const key = 'buszy_push_subs';
+        const subs = new Set(JSON.parse(localStorage.getItem(key) || '[]'));
+        subs.delete(busStopCode + ':' + serviceNo);
+        localStorage.setItem(key, JSON.stringify([...subs]));
+    } catch {}
+    if (window.BuszyPushNotify) window.BuszyPushNotify.restoreButtonStates();
+}
+
 // Primary: BroadcastChannel (immediate, reliable delivery to foreground tabs)
 if (typeof BroadcastChannel !== 'undefined') {
     const _bzPushCh = new BroadcastChannel('buszy-push');
@@ -158,6 +171,7 @@ if (typeof BroadcastChannel !== 'undefined') {
             if (navigator.vibrate) navigator.vibrate([300, 100, 300, 100, 300]);
             _bzShowOsNotif(title, body, data);  // re-fire from page context — may bypass push-event suppression
             showPushBanner(title, body, data);
+            if (data?.notifyMode === 'once') _bzCleanOnceTracked(data.busStopCode, data.serviceNo);
         }
     });
 }
@@ -171,6 +185,7 @@ if ('serviceWorker' in navigator) {
             if (navigator.vibrate) navigator.vibrate([300, 100, 300, 100, 300]);
             _bzShowOsNotif(title, body, data);
             showPushBanner(title, body, data);
+            if (data?.notifyMode === 'once') _bzCleanOnceTracked(data.busStopCode, data.serviceNo);
         }
     });
 }
@@ -185,6 +200,10 @@ function _bzCheckPendingNotif() {
             resp.json().then(function(notif) {
                 if (Date.now() - notif.ts < 120000) { // only show if < 2 min old
                     showPushBanner(notif.title, notif.body, notif.data);
+                }
+                // Always clean up 'once' tracked subscription, regardless of notification age
+                if (notif.data?.notifyMode === 'once') {
+                    _bzCleanOnceTracked(notif.data.busStopCode, notif.data.serviceNo);
                 }
             });
         });
