@@ -398,14 +398,6 @@ for (const [key, watchers] of [...pushWatchers.entries()]) {
             });
             watcher.notifiedUntil = now + 3 * 60 * 1000; // 3-minute cooldown
             console.log(`[Push] Notified approaching: stop=${busStopCode} svc=${serviceNo} eta=${etaMinutes}min mode=${watcher.notifyMode}`);
-            // 'once' mode: remove this watcher after first notification
-            if ((watcher.notifyMode || 'once') === 'once') {
-              const idx = activeWatchers.indexOf(watcher);
-              if (idx >= 0) activeWatchers.splice(idx, 1);
-              if (activeWatchers.length === 0) pushWatchers.delete(key);
-              else pushWatchers.set(key, activeWatchers);
-              saveWatchers();
-            }
           } catch (err) {
             if (err.statusCode === 410 || err.statusCode === 404) {
               const idx = activeWatchers.indexOf(watcher);
@@ -432,6 +424,14 @@ for (const [key, watchers] of [...pushWatchers.entries()]) {
             });
             watcher.arrivedNotifiedUntil = now + 5 * 60 * 1000; // 5-minute cooldown
             console.log(`[Push] Notified arrived: stop=${busStopCode} svc=${serviceNo}`);
+            // 'once' mode: remove watcher after the arrived notification (bus is here)
+            if ((watcher.notifyMode || 'once') === 'once') {
+              const idx = activeWatchers.indexOf(watcher);
+              if (idx >= 0) activeWatchers.splice(idx, 1);
+              if (activeWatchers.length === 0) pushWatchers.delete(key);
+              else pushWatchers.set(key, activeWatchers);
+              saveWatchers();
+            }
           } catch (err) {
             if (err.statusCode === 410 || err.statusCode === 404) {
               const idx = activeWatchers.indexOf(watcher);
