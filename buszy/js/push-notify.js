@@ -155,7 +155,7 @@
           serviceNo: serviceNo,
           threshold: thresholdMinutes || 1,
           notifyMode: getNotifMode(),
-          notifyWhen: getNotifWhen()
+          notifyWhen: 'both'
         })
       });
       if (!res.ok) throw new Error('Server rejected: ' + res.status);
@@ -337,7 +337,7 @@
             serviceNo: serviceNo,
             threshold: 1,
             notifyMode: getNotifMode(),
-            notifyWhen: getNotifWhen()
+            notifyWhen: 'both'
           })
         });
       } catch { /* network unavailable — will retry on next load */ }
