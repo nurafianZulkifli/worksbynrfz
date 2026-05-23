@@ -169,7 +169,7 @@ if (typeof BroadcastChannel !== 'undefined') {
             const { title, body, data } = event.data;
             _bzClearPendingNotif();
             if (navigator.vibrate) navigator.vibrate([300, 100, 300, 100, 300]);
-            _bzShowOsNotif(title, body, data);  // re-fire from page context — may bypass push-event suppression
+            // OS notification is always shown by the SW; page just shows the in-app banner
             showPushBanner(title, body, data);
             if (data?.notifyMode === 'once') _bzCleanOnceTracked(data.busStopCode, data.serviceNo);
         }
@@ -183,7 +183,7 @@ if ('serviceWorker' in navigator) {
             const { title, body, data } = event.data;
             _bzClearPendingNotif();
             if (navigator.vibrate) navigator.vibrate([300, 100, 300, 100, 300]);
-            _bzShowOsNotif(title, body, data);
+            // OS notification is always shown by the SW; page just shows the in-app banner
             showPushBanner(title, body, data);
             if (data?.notifyMode === 'once') _bzCleanOnceTracked(data.busStopCode, data.serviceNo);
         }

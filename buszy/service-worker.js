@@ -209,17 +209,10 @@ self.addEventListener('push', event => {
     data: data.data || {}
   };
 
-  // Show OS notification from SW when no buszy page is currently visible (closed or backgrounded).
-  // When a page IS visible, it receives the BroadcastChannel message below and shows the
-  // notification itself — prevents duplicate OS popups on desktop.
-  const showNotif = self.clients.matchAll({ type: 'window', includeUncontrolled: true })
-    .then(clients => {
-      const hasVisiblePage = clients.some(c => c.visibilityState === 'visible' && c.url.includes('/buszy/'));
-      if (!hasVisiblePage) {
-        return self.registration.showNotification(data.title, options);
-      }
-      // Visible page will handle the OS notification via BroadcastChannel
-    });
+  // Always show OS notification from SW — reliable delivery regardless of app state.
+  // The page (buszy-subp.js) handles the in-app banner via BroadcastChannel but no longer
+  // re-fires the OS notification, so there are no duplicates.
+  const showNotif = self.registration.showNotification(data.title, options);
 
   const isOnce = data.data?.notifyMode === 'once' && data.data?.busStopCode && data.data?.serviceNo;
 
