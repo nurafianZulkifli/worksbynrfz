@@ -49,7 +49,7 @@
     <style>
         .nav-link.active,
         .mobile-bottom-nav li.active {
-            background: linear-gradient(47deg,rgba(105, 132, 166, 1) 0%, rgba(51, 151, 161, 1) 100%) !important;
+            background: linear-gradient(47deg, rgba(105, 132, 166, 1) 0%, rgba(51, 151, 161, 1) 100%) !important;
         }
 
         .wbnrfz-works {
@@ -93,8 +93,14 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 60px 20px;
+            padding: 20px 20px;
             min-height: calc(100vh - 300px);
+        }
+
+        .sel-apps-container {
+            padding-top: 6em !important;
+            padding-left: 0px !important;
+            padding-right: 0px !important;
         }
 
         .select-apps-header {
@@ -117,106 +123,85 @@
         }
 
         .apps-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 30px;
-            max-width: 900px;
+            display: flex;
+            flex-direction: column;
+            gap: 46px;
+            max-width: 560px;
             width: 100%;
         }
 
         .app-card {
-            background: #ffffff;
             border-radius: 24px;
             display: flex;
-            flex-direction: column;
-            transition: all 0.3s ease;
+            flex-direction: row;
+            align-items: stretch;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             cursor: pointer;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
             overflow: hidden;
-            height: 100%;
+            min-height: 140px;
             text-decoration: none;
+            position: relative;
         }
 
         .app-card:hover {
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-            transform: translateY(-6px);
+            transform: translateY(-5px);
+        }
+
+        .app-card--buszy {
+            background: linear-gradient(84deg, #51a7be 0%, #353c75 100%);
+            border: 2px solid #356b7a;
+        }
+
+        .app-card--railbuddy {
+            background: linear-gradient(58deg, #ac372a 0%, #a36e11 100%);
+            border: 2px solid #8c2e21;
+        }
+
+        .app-card--fintrack {
+            background: linear-gradient(90deg, #42c07e 0%, #239690 100%);
+            border: 2px solid #18693f;
+        }
+
+        .app-card-text {
+            flex: 1;
+            padding: 28px 22px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            z-index: 1;
+            min-width: 0;
+        }
+
+        .app-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 0 0 8px 0;
+            line-height: 1.2;
+        }
+
+        .app-tagline {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.82);
+            margin: 0;
+            font-weight: 500;
+            text-align: center !important;
+        }
+
+        .app-card-thumb {
+            width: 45%;
+            flex-shrink: 0;
+            overflow: hidden;
+            position: relative;
         }
 
         .app-thumbnail {
             width: 100%;
-            height: 160px;
+            height: 100%;
             object-fit: cover;
-            cursor: pointer;
+            object-position: center;
             display: block;
-        }
-
-        .app-thumbnail-link {
-            display: block;
-            overflow: hidden;
-            border-radius: 24px;
-            margin: 12px;
-        }
-
-        .app-content {
-            padding: 24px;
-            padding-bottom: 10px;
-            display: flex;
-            flex-direction: column;
-            flex: 1;
-        }
-
-        .app-name {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #1a1a1a;
-            margin: 0 0 12px 0;
-        }
-
-        .app-description {
-            font-size: 0.95rem;
-            color: #666;
-            line-height: 1.5;
-            margin-bottom: 16px;
-            flex: 1;
-        }
-
-        .app-actions {
-            display: flex;
-            gap: 8px;
-            justify-content: space-between;
-            margin-top: auto;
-        }
-
-        .app-action-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            padding: 8px 16px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: #1a1a1a;
-            color: white;
-            flex: 1;
-            text-decoration: none;
-        }
-
-        .app-action-btn:hover {
-            background: #333;
-        }
-
-        .app-action-btn.delete {
-            background: #f5f5f5;
-            color: #d32f2f;
-        }
-
-        .app-action-btn.delete:hover {
-            background: #ffe0e0;
-            color: #d32f2f;
         }
 
         .add-app-card {
@@ -254,7 +239,7 @@
         }
 
         .pwa-install-banner {
-            background: linear-gradient(47deg,rgba(105, 132, 166, 0.60) 0%, rgba(51, 151, 161, 0.60) 100%);
+            background: linear-gradient(47deg, rgba(105, 132, 166, 0.60) 0%, rgba(51, 151, 161, 0.60) 100%);
             backdrop-filter: blur(25px);
         }
 
@@ -265,7 +250,7 @@
 
         @media (max-width: 768px) {
             .select-apps-container {
-                padding: 40px 15px;
+                /* padding: 40px 15px; */
                 min-height: auto;
             }
 
@@ -274,23 +259,24 @@
             }
 
             .apps-grid {
-                grid-template-columns: 1fr;
-                gap: 20px;
+                gap: 36px;
             }
 
-            .app-card,
-            .add-app-card {
-                min-height: auto;
-                padding: 20px 15px;
+            .app-card {
+                min-height: 120px;
+                border-radius: 20px;
             }
 
-            .app-thumbnail-link {
-                margin: 0;
-                height: 220px;
+            .app-card-text {
+                padding: 20px 18px;
             }
 
-            .app-thumbnail {
-                height: 220px;
+            .app-name {
+                font-size: 1.2rem;
+            }
+
+            .app-tagline {
+                font-size: 0.82rem;
             }
 
             .wbnrfz-works {
@@ -299,36 +285,8 @@
         }
 
         /* Dark mode support */
-        body.dark-mode .app-card {
-            background: #1c1f2b;
-            border: 1px solid #2b2b2b33;
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
         body.dark-mode .app-card:hover {
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-        }
-
-        body.dark-mode .app-name {
-            color: #e0e0e0;
-        }
-
-        body.dark-mode .app-description {
-            color: #a0a0a0;
-        }
-
-        body.dark-mode .app-action-btn {
-            background: #4a4a4a;
-            color: #e0e0e0;
-        }
-
-        body.dark-mode .app-action-btn:hover {
-            background: #555;
-        }
-
-        body.dark-mode .app-action-btn.delete {
-            background: #3a3a3a;
-            color: #ff6b6b;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
         }
 
         body.dark-mode .add-app-card {
@@ -439,46 +397,40 @@
     <!-- ============================================= Hero Section ============================================= -->
     <div class="main-content">
         <section class="wbnrfz-works">
-            <div class="container" style="padding-top: 0px;">
+            <div class="container sel-apps-container">
                 <div class="select-apps-container">
 
                     <div class="apps-grid">
                         <!-- app 1 -->
-                        <a href="buszy/index.html" class="app-card">
-                            <div class="app-thumbnail-link">
-                                <img src="img/bg-img/buszy-thumb.png" alt="Buszy - Bus Arrival Timings"
-                                    class="app-thumbnail">
+                        <a href="buszy/index.html" class="app-card app-card--buszy">
+                            <div class="app-card-text">
+                                <h3 class="app-name">Buszy</h3>
+                                <p class="app-tagline">Bus Arrival Timings</p>
                             </div>
-                            <div class="app-content">
-                                <h3 class="app-name">Buszy - Bus Arrival Timings</h3>
-                                <div class="app-actions">
-                                </div>
+                            <div class="app-card-thumb">
+                                <img src="img/bg-img/buszy-thumb.png" alt="Buszy" class="app-thumbnail">
                             </div>
                         </a>
 
                         <!-- app 2 -->
-                        <a href="rail-buddy/index.html" class="app-card">
-                            <div class="app-thumbnail-link">
-                                <img src="img/bg-img/railbuddy-thumb.png" alt="RailBuddy - Stay on track, always"
-                                    class="app-thumbnail">
+                        <a href="rail-buddy/index.html" class="app-card app-card--railbuddy">
+                            <div class="app-card-text">
+                                <h3 class="app-name">RailBuddy</h3>
+                                <p class="app-tagline">Stay on track, always</p>
                             </div>
-                            <div class="app-content">
-                                <h3 class="app-name">RailBuddy - Stay on track, always</h3>
-                                <div class="app-actions">
-                                </div>
+                            <div class="app-card-thumb">
+                                <img src="img/bg-img/railbuddy-thumb.png" alt="RailBuddy" class="app-thumbnail">
                             </div>
                         </a>
 
                         <!-- app 3 -->
-                        <a href="fin-track/index.html" class="app-card">
-                            <div class="app-thumbnail-link">
-                                <img src="img/bg-img/fintrack-thumb.png" alt="FinTrack - Manage your finances effortlessly"
-                                    class="app-thumbnail">
+                        <a href="fin-track/index.html" class="app-card app-card--fintrack">
+                            <div class="app-card-text">
+                                <h3 class="app-name">FinTrack</h3>
+                                <p class="app-tagline">Track your finances effortlessly</p>
                             </div>
-                            <div class="app-content">
-                                <h3 class="app-name">FinTrack - Track your finances effortlessly</h3>
-                                <div class="app-actions">
-                                </div>
+                            <div class="app-card-thumb">
+                                <img src="img/bg-img/fintrack-thumb.png" alt="FinTrack" class="app-thumbnail">
                             </div>
                         </a>
 
