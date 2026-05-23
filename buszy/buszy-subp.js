@@ -308,3 +308,47 @@ function _bzEscHtml(str) {
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;');
 }
+
+// ── Auto-subscribe to bus service alerts ──────────────────────────────
+// Silently subscribes to bus service disruption alerts on every page load
+// when notification permission is granted and the user hasn't opted out.
+(function () {
+    const _BZ_ALERT_SERVER = 'https://bat-lta-9eb7bbf231a2.herokuapp.com';
+    const _BZ_ALERT_KEY    = 'buszy_alert_notif_subscribed';
+
+    function _bzBase64ToUint8(base64String) {
+        const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+        const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+        const raw = atob(base64);
+        const out = new Uint8Array(raw.length);
+        for (let i = 0; i < raw.length; i++) out[i] = raw.charCodeAt(i);
+        return out;
+    }
+
+    async function _bzAutoSubAlerts() {
+        if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
+        if (Notification.permission !== 'granted') return;
+        // Respect explicit opt-out (set by alert-notify.js toggle button)
+        if (localStorage.getItem(_BZ_ALERT_KEY) === 'false') return;
+        try {
+            const reg = await navigator.serviceWorker.ready;
+            let sub = await reg.pushManager.getSubscription();
+            if (!sub) {
+                const res = await fetch(_BZ_ALERT_SERVER + '/push/vapid-public-key');
+                if (!res.ok) return;
+                sub = await reg.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: _bzBase64ToUint8(await res.text())
+                });
+            }
+            await fetch(_BZ_ALERT_SERVER + '/push/subscribe-alerts', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ subscription: sub.toJSON() })
+            });
+            localStorage.setItem(_BZ_ALERT_KEY, 'true');
+        } catch { /* network unavailable — will retry on next load */ }
+    }
+
+    document.addEventListener('DOMContentLoaded', _bzAutoSubAlerts);
+})();
