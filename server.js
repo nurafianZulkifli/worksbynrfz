@@ -450,7 +450,7 @@ for (const [key, watchers] of [...pushWatchers.entries()]) {
             title: isAtStop ? `Bus ${serviceNo} has arrived!` : `Bus ${serviceNo} arriving soon`,
             body: isAtStop
               ? `Stop ${busStopCode} — your bus is here`
-              : `Stop ${busStopCode} — arriving in ${etaMinutes > 0 ? etaMinutes + ' min' : '< 1 min'}`,
+              : `Stop ${busStopCode} — ${etaMinutes > 0 ? 'arriving in ' + etaMinutes + ' min' : 'Arr'}`,
             data: { busStopCode, serviceNo, type: isAtStop ? 'arrived' : 'approaching', notifyMode: watcher.notifyMode || 'once' }
           });
           try {

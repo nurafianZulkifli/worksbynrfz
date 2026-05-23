@@ -209,10 +209,17 @@ self.addEventListener('push', event => {
     data: data.data || {}
   };
 
-  // Always show OS notification from SW — works whether the app is open, backgrounded, or closed.
-  // When a buszy page IS open, buszy-subp.js receives the BroadcastChannel message below and
-  // replaces this notification with a fresh-tagged one, triggering Android heads-up banners.
-  const showNotif = self.registration.showNotification(data.title, options);
+  // Show OS notification from SW when no buszy page is currently visible (closed or backgrounded).
+  // When a page IS visible, it receives the BroadcastChannel message below and shows the
+  // notification itself — prevents duplicate OS popups on desktop.
+  const showNotif = self.clients.matchAll({ type: 'window', includeUncontrolled: true })
+    .then(clients => {
+      const hasVisiblePage = clients.some(c => c.visibilityState === 'visible' && c.url.includes('/buszy/'));
+      if (!hasVisiblePage) {
+        return self.registration.showNotification(data.title, options);
+      }
+      // Visible page will handle the OS notification via BroadcastChannel
+    });
 
   const isOnce = data.data?.notifyMode === 'once' && data.data?.busStopCode && data.data?.serviceNo;
 
