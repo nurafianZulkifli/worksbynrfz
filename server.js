@@ -442,11 +442,16 @@ for (const [key, watchers] of [...pushWatchers.entries()]) {
         // Use etaSeconds so buses at <60s (etaMinutes=0) still get an approaching alert
         const wantApproaching = !watcher.notifyWhen || watcher.notifyWhen === 'arriving' || watcher.notifyWhen === 'both';
         const wantArrived    = watcher.notifyWhen === 'arrived' || watcher.notifyWhen === 'both';
-        if (wantApproaching && etaSeconds > 0 && now >= watcher.notifiedUntil) {
+        // Also fire when etaSeconds=0 if user hasn't opted into the separate 'arrived' notification —
+        // prevents missed notifications when the bus ETA jumps past the threshold window in one poll cycle.
+        if (wantApproaching && (etaSeconds > 0 || !wantArrived) && now >= watcher.notifiedUntil) {
+          const isAtStop = etaSeconds === 0;
           const payload = JSON.stringify({
-            title: `Bus ${serviceNo} arriving soon`,
-            body: `Stop ${busStopCode} — arriving in ${etaMinutes > 0 ? etaMinutes + ' min' : '< 1 min'}`,
-            data: { busStopCode, serviceNo, type: 'approaching', notifyMode: watcher.notifyMode || 'once' }
+            title: isAtStop ? `Bus ${serviceNo} has arrived!` : `Bus ${serviceNo} arriving soon`,
+            body: isAtStop
+              ? `Stop ${busStopCode} — your bus is here`
+              : `Stop ${busStopCode} — arriving in ${etaMinutes > 0 ? etaMinutes + ' min' : '< 1 min'}`,
+            data: { busStopCode, serviceNo, type: isAtStop ? 'arrived' : 'approaching', notifyMode: watcher.notifyMode || 'once' }
           });
           try {
             await webpush.sendNotification(watcher.subscription, payload, {
