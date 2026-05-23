@@ -1112,7 +1112,7 @@ async function initializePage() {
     } else {
         const availableServices = data.map(s => s.n).join(', ');
         console.error('Service not found. Available:', availableServices);
-        showErrorMessage(`Service ${serviceNumber} is not available. <br> Please ensure you have entered a valid service number.`);
+        showErrorMessage(`Service ${serviceNumber} is not available. <br> Please re-enter the correct service number.`);
     }
 }
 
