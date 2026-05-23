@@ -596,13 +596,13 @@ body.drag-mode .list-group-item:not(.drag-selected) {
 }
 
 .pw-btn-prev:disabled {
-    background-color: #64280c;
+    background-color: #114e61;
     box-shadow: none;
     cursor: not-allowed;
 }
 
 .pw-btn-next:disabled {
-    background-color: #64280c;
+    background-color: #114e61;
     box-shadow: none;
     cursor: not-allowed;
 }
