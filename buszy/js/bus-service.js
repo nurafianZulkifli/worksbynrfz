@@ -532,6 +532,16 @@ function createDirectionSelector(directions, onDirectionChange, currentDirection
     stopsContainer.parentNode.insertBefore(selectorContainer, stopsContainer);
 }
 
+// Set terminal element as a clickable link to the bus stop, or plain text if no code
+function setTerminalLink(elementId, name, stopCode) {
+    const el = document.getElementById(elementId);
+    if (stopCode) {
+        el.innerHTML = `<a href="art.html?BusStopCode=${stopCode}" class="terminal-link">${name}</a>`;
+    } else {
+        el.textContent = name;
+    }
+}
+
 // Populate page with service data (compact format)
 // Version: Service 67 debug fix v3
 async function populateServiceData(serviceNumber, service) {
@@ -559,8 +569,10 @@ async function populateServiceData(serviceNumber, service) {
     attachRouteInfoButton(service.n);
 
     // Route terminals
-    document.getElementById('terminal-start').textContent = service.ts;
-    document.getElementById('terminal-end').textContent = service.te;
+    const firstDirKey = service.direction_routes ? Object.keys(service.direction_routes)[0] : null;
+    const firstDirStops = firstDirKey ? service.direction_routes[firstDirKey].st : service.st;
+    setTerminalLink('terminal-start', service.ts, (firstDirStops && firstDirStops[0]) || '');
+    setTerminalLink('terminal-end', service.te, (firstDirStops && firstDirStops[firstDirStops.length - 1]) || '');
 
     // Set looping point if available
     if (service.lp) {
@@ -628,8 +640,8 @@ async function populateServiceData(serviceNumber, service) {
         // Update terminals if direction_routes exist
         if (service.direction_routes && service.direction_routes[direction]) {
             const dirRoute = service.direction_routes[direction];
-            document.getElementById('terminal-start').textContent = dirRoute.ts;
-            document.getElementById('terminal-end').textContent = dirRoute.te;
+            setTerminalLink('terminal-start', dirRoute.ts, (dirRoute.st && dirRoute.st[0]) || '');
+            setTerminalLink('terminal-end', dirRoute.te, (dirRoute.st && dirRoute.st[dirRoute.st.length - 1]) || '');
             console.log(`Direction ${direction}: ${dirRoute.ts} → ${dirRoute.te}`);
         }
 

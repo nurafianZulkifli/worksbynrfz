@@ -827,7 +827,7 @@ async function fetchBusArrivals() {
                         </div>
                     </div>
                     <div class="service-options-collapse" data-service="${service.ServiceNo}" style="display: none; max-height: 0; overflow: hidden; transition: max-height 0.3s ease;">
-                        <div style="display: flex; gap: 0.5rem; padding: 0.5rem 0; margin-top: 0.5rem; padding-top: 0.5rem; flex-wrap: wrap; justify-content: center;">
+                        <div style="display: flex; gap: 1rem; padding: 0.5rem 0; margin-top: 0.5rem; padding-top: 0.5rem; flex-wrap: wrap; justify-content: center;">
                             <button class="btn btn-busloc btn-sm view-location-btn-consolidated" data-service="${service.ServiceNo}" title="View bus location on map"
                                 ${!((service.NextBus?.Latitude !== "0.0" && service.NextBus?.Longitude !== "0.0") || (hasNextBus2 && service.NextBus2?.Latitude !== "0.0" && service.NextBus2?.Longitude !== "0.0")) ? 'disabled' : ''}>
                                 <i class="fa-kit fa-lta-location"></i>
