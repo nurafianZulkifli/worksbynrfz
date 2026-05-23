@@ -657,9 +657,9 @@ body.dark-mode .stop-item:hover {
 
 /* Dark mode styling for highlighted stop */
 body.dark-mode .stop-item.highlight-stop {
-    background-color: #393e53;
-    border: 2px solid #91a5be;
-    box-shadow: 0 0 15px #8190a1, 0 2px 4px #0000004d;
+    background-color: #0e3f4e;
+    border: 2px solid #1c748f;
+    box-shadow: 0 0 15px #1c748f, 0 2px 4px #0000004d;
 }
 
 body.dark-mode .stop-item.highlight-stop:hover {
