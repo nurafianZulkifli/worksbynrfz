@@ -766,6 +766,7 @@ body.drag-mode .list-group-item:not(.drag-selected) {
     border-radius: 10px;
     white-space: nowrap;
     width: max-content !important;
+    font-size: 18px;
 }
 
 .btn-flt {
