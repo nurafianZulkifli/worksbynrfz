@@ -120,11 +120,11 @@
     if (isSubscribed()) {
       btn.classList.add('notif-active');
       const label = btn.querySelector('.notif-label');
-      if (label) label.textContent = '✓';
+      if (label) label.innerHTML = '<i class="fa-solid fa-check"></i>';
     } else {
       btn.classList.remove('notif-active');
       const label = btn.querySelector('.notif-label');
-      if (label) label.textContent = 'Notify me';
+      if (label) label.textContent = '';
     }
   }
 
