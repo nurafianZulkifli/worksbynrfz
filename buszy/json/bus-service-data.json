@@ -6459,7 +6459,7 @@
     "op": "SBST",
     "directions": [1],
     "ts": "Liuxun Sanhemiao Tp",
-    "lp": "Ang Mo Kio Ave 10 ",
+    "lp": "Ang Mo Kio Ave 10",
     "te": "Opp Yio Chu Kang Stadium",
       "direction_routes": {
       "1": {
@@ -6469,6 +6469,105 @@
       }
     }
   },
+    {
+    "n": "268",
+    "t": "Feeder",
+    "op": "SBST",
+    "directions": [1],
+    "ts": "Bef AMK St 64",
+    "lp": "Ang Mo Kio Ave 5",
+    "te": "Liuxun Sanhemiao Tp",
+      "direction_routes": {
+      "1": {
+        "ts": "Bef AMK St 64",
+        "te": "Liuxun Sanhemiao Tp",
+        "st":["55239","55229","55219","55309","55159","55149","55139","54209","54199","54189","54221","54231","54241","54261","54271","54281","54291","54301","54511","54521","54599","54641","54631","54659","54509","54591","54529","54519","54309","54299","54289","54279","54269","54248","54239","54229","54181","54191","54201","55131","55141","55151","55301","55211","55221","55231"]
+      }
+    },
+    "sb": ["268A", "268B", "268C"]
+  },
+    {
+    "n": "268A",
+    "t": "Short-Trip",
+    "op": "SBST",
+    "directions": [1],
+    "ts": "Bef AMK St 64",
+    "te": "Techplace 2",
+      "direction_routes": {
+      "1": {
+        "ts": "Bef AMK St 64",
+        "te": "Techplace 2",
+        "st":["55509","55239","55229","55219","55309","55159","55149","55139","54209","54199","54189","54221","54231","54241","54261","54271","54281","54291","54301","54511","54521","54599","54641","54631","54659"]
+      }
+    },
+    "pb": ["268"]
+  },
+    {
+    "n": "268B",
+    "t": "Short-Trip",
+    "op": "SBST",
+    "directions": [1],
+    "ts": "Opp AMK Police Div HQ",
+    "te": "Aft Ang Mo Kio Stn Exit A",
+      "direction_routes": {
+      "1": {
+        "ts": "Opp AMK Police Div HQ",
+        "te": "Aft Ang Mo Kio Stn Exit A",
+        "st":["55309","55159","55149","55139","54209","54199","54189","54221","54231","54241","54261"]
+      }
+    },
+    "pb": ["268"]
+  },
+      {
+    "n": "268C",
+    "t": "Short-Trip",
+    "op": "SBST",
+    "directions": [1],
+    "ts": "Opp Ang Mo Kio Stn",
+    "te": "AMK Police Div HQ",
+      "direction_routes": {
+      "1": {
+        "ts": "Opp Ang Mo Kio Stn",
+        "te": "AMK Police Div HQ",
+        "st":["54269","54248","54239","54229","54181","54191","54201","55131","55141","55151","55301"]
+      }
+    },
+    "pb": ["268"]
+  },
+    {
+    "n": "269",
+    "t": "Feeder",
+    "op": "SBST",
+    "directions": [1],
+    "ts": "Ang Mo Kio Int",
+    "lp": "Ang Mo Kio St 61",
+    "te": "Ang Mo Kio Int",
+      "direction_routes": {
+      "1": {
+        "ts": "Ang Mo Kio Int",
+        "te": "Ang Mo Kio Int",
+        "st":["54009","54248","54239","54229","54181","54191","54201","54451","54461","55201","55199","55169","55019","55129","55119","54209","54199","54189","54221","54231","54241","54009"]
+      }
+    },
+    "sb": ["269A"]
+  },
+    {
+    "n": "269A",
+    "t": "Feeder",
+    "op": "SBST",
+    "directions": [1],
+    "ts": "Ang Mo Kio Int",
+    "te": "Opp Yio Chu Kang CC",
+      "direction_routes": {
+      "1": {
+        "ts": "Ang Mo Kio Int",
+        "te": "Opp Yio Chu Kang CC",
+        "st":["54009","54248","54239","54229","54181","54191","54201","54451","54461","55201","55199","55169"]
+      }
+    },
+    "pb": ["269"]
+  },
+
 
 
 
