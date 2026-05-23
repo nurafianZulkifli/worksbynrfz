@@ -222,13 +222,13 @@
   function setButtonActive(btn) {
     btn.classList.add('notif-active');
     const label = btn.querySelector('.notif-label');
-    if (label) label.textContent = 'Notifying';
+    if (label) label.innerHTML = '<i class="fa-solid fa-check"></i>';
   }
 
   function setButtonInactive(btn) {
     btn.classList.remove('notif-active');
     const label = btn.querySelector('.notif-label');
-    if (label) label.textContent = 'Notify';
+    if (label) label.textContent = '';
   }
 
   // ── Restore button states after DOM rebuild ────────────────────────

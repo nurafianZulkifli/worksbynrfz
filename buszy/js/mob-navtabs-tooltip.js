@@ -8,8 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
         './': 'Home',
         './first-last.html': 'Timings',
         'first-last.html': 'Timings',
-        './ann.html': 'Announcements',
-        'ann.html': 'Announcements',
+        './alerts.html': 'Alerts',
+        'alerts.html': 'Alerts',
         './menu.html': 'Menu',
         'menu.html': 'Menu'
     };

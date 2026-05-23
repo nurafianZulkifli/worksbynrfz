@@ -830,17 +830,17 @@ async function fetchBusArrivals() {
                         <div style="display: flex; gap: 0.5rem; padding: 0.5rem 0; margin-top: 0.5rem; padding-top: 0.5rem; flex-wrap: wrap; justify-content: center;">
                             <button class="btn btn-busloc btn-sm view-location-btn-consolidated" data-service="${service.ServiceNo}" title="View bus location on map"
                                 ${!((service.NextBus?.Latitude !== "0.0" && service.NextBus?.Longitude !== "0.0") || (hasNextBus2 && service.NextBus2?.Latitude !== "0.0" && service.NextBus2?.Longitude !== "0.0")) ? 'disabled' : ''}>
-                                <i class="fa-kit fa-lta-location"></i>&nbsp;Location
+                                <i class="fa-kit fa-lta-location"></i>&nbsp;
                             </button>
                             <a href="${getBasePath() + 'buszy/first-last.html?BusStopCode=' + busStopCode + '&service=' + service.ServiceNo}" class="btn btn-busloc btn-sm" title="View first and last bus timings">
-                                <i class="fa-regular fa-clock"></i>&nbsp;Timings
+                                <i class="fa-regular fa-clock"></i>&nbsp;
                             </a>
                             <button class="btn btn-busloc btn-sm view-route-btn" data-service="${service.ServiceNo}" title="View bus route details"
                                 ${!serviceExists(service.ServiceNo) ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : ''}>
-                                <i class="fa-kit fa-lta-bus-stop"></i>&nbsp;Route
+                                <i class="fa-kit fa-lta-bus-stop"></i>&nbsp;
                             </button>
                             <button class="btn btn-busloc btn-sm notif-toggle-btn" data-service="${service.ServiceNo}" data-stop="${busStopCode}" title="Notify me when this bus is arriving">
-                                <i class="fa-regular fa-bell"></i>&nbsp;<span class="notif-label">Notify</span>
+                                <i class="fa-regular fa-bell"></i>&nbsp;<span class="notif-label"></span>
                             </button>
                         </div>
                     </div>
