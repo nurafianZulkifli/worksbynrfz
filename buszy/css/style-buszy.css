@@ -351,23 +351,23 @@ table th {
 
 /* GPS nearest stop highlight on NBS */
 .bus-stop.nearest-stop {
-    background-color: #f0fad6;
-    border: 2px solid #7cb000;
-    box-shadow: 0 0 16px rgba(124, 176, 0, 0.45), 0 2px 4px rgba(0, 0, 0, 0.2);
+    background-color: #c5d9df;
+    border: 2px solid #1c748f;
+    box-shadow: 0 0 15px #1c748f, 0 2px 4px #0000004d;
 }
 
 .bus-stop.nearest-stop:hover {
-    background-color: #e6f5c0;
-    box-shadow: 0 0 24px rgba(124, 176, 0, 0.6), 0 8px 20px rgba(0, 0, 0, 0.15);
+    background-color: #d8e6f3;
+    box-shadow: 0 0 24px rgba(28, 116, 143, 0.6), 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 .nearest-stop-badge {
     font-size: 0.72rem;
-    color: #4e7a00;
+    color: #457b9f;
     font-weight: 600;
     padding: 2px 8px 2px 6px;
     border-radius: 12px;
-    background: rgba(124, 176, 0, 0.15);
+    background: #bed4e2;
     display: inline-flex;
     align-items: center;
     gap: 4px;
@@ -1796,8 +1796,15 @@ body.dark-mode .guide-sheet {
 }
 
 @keyframes guideFadeIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .guide-icon-wrap {
@@ -2082,8 +2089,13 @@ body.dark-mode .sht-btn-ghost {
 }
 
 @keyframes bz-push-progress {
-    from { transform: scaleX(1); }
-    to   { transform: scaleX(0); }
+    from {
+        transform: scaleX(1);
+    }
+
+    to {
+        transform: scaleX(0);
+    }
 }
 
 body.dark-mode .bz-push-banner {

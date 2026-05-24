@@ -542,9 +542,9 @@ body.dark-mode .stops-no-results {
 
 /* Highlight the original bus stop when navigating from art.html */
 .stop-item.highlight-stop {
-    background-color: #d9ddf1;
-    border: 2px solid #8496ad;
-    box-shadow: 0 0 15px #8190a1, 0 2px 4px #0000004d;
+    background-color: #c5d9df;
+    border: 2px solid #1c748f;
+    box-shadow: 0 0 15px #1c748f, 0 2px 4px #0000004d;
 }
 
 .stop-item.highlight-stop:hover {
