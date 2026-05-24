@@ -2103,3 +2103,20 @@ body.dark-mode .bz-push-banner-close {
     background: rgba(255, 255, 255, 0.1);
     color: #aaa;
 }
+
+/* Arrived variant — more urgent accent (orange progress bar + left border) */
+.bz-push-banner--arrived {
+    border-left: 4px solid #f97316;
+}
+
+.bz-push-banner--arrived .bz-push-banner-progress {
+    background: #f97316;
+}
+
+body.dark-mode .bz-push-banner--arrived {
+    border-left-color: #fb923c;
+}
+
+body.dark-mode .bz-push-banner--arrived .bz-push-banner-progress {
+    background: #fb923c;
+}

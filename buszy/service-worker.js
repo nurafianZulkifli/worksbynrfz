@@ -196,7 +196,7 @@ self.addEventListener('push', event => {
     badge: scope + 'assets/icon-192.png',
     tag: isAlert
       ? 'buszy-service-alert'
-      : `buszy-arrival-${data.data?.serviceNo}-${data.data?.busStopCode}`,
+      : `buszy-${isArrived ? 'arrived' : 'arriving'}-${data.data?.serviceNo}-${data.data?.busStopCode}`,
     renotify: true,
     requireInteraction: true,
     silent: false,

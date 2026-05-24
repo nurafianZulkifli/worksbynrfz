@@ -168,7 +168,10 @@ if (typeof BroadcastChannel !== 'undefined') {
         if (event.data?.type === 'PUSH_RECEIVED') {
             const { title, body, data } = event.data;
             _bzClearPendingNotif();
-            if (navigator.vibrate) navigator.vibrate([300, 100, 300, 100, 300]);
+            const vibPat = data?.type === 'arrived'  ? [300, 100, 300, 100, 300, 100, 300]
+                         : data?.type === 'service-alert' ? [400, 150, 400]
+                         : [300, 100, 300];
+            if (navigator.vibrate) navigator.vibrate(vibPat);
             // OS notification is always shown by the SW; page just shows the in-app banner
             showPushBanner(title, body, data);
             if (data?.notifyMode === 'once') _bzCleanOnceTracked(data.busStopCode, data.serviceNo);
@@ -182,7 +185,10 @@ if ('serviceWorker' in navigator) {
         if (event.data?.type === 'PUSH_RECEIVED') {
             const { title, body, data } = event.data;
             _bzClearPendingNotif();
-            if (navigator.vibrate) navigator.vibrate([300, 100, 300, 100, 300]);
+            const vibPat = data?.type === 'arrived'  ? [300, 100, 300, 100, 300, 100, 300]
+                         : data?.type === 'service-alert' ? [400, 150, 400]
+                         : [300, 100, 300];
+            if (navigator.vibrate) navigator.vibrate(vibPat);
             // OS notification is always shown by the SW; page just shows the in-app banner
             showPushBanner(title, body, data);
             if (data?.notifyMode === 'once') _bzCleanOnceTracked(data.busStopCode, data.serviceNo);
@@ -221,12 +227,14 @@ function _bzClearPendingNotif() {
 function _bzShowOsNotif(title, body, data) {
     if (!('serviceWorker' in navigator) || Notification.permission !== 'granted') return;
     navigator.serviceWorker.ready.then(function(reg) {
-        var isAlert = data && data.type === 'service-alert';
+        var isAlert   = data && data.type === 'service-alert';
+        var isArrived = data && data.type === 'arrived';
+        var typeTag = isArrived ? 'arrived' : 'arriving';
         var baseTag = isAlert
             ? 'buszy-service-alert'
-            : 'buszy-arrival-' + ((data && data.serviceNo) || '') + '-' + ((data && data.busStopCode) || '');
+            : 'buszy-' + typeTag + '-' + ((data && data.serviceNo) || '') + '-' + ((data && data.busStopCode) || '');
         var freshTag = baseTag + '-' + Date.now();
-        // Close any existing notification for this stop/service, then show a brand-new one
+        // Close only the matching type's notification, then show a brand-new one
         reg.getNotifications().then(function(all) {
             all.filter(function(n) { return n.tag.startsWith(baseTag); }).forEach(function(n) { n.close(); });
             reg.showNotification(title, {
@@ -236,7 +244,9 @@ function _bzShowOsNotif(title, body, data) {
                 tag: freshTag,
                 requireInteraction: true,
                 silent: false,
-                vibrate: isAlert ? [400, 150, 400] : [300, 100, 300, 100, 300],
+                vibrate: isArrived ? [300, 100, 300, 100, 300, 100, 300]
+                        : isAlert  ? [400, 150, 400]
+                        :            [300, 100, 300],
                 data: data || {}
             }).catch(function() {});
         }).catch(function() {});
@@ -262,9 +272,10 @@ function showPushBanner(title, body, data) {
         if (data.serviceNo) navUrl += '&ServiceNo=' + encodeURIComponent(data.serviceNo);
     }
 
+    const isArrived = data?.type === 'arrived';
     const banner = document.createElement('div');
     banner.id = 'bz-push-banner';
-    banner.className = 'bz-push-banner';
+    banner.className = 'bz-push-banner' + (isArrived ? ' bz-push-banner--arrived' : '');
     banner.innerHTML =
         '<img class="bz-push-banner-icon" src="./assets/icon-192.png" alt="">' +
         '<div class="bz-push-banner-text">' +
