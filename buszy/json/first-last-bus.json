@@ -217461,7 +217461,7 @@
       },
       {
         "service": "965",
-        "routeName": "SENGKANG (LOOP)",
+        "routeName": "Buangkok Int",
         "timings": {
           "Weekdays": {
             "firstBus": "05:33",
@@ -219253,7 +219253,7 @@
       },
       {
         "service": "965",
-        "routeName": "SENGKANG (LOOP)",
+        "routeName": "Buangkok Int",
         "timings": {
           "Weekdays": {
             "firstBus": "05:34",
@@ -225190,7 +225190,7 @@
       },
       {
         "service": "965",
-        "routeName": "SENGKANG (LOOP)",
+        "routeName": "Buangkok Int",
         "timings": {
           "Weekdays": {
             "firstBus": "05:36",
@@ -225420,7 +225420,7 @@
       },
       {
         "service": "965",
-        "routeName": "SENGKANG (LOOP)",
+        "routeName": "Buangkok Int",
         "timings": {
           "Weekdays": {
             "firstBus": "05:38",
@@ -226972,7 +226972,7 @@
       },
       {
         "service": "965",
-        "routeName": "SENGKANG (LOOP)",
+        "routeName": "Buangkok Int",
         "timings": {
           "Weekdays": {
             "firstBus": "05:30",
@@ -229287,7 +229287,7 @@
       },
       {
         "service": "965",
-        "routeName": "SENGKANG (LOOP)",
+        "routeName": "Buangkok Int",
         "timings": {
           "Weekdays": {
             "firstBus": "05:40",
@@ -229445,7 +229445,7 @@
       },
       {
         "service": "965",
-        "routeName": "SENGKANG (LOOP)",
+        "routeName": "Buangkok Int",
         "timings": {
           "Weekdays": {
             "firstBus": "05:41",
@@ -279172,7 +279172,7 @@
       },
       {
         "service": "965",
-        "routeName": "SENGKANG (LOOP)",
+        "routeName": "Buangkok Int",
         "timings": {
           "Weekdays": {
             "firstBus": "06:08",
@@ -293552,7 +293552,7 @@
       },
       {
         "service": "965",
-        "routeName": "SENGKANG (LOOP)",
+        "routeName": "Buangkok Int",
         "timings": {
           "Weekdays": {
             "firstBus": "05:47",
@@ -293674,7 +293674,7 @@
       },
       {
         "service": "965",
-        "routeName": "SENGKANG (LOOP)",
+        "routeName": "Buangkok Int",
         "timings": {
           "Weekdays": {
             "firstBus": "05:46",
@@ -295382,7 +295382,7 @@
       },
       {
         "service": "965",
-        "routeName": "SENGKANG (LOOP)",
+        "routeName": "Buangkok Int",
         "timings": {
           "Weekdays": {
             "firstBus": "06:08",
@@ -295918,7 +295918,7 @@
       },
       {
         "service": "965",
-        "routeName": "SENGKANG (LOOP)",
+        "routeName": "Buangkok Int",
         "timings": {
           "Weekdays": {
             "firstBus": "06:07",
@@ -296670,7 +296670,7 @@
       },
       {
         "service": "965",
-        "routeName": "SENGKANG (LOOP)",
+        "routeName": "Buangkok Int",
         "timings": {
           "Weekdays": {
             "firstBus": "06:06",
@@ -297332,7 +297332,7 @@
       },
       {
         "service": "965",
-        "routeName": "SENGKANG (LOOP)",
+        "routeName": "Buangkok Int",
         "timings": {
           "Weekdays": {
             "firstBus": "06:05",
@@ -298102,7 +298102,7 @@
       },
       {
         "service": "965",
-        "routeName": "SENGKANG (LOOP)",
+        "routeName": "Buangkok Int",
         "timings": {
           "Weekdays": {
             "firstBus": "06:03",
@@ -298674,7 +298674,7 @@
       },
       {
         "service": "965",
-        "routeName": "SENGKANG (LOOP)",
+        "routeName": "Buangkok Int",
         "timings": {
           "Weekdays": {
             "firstBus": "06:00",
@@ -299030,7 +299030,7 @@
       },
       {
         "service": "965",
-        "routeName": "SENGKANG (LOOP)",
+        "routeName": "Buangkok Int",
         "timings": {
           "Weekdays": {
             "firstBus": "05:58",
@@ -299695,7 +299695,7 @@
       },
       {
         "service": "965",
-        "routeName": "SENGKANG (LOOP)",
+        "routeName": "Buangkok Int",
         "timings": {
           "Weekdays": {
             "firstBus": "05:56",
@@ -302648,7 +302648,7 @@
       },
       {
         "service": "965",
-        "routeName": "SENGKANG (LOOP)",
+        "routeName": "Buangkok Int",
         "timings": {
           "Weekdays": {
             "firstBus": "05:54",
@@ -302806,7 +302806,7 @@
       },
       {
         "service": "965",
-        "routeName": "SENGKANG (LOOP)",
+        "routeName": "Buangkok Int",
         "timings": {
           "Weekdays": {
             "firstBus": "05:52",
@@ -302964,7 +302964,7 @@
       },
       {
         "service": "965",
-        "routeName": "SENGKANG (LOOP)",
+        "routeName": "Buangkok Int",
         "timings": {
           "Weekdays": {
             "firstBus": "05:50",
@@ -347715,7 +347715,7 @@
       },
       {
         "service": "83",
-        "routeName": "SENGKANG (LOOP)",
+        "routeName": "Buangkok Int",
         "timings": {
           "Weekdays": {
             "firstBus": "05:20",
@@ -349394,7 +349394,7 @@
       },
       {
         "service": "83",
-        "routeName": "SENGKANG (LOOP)",
+        "routeName": "Buangkok Int",
         "timings": {
           "Weekdays": {
             "firstBus": "05:38",
@@ -349556,7 +349556,7 @@
       },
       {
         "service": "965",
-        "routeName": "SENGKANG (LOOP)",
+        "routeName": "Buangkok Int",
         "timings": {
           "Weekdays": {
             "firstBus": "06:20",
@@ -349768,7 +349768,7 @@
       },
       {
         "service": "83",
-        "routeName": "SENGKANG (LOOP)",
+        "routeName": "Buangkok Int",
         "timings": {
           "Weekdays": {
             "firstBus": "05:35",
@@ -350558,7 +350558,7 @@
       },
       {
         "service": "83",
-        "routeName": "SENGKANG (LOOP)",
+        "routeName": "Buangkok Int",
         "timings": {
           "Weekdays": {
             "firstBus": "05:34",
@@ -350788,7 +350788,7 @@
       },
       {
         "service": "83",
-        "routeName": "SENGKANG (LOOP)",
+        "routeName": "Buangkok Int",
         "timings": {
           "Weekdays": {
             "firstBus": "05:32",
@@ -351036,7 +351036,7 @@
       },
       {
         "service": "83",
-        "routeName": "SENGKANG (LOOP)",
+        "routeName": "Buangkok Int",
         "timings": {
           "Weekdays": {
             "firstBus": "05:31",
@@ -352233,7 +352233,7 @@
       },
       {
         "service": "83",
-        "routeName": "SENGKANG (LOOP)",
+        "routeName": "Buangkok Int",
         "timings": {
           "Weekdays": {
             "firstBus": "05:22",
@@ -352920,7 +352920,7 @@
       },
       {
         "service": "83",
-        "routeName": "SENGKANG (LOOP)",
+        "routeName": "Buangkok Int",
         "timings": {
           "Weekdays": {
             "firstBus": "05:29",
@@ -353585,7 +353585,7 @@
       },
       {
         "service": "83",
-        "routeName": "SENGKANG (LOOP)",
+        "routeName": "Buangkok Int",
         "timings": {
           "Weekdays": {
             "firstBus": "05:28",
@@ -353959,7 +353959,7 @@
       },
       {
         "service": "83",
-        "routeName": "SENGKANG (LOOP)",
+        "routeName": "Buangkok Int",
         "timings": {
           "Weekdays": {
             "firstBus": "05:26",
@@ -354351,7 +354351,7 @@
       },
       {
         "service": "83",
-        "routeName": "SENGKANG (LOOP)",
+        "routeName": "Buangkok Int",
         "timings": {
           "Weekdays": {
             "firstBus": "05:24",
@@ -373384,7 +373384,7 @@
       },
       {
         "service": "965",
-        "routeName": "SENGKANG (LOOP)",
+        "routeName": "Buangkok Int",
         "timings": {
           "Weekdays": {
             "firstBus": "06:24",
@@ -374746,7 +374746,7 @@
       },
       {
         "service": "965",
-        "routeName": "SENGKANG (LOOP)",
+        "routeName": "Buangkok Int",
         "timings": {
           "Weekdays": {
             "firstBus": "06:23",
@@ -374922,7 +374922,7 @@
       },
       {
         "service": "83",
-        "routeName": "SENGKANG (LOOP)",
+        "routeName": "Buangkok Int",
         "timings": {
           "Weekdays": {
             "firstBus": "05:39",
@@ -375030,7 +375030,7 @@
       },
       {
         "service": "965",
-        "routeName": "SENGKANG (LOOP)",
+        "routeName": "Buangkok Int",
         "timings": {
           "Weekdays": {
             "firstBus": "06:22",
@@ -378044,7 +378044,7 @@
       },
       {
         "service": "83",
-        "routeName": "SENGKANG (LOOP)",
+        "routeName": "Buangkok Int",
         "timings": {
           "Weekdays": {
             "firstBus": "05:44",
@@ -378396,7 +378396,7 @@
       },
       {
         "service": "83",
-        "routeName": "SENGKANG (LOOP)",
+        "routeName": "Buangkok Int",
         "timings": {
           "Weekdays": {
             "firstBus": "05:41",
@@ -378554,7 +378554,7 @@
       },
       {
         "service": "83",
-        "routeName": "SENGKANG (LOOP)",
+        "routeName": "Buangkok Int",
         "timings": {
           "Weekdays": {
             "firstBus": "05:46",
