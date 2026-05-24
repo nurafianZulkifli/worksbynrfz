@@ -69,7 +69,7 @@
             inset: 0;
             background: url("img/bg-img/hero-bg.png") top right no-repeat;
             background-size: cover;
-            filter: blur(25px);
+            filter: blur(22px);
             z-index: 0;
         }
 
@@ -305,7 +305,7 @@
             }
 
             .apps-grid {
-                gap: 36px;
+                gap: 20px;
             }
 
             .app-card {
@@ -455,7 +455,7 @@
 
                     <div class="select-apps-header">
                         <img src="img/core-img/icon-192.png" alt="Works by NRFZ" class="select-apps-logo">
-                        <h1>Welcome back</h1>
+                        <h1 id="greeting-text">Welcome Back!</h1>
                         <p>Select a web app to continue:</p>
                     </div>
 
@@ -529,6 +529,17 @@
     <script src="js/pwa-init-main.js"></script>
 
     <script src="js/back-to-top.js"></script>
+
+    <script>
+        (function () {
+            var el = document.getElementById('greeting-text');
+            if (!el) return;
+            if (!localStorage.getItem('wbnrfz-visited')) {
+                el.textContent = 'Hello There!';
+                localStorage.setItem('wbnrfz-visited', '1');
+            }
+        })();
+    </script>
 
     <script>
         // Dismiss PWA splash screen after page load
