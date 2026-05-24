@@ -48,17 +48,22 @@ function getBasePath() {
 function openRouteInfo(serviceNumber) {
     // Format service number to remove leading zeros if needed for LTG URL
     const serviceNum = String(serviceNumber).replace(/^0+/, '') || serviceNumber;
-    
-    // URLs for LTG and SimplyGo
-    const ltgUrl = `https://landtransportguru.net/bus${serviceNum}/`;
-    const simplyGoUrl = `https://svc.simplygo.com.sg/eservice/eguide/service_route.php?service=${serviceNum}`;
-    
-    // Open both URLs in new windows/tabs
-    const ltgTab = window.open(ltgUrl, '_blank');
-    const simplyGoTab = window.open(simplyGoUrl, '_blank');
-    
-    console.log('LTG URL:', ltgUrl, 'opened:', !!ltgTab);
-    console.log('SimplyGo URL:', simplyGoUrl, 'opened:', !!simplyGoTab);
+
+    // Use anchor clicks instead of window.open() — browsers allow multiple
+    // programmatic anchor clicks within a single user gesture, whereas a second
+    // window.open() call is typically blocked as a popup.
+    [
+        `https://landtransportguru.net/bus${serviceNum}/`,
+        `https://travelguide.simplygo.com.sg/Bus/Info/${serviceNum}`
+    ].forEach(url => {
+        const a = document.createElement('a');
+        a.href = url;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    });
 }
 
 // Attach button click handler to open route info
@@ -103,7 +108,7 @@ async function loadBusServiceData() {
                     apiArray.forEach(service => {
                         const serviceNo = service.ServiceNo || service.n;
                         const operator = service.Operator || service.op;
-                        console.log('API Service:', serviceNo, '-> Operator:', operator);
+                        // console.log('API Service:', serviceNo, '-> Operator:', operator);
                         operatorMap[serviceNo] = operator;
                     });
 
@@ -116,9 +121,9 @@ async function loadBusServiceData() {
                         if (operatorMap[service.n]) {
                             service.op = operatorMap[service.n];
                             updateCount++;
-                            console.log('Updated service', service.n, ': "' + oldOp + '" -> "' + service.op + '"');
+                            // console.log('Updated service', service.n, ': "' + oldOp + '" -> "' + service.op + '"');
                         } else {
-                            console.log('No operator found for service', service.n);
+                            // console.log('No operator found for service', service.n);
                         }
                     });
 
@@ -293,8 +298,8 @@ async function getServiceDirections(serviceNumber, localService) {
                 const directionsOrder = [];
 
                 apiArray.forEach(service => {
-                    if (service.ServiceNo === serviceNumber) {
-                        const direction = service.Direction || '1';
+                    if (String(service.ServiceNo) === String(serviceNumber)) {
+                        const direction = String(service.Direction || '1');
                         if (!directionsMap[direction]) {
                             directionsMap[direction] = {
                                 direction: direction,
@@ -364,7 +369,7 @@ async function getStopsForDirection(serviceNumber, direction) {
 
             // Find the service with matching direction
             const serviceData = apiArray.find(s =>
-                s.ServiceNo === serviceNumber && (s.Direction || '1') === direction
+                String(s.ServiceNo) === String(serviceNumber) && String(s.Direction || '1') === direction
             );
 
             if (serviceData && serviceData.Stops) {
@@ -689,7 +694,7 @@ async function populateServiceData(serviceNumber, service) {
         // Add arrow click handler to reverse/cycle direction
         const routeArrows = document.querySelectorAll('.route-arrow');
         routeArrows.forEach(arrow => {
-            arrow.style.cursor = 'pointer';
+            arrow.classList.add('direction-switchable');
             arrow.addEventListener('click', async () => {
                 // Find current direction index
                 const currentIndex = directions.indexOf(currentDirection);

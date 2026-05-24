@@ -361,7 +361,21 @@ body.dark-mode .port-summary h4 {
     color: #7cb000;
     font-size: 1.5rem;
     padding: 0.5rem 0;
-    cursor: default !important;
+    cursor: default;
+    transition: transform 0.18s ease, opacity 0.18s ease;
+}
+
+.route-arrow.direction-switchable {
+    cursor: pointer;
+}
+
+.route-arrow.direction-switchable:hover {
+    opacity: 0.65;
+    transform: scale(1.2);
+}
+
+.route-arrow.direction-switchable:active {
+    transform: scale(1.05);
 }
 
 body.dark-mode .route-terminals {
