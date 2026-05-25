@@ -2116,9 +2116,9 @@ body.dark-mode .bz-push-banner-close {
     color: #aaa;
 }
 
-/* Arrived variant — more urgent accent (orange progress bar + left border) */
+/* Arrived variant — more urgent accent (orange progress bar + top border) */
 .bz-push-banner--arrived {
-    border-left: 4px solid #f97316;
+    border-top: 3px solid #f97316;
 }
 
 .bz-push-banner--arrived .bz-push-banner-progress {
@@ -2126,7 +2126,7 @@ body.dark-mode .bz-push-banner-close {
 }
 
 body.dark-mode .bz-push-banner--arrived {
-    border-left-color: #fb923c;
+    border-top-color: #fb923c;
 }
 
 body.dark-mode .bz-push-banner--arrived .bz-push-banner-progress {
