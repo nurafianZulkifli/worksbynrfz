@@ -15,7 +15,7 @@ const BASE_PATH = (() => {
 })();
 
 // Default cache version (fallback if version.json is unavailable)
-let CACHE_VERSION = 'v1.0.0';
+let CACHE_VERSION = 'v1.1.0';
 let CACHE_NAME = `fintrack-cache-${CACHE_VERSION}`;
 
 // Fetch version from version.json

@@ -641,8 +641,25 @@ for (const [key, watchers] of [...pushWatchers.entries()]) {
 }
 
 // ── Sync Routes ─────────────────────────────────────────────────────
+const SYNC_CORS_ORIGINS = new Set([
+  'https://worksbynrfz.com',
+  'https://www.worksbynrfz.com',
+  'https://bat-lta-9eb7bbf231a2.herokuapp.com',
+]);
+function syncCors(req, res) {
+  const origin = req.headers.origin;
+  const allowed = origin && SYNC_CORS_ORIGINS.has(origin) ? origin : 'https://worksbynrfz.com';
+  res.set('Access-Control-Allow-Origin', allowed);
+  res.set('Access-Control-Allow-Methods', 'GET, PUT, DELETE, OPTIONS');
+  res.set('Access-Control-Allow-Headers', 'Content-Type');
+  res.set('Vary', 'Origin');
+}
+// Handle CORS preflight for all sync routes
+app.options('/sync/*', (req, res) => { syncCors(req, res); res.sendStatus(204); });
+
 // GET /sync/:code/:appId — retrieve stored data
 app.get('/sync/:code/:appId', async (req, res) => {
+  syncCors(req, res);
   if (!syncPool) return res.status(503).json({ error: 'Sync not available — set DATABASE_URL to enable' });
   const { code, appId } = req.params;
   if (!SYNC_CODE_RE.test(code))    return res.status(400).json({ error: 'Invalid sync code format' });
@@ -662,6 +679,7 @@ app.get('/sync/:code/:appId', async (req, res) => {
 
 // PUT /sync/:code/:appId — upsert stored data
 app.put('/sync/:code/:appId', express.json({ limit: '2mb' }), async (req, res) => {
+  syncCors(req, res);
   if (!syncPool) return res.status(503).json({ error: 'Sync not available — set DATABASE_URL to enable' });
   const { code, appId } = req.params;
   if (!SYNC_CODE_RE.test(code))    return res.status(400).json({ error: 'Invalid sync code format' });
@@ -687,6 +705,7 @@ app.put('/sync/:code/:appId', express.json({ limit: '2mb' }), async (req, res) =
 
 // DELETE /sync/:code — remove all stored data for a sync code
 app.delete('/sync/:code', async (req, res) => {
+  syncCors(req, res);
   if (!syncPool) return res.status(503).json({ error: 'Sync not available — set DATABASE_URL to enable' });
   const { code } = req.params;
   if (!SYNC_CODE_RE.test(code)) return res.status(400).json({ error: 'Invalid sync code format' });
