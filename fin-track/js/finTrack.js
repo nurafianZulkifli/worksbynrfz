@@ -766,25 +766,15 @@
     if (btn && !btn.contains(e.target) && dropdown && !dropdown.contains(e.target)) closeAccountDropdown();
   });
 
-  // ── Migration: backfill reset marker with accurate date ──
+  // ── Migration v3: place reset marker on the known reset date (2026-05-22) ──
   (function migrateResetMarkers() {
-    const MIG_KEY = 'ft-mig-reset-v2';
+    const MIG_KEY = 'ft-mig-reset-v3';
     if (localStorage.getItem(MIG_KEY)) return;
     let changed = false;
     state.accounts.forEach(function(acct) {
       if ((acct.resetOffset || 0) <= 0) return;
-      // Remove any previously auto-generated reset markers (from old migration or stale state)
       acct.transactions = acct.transactions.filter(t => t.type !== 'reset');
-      // Walk transactions in chronological order; find where running debit-credit total first equals resetOffset
-      const sorted = acct.transactions.slice().sort((a, b) => a.date.localeCompare(b.date));
-      let running = 0;
-      let resetDate = sorted.length ? sorted[sorted.length - 1].date : new Date().toISOString().slice(0, 10);
-      for (const t of sorted) {
-        if (t.type === 'debit') running += parseFloat(t.amount) || 0;
-        else if (t.type === 'credit' && t.cat !== 'Transfer') running -= parseFloat(t.amount) || 0;
-        if (Math.abs(running - acct.resetOffset) < 0.005) { resetDate = t.date; break; }
-      }
-      acct.transactions.push({ id: uid(), date: resetDate, type: 'reset', name: 'New Month Reset', amount: 0, cat: '' });
+      acct.transactions.push({ id: uid(), date: '2026-05-22', type: 'reset', name: 'New Month Reset', amount: 0, cat: '' });
       changed = true;
     });
     if (changed) save();
