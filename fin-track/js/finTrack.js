@@ -350,13 +350,6 @@
     return bootstrap.Modal.getOrCreateInstance(document.getElementById('commitmentsModal'));
   }
 
-  function openCommitments() {
-    renderCommitments();
-    document.getElementById('cmtPanelList').style.display = '';
-    document.getElementById('cmtPanelForm').style.display = 'none';
-    _getCmtModal().show();
-  }
-
   function closeCmtModal() {
     _getCmtModal().hide();
   }
@@ -365,6 +358,13 @@
     document.getElementById('cmtPanelForm').style.display = 'none';
     document.getElementById('cmtPanelList').style.display = '';
     renderCommitments();
+  }
+
+  function openCommitments() {
+    renderCommitments();
+    document.getElementById('cmtPanelList').style.display = '';
+    document.getElementById('cmtPanelForm').style.display = 'none';
+    _getCmtModal().show();
   }
 
   function renderCommitments() {
