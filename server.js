@@ -641,21 +641,14 @@ for (const [key, watchers] of [...pushWatchers.entries()]) {
 }
 
 // ── Sync Routes ─────────────────────────────────────────────────────
-const SYNC_CORS_ORIGINS = new Set([
-  'https://worksbynrfz.com',
-  'https://www.worksbynrfz.com',
-  'https://bat-lta-9eb7bbf231a2.herokuapp.com',
-]);
 function syncCors(req, res) {
-  const origin = req.headers.origin;
-  const allowed = origin && SYNC_CORS_ORIGINS.has(origin) ? origin : 'https://worksbynrfz.com';
-  res.set('Access-Control-Allow-Origin', allowed);
+  res.set('Access-Control-Allow-Origin', '*');
   res.set('Access-Control-Allow-Methods', 'GET, PUT, DELETE, OPTIONS');
   res.set('Access-Control-Allow-Headers', 'Content-Type');
-  res.set('Vary', 'Origin');
 }
-// Handle CORS preflight for all sync routes
-app.options('/sync/*', (req, res) => { syncCors(req, res); res.sendStatus(204); });
+// Handle CORS preflight — explicit handlers to avoid Express wildcard matching issues
+app.options('/sync/:code/:appId', (req, res) => { syncCors(req, res); res.sendStatus(204); });
+app.options('/sync/:code',        (req, res) => { syncCors(req, res); res.sendStatus(204); });
 
 // GET /sync/:code/:appId — retrieve stored data
 app.get('/sync/:code/:appId', async (req, res) => {
