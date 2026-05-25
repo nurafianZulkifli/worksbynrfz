@@ -1685,6 +1685,11 @@ body.dark-mode .guide-skip-btn {
     border-color: #3a3f58 !important;
 }
 
+body.dark-mode .about-me-summ {
+    background-color: transparent !important;
+    transition: all 0.5s ease;
+}
+
 /* ===== MEDIA QUERIES ===== */
 
 @media (min-width: 1200px) {

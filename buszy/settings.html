@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="57TuruPNu5wqSSia_cUehl5t9Gh1AbxrHNPcMiFx-aQ" />
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover">
     <title>Settings | Buszy</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
@@ -37,96 +37,13 @@
 </head>
 
 <style>
-    #cv-bat-subp {
-        height: 10vh;
-        position: relative;
-    }
-
-
-
-    .footer {
-        display: none;
-    }
-
-    .btn-rfetch {
-        position: relative;
-        z-index: 1;
-        min-width: 50px;
-        width: 170px;
-        height: 46px;
-        line-height: 46px;
-        font-size: 14px;
-        font-weight: 500;
-        display: inline-block;
-        padding: 0 30px;
-        text-align: center;
-        text-transform: capitalize;
-        color: #fff;
-        border-radius: 60px;
-        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        border: none;
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 12px rgba(0, 0, 0, 0.1);
-        background-color: #bb2d3b;
-    }
-
-    .btn-install {
-        position: relative;
-        z-index: 1;
-        min-width: 50px;
-        width: 170px;
-        height: 46px;
-        line-height: 46px;
-        font-size: 14px;
-        font-weight: 500;
-        display: inline-block;
-        padding: 0 30px;
-        text-align: center;
-        text-transform: capitalize;
-        color: #fff;
-        border-radius: 60px;
-        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        border: none;
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 12px rgba(0, 0, 0, 0.1);
-        background-color: #1f84a2;
-    }
-
-    .btn-rfetch:focus,
-    .btn-rfetch:hover,
-    .btn-install:focus,
-    .btn-install:hover {
-        font-weight: 500;
-        background-color: #6d99c0 !important;
-        color: #fff;
-        transform: translateY(-2px);
-    }
-
-    .btn-install:disabled {
-        background-color: grey !important;
-        cursor: not-allowed;
-    }
-
-    .label-set {
-        padding-top: 0.5em !important;
-        padding-bottom: 0.5em !important;
-        font-size: 16px !important;
-    }
-
-    .form-check-input:checked,
-    body.dark-mode .form-check-input:checked {
-        background-color: #1f84a2;
-        border-color: #1f84a2;
-    }
-
-    #refresh-interval-value {
-        font-size: 16px;
-        cursor: default;
-    }
-
-    body.dark-mode .form-check-input {
-        background-color: #313544;
-        border-color: #ffffff3b;
+    .settings-switch-desc,
+    .settings-notify-desc {
+        text-align: left !important;
+        margin-bottom: 0rem;
     }
 </style>
+
 
 <body>
     <!-- Fixed Breadcrumb at very top (mobile/tablet only) -->
@@ -274,199 +191,194 @@
     <section class="about-me-summ clearfix" style="padding-bottom: 5em;">
 
         <div class="container">
-            <h2 class="text-center" style="padding-top: 1em;">Time Formats</h2>
-            <ul class="list-group">
-                <li class="list-group-item">
-                    <label for="time-format-12" class="label-set">
-                        <input class="form-check-input" type="radio" id="time-format-12" name="time-format"
-                            value="12-hour" checked>&nbsp;
-                        12-Hour Format (02:30 PM)
-                    </label><br>
-                    <label for="time-format-24" class="label-set">
-                        <input class="form-check-input" type="radio" id="time-format-24" name="time-format"
-                            value="24-hour">&nbsp;
-                        24-Hour Format (14:30)
-                    </label><br>
-                    <label for="time-format-mins" class="label-set">
-                        <input class="form-check-input" type="radio" id="time-format-mins" name="time-format"
-                            value="mins">&nbsp;
-                        Mins (5 mins)
-                    </label>
-                </li>
-            </ul>
-        </div>
 
-        <div class="container">
-            <h2 class="text-center" style="padding-top: 1em;">Display Options</h2>
-            <ul class="list-group">
-                <li class="list-group-item">
-                    <div class="form-check form-switch"
-                        style="display: flex; align-items: center; gap: 1rem; padding-left: 0em;">
-                        <label class="form-check-label" for="show-fleet-legend"
-                            style="cursor: pointer; margin-bottom: 0; display: flex; align-items: center; padding-top: 8px; font-size: 16px; flex: 1; font-weight: bolder;">
-                            Show Fleet Legend
-                        </label>
-                        <input class="form-check-input" type="checkbox" id="show-fleet-legend" name="show-fleet-legend"
-                            checked style="width: 2.5em; height: 1.2em; cursor: pointer; flex-shrink: 0;">
-                    </div>
-                    <p class="fetch">Displays the incoming buses and fleet legend on the Arrival Timings page.</p>
-                </li>
-                <li class="list-group-item">
-                    <div class="form-check form-switch"
-                        style="display: flex; align-items: center; gap: 1rem; padding-left: 0em;">
-                        <label class="form-check-label" for="show-incoming-buses"
-                            style="cursor: pointer; margin-bottom: 0; display: flex; align-items: center; padding-top: 8px; font-size: 16px; flex: 1; font-weight: bolder;">
-                            Show Incoming Buses
-                        </label>
-                        <input class="form-check-input" type="checkbox" id="show-incoming-buses"
-                            name="show-incoming-buses" checked
-                            style="width: 2.5em; height: 1.2em; cursor: pointer; flex-shrink: 0;">
-                    </div>
-                    <p class="fetch">Displays the next 4 incoming buses on the Arrival Timings page.</p>
-                </li>
-                <li class="list-group-item">
-                    <div class="form-check form-switch"
-                        style="display: flex; align-items: center; gap: 1rem; padding-left: 0em;">
-                        <label class="form-check-label" for="show-by-arrival-time"
-                            style="cursor: pointer; margin-bottom: 0; display: flex; align-items: center; padding-top: 8px; font-size: 16px; flex: 1; font-weight: bolder;">
-                            Sort By Arrival Time
-                        </label>
-                        <input class="form-check-input" type="checkbox" id="show-by-arrival-time"
-                            name="show-by-arrival-time" checked
-                            style="width: 2.5em; height: 1.2em; cursor: pointer; flex-shrink: 0;">
-                    </div>
-                    <p class="fetch">Displays the bus stops sorted by their arrival times.</p>
-                </li>
-                <a href="" class="list-group-item list-group-item-action" id="theme-toggle-desktop">
-                    <div class="d-flex">
-                        <div>
-                            <h5 class="lg-menu"><i class="fa-regular fa-sun-bright" id="theme-icon-desktop"></i>&nbsp;
-                                <span id="theme-text-desktop">Theme: Light</span>
-                            </h5>
-                        </div>
-                    </div>
+            <div class="settings-page-section">
+                <div class="settings-section-title">
+                    <i class="fa-regular fa-clock"></i>
+                    Time Formats
+                </div>
+                <label for="time-format-12" class="label-set">
+                    <input class="form-check-input" type="radio" id="time-format-12" name="time-format" value="12-hour"
+                        checked>
+                    12-Hour Format (02:30 PM)
+                </label>
+                <label for="time-format-24" class="label-set">
+                    <input class="form-check-input" type="radio" id="time-format-24" name="time-format" value="24-hour">
+                    24-Hour Format (14:30)
+                </label>
+                <label for="time-format-mins" class="label-set">
+                    <input class="form-check-input" type="radio" id="time-format-mins" name="time-format" value="mins">
+                    Mins (5 mins)
+                </label>
+            </div>
+
+            <div class="settings-page-section">
+                <div class="settings-section-title">
+                    <i class="fa-regular fa-display"></i>
+                    Display Options
+                </div>
+                <div class="settings-switch-row">
+                    <label class="settings-switch-label" for="show-fleet-legend">Show Fleet Legend</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="show-fleet-legend" name="show-fleet-legend" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <p class="settings-switch-desc">Displays the incoming buses and fleet legend on the Arrival Timings
+                    page.</p>
+                <hr>
+                <div class="settings-switch-row">
+                    <label class="settings-switch-label" for="show-incoming-buses">Show Incoming Buses</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="show-incoming-buses" name="show-incoming-buses" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <p class="settings-switch-desc">Displays the next 4 incoming buses on the Arrival Timings page.</p>
+                <hr>
+                <div class="settings-switch-row">
+                    <label class="settings-switch-label" for="show-by-arrival-time">Sort By Arrival Time</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="show-by-arrival-time" name="show-by-arrival-time" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <p class="settings-switch-desc">Displays bus stops sorted by their arrival times.</p>
+                <hr>
+                <a href="" class="settings-switch-row" id="theme-toggle-desktop"
+                    style="text-decoration: none; color: inherit;">
+                    <span class="settings-switch-label">
+                        <i class="fa-regular fa-sun-bright" id="theme-icon-desktop"></i>&nbsp;<span
+                            id="theme-text-desktop">Theme: Light</span>
+                    </span>
+                    <i class="fa-regular fa-chevron-right" style="color: #9ca3af;"></i>
                 </a>
-            </ul>
-        </div>
+            </div>
 
-        <div class="container">
-            <h2 class="text-center" style="padding-top: 1em;">Data</h2>
-            <ul class="list-group">
-                <li class="list-group-item" id="refetch-stops">
-                    <button id="clear-cache-btn" class="btn btn-rfetch">Re-fetch data</button><br>
-                    <p class="fetch">Clear cached bus stop data to ensure you have the latest information.</p>
-                </li>
-                <li class="list-group-item">
-                    <button id="export-data-btn" class="btn btn-install">Export Data</button><br>
-                    <p class="fetch">Download a backup of your pinned stops and preferences.</p>
-                </li>
-                <li class="list-group-item">
-                    <button id="import-data-btn" class="btn btn-install">Import Data</button><br>
-                    <p class="fetch">Restore your previously exported data or migrate from another device.</p>
-                    <input type="file" id="import-file-input" accept=".json" style="display: none;">
-                    <div id="import-message"
-                        style="margin-top: 1rem; display: none; padding: 0.75rem; border-radius: 5px; font-size: 14px;">
+            <div class="settings-page-section">
+                <div class="settings-section-title">
+                    <i class="fa-regular fa-database"></i>
+                    Data
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                    <button id="export-data-btn" class="import-export-btn">
+                        <i class="fa-regular fa-download"></i>
+                        <span>Export Data</span>
+                    </button>
+                    <button id="import-data-btn" class="import-export-btn">
+                        <i class="fa-regular fa-upload"></i>
+                        <span>Import Data</span>
+                    </button>
+                </div>
+                <input type="file" id="import-file-input" accept=".json" style="display: none;">
+                <div id="import-message"
+                    style="margin-top: 0.75rem; display: none; padding: 0.75rem; border-radius: 10px; font-size: 14px;">
+                </div>
+                <button id="clear-cache-btn" class="import-export-btn" style="width: 100%; margin-bottom: 4px;">
+                    <i class="fa-regular fa-rotate-right"></i>
+                    <span>Re-fetch Stop Data</span>
+                </button>
+                <p class="settings-switch-desc">Clear cached bus stop data to get the latest information.</p>
+                <hr>
+                <label style="font-size: 15px; font-weight: 600; display: block; margin-bottom: 0.5rem;">Refresh
+                    Interval</label>
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <input type="range" id="refresh-interval" name="refresh-interval" min="1" max="10" step="0.5"
+                        value="20" style="flex: 1; cursor: pointer;">
+                    <span id="refresh-interval-value"
+                        style="font-weight: 600; min-width: 60px; font-size: 15px; cursor: default;">2 sec</span>
+                </div>
+                <p class="settings-switch-desc">Adjust how often the Arrival Timings page refreshes (1–10 seconds).</p>
+            </div>
+
+            <div class="settings-page-section">
+                <div class="settings-section-title">
+                    <i class="fa-regular fa-cloud-arrow-up"></i>
+                    Cloud Sync
+                </div>
+                <div class="settings-info-box">
+                    <i class="fa-regular fa-circle-info"></i>&nbsp;Sync your saved stops and preferences across devices
+                    using a sync code. No account required.
+                </div>
+                <div id="sync-no-code">
+                    <div style="display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 12px;">
+                        <button class="import-export-btn" id="sync-generate-btn">
+                            <i class="fa-regular fa-cloud-plus"></i>
+                            <span>Generate Sync Code</span>
+                        </button>
                     </div>
-                </li>
-                <li class="list-group-item">
-                    <label for="refresh-interval"
-                        style="font-size: 16px; font-weight: bolder; display: block; margin-bottom: 0.5rem;">
-                        Refresh Interval
-                    </label>
-                    <div style="display: flex; align-items: center; gap: 1rem;">
-                        <input type="range" id="refresh-interval" name="refresh-interval" min="1" max="10" step="0.5"
-                            value="20" style="flex: 1; cursor: pointer;">
-                        <span id="refresh-interval-value" style="font-weight: bold; min-width: 60px;">2 sec</span>
+                    <p style="margin: 0.75rem 0 0.5rem; font-size: 13px; color: #888; text-align: center;">— or enter an
+                        existing code —</p>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <input type="text" id="sync-code-input" placeholder="e.g. abc12-def34" autocomplete="off"
+                            style="flex: 1; padding: 0.55rem 0.75rem; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; font-family: monospace; letter-spacing: 1px;">
+                        <button class="import-export-btn" id="sync-connect-btn"
+                            style="min-width: unset; padding: 0 1rem; flex-shrink: 0;">Connect</button>
                     </div>
-                    <p class="fetch">Adjust how often the Arrival Timings page refreshes (1-10 seconds).</p>
-                </li>
-            </ul>
-        </div>
-
-        <div class="container">
-            <h2 class="text-center" style="padding-top: 1em;">Sync</h2>
-            <ul class="list-group">
-                <li class="list-group-item">
-                    <div id="sync-no-code">
-                        <p style="font-size: 15px; margin-bottom: 1rem;">Sync your saved stops and preferences across devices using a sync code. No account required.</p>
-                        <button id="sync-generate-btn" class="btn btn-install" style="width: auto; min-width: unset; padding: 0 1rem;">Generate Sync Code</button>
-                        <p style="margin: 0.75rem 0; font-size: 13px; color: #888; text-align: center;">— or enter an existing code —</p>
-                        <div style="display: flex; gap: 0.5rem;">
-                            <input type="text" id="sync-code-input" placeholder="e.g. abc12-def34" autocomplete="off"
-                                   style="flex: 1; padding: 0.5rem 0.75rem; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; font-family: monospace; letter-spacing: 1px;">
-                            <button id="sync-connect-btn" class="btn btn-install" style="width: auto; min-width: unset; padding: 0 1rem;">Connect</button>
-                        </div>
+                </div>
+                <div id="sync-has-code" style="display: none;">
+                    <p style="font-size: 14px; font-weight: 600; margin-bottom: 0.5rem;">Your sync code</p>
+                    <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem;">
+                        <code id="sync-code-display"
+                            style="flex: 1; text-align: center; font-size: 1.1em; letter-spacing: 3px; padding: 0.45rem 0.75rem; border: 1px solid #ccc; border-radius: 8px; display: block;"></code>
+                        <button id="sync-copy-btn"
+                            style="background: none; border: 1px solid #ccc; border-radius: 8px; padding: 0.45rem 0.65rem; cursor: pointer; font-size: 14px; flex-shrink: 0;">
+                            <i class="fa-regular fa-copy"></i>
+                        </button>
                     </div>
-                    <div id="sync-has-code" style="display: none;">
-                        <p style="font-size: 14px; font-weight: bold; margin-bottom: 0.5rem;">Your sync code</p>
-                        <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.75rem;">
-                            <code id="sync-code-display" style="flex: 1; text-align: center; font-size: 1.1em; letter-spacing: 3px; padding: 0.45rem 0.75rem; border: 1px solid #ccc; border-radius: 8px; display: block;"></code>
-                            <button id="sync-copy-btn" style="background: none; border: 1px solid #ccc; border-radius: 8px; padding: 0.45rem 0.65rem; cursor: pointer; font-size: 14px;">
-                                <i class="fa-regular fa-copy"></i>
-                            </button>
-                        </div>
-                        <p class="fetch" id="sync-last-synced" style="font-size: 13px; color: #888;"></p>
-                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.75rem;">
-                            <button id="sync-push-btn" class="btn btn-install" style="width: auto; min-width: unset; padding: 0 1.2rem;">Push to Cloud</button>
-                            <button id="sync-pull-btn" class="btn btn-install" style="width: auto; min-width: unset; padding: 0 1.2rem;">Pull from Cloud</button>
-                        </div>
-                        <button id="sync-disconnect-btn" class="btn btn-rfetch" style="font-size: 13px; width: auto; min-width: unset; padding: 0 1rem; height: 36px; line-height: 36px;">Disconnect</button>
+                    <p id="sync-last-synced" style="font-size: 13px; color: #888; margin-bottom: 0.75rem;"></p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 0.75rem;">
+                        <button id="sync-push-btn" class="import-export-btn">
+                            <i class="fa-regular fa-cloud-arrow-up"></i>
+                            <span>Push to Cloud</span>
+                        </button>
+                        <button id="sync-pull-btn" class="import-export-btn">
+                            <i class="fa-regular fa-cloud-arrow-down"></i>
+                            <span>Pull from Cloud</span>
+                        </button>
                     </div>
-                </li>
-            </ul>
+                    <button id="sync-disconnect-btn" class="import-export-btn" style="width: 100%; color: #dc2626;">
+                        <i class="fa-regular fa-link-slash"></i>
+                        <span>Disconnect</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="settings-page-section">
+                <div class="settings-section-title">
+                    <i class="fa-regular fa-bell"></i>
+                    Notifications
+                </div>
+                <p class="settings-notify-desc">Notify When</p>
+                <label for="notif-when-arriving" class="label-set">
+                    <input class="form-check-input" type="checkbox" id="notif-when-arriving" name="notif-when-arriving">
+                    Bus is Arriving
+                </label>
+                <label for="notif-when-arrived" class="label-set">
+                    <input class="form-check-input" type="checkbox" id="notif-when-arrived" name="notif-when-arrived">
+                    Bus has Arrived
+                </label>
+                <p class="settings-switch-desc">Choose when to receive a notification for your tracked bus services.</p>
+                <hr>
+                <p class="settings-notify-desc">Notify Mode</p>
+                <label for="notif-mode-once" class="label-set">
+                    <input class="form-check-input" type="radio" id="notif-mode-once" name="notif-mode" value="once"
+                        checked>
+                    Once &mdash; notify once, then stop
+                </label>
+                <label for="notif-mode-day" class="label-set">
+                    <input class="form-check-input" type="radio" id="notif-mode-day" name="notif-mode" value="day">
+                    1 Day &mdash; keep notifying for 24 hours
+                </label>
+                <label for="notif-mode-always" class="label-set">
+                    <input class="form-check-input" type="radio" id="notif-mode-always" name="notif-mode"
+                        value="always">
+                    Always &mdash; notify until manually turned off
+                </label>
+                <p class="settings-switch-desc">Controls how long Buszy watches for your selected bus services.</p>
+            </div>
+
         </div>
-
-        <div class="container">
-            <h2 class="text-center" style="padding-top: 1em;">Notifications</h2>
-            <ul class="list-group">
-                <li class="list-group-item">
-                    <label style="font-size: 16px; font-weight: bolder; display: block; margin-bottom: 0.5rem;">
-                        Notify When
-                    </label>
-                    <label for="notif-when-arriving" class="label-set">
-                        <input class="form-check-input" type="checkbox" id="notif-when-arriving" name="notif-when-arriving">&nbsp;
-                        Bus is Arriving
-                    </label><br>
-                    <label for="notif-when-arrived" class="label-set">
-                        <input class="form-check-input" type="checkbox" id="notif-when-arrived" name="notif-when-arrived">&nbsp;
-                        Bus has Arrived
-                    </label>
-                    <p class="fetch">Choose when to receive a notification for your tracked bus services.</p>
-                </li>
-                <li class="list-group-item">
-                    <label style="font-size: 16px; font-weight: bolder; display: block; margin-bottom: 0.5rem;">
-                        Notify Mode
-                    </label>
-                    <label for="notif-mode-once" class="label-set">
-                        <input class="form-check-input" type="radio" id="notif-mode-once" name="notif-mode" value="once" checked>&nbsp;
-                        Once &mdash; notify once, then stop
-                    </label><br>
-                    <label for="notif-mode-day" class="label-set">
-                        <input class="form-check-input" type="radio" id="notif-mode-day" name="notif-mode" value="day">&nbsp;
-                        1 Day &mdash; keep notifying for 24 hours
-                    </label><br>
-                    <label for="notif-mode-always" class="label-set">
-                        <input class="form-check-input" type="radio" id="notif-mode-always" name="notif-mode" value="always">&nbsp;
-                        Always &mdash; notify until manually turned off
-                    </label>
-                    <p class="fetch">Controls how long Buszy watches for your selected bus services.</p>
-                </li>
-            </ul>
-        </div>
-
-        <!-- <div class="container">
-            <h2 class="text-center" style="padding-top: 1em;">Install</h2>
-            <ul class="list-group">
-                <ul class="list-group">
-                    <li class="list-group-item">
-                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                            <button id="install-btn" class="btn btn-install">Install App</button>
-                        </div>
-                        <p class="fetch">Install this web app on your device for a better experience.</p>
-                    </li>
-                </ul>
-        </div> -->
-
     </section>
 
     <script type="text/javascript" id="cookiebanner" src="../js/cookies-banner.js" data-position="bottom"

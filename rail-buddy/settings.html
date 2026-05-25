@@ -14,7 +14,7 @@
 
     <link rel="manifest" href="./manifest.json">
 
-    <link rel="icon" href="../buszy/assets/icon-512.png">
+    <link rel="icon" href="../rail-buddy/assets/icon-512.png">
 
 
     <script src="https://kit.fontawesome.com/965e82ac01.js" crossorigin="anonymous"></script>
@@ -36,164 +36,7 @@
 
 </head>
 
-<style>
-    #cv-bat-subp {
-        height: 10vh;
-    }
 
-    .footer {
-        display: none;
-    }
-
-    .btn-rfetch {
-        position: relative;
-        z-index: 1;
-        min-width: 50px;
-        width: 170px;
-        height: 46px;
-        line-height: 46px;
-        font-size: 14px;
-        font-weight: 500;
-        display: inline-block;
-        padding: 0 30px;
-        text-align: center;
-        text-transform: capitalize;
-        color: #fff;
-        border-radius: 60px;
-        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        border: none;
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 12px rgba(0, 0, 0, 0.1);
-        background-color: #bb2d3b;
-    }
-
-    .btn-install {
-        position: relative;
-        z-index: 1;
-        min-width: 50px;
-        width: 170px;
-        height: 46px;
-        line-height: 46px;
-        font-size: 14px;
-        font-weight: 500;
-        display: inline-block;
-        padding: 0 30px;
-        text-align: center;
-        text-transform: capitalize;
-        color: #fff;
-        border-radius: 60px;
-        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        border: none;
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 12px rgba(0, 0, 0, 0.1);
-        background-color: #d17321;
-    }
-
-    .btn-rfetch:focus,
-    .btn-rfetch:hover,
-    .btn-install:focus,
-    .btn-install:hover {
-        font-weight: 500;
-        background-color: #6d99c0 !important;
-        color: #fff;
-        transform: translateY(-2px);
-    }
-
-    .btn-install:disabled {
-        background-color: grey !important;
-        cursor: not-allowed;
-    }
-
-    .label-set {
-        padding-top: 0.5em !important;
-        padding-bottom: 0.5em !important;
-        font-size: 16px !important;
-    }
-
-    /* Settings List Items Styling */
-    .list-group {
-        gap: 14px;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .list-group-item {
-        padding: 18px 24px;
-        border-radius: 18px;
-        border: 1px solid rgba(0, 0, 0, 0.1);
-        background: #ffffff;
-        display: flex;
-        align-items: center;
-        text-decoration: none;
-        color: inherit;
-        transition: all 0.3s ease;
-    }
-
-    .list-group-item:hover {
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-        transform: translateY(-3px);
-        border-color: rgba(0, 0, 0, 0.15);
-    }
-
-    .list-group-item .d-flex {
-        align-items: center;
-        width: 100%;
-    }
-
-    .lg-menu {
-        margin: 0 !important;
-        font-size: 1.05rem;
-        font-weight: 500;
-        display: flex;
-        align-items: center;
-        gap: 16px;
-    }
-
-    .lg-menu i {
-        font-size: 1.3rem;
-        min-width: 28px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-
-    body.dark-mode .lg-menu {
-        color: #e8e8e8;
-    }
-
-    @media (max-width: 768px) {
-        .list-group-item {
-            padding: 15px 20px;
-        }
-
-        .lg-menu {
-            font-size: 1rem;
-        }
-
-        .lg-menu i {
-            font-size: 1.2rem;
-            min-width: 26px;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .list-group {
-            gap: 12px;
-        }
-
-        .list-group-item {
-            padding: 14px 18px;
-        }
-
-        .lg-menu {
-            font-size: 0.95rem;
-        }
-
-        .lg-menu i {
-            font-size: 1.1rem;
-            min-width: 24px;
-        }
-    }
-</style>
 
 <body>
     <!-- Fixed Breadcrumb at very top (mobile/tablet only) -->
@@ -338,66 +181,70 @@
     <!-- Section Contents -->
     <section class="about-me-summ clearfix" style="padding-bottom: 5em;">
 
-        <!-- <div class="container">
-            <h2 class="text-center" style="padding-top: 1em;">Install</h2>
-            <div class="list-group">
-                <div class="list-group-item">
-                    <div style="display: flex; gap: 10px; flex-wrap: wrap; width: 100%; align-items: center;">
-                        <button id="install-btn" class="btn btn-install">Install App</button>
-                        <p class="fetch" style="margin: 0;">Install this web app on your device for a better experience.</p>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-
         <div class="container">
-            <h2 class="text-center" style="padding-top: 1em;">Display Options</h2>
-            <div class="list-group">
-                <a href="" class="list-group-item list-group-item-action" id="theme-toggle-desktop">
-                    <div class="d-flex">
-                        <div>
-                            <h5 class="lg-menu"><i class="fa-regular fa-sun-bright" id="theme-icon-desktop"></i>&nbsp;
-                                <span id="theme-text-desktop">Theme: Light</span>
-                            </h5>
-                        </div>
-                    </div>
+
+            <div class="settings-page-section">
+                <div class="settings-section-title">
+                    <i class="fa-regular fa-display"></i>
+                    Display Options
+                </div>
+                <a href="" class="settings-switch-row" id="theme-toggle-desktop" style="text-decoration: none; color: inherit;">
+                    <span class="settings-switch-label">
+                        <i class="fa-regular fa-sun-bright" id="theme-icon-desktop"></i>&nbsp;<span id="theme-text-desktop">Theme: Light</span>
+                    </span>
+                    <i class="fa-regular fa-chevron-right" style="color: #9ca3af;"></i>
                 </a>
             </div>
-        </div>
 
-        <div class="container">
-            <h2 class="text-center" style="padding-top: 1em;">Sync</h2>
-            <ul class="list-group">
-                <li class="list-group-item">
-                    <div id="sync-no-code">
-                        <p style="font-size: 15px; margin-bottom: 1rem;">Sync your preferences across devices using a sync code. No account required.</p>
-                        <button id="sync-generate-btn" class="btn btn-install">Generate Sync Code</button>
-                        <p style="margin: 0.75rem 0; font-size: 13px; color: #888; text-align: center;">— or enter an existing code —</p>
-                        <div style="display: flex; gap: 0.5rem;">
-                            <input type="text" id="sync-code-input" placeholder="e.g. abc12-def34" autocomplete="off"
-                                   style="flex: 1; padding: 0.5rem 0.75rem; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; font-family: monospace; letter-spacing: 1px;">
-                            <button id="sync-connect-btn" class="btn btn-install" style="width: auto; min-width: unset; padding: 0 1rem;">Connect</button>
-                        </div>
+            <div class="settings-page-section">
+                <div class="settings-section-title">
+                    <i class="fa-regular fa-cloud-arrow-up"></i>
+                    Cloud Sync
+                </div>
+                <div class="settings-info-box">
+                    <i class="fa-regular fa-circle-info"></i>&nbsp;Sync your preferences across devices using a sync code. No account required.
+                </div>
+                <div id="sync-no-code">
+                    <div style="display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 12px;">
+                        <button class="import-export-btn" id="sync-generate-btn">
+                            <i class="fa-regular fa-cloud-plus"></i>
+                            <span>Generate Sync Code</span>
+                        </button>
                     </div>
-                    <div id="sync-has-code" style="display: none;">
-                        <p style="font-size: 14px; font-weight: bold; margin-bottom: 0.5rem;">Your sync code</p>
-                        <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.75rem;">
-                            <code id="sync-code-display" style="flex: 1; text-align: center; font-size: 1.1em; letter-spacing: 3px; padding: 0.45rem 0.75rem; border: 1px solid #ccc; border-radius: 8px; display: block;"></code>
-                            <button id="sync-copy-btn" style="background: none; border: 1px solid #ccc; border-radius: 8px; padding: 0.45rem 0.65rem; cursor: pointer; font-size: 14px;">
-                                <i class="fa-regular fa-copy"></i>
-                            </button>
-                        </div>
-                        <p class="fetch" id="sync-last-synced" style="font-size: 13px; color: #888;"></p>
-                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.75rem;">
-                            <button id="sync-push-btn" class="btn btn-install" style="width: auto; min-width: unset; padding: 0 1.2rem;">Push to Cloud</button>
-                            <button id="sync-pull-btn" class="btn btn-install" style="width: auto; min-width: unset; padding: 0 1.2rem;">Pull from Cloud</button>
-                        </div>
-                        <button id="sync-disconnect-btn" class="btn btn-rfetch" style="font-size: 13px; width: auto; min-width: unset; padding: 0 1rem; height: 36px; line-height: 36px;">Disconnect</button>
+                    <p style="margin: 0.75rem 0 0.5rem; font-size: 13px; color: #888; text-align: center;">— or enter an existing code —</p>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <input type="text" id="sync-code-input" placeholder="e.g. abc12-def34" autocomplete="off"
+                               style="flex: 1; padding: 0.55rem 0.75rem; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; font-family: monospace; letter-spacing: 1px;">
+                        <button class="import-export-btn" id="sync-connect-btn" style="min-width: unset; padding: 0 1rem; flex-shrink: 0;">Connect</button>
                     </div>
-                </li>
-            </ul>
-        </div>
+                </div>
+                <div id="sync-has-code" style="display: none;">
+                    <p style="font-size: 14px; font-weight: 600; margin-bottom: 0.5rem;">Your sync code</p>
+                    <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem;">
+                        <code id="sync-code-display" style="flex: 1; text-align: center; font-size: 1.1em; letter-spacing: 3px; padding: 0.45rem 0.75rem; border: 1px solid #ccc; border-radius: 8px; display: block;"></code>
+                        <button id="sync-copy-btn" style="background: none; border: 1px solid #ccc; border-radius: 8px; padding: 0.45rem 0.65rem; cursor: pointer; font-size: 14px; flex-shrink: 0;">
+                            <i class="fa-regular fa-copy"></i>
+                        </button>
+                    </div>
+                    <p id="sync-last-synced" style="font-size: 13px; color: #888; margin-bottom: 0.75rem;"></p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 0.75rem;">
+                        <button id="sync-push-btn" class="import-export-btn">
+                            <i class="fa-regular fa-cloud-arrow-up"></i>
+                            <span>Push to Cloud</span>
+                        </button>
+                        <button id="sync-pull-btn" class="import-export-btn">
+                            <i class="fa-regular fa-cloud-arrow-down"></i>
+                            <span>Pull from Cloud</span>
+                        </button>
+                    </div>
+                    <button id="sync-disconnect-btn" class="import-export-btn" style="width: 100%; color: #dc2626;">
+                        <i class="fa-regular fa-link-slash"></i>
+                        <span>Disconnect</span>
+                    </button>
+                </div>
+            </div>
 
+        </div>
     </section>
 
     <script type="text/javascript" id="cookiebanner" src="../js/cookies-banner.js" data-position="bottom"
