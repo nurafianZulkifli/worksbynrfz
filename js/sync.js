@@ -29,11 +29,13 @@ const AppSync = (() => {
     },
   };
 
+  const HEROKU_URL = 'https://bat-lta-9eb7bbf231a2.herokuapp.com';
+
   function _serverUrl() {
     const h = window.location.hostname;
     return (h === 'localhost' || h === '127.0.0.1')
       ? 'http://localhost:3000'
-      : window.location.origin;
+      : HEROKU_URL;
   }
 
   // ── Code helpers ─────────────────────────────────────────────────────────
