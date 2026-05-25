@@ -24,6 +24,25 @@
     <link rel="manifest" href="./manifest.json">
 
 </head>
+
+<style>
+    #sync-copy-btn {
+        background: none;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 0.45rem 0.65rem;
+        cursor: pointer;
+        font-size: 14px;
+        flex-shrink: 0;
+        color: #000;
+    }
+
+    body.dark-mode #sync-copy-btn {
+        border-color: #555;
+        color: #fff;
+    }
+</style>
+
 <body>
     <!-- Apply dark mode before render to avoid flash -->
     <script>
@@ -258,7 +277,7 @@
                     <p style="font-size: 14px; font-weight: 600; margin-bottom: 0.5rem;">Your sync code</p>
                     <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem;">
                         <code id="sync-code-display" style="flex: 1; text-align: center; font-size: 1.1em; letter-spacing: 3px; padding: 0.45rem 0.75rem; border: 1px solid #ccc; border-radius: 8px; display: block;"></code>
-                        <button id="sync-copy-btn" style="background: none; border: 1px solid #ccc; border-radius: 8px; padding: 0.45rem 0.65rem; cursor: pointer; font-size: 14px; flex-shrink: 0;">
+                        <button id="sync-copy-btn">
                             <i class="fa-regular fa-copy"></i>
                         </button>
                     </div>

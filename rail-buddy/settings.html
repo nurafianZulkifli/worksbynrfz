@@ -36,7 +36,23 @@
 
 </head>
 
+<style>
+    #sync-copy-btn {
+        background: none;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 0.45rem 0.65rem;
+        cursor: pointer;
+        font-size: 14px;
+        flex-shrink: 0;
+        color: #000;
+    }
 
+    body.dark-mode #sync-copy-btn {
+        border-color: #555;
+        color: #fff;
+    }
+</style>
 
 <body>
     <!-- Fixed Breadcrumb at very top (mobile/tablet only) -->
@@ -196,7 +212,7 @@
                 </a>
             </div>
 
-            <div class="settings-page-section">
+            <!-- <div class="settings-page-section">
                 <div class="settings-section-title">
                     <i class="fa-regular fa-cloud-arrow-up"></i>
                     Cloud Sync
@@ -242,7 +258,7 @@
                         <span>Disconnect</span>
                     </button>
                 </div>
-            </div>
+            </div> -->
 
         </div>
     </section>
