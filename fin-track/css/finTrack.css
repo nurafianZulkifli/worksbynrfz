@@ -502,6 +502,34 @@ body.dark-mode .txn-item:hover {
     opacity: 0.85;
 }
 
+.txn-item-reset {
+    background: linear-gradient(90deg, rgba(66, 192, 126, 0.07) 0%, rgba(35, 150, 144, 0.07) 100%);
+    cursor: default;
+    pointer-events: none;
+}
+
+.txn-item-reset .txn-name {
+    color: #166534 !important;
+    font-style: italic;
+}
+
+.txn-item-reset .txn-cat {
+    color: #16a34a !important;
+    opacity: 0.75;
+}
+
+body.dark-mode .txn-item-reset {
+    background: linear-gradient(90deg, rgba(66, 192, 126, 0.1) 0%, rgba(35, 150, 144, 0.1) 100%);
+}
+
+body.dark-mode .txn-item-reset .txn-name {
+    color: #4ade80 !important;
+}
+
+body.dark-mode .txn-item-reset .txn-cat {
+    color: #4ade80 !important;
+}
+
 .txn-icon {
     width: 42px;
     height: 42px;

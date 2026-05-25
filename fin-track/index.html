@@ -167,10 +167,10 @@
                     <div class="ft-section-heading" style="margin-bottom:0;">Transactions</div>
                     <div style="display:flex; gap:8px; align-items:center;">
                         <button class="cmt-trigger-btn" onclick="openCommitments()">
-                            <i class="fa-regular fa-list-check"></i>&nbsp;Commitments
+                            <i class="fa-regular fa-list-check"></i>
                         </button>
                         <button class="ft-add-btn" onclick="openAdd()">
-                            <i class="fa-regular fa-plus"></i>&nbsp;Add
+                            <i class="fa-regular fa-plus"></i>
                         </button>
                     </div>
                 </div>
@@ -266,63 +266,68 @@
         </div>
     </div>
 
-    <!-- Commitments List Overlay -->
-    <div class="overlay" id="commitmentsOverlay" onclick="closeOnBackdrop(event,'commitmentsOverlay')">
-        <div class="sheet">
-            <div class="sheet-handle"></div>
-            <div class="sheet-title"><i class="fa-regular fa-list-check"></i>&nbsp;Commitments</div>
-            <div class="settings-info">
-                <i class="fa-regular fa-circle-info"></i>&nbsp;Your recurring bills and expenses. Tap an item to mark it as paid — it'll be added to this month's transactions.
-            </div>
-            <div id="cmtSummary" style="display:none;" class="cmt-summary">
-                <i class="fa-regular fa-circle-check"></i>
-                <span id="cmtSummaryText"></span>
-            </div>
-            <div id="cmtListWrap"></div>
-            <div class="sheet-actions" style="margin-top:16px;">
-                <button class="sht-btn sht-btn-ghost" onclick="closeOverlay('commitmentsOverlay')">Close</button>
-                <button class="sht-btn sht-btn-primary" onclick="openAddCommitment(null)">
-                    <i class="fa-regular fa-plus"></i>&nbsp;Add Commitment
-                </button>
-            </div>
-        </div>
-    </div>
+    <!-- Commitments Modal (Bootstrap) -->
+    <div class="modal fade" id="commitmentsModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content ft-modal-content">
+                <div class="modal-body">
 
-    <!-- Add/Edit Commitment Overlay -->
-    <div class="overlay" id="addCommitmentOverlay" onclick="closeOnBackdrop(event,'addCommitmentOverlay')">
-        <div class="sheet">
-            <div class="sheet-handle"></div>
-            <div class="sheet-title" id="cmtFormTitle"><i class="fa-regular fa-plus"></i>&nbsp;New Commitment</div>
-            <div class="form-group">
-                <label>Name</label>
-                <input type="text" id="cmtName" placeholder="e.g. Netflix" autocomplete="off" />
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Amount (SGD)</label>
-                    <input type="number" id="cmtAmount" placeholder="0.00" min="0" step="0.01" />
+                    <!-- Panel: List -->
+                    <div id="cmtPanelList">
+                        <div class="sheet-title"><i class="fa-regular fa-list-check"></i>&nbsp;Commitments</div>
+                        <div class="settings-info">
+                            <i class="fa-regular fa-circle-info"></i>&nbsp;Your recurring bills. Tap an item to mark it as paid &mdash; it'll be added to this month's transactions.
+                        </div>
+                        <div id="cmtSummary" style="display:none;" class="cmt-summary">
+                            <i class="fa-regular fa-circle-check"></i>
+                            <span id="cmtSummaryText"></span>
+                        </div>
+                        <div id="cmtListWrap"></div>
+                        <div class="sheet-actions" style="margin-top:16px;">
+                            <button class="sht-btn sht-btn-ghost" onclick="closeCmtModal()">Close</button>
+                            <button class="sht-btn sht-btn-primary" onclick="openAddCommitment(null)">
+                                <i class="fa-regular fa-plus"></i>&nbsp;Add Commitment
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Panel: Add/Edit Commitment -->
+                    <div id="cmtPanelForm" style="display:none;">
+                        <div class="sheet-title" id="cmtFormTitle"><i class="fa-regular fa-plus"></i>&nbsp;New Commitment</div>
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" id="cmtName" placeholder="e.g. Netflix" autocomplete="off" />
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Amount (SGD)</label>
+                                <input type="number" id="cmtAmount" placeholder="0.00" min="0" step="0.01" />
+                            </div>
+                            <div class="form-group">
+                                <label>Category</label>
+                                <select id="cmtCat">
+                                    <option value="Subscriptions">Subscriptions</option>
+                                    <option value="Memberships">Memberships</option>
+                                    <option value="Bills">Bills</option>
+                                    <option value="Food">Food</option>
+                                    <option value="Transport">Transport</option>
+                                    <option value="Transfer">Transfer</option>
+                                    <option value="Others">Others</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="sheet-actions">
+                            <button class="sht-btn sht-btn-danger" id="deleteCmtBtn" style="display:none; flex:0 0 auto; padding: 12px 18px;" onclick="deleteCurrentCommitment()">
+                                <i class="fa-regular fa-trash"></i>
+                            </button>
+                            <button class="sht-btn sht-btn-ghost" onclick="closeCmtForm()">Cancel</button>
+                            <button class="sht-btn sht-btn-primary" onclick="saveCommitment()">
+                                <i class="fa-regular fa-check"></i> Save
+                            </button>
+                        </div>
+                    </div>
+
                 </div>
-                <div class="form-group">
-                    <label>Category</label>
-                    <select id="cmtCat">
-                        <option value="Subscriptions">Subscriptions</option>
-                        <option value="Memberships">Memberships</option>
-                        <option value="Bills">Bills</option>
-                        <option value="Food">Food</option>
-                        <option value="Transport">Transport</option>
-                        <option value="Transfer">Transfer</option>
-                        <option value="Others">Others</option>
-                    </select>
-                </div>
-            </div>
-            <div class="sheet-actions">
-                <button class="sht-btn sht-btn-danger" id="deleteCmtBtn" style="display:none; flex:0 0 auto; padding: 12px 18px;" onclick="deleteCurrentCommitment()">
-                    <i class="fa-regular fa-trash"></i>
-                </button>
-                <button class="sht-btn sht-btn-ghost" onclick="closeOverlay('addCommitmentOverlay')">Cancel</button>
-                <button class="sht-btn sht-btn-primary" onclick="saveCommitment()">
-                    <i class="fa-regular fa-check"></i> Save
-                </button>
             </div>
         </div>
     </div>

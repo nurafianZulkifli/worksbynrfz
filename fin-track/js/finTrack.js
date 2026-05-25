@@ -54,7 +54,7 @@
   function calcBalance() {
     const acct = activeAccount();
     const txns = acct.transactions;
-    const totalDebits = txns.filter(t => t.type !== 'credit').reduce((s,t) => s + (parseFloat(t.amount) || 0), 0);
+    const totalDebits = txns.filter(t => t.type === 'debit').reduce((s,t) => s + (parseFloat(t.amount) || 0), 0);
     const totalCredits = txns.filter(t => t.type === 'credit' && t.cat !== 'Transfer').reduce((s,t) => s + (parseFloat(t.amount) || 0), 0);
     const totalSpent = Math.max(0, totalDebits - totalCredits - (acct.resetOffset || 0));
     return { totalSpent, remaining: acct.allocated - totalSpent };
@@ -176,7 +176,15 @@
       <div style="margin-bottom:18px">
         <div class="txn-date-label">${fmtDate(date)}</div>
         <div class="txn-group-card">
-          ${items.map(t => `
+          ${items.map(t => t.type === 'reset' ? `
+            <div class="txn-item txn-item-reset">
+              <div class="txn-icon income"><i class="fa-regular fa-rotate-right"></i></div>
+              <div class="txn-info">
+                <div class="txn-name">New Month Reset</div>
+                <div class="txn-cat">Balance restarted from this point</div>
+              </div>
+              <div class="txn-amount" style="font-size:0.78rem; color:#16a34a; font-weight:600;">Reset</div>
+            </div>` : `
             <div class="txn-item" onclick="openEdit('${t.id}')">
               <div class="txn-icon ${iconClass(t.cat)}">${iconEmoji(t.cat)}</div>
               <div class="txn-info">
@@ -321,13 +329,42 @@
     // Returns a map of commitmentId -> transactionId for the active month
     const txns = filteredTxns();
     const map = {};
+    // First pass: explicitly linked transactions
     txns.forEach(t => { if (t.commitmentId) map[t.commitmentId] = t.id; });
+    // Second pass: match pre-existing debit transactions by name (case-insensitive)
+    const cmts = activeCommitments();
+    cmts.forEach(c => {
+      if (!map[c.id]) {
+        const match = txns.find(t =>
+          !t.commitmentId &&
+          t.type === 'debit' &&
+          t.name.trim().toLowerCase() === c.name.trim().toLowerCase()
+        );
+        if (match) map[c.id] = match.id;
+      }
+    });
     return map;
+  }
+
+  function _getCmtModal() {
+    return bootstrap.Modal.getOrCreateInstance(document.getElementById('commitmentsModal'));
   }
 
   function openCommitments() {
     renderCommitments();
-    openOverlay('commitmentsOverlay');
+    document.getElementById('cmtPanelList').style.display = '';
+    document.getElementById('cmtPanelForm').style.display = 'none';
+    _getCmtModal().show();
+  }
+
+  function closeCmtModal() {
+    _getCmtModal().hide();
+  }
+
+  function closeCmtForm() {
+    document.getElementById('cmtPanelForm').style.display = 'none';
+    document.getElementById('cmtPanelList').style.display = '';
+    renderCommitments();
   }
 
   function renderCommitments() {
@@ -436,8 +473,9 @@
       document.getElementById('cmtCat').value = 'Subscriptions';
       deleteBtn.style.display = 'none';
     }
-    openOverlay('addCommitmentOverlay');
-    setTimeout(() => document.getElementById('cmtName').focus(), 300);
+    document.getElementById('cmtPanelList').style.display = 'none';
+    document.getElementById('cmtPanelForm').style.display = '';
+    setTimeout(() => document.getElementById('cmtName').focus(), 100);
   }
 
   function saveCommitment() {
@@ -465,8 +503,7 @@
       showToast('Commitment added');
     }
     save();
-    closeOverlay('addCommitmentOverlay');
-    renderCommitments();
+    closeCmtForm();
     renderAll();
   }
 
@@ -477,8 +514,7 @@
     const acct = activeAccount();
     acct.commitments = acct.commitments.filter(c => c.id !== editingCommitmentId);
     save();
-    closeOverlay('addCommitmentOverlay');
-    renderCommitments();
+    closeCmtForm();
     showToast('Commitment deleted');
   }
 
@@ -651,6 +687,7 @@
     const totalDebits = txns.filter(t => t.type !== 'credit').reduce((s,t) => s + (parseFloat(t.amount) || 0), 0);
     const totalCredits = txns.filter(t => t.type === 'credit' && t.cat !== 'Transfer').reduce((s,t) => s + (parseFloat(t.amount) || 0), 0);
     acct.resetOffset = Math.max(0, totalDebits - totalCredits);
+    acct.transactions.push({ id: uid(), date: new Date().toISOString().slice(0, 10), type: 'reset', name: 'New Month Reset', amount: 0, cat: '' });
     save();
     renderAll();
     showToast('Balance reset! History preserved.');
@@ -676,13 +713,15 @@
 
   // ── Bootstrap modal: lock <html> scroll (style.css sets overflow-x:hidden on html which breaks Bootstrap's own lock) ──
   (function () {
-    const el = document.getElementById('addModal');
-    if (!el) return;
-    el.addEventListener('show.bs.modal', function () {
-      document.documentElement.style.overflow = 'hidden';
-    });
-    el.addEventListener('hidden.bs.modal', function () {
-      document.documentElement.style.overflow = '';
+    ['addModal', 'commitmentsModal'].forEach(function (id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.addEventListener('show.bs.modal', function () {
+        document.documentElement.style.overflow = 'hidden';
+      });
+      el.addEventListener('hidden.bs.modal', function () {
+        document.documentElement.style.overflow = '';
+      });
     });
   })();
 
