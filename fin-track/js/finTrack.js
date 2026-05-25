@@ -308,6 +308,180 @@
     showToast('Transaction deleted');
   }
 
+  // ── Commitments ────────────────────────────────────────────────────────
+  let editingCommitmentId = null;
+
+  function activeCommitments() {
+    const acct = activeAccount();
+    if (!acct.commitments) acct.commitments = [];
+    return acct.commitments;
+  }
+
+  function paidCommitmentIds() {
+    // Returns a map of commitmentId -> transactionId for the active month
+    const txns = filteredTxns();
+    const map = {};
+    txns.forEach(t => { if (t.commitmentId) map[t.commitmentId] = t.id; });
+    return map;
+  }
+
+  function openCommitments() {
+    renderCommitments();
+    openOverlay('commitmentsOverlay');
+  }
+
+  function renderCommitments() {
+    const cmts = activeCommitments();
+    const paid = paidCommitmentIds();
+    const wrap = document.getElementById('cmtListWrap');
+    const summary = document.getElementById('cmtSummary');
+    const summaryText = document.getElementById('cmtSummaryText');
+
+    const paidCount = cmts.filter(c => paid[c.id]).length;
+    if (cmts.length > 0 && paidCount > 0) {
+      summary.style.display = '';
+      summaryText.textContent = `${paidCount} of ${cmts.length} paid this month`;
+    } else {
+      summary.style.display = 'none';
+    }
+
+    if (!cmts.length) {
+      wrap.innerHTML = `<div class="cmt-empty"><i class="fa-regular fa-list-check"></i>No commitments yet. Add your recurring bills below.</div>`;
+      return;
+    }
+
+    const unpaid = cmts.filter(c => !paid[c.id]);
+    const paidList = cmts.filter(c => paid[c.id]);
+
+    let html = '';
+    if (unpaid.length) {
+      html += `<div class="cmt-section-label">Unpaid</div><div class="cmt-list">`;
+      html += unpaid.map(c => cmtItemHTML(c, false)).join('');
+      html += `</div>`;
+    }
+    if (paidList.length) {
+      html += `<div class="cmt-section-label">Paid</div><div class="cmt-list">`;
+      html += paidList.map(c => cmtItemHTML(c, true)).join('');
+      html += `</div>`;
+    }
+    wrap.innerHTML = html;
+  }
+
+  function cmtItemHTML(c, isPaid) {
+    return `
+      <div class="cmt-item${isPaid ? ' paid' : ''}" onclick="toggleCommitment('${c.id}')">
+        <div class="cmt-checkbox">${isPaid ? '<i class="fa-solid fa-check"></i>' : ''}</div>
+        <div class="cmt-info">
+          <div class="cmt-name">${esc(c.name)}</div>
+          <div class="cmt-cat">${esc(c.cat)}</div>
+        </div>
+        <div class="cmt-amount">−${fmt(c.amount)}</div>
+        <button class="cmt-edit-btn" onclick="event.stopPropagation(); openAddCommitment('${c.id}')" title="Edit">
+          <i class="fa-regular fa-pen"></i>
+        </button>
+      </div>`;
+  }
+
+  function toggleCommitment(id) {
+    const cmt = activeCommitments().find(c => c.id === id);
+    if (!cmt) return;
+    const paid = paidCommitmentIds();
+    if (paid[id]) {
+      // Uncheck: remove linked transaction
+      const acct = activeAccount();
+      acct.transactions = acct.transactions.filter(t => t.id !== paid[id]);
+      showToast(`"${cmt.name}" removed from transactions`);
+    } else {
+      // Check: add a debit transaction for today (within active month)
+      const now = new Date();
+      let txnDate;
+      if (now.getMonth() === state.activeMonth && now.getFullYear() === state.activeYear) {
+        txnDate = now.toISOString().slice(0, 10);
+      } else {
+        // Use last day of the active month
+        txnDate = new Date(state.activeYear, state.activeMonth + 1, 0).toISOString().slice(0, 10);
+      }
+      activeAccount().transactions.push({
+        id: uid(),
+        name: cmt.name,
+        amount: cmt.amount,
+        cat: cmt.cat,
+        date: txnDate,
+        type: 'debit',
+        commitmentId: id
+      });
+      showToast(`"${cmt.name}" added to transactions`);
+    }
+    save();
+    renderCommitments();
+    renderAll();
+  }
+
+  function openAddCommitment(id) {
+    editingCommitmentId = id;
+    const title = document.getElementById('cmtFormTitle');
+    const deleteBtn = document.getElementById('deleteCmtBtn');
+    if (id) {
+      const cmt = activeCommitments().find(c => c.id === id);
+      if (!cmt) return;
+      title.innerHTML = '<i class="fa-regular fa-pen"></i>&nbsp;Edit Commitment';
+      document.getElementById('cmtName').value = cmt.name;
+      document.getElementById('cmtAmount').value = cmt.amount;
+      document.getElementById('cmtCat').value = cmt.cat;
+      deleteBtn.style.display = '';
+    } else {
+      title.innerHTML = '<i class="fa-regular fa-plus"></i>&nbsp;New Commitment';
+      document.getElementById('cmtName').value = '';
+      document.getElementById('cmtAmount').value = '';
+      document.getElementById('cmtCat').value = 'Subscriptions';
+      deleteBtn.style.display = 'none';
+    }
+    openOverlay('addCommitmentOverlay');
+    setTimeout(() => document.getElementById('cmtName').focus(), 300);
+  }
+
+  function saveCommitment() {
+    const name = document.getElementById('cmtName').value.trim();
+    const amount = parseFloat(document.getElementById('cmtAmount').value);
+    const cat = document.getElementById('cmtCat').value;
+    if (!name) { showToast('Enter a commitment name'); return; }
+    if (!amount || amount <= 0) { showToast('Enter a valid amount'); return; }
+
+    const cmts = activeCommitments();
+    if (editingCommitmentId) {
+      const idx = cmts.findIndex(c => c.id === editingCommitmentId);
+      if (idx !== -1) {
+        cmts[idx] = { ...cmts[idx], name, amount, cat };
+        // Update any linked transaction in the active month
+        const paid = paidCommitmentIds();
+        if (paid[editingCommitmentId]) {
+          const txn = activeAccount().transactions.find(t => t.id === paid[editingCommitmentId]);
+          if (txn) { txn.name = name; txn.amount = amount; txn.cat = cat; }
+        }
+      }
+      showToast('Commitment updated');
+    } else {
+      cmts.push({ id: uid(), name, amount, cat });
+      showToast('Commitment added');
+    }
+    save();
+    closeOverlay('addCommitmentOverlay');
+    renderCommitments();
+    renderAll();
+  }
+
+  function deleteCurrentCommitment() {
+    if (!editingCommitmentId) return;
+    const cmt = activeCommitments().find(c => c.id === editingCommitmentId);
+    if (!confirm(`Delete commitment "${cmt ? cmt.name : ''}"?`)) return;
+    const acct = activeAccount();
+    acct.commitments = acct.commitments.filter(c => c.id !== editingCommitmentId);
+    save();
+    closeOverlay('addCommitmentOverlay');
+    renderCommitments();
+    showToast('Commitment deleted');
+  }
+
   // ── Settings ───────────────────────────────────────────────────────────
   function openSettings() {
     const acct = activeAccount();
