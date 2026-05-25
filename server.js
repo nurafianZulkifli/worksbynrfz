@@ -8,6 +8,13 @@ const https = require('https');
 const compression = require('compression');
 const webpush = require('web-push');
 
+// ── Sync DB (Neon PostgreSQL) ────────────────────────────────────────
+// Set DATABASE_URL env var (Neon connection string) to enable sync endpoints.
+let Pool = null;
+if (process.env.DATABASE_URL) {
+  try { Pool = require('pg').Pool; } catch (e) { console.warn('[Sync] pg module not found — run: npm install pg'); }
+}
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 const LTA_API_KEY = process.env.LTA_API_KEY;
@@ -77,6 +84,43 @@ function saveAlertWatchers() {
 }
 
 loadAlertWatchers();
+
+// ── Sync Data Store ──────────────────────────────────────────────────
+let syncPool = null;
+const VALID_SYNC_APPS = new Set(['buszy', 'fin-track', 'rail-buddy']);
+const SYNC_CODE_RE    = /^[a-z0-9]{5}-[a-z0-9]{5}$/;
+const SYNC_MAX_BYTES  = 2 * 1024 * 1024; // 2 MB per entry
+
+// In-memory rate limiter: max 60 ops per sync code per hour
+const _syncRateMap = new Map();
+function _syncRateOk(code) {
+  const now = Date.now();
+  let e = _syncRateMap.get(code);
+  if (!e || now > e.resetAt) { e = { count: 0, resetAt: now + 3_600_000 }; _syncRateMap.set(code, e); }
+  return ++e.count <= 60;
+}
+setInterval(() => {
+  const now = Date.now();
+  for (const [k, e] of _syncRateMap) if (now > e.resetAt) _syncRateMap.delete(k);
+}, 3_600_000);
+
+if (Pool) {
+  syncPool = new Pool({ connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false } });
+  syncPool.query(`
+    CREATE TABLE IF NOT EXISTS sync_data (
+      sync_code  TEXT   NOT NULL,
+      app_id     TEXT   NOT NULL,
+      data       TEXT   NOT NULL,
+      updated_at BIGINT NOT NULL,
+      PRIMARY KEY (sync_code, app_id)
+    )
+  `)
+    .then(() => console.log('[Sync] sync_data table ready'))
+    .catch(err => console.error('[Sync] Table init error:', err.message));
+  console.log('[Sync] Database pool created');
+} else {
+  console.warn('[Sync] DATABASE_URL not set — /sync endpoints will return 503');
+}
 
 // Reuse TCP connections to DataMall (avoids TLS handshake on every request)
 const ltaApi = axios.create({
@@ -595,6 +639,66 @@ for (const [key, watchers] of [...pushWatchers.entries()]) {
     }, 25 * 60 * 1000); // every 25 minutes
   }
 }
+
+// ── Sync Routes ─────────────────────────────────────────────────────
+// GET /sync/:code/:appId — retrieve stored data
+app.get('/sync/:code/:appId', async (req, res) => {
+  if (!syncPool) return res.status(503).json({ error: 'Sync not available — set DATABASE_URL to enable' });
+  const { code, appId } = req.params;
+  if (!SYNC_CODE_RE.test(code))    return res.status(400).json({ error: 'Invalid sync code format' });
+  if (!VALID_SYNC_APPS.has(appId)) return res.status(400).json({ error: 'Invalid app ID' });
+  if (!_syncRateOk(code))          return res.status(429).json({ error: 'Too many requests — try again later' });
+  try {
+    const r = await syncPool.query(
+      'SELECT data, updated_at FROM sync_data WHERE sync_code = $1 AND app_id = $2', [code, appId]);
+    if (!r.rows.length) return res.status(404).json({ error: 'No data found for this sync code' });
+    res.set('Cache-Control', 'no-store');
+    res.json({ data: JSON.parse(r.rows[0].data), updatedAt: r.rows[0].updated_at });
+  } catch (err) {
+    console.error('[Sync] GET error:', err.message);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// PUT /sync/:code/:appId — upsert stored data
+app.put('/sync/:code/:appId', express.json({ limit: '2mb' }), async (req, res) => {
+  if (!syncPool) return res.status(503).json({ error: 'Sync not available — set DATABASE_URL to enable' });
+  const { code, appId } = req.params;
+  if (!SYNC_CODE_RE.test(code))    return res.status(400).json({ error: 'Invalid sync code format' });
+  if (!VALID_SYNC_APPS.has(appId)) return res.status(400).json({ error: 'Invalid app ID' });
+  if (!_syncRateOk(code))          return res.status(429).json({ error: 'Too many requests — try again later' });
+  const { data } = req.body || {};
+  if (!data || typeof data !== 'object') return res.status(400).json({ error: 'Missing or invalid data payload' });
+  const dataStr = JSON.stringify(data);
+  if (Buffer.byteLength(dataStr, 'utf8') > SYNC_MAX_BYTES)
+    return res.status(413).json({ error: 'Payload too large (max 2 MB)' });
+  try {
+    const updatedAt = Date.now();
+    await syncPool.query(
+      `INSERT INTO sync_data (sync_code, app_id, data, updated_at) VALUES ($1, $2, $3, $4)
+       ON CONFLICT (sync_code, app_id) DO UPDATE SET data = EXCLUDED.data, updated_at = EXCLUDED.updated_at`,
+      [code, appId, dataStr, updatedAt]);
+    res.json({ ok: true, updatedAt });
+  } catch (err) {
+    console.error('[Sync] PUT error:', err.message);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// DELETE /sync/:code — remove all stored data for a sync code
+app.delete('/sync/:code', async (req, res) => {
+  if (!syncPool) return res.status(503).json({ error: 'Sync not available — set DATABASE_URL to enable' });
+  const { code } = req.params;
+  if (!SYNC_CODE_RE.test(code)) return res.status(400).json({ error: 'Invalid sync code format' });
+  if (!_syncRateOk(code))       return res.status(429).json({ error: 'Too many requests — try again later' });
+  try {
+    await syncPool.query('DELETE FROM sync_data WHERE sync_code = $1', [code]);
+    res.json({ ok: true });
+  } catch (err) {
+    console.error('[Sync] DELETE error:', err.message);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
 
 // Serve static files (after all API routes to prevent conflicts)
 app.use(express.static(path.join(__dirname))); // Serve all static files from root

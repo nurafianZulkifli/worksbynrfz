@@ -384,6 +384,39 @@
         </div>
 
         <div class="container">
+            <h2 class="text-center" style="padding-top: 1em;">Sync</h2>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <div id="sync-no-code">
+                        <p style="font-size: 15px; margin-bottom: 1rem;">Sync your saved stops and preferences across devices using a sync code. No account required.</p>
+                        <button id="sync-generate-btn" class="btn btn-install">Generate Sync Code</button>
+                        <p style="margin: 0.75rem 0; font-size: 13px; color: #888; text-align: center;">— or enter an existing code —</p>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <input type="text" id="sync-code-input" placeholder="e.g. abc12-def34" autocomplete="off"
+                                   style="flex: 1; padding: 0.5rem 0.75rem; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; font-family: monospace; letter-spacing: 1px;">
+                            <button id="sync-connect-btn" class="btn btn-install" style="width: auto; min-width: unset; padding: 0 1rem;">Connect</button>
+                        </div>
+                    </div>
+                    <div id="sync-has-code" style="display: none;">
+                        <p style="font-size: 14px; font-weight: bold; margin-bottom: 0.5rem;">Your sync code</p>
+                        <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.75rem;">
+                            <code id="sync-code-display" style="flex: 1; text-align: center; font-size: 1.1em; letter-spacing: 3px; padding: 0.45rem 0.75rem; border: 1px solid #ccc; border-radius: 8px; display: block;"></code>
+                            <button id="sync-copy-btn" style="background: none; border: 1px solid #ccc; border-radius: 8px; padding: 0.45rem 0.65rem; cursor: pointer; font-size: 14px;">
+                                <i class="fa-regular fa-copy"></i>
+                            </button>
+                        </div>
+                        <p class="fetch" id="sync-last-synced" style="font-size: 13px; color: #888;"></p>
+                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.75rem;">
+                            <button id="sync-push-btn" class="btn btn-install" style="width: auto; min-width: unset; padding: 0 1.2rem;">Push to Cloud</button>
+                            <button id="sync-pull-btn" class="btn btn-install" style="width: auto; min-width: unset; padding: 0 1.2rem;">Pull from Cloud</button>
+                        </div>
+                        <button id="sync-disconnect-btn" class="btn btn-rfetch" style="font-size: 13px; width: auto; min-width: unset; padding: 0 1rem; height: 36px; line-height: 36px;">Disconnect</button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="container">
             <h2 class="text-center" style="padding-top: 1em;">Notifications</h2>
             <ul class="list-group">
                 <li class="list-group-item">
@@ -468,6 +501,8 @@
     <script src="../js/utils.js"></script>
 
     <script src="js/settings.js"></script>
+    <script src="../js/sync.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', function () { AppSync.initUI('buszy'); });</script>
 
     <script src="./js/ann-indicator.js"></script>
     <script src="./js/alerts-indicator.js"></script>
