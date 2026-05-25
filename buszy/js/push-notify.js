@@ -102,7 +102,7 @@
 
   // ── Subscribe ──────────────────────────────────────────────────────
 
-  async function subscribe(stopCode, serviceNo, thresholdMinutes = 1) {
+  async function subscribe(stopCode, serviceNo, thresholdMinutes = 2) {
     if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
       alert('Push notifications are not supported on this browser.\n\niOS users: add Buszy to your Home Screen first.');
       return false;
@@ -153,7 +153,7 @@
           subscription: subscription.toJSON(),
           busStopCode: stopCode,
           serviceNo: serviceNo,
-          threshold: thresholdMinutes || 1,
+          threshold: thresholdMinutes || 2,
           notifyMode: getNotifMode(),
           notifyWhen: 'both'
         })
@@ -206,7 +206,7 @@
       await unsubscribe(stopCode, serviceNo);
       setButtonInactive(btn);
     } else {
-      const ok = await subscribe(stopCode, serviceNo, 1);
+      const ok = await subscribe(stopCode, serviceNo, 2);
       if (ok) {
         setButtonActive(btn);
       } else {
@@ -335,7 +335,7 @@
             subscription: subscription.toJSON(),
             busStopCode: stopCode,
             serviceNo: serviceNo,
-            threshold: 1,
+            threshold: 2,
             notifyMode: getNotifMode(),
             notifyWhen: 'both'
           })
