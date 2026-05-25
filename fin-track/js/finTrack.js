@@ -250,6 +250,7 @@
     const today = new Date();
     document.getElementById('txnDate').value = today.toISOString().slice(0,10);
     document.getElementById('deleteBtn').style.display = 'none';
+    document.getElementById('addToCmtRow').style.display = 'none';
     setType('debit');
     _getTxnModal().show();
     setTimeout(() => document.getElementById('txnName').focus(), 300);
@@ -266,8 +267,39 @@
     document.getElementById('txnCat').value = t.cat;
     document.getElementById('txnDate').value = t.date;
     document.getElementById('deleteBtn').style.display = '';
+    document.getElementById('addToCmtRow').style.display = '';
+    _updateAddToCmtBtn(t.name);
     setType(t.type);
     _getTxnModal().show();
+  }
+
+  function _updateAddToCmtBtn(name) {
+    const btn = document.getElementById('addToCmtBtn');
+    if (!btn) return;
+    const exists = activeCommitments().some(
+      c => c.name.trim().toLowerCase() === (name || '').trim().toLowerCase()
+    );
+    btn.disabled = exists;
+    btn.innerHTML = exists
+      ? '<i class="fa-regular fa-check"></i>&nbsp;In Commitments'
+      : '<i class="fa-regular fa-list-check"></i>&nbsp;Add to Commitments';
+  }
+
+  function addTxnToCommitments() {
+    const name = document.getElementById('txnName').value.trim();
+    const amount = parseFloat(document.getElementById('txnAmount').value);
+    const cat = document.getElementById('txnCat').value;
+    if (!name || !amount || amount <= 0) { showToast('Fill in description and amount first'); return; }
+    const cmts = activeCommitments();
+    if (cmts.some(c => c.name.trim().toLowerCase() === name.toLowerCase())) {
+      _updateAddToCmtBtn(name);
+      showToast('Already in Commitments');
+      return;
+    }
+    cmts.push({ id: uid(), name, amount, cat });
+    save();
+    _updateAddToCmtBtn(name);
+    showToast(`"${name}" added to Commitments`);
   }
 
   function closeTxnModal() {
@@ -331,14 +363,16 @@
     const map = {};
     // First pass: explicitly linked transactions
     txns.forEach(t => { if (t.commitmentId) map[t.commitmentId] = t.id; });
-    // Second pass: match pre-existing debit transactions by name (case-insensitive)
+    // Second pass: match pre-existing debit transactions by name (case-insensitive).
+    // Also catches transactions whose commitmentId points to a deleted commitment (orphaned).
     const cmts = activeCommitments();
+    const activeCmtIds = new Set(cmts.map(c => c.id));
     cmts.forEach(c => {
       if (!map[c.id]) {
         const match = txns.find(t =>
-          !t.commitmentId &&
           t.type === 'debit' &&
-          t.name.trim().toLowerCase() === c.name.trim().toLowerCase()
+          (!t.commitmentId || !activeCmtIds.has(t.commitmentId)) &&
+          (t.name || '').trim().toLowerCase() === c.name.trim().toLowerCase()
         );
         if (match) map[c.id] = match.id;
       }
@@ -731,6 +765,20 @@
     const dropdown = document.getElementById('acctDropdown');
     if (btn && !btn.contains(e.target) && dropdown && !dropdown.contains(e.target)) closeAccountDropdown();
   });
+
+  // ── Migration: backfill reset marker for accounts that have a resetOffset but no reset transaction ──
+  (function migrateResetMarkers() {
+    let changed = false;
+    state.accounts.forEach(function(acct) {
+      if ((acct.resetOffset || 0) > 0 && !acct.transactions.some(t => t.type === 'reset')) {
+        const dates = acct.transactions.filter(t => t.date).map(t => t.date).sort();
+        const resetDate = dates.length ? dates[dates.length - 1] : new Date().toISOString().slice(0, 10);
+        acct.transactions.push({ id: uid(), date: resetDate, type: 'reset', name: 'New Month Reset', amount: 0, cat: '' });
+        changed = true;
+      }
+    });
+    if (changed) save();
+  })();
 
   renderAll();
   if (window.location.hash === '#addAccount') {

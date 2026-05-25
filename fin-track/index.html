@@ -373,6 +373,11 @@
                         <label>Date</label>
                         <input type="date" id="txnDate" />
                     </div>
+                    <div id="addToCmtRow" style="display:none; margin-bottom:10px;">
+                        <button class="sht-btn sht-btn-ghost" id="addToCmtBtn" onclick="addTxnToCommitments()" style="width:100%; justify-content:center;">
+                            <i class="fa-regular fa-list-check"></i>&nbsp;Add to Commitments
+                        </button>
+                    </div>
                     <div class="sheet-actions">
                         <button class="sht-btn sht-btn-danger" id="deleteBtn"
                             style="display:none; flex:0 0 auto; padding: 12px 18px;" onclick="deleteCurrentTxn()">
