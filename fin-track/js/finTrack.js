@@ -766,18 +766,29 @@
     if (btn && !btn.contains(e.target) && dropdown && !dropdown.contains(e.target)) closeAccountDropdown();
   });
 
-  // ── Migration: backfill reset marker for accounts that have a resetOffset but no reset transaction ──
+  // ── Migration: backfill reset marker with accurate date ──
   (function migrateResetMarkers() {
+    const MIG_KEY = 'ft-mig-reset-v2';
+    if (localStorage.getItem(MIG_KEY)) return;
     let changed = false;
     state.accounts.forEach(function(acct) {
-      if ((acct.resetOffset || 0) > 0 && !acct.transactions.some(t => t.type === 'reset')) {
-        const dates = acct.transactions.filter(t => t.date).map(t => t.date).sort();
-        const resetDate = dates.length ? dates[dates.length - 1] : new Date().toISOString().slice(0, 10);
-        acct.transactions.push({ id: uid(), date: resetDate, type: 'reset', name: 'New Month Reset', amount: 0, cat: '' });
-        changed = true;
+      if ((acct.resetOffset || 0) <= 0) return;
+      // Remove any previously auto-generated reset markers (from old migration or stale state)
+      acct.transactions = acct.transactions.filter(t => t.type !== 'reset');
+      // Walk transactions in chronological order; find where running debit-credit total first equals resetOffset
+      const sorted = acct.transactions.slice().sort((a, b) => a.date.localeCompare(b.date));
+      let running = 0;
+      let resetDate = sorted.length ? sorted[sorted.length - 1].date : new Date().toISOString().slice(0, 10);
+      for (const t of sorted) {
+        if (t.type === 'debit') running += parseFloat(t.amount) || 0;
+        else if (t.type === 'credit' && t.cat !== 'Transfer') running -= parseFloat(t.amount) || 0;
+        if (Math.abs(running - acct.resetOffset) < 0.005) { resetDate = t.date; break; }
       }
+      acct.transactions.push({ id: uid(), date: resetDate, type: 'reset', name: 'New Month Reset', amount: 0, cat: '' });
+      changed = true;
     });
     if (changed) save();
+    localStorage.setItem(MIG_KEY, '1');
   })();
 
   renderAll();
