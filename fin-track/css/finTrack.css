@@ -1114,6 +1114,41 @@ body.dark-mode .cmt-cat {
     color: #a0a0b0;
 }
 
+.cmt-next-date {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin-top: 5px;
+    padding: 2px 8px;
+    border-radius: 20px;
+}
+
+.cmt-next-date.due {
+    background: #fff7ed;
+    color: #c2410c;
+    border: 1px solid #fed7aa;
+}
+
+.cmt-next-date.next {
+    background: #f0fdf4;
+    color: #15803d;
+    border: 1px solid #bbf7d0;
+}
+
+body.dark-mode .cmt-next-date.due {
+    background: rgba(194, 65, 12, 0.15);
+    color: #fb923c;
+    border-color: rgba(194, 65, 12, 0.35);
+}
+
+body.dark-mode .cmt-next-date.next {
+    background: rgba(21, 128, 61, 0.15);
+    color: #4ade80;
+    border-color: rgba(21, 128, 61, 0.35);
+}
+
 .cmt-amount {
     font-size: 0.92rem;
     font-weight: 700;

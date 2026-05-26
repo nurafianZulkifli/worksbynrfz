@@ -446,14 +446,38 @@
     wrap.innerHTML = html;
   }
 
+  function nextPaymentInfo(c, isPaid) {
+    const acct = activeAccount();
+    let dayOfMonth = c.deductDay || null;
+    if (!dayOfMonth) {
+      // Infer day from the most recent paid transaction for this commitment
+      const related = acct.transactions
+        .filter(t => t.type === 'debit' && (t.commitmentId === c.id || t.name.trim().toLowerCase() === c.name.trim().toLowerCase()))
+        .sort((a, b) => new Date(b.date) - new Date(a.date));
+      if (related.length) dayOfMonth = new Date(related[0].date + 'T00:00:00').getDate();
+    }
+    if (!dayOfMonth) return null;
+    let m = state.activeMonth, y = state.activeYear;
+    if (isPaid) { m += 1; if (m > 11) { m = 0; y++; } }
+    const maxDay = new Date(y, m + 1, 0).getDate();
+    const day = Math.min(dayOfMonth, maxDay);
+    return new Date(y, m, day).toLocaleDateString('en-SG', { day: 'numeric', month: 'short' });
+  }
+
   function cmtItemHTML(c, isPaid) {
-    const dayLabel = c.deductDay ? ` · ${c.deductDay}${ordinal(c.deductDay)}` : '';
+    const dateLabel = nextPaymentInfo(c, isPaid);
+    const dateHtml = dateLabel
+      ? (isPaid
+          ? `<div class="cmt-next-date next"><i class="fa-regular fa-rotate-right"></i> Next ${dateLabel}</div>`
+          : `<div class="cmt-next-date due"><i class="fa-regular fa-calendar"></i> Due ${dateLabel}</div>`)
+      : '';
     return `
       <div class="cmt-item${isPaid ? ' paid' : ''}" onclick="toggleCommitment('${c.id}')">
         <div class="cmt-checkbox">${isPaid ? '<i class="fa-solid fa-check"></i>' : ''}</div>
         <div class="cmt-info">
           <div class="cmt-name">${esc(c.name)}</div>
-          <div class="cmt-cat">${esc(c.cat)}${dayLabel}</div>
+          <div class="cmt-cat">${esc(c.cat)}</div>
+          ${dateHtml}
         </div>
         <div class="cmt-amount">−${fmt(c.amount)}</div>
         <button class="cmt-edit-btn" onclick="event.stopPropagation(); openAddCommitment('${c.id}')" title="Edit">
