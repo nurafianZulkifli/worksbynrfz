@@ -2,6 +2,8 @@
   const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
   let state = load();
+  let _lastState = null;
+  function snapshot() { _lastState = JSON.parse(JSON.stringify(state)); }
 
   function defaultState() {
     const now = new Date();
@@ -50,14 +52,21 @@
     });
   }
 
-  // Balance counts ALL transactions, offset by any previous reset snapshot
-  function calcBalance() {
-    const acct = activeAccount();
+  // Balance counts only transactions on/after the most recent reset date
+  function calcAccountBalance(acct) {
     const txns = acct.transactions;
-    const totalDebits = txns.filter(t => t.type === 'debit').reduce((s,t) => s + (parseFloat(t.amount) || 0), 0);
-    const totalCredits = txns.filter(t => t.type === 'credit' && t.cat !== 'Transfer').reduce((s,t) => s + (parseFloat(t.amount) || 0), 0);
-    const totalSpent = Math.max(0, totalDebits - totalCredits - (acct.resetOffset || 0));
+    const resets = txns.filter(t => t.type === 'reset').sort((a, b) => new Date(b.date) - new Date(a.date));
+    const resetDate = resets.length ? resets[0].date : null;
+    const eligible = txns.filter(t => t.type === 'debit' || (t.type === 'credit' && t.cat !== 'Transfer'));
+    const active = resetDate ? eligible.filter(t => t.date >= resetDate) : eligible;
+    const totalDebits = active.filter(t => t.type === 'debit').reduce((s, t) => s + (parseFloat(t.amount) || 0), 0);
+    const totalCredits = active.filter(t => t.type === 'credit').reduce((s, t) => s + (parseFloat(t.amount) || 0), 0);
+    const totalSpent = Math.max(0, totalDebits - totalCredits);
     return { totalSpent, remaining: acct.allocated - totalSpent };
+  }
+
+  function calcBalance() {
+    return calcAccountBalance(activeAccount());
   }
 
   // ── Render ─────────────────────────────────────────────────────────────
@@ -334,14 +343,15 @@
     if (!amount || amount <= 0) { showToast('Please enter a valid amount'); return; }
     if (!date) { showToast('Please select a date'); return; }
 
+    snapshot();
     if (editingId) {
       const txns = activeAccount().transactions;
       const idx = txns.findIndex(x => x.id === editingId);
       if (idx !== -1) txns[idx] = { ...txns[idx], name, amount, cat, date, type: currentType };
-      showToast('Transaction updated');
+      showToast('Transaction updated', true);
     } else {
       activeAccount().transactions.push({ id: uid(), name, amount, cat, date, type: currentType });
-      showToast('Transaction added');
+      showToast('Transaction added', true);
     }
     save();
     closeTxnModal();
@@ -351,12 +361,13 @@
   function deleteCurrentTxn() {
     if (!editingId) return;
     if (!confirm('Delete this transaction?')) return;
+    snapshot();
     const acct = activeAccount();
     acct.transactions = acct.transactions.filter(x => x.id !== editingId);
     save();
     closeTxnModal();
     renderAll();
-    showToast('Transaction deleted');
+    showToast('Transaction deleted', true);
   }
 
   // ── Commitments ────────────────────────────────────────────────────────
@@ -493,11 +504,12 @@
     const cmt = activeCommitments().find(c => c.id === id);
     if (!cmt) return;
     const paid = paidCommitmentIds();
+    snapshot();
     if (paid[id]) {
       // Uncheck: remove linked transaction
       const acct = activeAccount();
       acct.transactions = acct.transactions.filter(t => t.id !== paid[id]);
-      showToast(`"${cmt.name}" removed from transactions`);
+      showToast(`"${cmt.name}" removed from transactions`, true);
     } else {
       // Check: add a debit transaction using deductDay, today, or last day of active month
       const now = new Date();
@@ -521,7 +533,7 @@
         type: 'debit',
         commitmentId: id
       });
-      showToast(`"${cmt.name}" added to transactions`);
+      showToast(`"${cmt.name}" added to transactions`, true);
     }
     save();
     renderCommitments();
@@ -563,6 +575,7 @@
     if (!amount || amount <= 0) { showToast('Enter a valid amount'); return; }
     if (deductDay !== null && (deductDay < 1 || deductDay > 31)) { showToast('Deduction day must be 1–31'); return; }
 
+    snapshot();
     const cmts = activeCommitments();
     if (editingCommitmentId) {
       const idx = cmts.findIndex(c => c.id === editingCommitmentId);
@@ -582,10 +595,10 @@
           }
         }
       }
-      showToast('Commitment updated');
+      showToast('Commitment updated', true);
     } else {
       cmts.push({ id: uid(), name, amount, cat, deductDay });
-      showToast('Commitment added');
+      showToast('Commitment added', true);
     }
     save();
     closeCmtForm();
@@ -596,11 +609,12 @@
     if (!editingCommitmentId) return;
     const cmt = activeCommitments().find(c => c.id === editingCommitmentId);
     if (!confirm(`Delete commitment "${cmt ? cmt.name : ''}"?`)) return;
+    snapshot();
     const acct = activeAccount();
     acct.commitments = acct.commitments.filter(c => c.id !== editingCommitmentId);
     save();
     closeCmtForm();
-    showToast('Commitment deleted');
+    showToast('Commitment deleted', true);
   }
 
   // ── Settings ───────────────────────────────────────────────────────────
@@ -624,6 +638,7 @@
     if (!name) { showToast('Enter an account name'); return; }
     if (!alloc || alloc <= 0) { showToast('Enter a valid allocated amount'); return; }
     if (!year || year < 2020) { showToast('Enter a valid year'); return; }
+    snapshot();
     const acct = activeAccount();
     acct.name = name;
     acct.allocated = alloc;
@@ -632,7 +647,7 @@
     save();
     closeOverlay('settingsOverlay');
     renderAll();
-    showToast('Settings saved');
+    showToast('Settings saved', true);
   }
 
   // ── Scroll lock ─────────────────────────────────────────────────────────
@@ -682,12 +697,41 @@
 
   // ── Toast ──────────────────────────────────────────────────────────────
   let toastTimer;
-  function showToast(msg) {
+  function showToast(msg, undoable) {
     const el = document.getElementById('toast');
-    el.textContent = msg;
+    el.innerHTML = '';
+    const span = document.createElement('span');
+    span.textContent = msg;
+    el.appendChild(span);
+    if (undoable && _lastState) {
+      const btn = document.createElement('button');
+      btn.className = 'toast-undo-btn';
+      btn.textContent = 'Undo';
+      btn.onclick = undoLast;
+      el.appendChild(btn);
+      el.style.pointerEvents = 'auto';
+    } else {
+      el.style.pointerEvents = 'none';
+    }
     el.classList.add('show');
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => el.classList.remove('show'), 2200);
+    toastTimer = setTimeout(() => {
+      el.classList.remove('show');
+      el.style.pointerEvents = 'none';
+    }, undoable ? 4000 : 2200);
+  }
+
+  function undoLast() {
+    if (!_lastState) return;
+    state = _lastState;
+    _lastState = null;
+    save();
+    renderAll();
+    clearTimeout(toastTimer);
+    const el = document.getElementById('toast');
+    el.classList.remove('show');
+    el.style.pointerEvents = 'none';
+    setTimeout(() => showToast('Undone'), 150);
   }
 
   // ── Accounts ────────────────────────────────────────────────────────────
@@ -703,13 +747,14 @@
     const alloc = parseFloat(document.getElementById('newAcctAllocated').value);
     if (!name) { showToast('Enter an account name'); return; }
     if (!alloc || alloc <= 0) { showToast('Enter a valid allocated amount'); return; }
+    snapshot();
     const id = uid();
     state.accounts.push({ id, name, allocated: alloc, transactions: [] });
     state.activeAccountId = id;
     save();
     closeOverlay('addAccountOverlay');
     renderAll();
-    showToast('Account created');
+    showToast('Account created', true);
   }
 
   function openAccountSwitcher() {
@@ -736,11 +781,7 @@
   function renderAccountList() {
     const list = document.getElementById('acctList');
     list.innerHTML = state.accounts.map(a => {
-      const txns = a.transactions;
-      const totalDebits = txns.filter(t => t.type !== 'credit').reduce((s,t) => s + (parseFloat(t.amount) || 0), 0);
-      const totalCredits = txns.filter(t => t.type === 'credit' && t.cat !== 'Transfer').reduce((s,t) => s + (parseFloat(t.amount) || 0), 0);
-      const totalSpent = Math.max(0, totalDebits - totalCredits - (a.resetOffset || 0));
-      const rem = a.allocated - totalSpent;
+      const { totalSpent, remaining: rem } = calcAccountBalance(a);
       const active = a.id === state.activeAccountId;
       return `
         <div class="acct-item${active ? ' active' : ''}" onclick="switchAccount('${a.id}')">
@@ -782,11 +823,8 @@
   function confirmReset() {
     const dateVal = document.getElementById('resetDate').value;
     if (!dateVal) { showToast('Please select a date'); return; }
+    snapshot();
     const acct = activeAccount();
-    const txns = acct.transactions;
-    const totalDebits = txns.filter(t => t.type !== 'credit').reduce((s,t) => s + (parseFloat(t.amount) || 0), 0);
-    const totalCredits = txns.filter(t => t.type === 'credit' && t.cat !== 'Transfer').reduce((s,t) => s + (parseFloat(t.amount) || 0), 0);
-    acct.resetOffset = Math.max(0, totalDebits - totalCredits);
     acct.transactions.push({ id: uid(), date: dateVal, type: 'reset', name: 'New Month Reset', amount: 0, cat: '' });
     // Switch active month to the reset date so it's reflected in Transaction History
     const resetDt = new Date(dateVal + 'T00:00:00');
@@ -795,7 +833,7 @@
     save();
     closeResetModal();
     renderAll();
-    showToast('Balance reset! History preserved.');
+    showToast('Balance reset! History preserved.', true);
   }
 
   function deleteAccount(id) {
@@ -803,6 +841,7 @@
     const acct = state.accounts.find(a => a.id === targetId);
     if (!acct) return;
     if (!confirm('Delete "' + acct.name + '" and all its transactions?')) return;
+    snapshot();
     state.accounts = state.accounts.filter(a => a.id !== targetId);
     if (state.accounts.length === 0) {
       state = defaultState();
@@ -813,7 +852,7 @@
     closeOverlay('settingsOverlay');
     closeAccountDropdown();
     renderAll();
-    showToast('Account deleted');
+    showToast('Account deleted', true);
   }
 
   // ── Bootstrap modal: lock <html> scroll (style.css sets overflow-x:hidden on html which breaks Bootstrap's own lock) ──
