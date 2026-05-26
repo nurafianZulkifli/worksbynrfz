@@ -94,11 +94,14 @@
     const now = new Date();
     const cur = now.getMonth(), curY = now.getFullYear();
     const minYear = 2026, minMonth = 0; // Jan 2026
-    // Only show months from Jan 2026 to current month
+    // Extend range to include state.activeMonth/Year (e.g. after a reset to a future month)
+    const maxY = Math.max(curY, state.activeYear);
+    const maxM = (state.activeYear > curY || (state.activeYear === curY && state.activeMonth > cur))
+      ? state.activeMonth : cur;
     const tabs = [];
-    for (let y = minYear; y <= curY; y++) {
+    for (let y = minYear; y <= maxY; y++) {
       const startM = y === minYear ? minMonth : 0;
-      const endM = y === curY ? cur : 11;
+      const endM = y === maxY ? maxM : 11;
       for (let m = startM; m <= endM; m++) {
         tabs.push({ m, y });
       }
@@ -199,6 +202,11 @@
 
   // ── Helpers ────────────────────────────────────────────────────────────
   function fmt(n) { return 'SGD ' + n.toFixed(2); }
+  function ordinal(n) {
+    const s = ['th','st','nd','rd'];
+    const v = n % 100;
+    return s[(v - 20) % 10] || s[v] || s[0];
+  }
   function fmtDate(s) {
     const d = new Date(s + 'T00:00:00');
     return d.toLocaleDateString('en-SG', { weekday:'short', day:'numeric', month:'short', year:'numeric' }).toUpperCase();
@@ -439,12 +447,13 @@
   }
 
   function cmtItemHTML(c, isPaid) {
+    const dayLabel = c.deductDay ? ` · ${c.deductDay}${ordinal(c.deductDay)}` : '';
     return `
       <div class="cmt-item${isPaid ? ' paid' : ''}" onclick="toggleCommitment('${c.id}')">
         <div class="cmt-checkbox">${isPaid ? '<i class="fa-solid fa-check"></i>' : ''}</div>
         <div class="cmt-info">
           <div class="cmt-name">${esc(c.name)}</div>
-          <div class="cmt-cat">${esc(c.cat)}</div>
+          <div class="cmt-cat">${esc(c.cat)}${dayLabel}</div>
         </div>
         <div class="cmt-amount">−${fmt(c.amount)}</div>
         <button class="cmt-edit-btn" onclick="event.stopPropagation(); openAddCommitment('${c.id}')" title="Edit">
@@ -463,10 +472,14 @@
       acct.transactions = acct.transactions.filter(t => t.id !== paid[id]);
       showToast(`"${cmt.name}" removed from transactions`);
     } else {
-      // Check: add a debit transaction for today (within active month)
+      // Check: add a debit transaction using deductDay, today, or last day of active month
       const now = new Date();
       let txnDate;
-      if (now.getMonth() === state.activeMonth && now.getFullYear() === state.activeYear) {
+      if (cmt.deductDay) {
+        const maxDay = new Date(state.activeYear, state.activeMonth + 1, 0).getDate();
+        const day = Math.min(cmt.deductDay, maxDay);
+        txnDate = `${state.activeYear}-${String(state.activeMonth + 1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+      } else if (now.getMonth() === state.activeMonth && now.getFullYear() === state.activeYear) {
         txnDate = now.toISOString().slice(0, 10);
       } else {
         // Use last day of the active month
@@ -499,12 +512,14 @@
       document.getElementById('cmtName').value = cmt.name;
       document.getElementById('cmtAmount').value = cmt.amount;
       document.getElementById('cmtCat').value = cmt.cat;
+      document.getElementById('cmtDeductDay').value = cmt.deductDay || '';
       deleteBtn.style.display = '';
     } else {
       title.innerHTML = '<i class="fa-regular fa-plus"></i>&nbsp;New Commitment';
       document.getElementById('cmtName').value = '';
       document.getElementById('cmtAmount').value = '';
       document.getElementById('cmtCat').value = 'Subscriptions';
+      document.getElementById('cmtDeductDay').value = '';
       deleteBtn.style.display = 'none';
     }
     document.getElementById('cmtPanelList').style.display = 'none';
@@ -516,24 +531,33 @@
     const name = document.getElementById('cmtName').value.trim();
     const amount = parseFloat(document.getElementById('cmtAmount').value);
     const cat = document.getElementById('cmtCat').value;
+    const deductDay = parseInt(document.getElementById('cmtDeductDay').value) || null;
     if (!name) { showToast('Enter a commitment name'); return; }
     if (!amount || amount <= 0) { showToast('Enter a valid amount'); return; }
+    if (deductDay !== null && (deductDay < 1 || deductDay > 31)) { showToast('Deduction day must be 1–31'); return; }
 
     const cmts = activeCommitments();
     if (editingCommitmentId) {
       const idx = cmts.findIndex(c => c.id === editingCommitmentId);
       if (idx !== -1) {
-        cmts[idx] = { ...cmts[idx], name, amount, cat };
+        cmts[idx] = { ...cmts[idx], name, amount, cat, deductDay };
         // Update any linked transaction in the active month
         const paid = paidCommitmentIds();
         if (paid[editingCommitmentId]) {
           const txn = activeAccount().transactions.find(t => t.id === paid[editingCommitmentId]);
-          if (txn) { txn.name = name; txn.amount = amount; txn.cat = cat; }
+          if (txn) {
+            txn.name = name; txn.amount = amount; txn.cat = cat;
+            if (deductDay) {
+              const maxDay = new Date(state.activeYear, state.activeMonth + 1, 0).getDate();
+              const day = Math.min(deductDay, maxDay);
+              txn.date = `${state.activeYear}-${String(state.activeMonth + 1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+            }
+          }
         }
       }
       showToast('Commitment updated');
     } else {
-      cmts.push({ id: uid(), name, amount, cat });
+      cmts.push({ id: uid(), name, amount, cat, deductDay });
       showToast('Commitment added');
     }
     save();
@@ -714,15 +738,35 @@
     renderAll();
   }
 
+  function _getResetModal() {
+    return bootstrap.Modal.getOrCreateInstance(document.getElementById('resetModal'));
+  }
+
   function resetMonth() {
+    const today = new Date().toISOString().slice(0, 10);
+    document.getElementById('resetDate').value = today;
+    _getResetModal().show();
+  }
+
+  function closeResetModal() {
+    _getResetModal().hide();
+  }
+
+  function confirmReset() {
+    const dateVal = document.getElementById('resetDate').value;
+    if (!dateVal) { showToast('Please select a date'); return; }
     const acct = activeAccount();
-    if (!confirm('Reset balance for "' + acct.name + '"? Transactions are kept but the balance will restart from today with SGD ' + acct.allocated.toFixed(2) + ' allocated.')) return;
     const txns = acct.transactions;
     const totalDebits = txns.filter(t => t.type !== 'credit').reduce((s,t) => s + (parseFloat(t.amount) || 0), 0);
     const totalCredits = txns.filter(t => t.type === 'credit' && t.cat !== 'Transfer').reduce((s,t) => s + (parseFloat(t.amount) || 0), 0);
     acct.resetOffset = Math.max(0, totalDebits - totalCredits);
-    acct.transactions.push({ id: uid(), date: new Date().toISOString().slice(0, 10), type: 'reset', name: 'New Month Reset', amount: 0, cat: '' });
+    acct.transactions.push({ id: uid(), date: dateVal, type: 'reset', name: 'New Month Reset', amount: 0, cat: '' });
+    // Switch active month to the reset date so it's reflected in Transaction History
+    const resetDt = new Date(dateVal + 'T00:00:00');
+    state.activeMonth = resetDt.getMonth();
+    state.activeYear = resetDt.getFullYear();
     save();
+    closeResetModal();
     renderAll();
     showToast('Balance reset! History preserved.');
   }
@@ -747,7 +791,7 @@
 
   // ── Bootstrap modal: lock <html> scroll (style.css sets overflow-x:hidden on html which breaks Bootstrap's own lock) ──
   (function () {
-    ['addModal', 'commitmentsModal'].forEach(function (id) {
+    ['addModal', 'commitmentsModal', 'resetModal'].forEach(function (id) {
       const el = document.getElementById(id);
       if (!el) return;
       el.addEventListener('show.bs.modal', function () {

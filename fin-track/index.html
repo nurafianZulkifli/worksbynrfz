@@ -316,6 +316,10 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label>Deduction Day <span style="font-size:0.8em; opacity:0.6; font-weight:400;">(day of month, optional)</span></label>
+                            <input type="number" id="cmtDeductDay" placeholder="e.g. 15" min="1" max="31" />
+                        </div>
                         <div class="sheet-actions">
                             <button class="sht-btn sht-btn-danger" id="deleteCmtBtn" style="display:none; flex:0 0 auto; padding: 12px 18px;" onclick="deleteCurrentCommitment()">
                                 <i class="fa-regular fa-trash"></i>
@@ -447,6 +451,30 @@
                 <button class="sht-btn sht-btn-primary" onclick="saveSettings()">
                     <i class="fa-regular fa-check"></i> Save
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Month Reset Modal (Bootstrap) -->
+    <div class="modal fade" id="resetModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content ft-modal-content">
+                <div class="modal-body">
+                    <div class="sheet-title"><i class="fa-regular fa-rotate-right"></i>&nbsp;New Month Reset</div>
+                    <div class="settings-info">
+                        <i class="fa-regular fa-circle-info"></i>&nbsp;Choose the reset date. Commitments will appear as unpaid for the new month, and your balance will restart from this point.
+                    </div>
+                    <div class="form-group">
+                        <label>Reset to Date</label>
+                        <input type="date" id="resetDate" />
+                    </div>
+                    <div class="sheet-actions">
+                        <button class="sht-btn sht-btn-ghost" onclick="closeResetModal()">Cancel</button>
+                        <button class="sht-btn sht-btn-primary" onclick="confirmReset()">
+                            <i class="fa-regular fa-rotate-right"></i>&nbsp;Reset
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
