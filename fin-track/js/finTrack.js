@@ -186,7 +186,10 @@
                 <div class="txn-name">New Month Reset</div>
                 <div class="txn-cat">Balance restarted from this point</div>
               </div>
-              <div class="txn-amount" style="font-size:0.78rem; color:#16a34a; font-weight:600;">Reset</div>
+              <div class="txn-reset-meta">
+                <span class="txn-reset-day">${new Date(t.date + 'T00:00:00').toLocaleDateString('en-SG', { weekday: 'short' })}</span>
+                <span class="txn-reset-date">${new Date(t.date + 'T00:00:00').toLocaleDateString('en-SG', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+              </div>
             </div>` : `
             <div class="txn-item" onclick="openEdit('${t.id}')">
               <div class="txn-icon ${iconClass(t.cat)}">${iconEmoji(t.cat)}</div>

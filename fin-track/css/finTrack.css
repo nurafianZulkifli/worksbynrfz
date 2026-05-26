@@ -530,6 +530,36 @@ body.dark-mode .txn-item-reset .txn-cat {
     color: #4ade80 !important;
 }
 
+.txn-reset-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+    flex-shrink: 0;
+}
+
+.txn-reset-day {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #166534;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.txn-reset-date {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #16a34a;
+}
+
+body.dark-mode .txn-reset-day {
+    color: #86efac;
+}
+
+body.dark-mode .txn-reset-date {
+    color: #4ade80;
+}
+
 .txn-icon {
     width: 42px;
     height: 42px;
