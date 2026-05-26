@@ -731,7 +731,7 @@
     const el = document.getElementById('toast');
     el.classList.remove('show');
     el.style.pointerEvents = 'none';
-    setTimeout(() => showToast('Undone'), 150);
+    setTimeout(() => showToast('Reverted changes'), 150);
   }
 
   // ── Accounts ────────────────────────────────────────────────────────────
