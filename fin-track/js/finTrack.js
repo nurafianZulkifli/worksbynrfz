@@ -810,21 +810,6 @@
     if (btn && !btn.contains(e.target) && dropdown && !dropdown.contains(e.target)) closeAccountDropdown();
   });
 
-  // ── Migration v3: place reset marker on the known reset date (2026-05-22) ──
-  (function migrateResetMarkers() {
-    const MIG_KEY = 'ft-mig-reset-v3';
-    if (localStorage.getItem(MIG_KEY)) return;
-    let changed = false;
-    state.accounts.forEach(function(acct) {
-      if ((acct.resetOffset || 0) <= 0) return;
-      acct.transactions = acct.transactions.filter(t => t.type !== 'reset');
-      acct.transactions.push({ id: uid(), date: '2026-05-22', type: 'reset', name: 'New Month Reset', amount: 0, cat: '' });
-      changed = true;
-    });
-    if (changed) save();
-    localStorage.setItem(MIG_KEY, '1');
-  })();
-
   renderAll();
   if (window.location.hash === '#addAccount') {
     history.replaceState(null, '', window.location.pathname);
