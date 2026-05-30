@@ -1,0 +1,62 @@
+{
+  "line": "Sengkang LRT",
+  "code": "SKLRT",
+  "color": "#708472",
+  "operator": "SBS Transit",
+  "branches": [
+    {
+      "id": "serviceA",
+      "name": "West Loop (via Cheng Lim)",
+      "stations": [
+        { "code": "STC", "name": "Sengkang", "interchanges": [{ "code": "NE 16", "lineClass": "mrt-nel" }] },
+        { "code": "SW 1", "name": "Cheng Lim", "interchanges": [] },
+        { "code": "SW 2", "name": "Farmway", "interchanges": [] },
+        { "code": "SW 3", "name": "Kupang", "interchanges": [] },
+        { "code": "SW 4", "name": "Thanggam", "interchanges": [] },
+        { "code": "SW 5", "name": "Fernvale", "interchanges": [] },
+        { "code": "SW 6", "name": "Layar", "interchanges": [] },
+        { "code": "SW 7", "name": "Tongkang", "interchanges": [] },
+        { "code": "SW 8", "name": "Renjong", "interchanges": [] }
+      ]
+    },
+    {
+      "id": "serviceB",
+      "name": "West Loop (via Renjong)",
+      "stations": [
+        { "code": "STC", "name": "Sengkang", "interchanges": [{ "code": "NE 16", "lineClass": "mrt-nel" }] },
+        { "code": "SW 8", "name": "Renjong", "interchanges": [] },
+        { "code": "SW 7", "name": "Tongkang", "interchanges": [] },
+        { "code": "SW 6", "name": "Layar", "interchanges": [] },
+        { "code": "SW 5", "name": "Fernvale", "interchanges": [] },
+        { "code": "SW 4", "name": "Thanggam", "interchanges": [] },
+        { "code": "SW 3", "name": "Kupang", "interchanges": [] },
+        { "code": "SW 2", "name": "Farmway", "interchanges": [] },
+        { "code": "SW 1", "name": "Cheng Lim", "interchanges": [] }
+      ]
+    },
+    {
+      "id": "serviceC",
+      "name": "East Loop (via Compassvale)",
+      "stations": [
+        { "code": "STC", "name": "Sengkang", "interchanges": [{ "code": "NE 16", "lineClass": "mrt-nel" }] },
+        { "code": "SE 1", "name": "Compassvale", "interchanges": [] },
+        { "code": "SE 2", "name": "Rumbia", "interchanges": [] },
+        { "code": "SE 3", "name": "Bakau", "interchanges": [] },
+        { "code": "SE 4", "name": "Kangkar", "interchanges": [] },
+        { "code": "SE 5", "name": "Ranggung", "interchanges": [] }
+      ]
+    },
+    {
+      "id": "serviceD",
+      "name": "East Loop (via Ranggung)",
+      "stations": [
+        { "code": "STC", "name": "Sengkang", "interchanges": [{ "code": "NE 16", "lineClass": "mrt-nel" }] },
+        { "code": "SE 5", "name": "Ranggung", "interchanges": [] },
+        { "code": "SE 4", "name": "Kangkar", "interchanges": [] },
+        { "code": "SE 3", "name": "Bakau", "interchanges": [] },
+        { "code": "SE 2", "name": "Rumbia", "interchanges": [] },
+        { "code": "SE 1", "name": "Compassvale", "interchanges": [] }
+      ]
+    }
+  ]
+}

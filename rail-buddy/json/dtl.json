@@ -1,0 +1,48 @@
+{
+  "line": "Downtown Line",
+  "code": "DTL",
+  "color": "#005ec8",
+  "operator": "SBS Transit",
+  "branches": [
+    {
+      "id": "main",
+      "name": "Main Line",
+      "stations": [
+        { "code": "DT 1", "name": "Bukit Panjang", "interchanges": [{ "code": "BP 1", "lineClass": "mrt-lrt" }] },
+        { "code": "DT 2", "name": "Cashew", "interchanges": [] },
+        { "code": "DT 3", "name": "Hillview", "interchanges": [] },
+        { "code": "DT 4", "name": "Hume", "interchanges": [] },
+        { "code": "DT 5", "name": "Beauty World", "interchanges": [] },
+        { "code": "DT 6", "name": "King Albert Park", "interchanges": [] },
+        { "code": "DT 7", "name": "Sixth Avenue", "interchanges": [] },
+        { "code": "DT 8", "name": "Tan Kah Kee", "interchanges": [] },
+        { "code": "DT 9", "name": "Botanic Gardens", "interchanges": [{ "code": "CC 19", "lineClass": "mrt-ccl" }] },
+        { "code": "DT 10", "name": "Stevens", "interchanges": [{ "code": "TE 11", "lineClass": "mrt-tel" }] },
+        { "code": "DT 11", "name": "Newton", "interchanges": [{ "code": "NS 21", "lineClass": "mrt-nsl" }] },
+        { "code": "DT 12", "name": "Little India", "interchanges": [{ "code": "NE 7", "lineClass": "mrt-nel" }] },
+        { "code": "DT 13", "name": "Rochor", "interchanges": [] },
+        { "code": "DT 14", "name": "Bugis", "interchanges": [{ "code": "EW 12", "lineClass": "mrt-ewl" }] },
+        { "code": "DT 15", "name": "Promenade", "interchanges": [{ "code": "CC 4", "lineClass": "mrt-ccl" }] },
+        { "code": "DT 16", "name": "Bayfront", "interchanges": [{ "code": "CE 1", "lineClass": "mrt-ccl" }] },
+        { "code": "DT 17", "name": "Downtown", "interchanges": [] },
+        { "code": "DT 18", "name": "Telok Ayer", "interchanges": [] },
+        { "code": "DT 19", "name": "Chinatown", "interchanges": [{ "code": "NE 4", "lineClass": "mrt-nel" }] },
+        { "code": "DT 20", "name": "Fort Canning", "interchanges": [] },
+        { "code": "DT 21", "name": "Bencoolen", "interchanges": [] },
+        { "code": "DT 22", "name": "Jalan Besar", "interchanges": [] },
+        { "code": "DT 23", "name": "Bendemeer", "interchanges": [] },
+        { "code": "DT 24", "name": "Geylang Bahru", "interchanges": [] },
+        { "code": "DT 25", "name": "Mattar", "interchanges": [] },
+        { "code": "DT 26", "name": "MacPherson", "interchanges": [{ "code": "CC 10", "lineClass": "mrt-ccl" }] },
+        { "code": "DT 27", "name": "Ubi", "interchanges": [] },
+        { "code": "DT 28", "name": "Kaki Bukit", "interchanges": [] },
+        { "code": "DT 29", "name": "Bedok Reservoir", "interchanges": [] },
+        { "code": "DT 30", "name": "Tampines West", "interchanges": [] },
+        { "code": "DT 32", "name": "Tampines", "interchanges": [{ "code": "EW 2", "lineClass": "mrt-ewl" }] },
+        { "code": "DT 33", "name": "Tampines East", "interchanges": [] },
+        { "code": "DT 34", "name": "Upper Changi", "interchanges": [] },
+        { "code": "DT 35", "name": "Expo", "interchanges": [{ "code": "CG 1", "lineClass": "mrt-ewl" }] }
+      ]
+    }
+  ]
+}

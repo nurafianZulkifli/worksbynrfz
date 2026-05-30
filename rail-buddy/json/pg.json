@@ -1,0 +1,64 @@
+{
+  "line": "Punggol LRT",
+  "code": "PGLRT",
+  "color": "#708472",
+  "operator": "SBS Transit",
+  "branches": [
+    {
+      "id": "serviceA",
+      "name": "West Loop (via Sam Kee)",
+      "stations": [
+        { "code": "PTC", "name": "Punggol", "interchanges": [{ "code": "NE 17", "lineClass": "mrt-nel" }] },
+        { "code": "PW 1", "name": "Sam Kee", "interchanges": [] },
+        { "code": "PW 2", "name": "Teck Lee", "interchanges": [] },
+        { "code": "PW 3", "name": "Punggol Point", "interchanges": [] },
+        { "code": "PW 4", "name": "Samudera", "interchanges": [] },
+        { "code": "PW 5", "name": "Nibong", "interchanges": [] },
+        { "code": "PW 6", "name": "Sumang", "interchanges": [] },
+        { "code": "PW 7", "name": "Soo Teck", "interchanges": [] }
+      ]
+    },
+    {
+      "id": "serviceB",
+      "name": "West Loop (via Soo Teck)",
+      "stations": [
+        { "code": "PTC", "name": "Punggol", "interchanges": [{ "code": "NE 17", "lineClass": "mrt-nel" }] },
+        { "code": "PW 7", "name": "Soo Teck", "interchanges": [] },
+        { "code": "PW 6", "name": "Sumang", "interchanges": [] },
+        { "code": "PW 5", "name": "Nibong", "interchanges": [] },
+        { "code": "PW 4", "name": "Samudera", "interchanges": [] },
+        { "code": "PW 3", "name": "Punggol Point", "interchanges": [] },
+        { "code": "PW 2", "name": "Teck Lee", "interchanges": [] },
+        { "code": "PW 1", "name": "Sam Kee", "interchanges": [] }
+      ]
+    },
+    {
+      "id": "serviceC",
+      "name": "East Loop (via Cove)",
+      "stations": [
+        { "code": "PTC", "name": "Punggol", "interchanges": [{ "code": "NE 17", "lineClass": "mrt-nel" }] },
+        { "code": "PE 1", "name": "Cove", "interchanges": [] },
+        { "code": "PE 2", "name": "Meridian", "interchanges": [] },
+        { "code": "PE 3", "name": "Coral Edge", "interchanges": [] },
+        { "code": "PE 4", "name": "Riviera", "interchanges": [] },
+        { "code": "PE 5", "name": "Kadaloor", "interchanges": [] },
+        { "code": "PW 2", "name": "Teck Lee", "interchanges": [] },
+        { "code": "PW 1", "name": "Sam Kee", "interchanges": [] }
+      ]
+    },
+    {
+      "id": "serviceD",
+      "name": "East Loop (via Damai)",
+      "stations": [
+        { "code": "PTC", "name": "Punggol", "interchanges": [{ "code": "NE 17", "lineClass": "mrt-nel" }] },
+        { "code": "PE 7", "name": "Damai", "interchanges": [] },
+        { "code": "PE 6", "name": "Oasis", "interchanges": [] },
+        { "code": "PE 5", "name": "Kadaloor", "interchanges": [] },
+        { "code": "PE 4", "name": "Riviera", "interchanges": [] },
+        { "code": "PE 3", "name": "Coral Edge", "interchanges": [] },
+        { "code": "PE 2", "name": "Meridian", "interchanges": [] },
+        { "code": "PE 1", "name": "Cove", "interchanges": [] }
+      ]
+    }
+  ]
+}

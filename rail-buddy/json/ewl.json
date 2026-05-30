@@ -1,0 +1,56 @@
+{
+  "line": "East West Line",
+  "code": "EWL",
+  "color": "#009645",
+  "operator": "SMRT",
+  "branches": [
+    {
+      "id": "main",
+      "name": "Main Line",
+      "stations": [
+        { "code": "EW 1", "name": "Pasir Ris", "interchanges": [] },
+        { "code": "EW 2", "name": "Tampines", "interchanges": [{ "code": "DT 32", "lineClass": "mrt-dtl" }] },
+        { "code": "EW 3", "name": "Simei", "interchanges": [] },
+        { "code": "EW 4", "name": "Tanah Merah", "interchanges": [{ "code": "CG", "lineClass": "mrt-ewl" }] },
+        { "code": "EW 5", "name": "Bedok", "interchanges": [] },
+        { "code": "EW 6", "name": "Kembangan", "interchanges": [] },
+        { "code": "EW 7", "name": "Eunos", "interchanges": [] },
+        { "code": "EW 8", "name": "Paya Lebar", "interchanges": [{ "code": "CC 9", "lineClass": "mrt-ccl" }] },
+        { "code": "EW 9", "name": "Aljunied", "interchanges": [] },
+        { "code": "EW 10", "name": "Kallang", "interchanges": [] },
+        { "code": "EW 11", "name": "Lavender", "interchanges": [] },
+        { "code": "EW 12", "name": "Bugis", "interchanges": [{ "code": "DT 14", "lineClass": "mrt-dtl" }] },
+        { "code": "EW 13", "name": "City Hall", "interchanges": [{ "code": "NS 25", "lineClass": "mrt-nsl" }] },
+        { "code": "EW 14", "name": "Raffles Place", "interchanges": [{ "code": "NS 26", "lineClass": "mrt-nsl" }] },
+        { "code": "EW 15", "name": "Tanjong Pagar", "interchanges": [] },
+        { "code": "EW 16", "name": "Outram Park", "interchanges": [{ "code": "NE 3", "lineClass": "mrt-nel" }, { "code": "TE 17", "lineClass": "mrt-tel" }] },
+        { "code": "EW 17", "name": "Tiong Bahru", "interchanges": [] },
+        { "code": "EW 18", "name": "Redhill", "interchanges": [] },
+        { "code": "EW 19", "name": "Queenstown", "interchanges": [] },
+        { "code": "EW 20", "name": "Commonwealth", "interchanges": [] },
+        { "code": "EW 21", "name": "Buona Vista", "interchanges": [{ "code": "CC 22", "lineClass": "mrt-ccl" }] },
+        { "code": "EW 22", "name": "Dover", "interchanges": [] },
+        { "code": "EW 23", "name": "Clementi", "interchanges": [] },
+        { "code": "EW 24", "name": "Jurong East", "interchanges": [{ "code": "NS 1", "lineClass": "mrt-nsl" }] },
+        { "code": "EW 25", "name": "Chinese Garden", "interchanges": [] },
+        { "code": "EW 26", "name": "Lakeside", "interchanges": [] },
+        { "code": "EW 27", "name": "Boon Lay", "interchanges": [] },
+        { "code": "EW 28", "name": "Pioneer", "interchanges": [] },
+        { "code": "EW 29", "name": "Joo Koon", "interchanges": [] },
+        { "code": "EW 30", "name": "Gul Circle", "interchanges": [] },
+        { "code": "EW 31", "name": "Tuas Crescent", "interchanges": [] },
+        { "code": "EW 32", "name": "Tuas West Road", "interchanges": [] },
+        { "code": "EW 33", "name": "Tuas Link", "interchanges": [] }
+      ]
+    },
+    {
+      "id": "changi",
+      "name": "Changi Airport Branch",
+      "stations": [
+        { "code": "CG", "name": "Tanah Merah", "interchanges": [{ "code": "EW 4", "lineClass": "mrt-ewl" }] },
+        { "code": "CG 1", "name": "Expo", "interchanges": [{ "code": "DT 35", "lineClass": "mrt-dtl" }] },
+        { "code": "CG 2", "name": "Changi Airport", "interchanges": [] }
+      ]
+    }
+  ]
+}

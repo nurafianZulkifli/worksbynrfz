@@ -1,0 +1,31 @@
+{
+  "line": "North East Line",
+  "code": "NEL",
+  "color": "#9d27b5",
+  "operator": "SBS Transit",
+  "branches": [
+    {
+      "id": "main",
+      "name": "Main Line",
+      "stations": [
+        { "code": "NE 1", "name": "HarbourFront", "interchanges": [{ "code": "CC 29", "lineClass": "mrt-ccl" }] },
+        { "code": "NE 3", "name": "Outram Park", "interchanges": [{ "code": "EW 16", "lineClass": "mrt-ewl" }, { "code": "TE 17", "lineClass": "mrt-tel" }] },
+        { "code": "NE 4", "name": "Chinatown", "interchanges": [{ "code": "DT 19", "lineClass": "mrt-dtl" }] },
+        { "code": "NE 5", "name": "Clarke Quay", "interchanges": [] },
+        { "code": "NE 6", "name": "Dhoby Ghaut", "interchanges": [{ "code": "NS 24", "lineClass": "mrt-nsl" }, { "code": "CC 1", "lineClass": "mrt-ccl" }] },
+        { "code": "NE 7", "name": "Little India", "interchanges": [{ "code": "DT 12", "lineClass": "mrt-dtl" }] },
+        { "code": "NE 8", "name": "Farrer Park", "interchanges": [] },
+        { "code": "NE 9", "name": "Boon Keng", "interchanges": [] },
+        { "code": "NE 10", "name": "Potong Pasir", "interchanges": [] },
+        { "code": "NE 11", "name": "Woodleigh", "interchanges": [] },
+        { "code": "NE 12", "name": "Serangoon", "interchanges": [{ "code": "CC 15", "lineClass": "mrt-ccl" }] },
+        { "code": "NE 13", "name": "Kovan", "interchanges": [] },
+        { "code": "NE 14", "name": "Hougang", "interchanges": [] },
+        { "code": "NE 15", "name": "Buangkok", "interchanges": [] },
+        { "code": "NE 16", "name": "Sengkang", "interchanges": [{ "code": "STC", "lineClass": "mrt-lrt" }] },
+        { "code": "NE 17", "name": "Punggol", "interchanges": [{ "code": "PTC", "lineClass": "mrt-lrt" }] },
+        { "code": "NE 18", "name": "Punggol Coast", "interchanges": [] }
+      ]
+    }
+  ]
+}

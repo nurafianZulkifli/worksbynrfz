@@ -1,0 +1,41 @@
+{
+  "line": "North South Line",
+  "code": "NSL",
+  "color": "#c41e3a",
+  "operator": "SMRT",
+  "branches": [
+    {
+      "id": "main",
+      "name": "Main Line",
+      "stations": [
+        { "code": "NS 1", "name": "Jurong East", "interchanges": [{ "code": "EW 24", "lineClass": "mrt-ewl" }] },
+        { "code": "NS 2", "name": "Bukit Batok", "interchanges": [] },
+        { "code": "NS 3", "name": "Bukit Gombak", "interchanges": [] },
+        { "code": "NS 4", "name": "Choa Chu Kang", "interchanges": [{ "code": "BP 1", "lineClass": "mrt-lrt" }] },
+        { "code": "NS 5", "name": "Yew Tee", "interchanges": [] },
+        { "code": "NS 7", "name": "Kranji", "interchanges": [] },
+        { "code": "NS 8", "name": "Marsiling", "interchanges": [] },
+        { "code": "NS 9", "name": "Woodlands", "interchanges": [{ "code": "TE 2", "lineClass": "mrt-tel" }] },
+        { "code": "NS 10", "name": "Admiralty", "interchanges": [] },
+        { "code": "NS 11", "name": "Sembawang", "interchanges": [] },
+        { "code": "NS 12", "name": "Canberra", "interchanges": [] },
+        { "code": "NS 13", "name": "Yishun", "interchanges": [] },
+        { "code": "NS 14", "name": "Khatib", "interchanges": [] },
+        { "code": "NS 15", "name": "Yio Chu Kang", "interchanges": [] },
+        { "code": "NS 16", "name": "Ang Mo Kio", "interchanges": [] },
+        { "code": "NS 17", "name": "Bishan", "interchanges": [{ "code": "CC 15", "lineClass": "mrt-ccl" }] },
+        { "code": "NS 18", "name": "Braddell", "interchanges": [] },
+        { "code": "NS 19", "name": "Toa Payoh", "interchanges": [] },
+        { "code": "NS 20", "name": "Novena", "interchanges": [] },
+        { "code": "NS 21", "name": "Newton", "interchanges": [{ "code": "DT 11", "lineClass": "mrt-dtl" }] },
+        { "code": "NS 22", "name": "Orchard", "interchanges": [{ "code": "TE 14", "lineClass": "mrt-tel" }] },
+        { "code": "NS 23", "name": "Somerset", "interchanges": [] },
+        { "code": "NS 24", "name": "Dhoby Ghaut", "interchanges": [{ "code": "CC 1", "lineClass": "mrt-ccl" }, { "code": "NE 6", "lineClass": "mrt-nel" }] },
+        { "code": "NS 25", "name": "City Hall", "interchanges": [{ "code": "EW 13", "lineClass": "mrt-ewl" }] },
+        { "code": "NS 26", "name": "Raffles Place", "interchanges": [{ "code": "EW 14", "lineClass": "mrt-ewl" }] },
+        { "code": "NS 27", "name": "Marina Bay", "interchanges": [{ "code": "CE2", "lineClass": "mrt-ccl" }, { "code": "TE 20", "lineClass": "mrt-tel" }] },
+        { "code": "NS 28", "name": "Marina South Pier", "interchanges": [] }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "line": "Thomson-East Coast Line",
+  "code": "TEL",
+  "color": "#926437",
+  "operator": "SMRT",
+  "branches": [
+    {
+      "id": "main",
+      "name": "Main Line",
+      "stations": [
+        { "code": "TE 1", "name": "Woodlands North", "interchanges": [] },
+        { "code": "TE 2", "name": "Woodlands", "interchanges": [{ "code": "NS 9", "lineClass": "mrt-nsl" }] },
+        { "code": "TE 3", "name": "Woodlands South", "interchanges": [] },
+        { "code": "TE 4", "name": "Springleaf", "interchanges": [] },
+        { "code": "TE 5", "name": "Lentor", "interchanges": [] },
+        { "code": "TE 6", "name": "Mayflower", "interchanges": [] },
+        { "code": "TE 7", "name": "Bright Hill", "interchanges": [] },
+        { "code": "TE 8", "name": "Upper Thomson", "interchanges": [] },
+        { "code": "TE 9", "name": "Caldecott", "interchanges": [{ "code": "CC 17", "lineClass": "mrt-ccl" }] },
+        { "code": "TE 11", "name": "Stevens", "interchanges": [{ "code": "DT 10", "lineClass": "mrt-dtl" }] },
+        { "code": "TE 12", "name": "Napier", "interchanges": [] },
+        { "code": "TE 13", "name": "Orchard Boulevard", "interchanges": [] },
+        { "code": "TE 14", "name": "Orchard", "interchanges": [{ "code": "NS 20", "lineClass": "mrt-nsl" }] },
+        { "code": "TE 15", "name": "Great World", "interchanges": [] },
+        { "code": "TE 16", "name": "Havelock", "interchanges": [] },
+        { "code": "TE 17", "name": "Outram Park", "interchanges": [{ "code": "NE 3", "lineClass": "mrt-nel" }, { "code": "EW 16", "lineClass": "mrt-ewl" }] },
+        { "code": "TE 18", "name": "Maxwell", "interchanges": [] },
+        { "code": "TE 19", "name": "Shenton Way", "interchanges": [] },
+        { "code": "TE 20", "name": "Marina Bay", "interchanges": [{ "code": "CE 2", "lineClass": "mrt-ccl" }, { "code": "NS 27", "lineClass": "mrt-nsl" }] },
+        { "code": "TE 22", "name": "Gardens by the Bay", "interchanges": [] },
+        { "code": "TE 23", "name": "Tanjong Rhu", "interchanges": [] },
+        { "code": "TE 24", "name": "Katong Park", "interchanges": [] },
+        { "code": "TE 25", "name": "Tanjong Katong", "interchanges": [] },
+        { "code": "TE 26", "name": "Marine Parade", "interchanges": [] },
+        { "code": "TE 27", "name": "Marine Terrace", "interchanges": [] },
+        { "code": "TE 28", "name": "Siglap", "interchanges": [] },
+        { "code": "TE 29", "name": "Bayshore", "interchanges": [] }
+      ]
+    }
+  ]
+}
