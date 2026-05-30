@@ -28,13 +28,14 @@
 <style>
     .line-diagram {
         flex: 1;
+        min-width: 0;
+        align-self: flex-start;
         padding: 30px 20px;
         transition-duration: 800ms;
         background-color: #fff;
         border-radius: 25px;
         box-shadow: 3px 0 15px -1px rgba(0, 0, 0, 0.15);
         margin-bottom: 40px;
-        padding-right: 4em;
     }
 
     .line-content-wrapper {
@@ -100,61 +101,32 @@
         color: #fff;
     }
 
-    #hidden-stations-a {
+    .branch-hidden-stations {
         display: none;
         flex-direction: column;
         gap: 0;
         position: relative;
-        padding-left: 0px;
+        padding-left: 30px;
         margin-top: 5px;
     }
 
-    #hidden-stations-b {
-        display: none;
-        flex-direction: column;
-        gap: 0;
-        position: relative;
-        padding-left: 0px;
-        margin-top: 5px;
+    .branch-hidden-stations::before {
+        content: '';
+        position: absolute;
+        left: 6px;
+        top: -23px;
+        bottom: 22px;
+        width: 3px;
+        background: #708472;
+        z-index: 1;
     }
 
-    #hidden-stations-c {
-        display: none;
-        flex-direction: column;
-        gap: 0;
-        position: relative;
-        padding-left: 0px;
-        margin-top: 5px;
-    }
-
-    #hidden-stations-d {
-        display: none;
-        flex-direction: column;
-        gap: 0;
-        position: relative;
-        padding-left: 0px;
-        margin-top: 5px;
-    }
-
-    #hidden-stations-a.show {
-        display: flex;
-    }
-
-    #hidden-stations-b.show {
-        display: flex;
-    }
-
-    #hidden-stations-c.show {
-        display: flex;
-    }
-
-    #hidden-stations-d.show {
-        display: flex;
-    }
-
-    /* Adjust first station in hidden section */
-    #hidden-stations-a .station:first-child {
+    .branch-hidden-stations .station:first-child {
         padding-top: 0;
+    }
+
+    .branch-hidden-stations.show {
+        display: flex;
     }
 
     .show-more-button {
@@ -540,6 +512,7 @@
 
         .line-diagram {
             max-width: 100%;
+            align-self: stretch;
         }
 
         .line-description {
@@ -774,8 +747,8 @@
                 <!-- Line Diagram -->
                 <div class="line-diagram">
                     <div class="branch-selector">
-                        <label for="serviceSelect"><strong>Service:</strong></label>
-                        <select id="serviceSelect" onchange="switchService()">
+                        <label for="branchSelect"><strong>Service:</strong></label>
+                        <select id="branchSelect" onchange="switchBranch()">
                             <option value="serviceA">West Loop (via Sam Kee)</option>
                             <option value="serviceB">West Loop (via Soo Teck)</option>
                             <option value="serviceC">East Loop (via Cove)</option>
@@ -783,7 +756,7 @@
                         </select>
                     </div>
                     <!-- Service A Container -->
-                    <div class="line-container show" id="serviceAContainer">
+                    <div class="line-container show" id="serviceA">
                         <!-- PTC Punggol -->
                         <div class="station">
                             <div class="station-dot"></div>
@@ -882,7 +855,7 @@
                     </div>
 
                     <!-- Service B Container -->
-                    <div class="line-container hidden" id="serviceBContainer">
+                    <div class="line-container hidden" id="serviceB">
                         <!-- PTC Punggol -->
                         <div class="station">
                             <div class="station-dot"></div>
@@ -980,7 +953,7 @@
                     </div>
 
                     <!-- Service C Container -->
-                    <div class="line-container hidden" id="serviceCContainer">
+                    <div class="line-container hidden" id="serviceC">
                         <!-- PTC Punggol -->
                         <div class="station">
                             <div class="station-dot"></div>
@@ -1078,7 +1051,7 @@
                     </div>
 
                     <!-- Service D Container -->
-                    <div class="line-container hidden" id="serviceDContainer">
+                    <div class="line-container hidden" id="serviceD">
                         <!-- PTC Punggol -->
                         <div class="station">
                             <div class="station-dot"></div>
@@ -1207,99 +1180,78 @@
     <script src="../../js/default-assets/active.js"></script>
 
     <script>
-        function switchService() {
-            const selector = document.getElementById('serviceSelect');
-            const containers = {
-                serviceA: document.getElementById('serviceAContainer'),
-                serviceB: document.getElementById('serviceBContainer'),
-                serviceC: document.getElementById('serviceCContainer'),
-                serviceD: document.getElementById('serviceDContainer')
-            };
-            const hiddenStations = {
-                a: document.getElementById('hidden-stations-a'),
-                b: document.getElementById('hidden-stations-b'),
-                c: document.getElementById('hidden-stations-c'),
-                d: document.getElementById('hidden-stations-d')
-            };
-            const toggleBtns = {
-                A: document.getElementById('toggleBtnA'),
-                B: document.getElementById('toggleBtnB'),
-                C: document.getElementById('toggleBtnC'),
-                D: document.getElementById('toggleBtnD')
-            };
+        function renderStation(station) {
+            const interchangesHTML = station.interchanges
+                .map(i => `<span class="interchange-badge ${i.lineClass}">${i.code}</span>`)
+                .join('');
+            return `<div class="station">
+                        <div class="station-dot"></div>
+                        <div class="station-content">
+                            <div class="station-codes">
+                                <span class="station-code">${station.code}</span>
+                                ${interchangesHTML}
+                            </div>
+                            <div class="station-name">${station.name}</div>
+                        </div>
+                    </div>`;
+        }
 
-            // Hide all containers
-            Object.values(containers).forEach(container => {
-                container.classList.add('hidden');
-                container.classList.remove('show');
+        const branchSplits = { serviceA: 'PW 5', serviceB: 'PW 3', serviceC: 'PE 5', serviceD: 'PE 3' };
+
+        fetch('../json/pg.json')
+            .then(res => res.json())
+            .then(data => {
+                data.branches.forEach(branch => {
+                    const container = document.getElementById(branch.id);
+                    if (!container) return;
+                    const splitCode = branchSplits[branch.id];
+                    if (splitCode) {
+                        const splitIdx = branch.stations.findIndex(s => s.code === splitCode);
+                        const visibleCount = splitIdx >= 0 ? splitIdx + 1 : branch.stations.length;
+                        const visible = branch.stations.slice(0, visibleCount);
+                        const hidden = branch.stations.slice(visibleCount);
+                        container.innerHTML = visible.map(renderStation).join('');
+                        if (hidden.length > 0) {
+                            const hiddenDiv = document.createElement('div');
+                            hiddenDiv.className = 'branch-hidden-stations';
+                            hiddenDiv.dataset.forBranch = branch.id;
+                            hiddenDiv.innerHTML = hidden.map(renderStation).join('');
+                            container.insertAdjacentElement('afterend', hiddenDiv);
+                            const btnDiv = document.createElement('div');
+                            btnDiv.className = 'show-more-button';
+                            btnDiv.dataset.forBranch = branch.id;
+                            btnDiv.innerHTML = `<button onclick="toggleBranchStations('${branch.id}')"><i class="fa-regular fa-chevron-down"></i> Show More</button>`;
+                            hiddenDiv.insertAdjacentElement('afterend', btnDiv);
+                        }
+                    } else {
+                        container.innerHTML = branch.stations.map(renderStation).join('');
+                    }
+                });
+                switchBranch();
+            })
+            .catch(err => console.error('Failed to load line data:', err));
+
+        function toggleBranchStations(branchId) {
+            const hiddenDiv = document.querySelector(`.branch-hidden-stations[data-for-branch="${branchId}"]`);
+            const btn = document.querySelector(`.show-more-button[data-for-branch="${branchId}"] button`);
+            if (hiddenDiv.classList.contains('show')) {
+                hiddenDiv.classList.remove('show');
+                btn.innerHTML = '<i class="fa-regular fa-chevron-down"></i> Show More';
+            } else {
+                hiddenDiv.classList.add('show');
+                btn.innerHTML = '<i class="fa-regular fa-chevron-up"></i> Show Less';
+            }
+        }
+
+        function switchBranch() {
+            const value = document.getElementById('branchSelect').value;
+            document.querySelectorAll('.line-container').forEach(c => {
+                c.classList.toggle('show', c.id === value);
+                c.classList.toggle('hidden', c.id !== value);
             });
-
-            // Show selected container
-            const selectedValue = selector.value;
-            if (containers[selectedValue]) {
-                containers[selectedValue].classList.remove('hidden');
-                containers[selectedValue].classList.add('show');
-            }
-
-            // Reset all hidden stations and buttons
-            Object.values(hiddenStations).forEach(station => {
-                if (station) station.classList.remove('show');
+            document.querySelectorAll('[data-for-branch]').forEach(el => {
+                el.style.display = el.dataset.forBranch === value ? '' : 'none';
             });
-            Object.values(toggleBtns).forEach(btn => {
-                if (btn) btn.innerHTML = '<i class="fa-regular fa-chevron-down"></i> Show More';
-            });
-        }
-
-        function toggleStationsA() {
-            const hiddenStationsA = document.getElementById('hidden-stations-a');
-            const toggleBtnA = document.getElementById('toggleBtnA');
-
-            if (hiddenStationsA.classList.contains('show')) {
-                hiddenStationsA.classList.remove('show');
-                toggleBtnA.innerHTML = '<i class="fa-regular fa-chevron-down"></i> Show More';
-            } else {
-                hiddenStationsA.classList.add('show');
-                toggleBtnA.innerHTML = '<i class="fa-regular fa-chevron-up"></i> Show Less';
-            }
-        }
-
-        function toggleStationsB() {
-            const hiddenStationsB = document.getElementById('hidden-stations-b');
-            const toggleBtnB = document.getElementById('toggleBtnB');
-
-            if (hiddenStationsB.classList.contains('show')) {
-                hiddenStationsB.classList.remove('show');
-                toggleBtnB.innerHTML = '<i class="fa-regular fa-chevron-down"></i> Show More';
-            } else {
-                hiddenStationsB.classList.add('show');
-                toggleBtnB.innerHTML = '<i class="fa-regular fa-chevron-up"></i> Show Less';
-            }
-        }
-
-        function toggleStationsC() {
-            const hiddenStationsC = document.getElementById('hidden-stations-c');
-            const toggleBtnC = document.getElementById('toggleBtnC');
-
-            if (hiddenStationsC.classList.contains('show')) {
-                hiddenStationsC.classList.remove('show');
-                toggleBtnC.innerHTML = '<i class="fa-regular fa-chevron-down"></i> Show More';
-            } else {
-                hiddenStationsC.classList.add('show');
-                toggleBtnC.innerHTML = '<i class="fa-regular fa-chevron-up"></i> Show Less';
-            }
-        }
-
-        function toggleStationsD() {
-            const hiddenStationsD = document.getElementById('hidden-stations-d');
-            const toggleBtnD = document.getElementById('toggleBtnD');
-
-            if (hiddenStationsD.classList.contains('show')) {
-                hiddenStationsD.classList.remove('show');
-                toggleBtnD.innerHTML = '<i class="fa-regular fa-chevron-down"></i> Show More';
-            } else {
-                hiddenStationsD.classList.add('show');
-                toggleBtnD.innerHTML = '<i class="fa-regular fa-chevron-up"></i> Show Less';
-            }
         }
     </script>
 

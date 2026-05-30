@@ -28,13 +28,14 @@
 <style>
     .line-diagram {
         flex: 1;
+        min-width: 0;
+        align-self: flex-start;
         padding: 30px 20px;
         transition-duration: 800ms;
         background-color: #fff;
         border-radius: 25px;
         box-shadow: 3px 0 15px -1px rgba(0, 0, 0, 0.15);
         margin-bottom: 40px;
-        padding-right: 4em;
     }
 
     .line-content-wrapper {
@@ -117,6 +118,34 @@
     }
 
     #hidden-stations.show {
+        display: flex;
+    }
+
+    .branch-hidden-stations {
+        display: none;
+        flex-direction: column;
+        gap: 0;
+        position: relative;
+        padding-left: 30px;
+        margin-top: 5px;
+    }
+
+    .branch-hidden-stations::before {
+        content: '';
+        position: absolute;
+        left: 6px;
+        top: -23px;
+        bottom: 22px;
+        width: 3px;
+        background: #9d27b5;
+        z-index: 1;
+    }
+
+    .branch-hidden-stations .station:first-child {
+        padding-top: 0;
+    }
+
+    .branch-hidden-stations.show {
         display: flex;
     }
 
@@ -442,6 +471,7 @@
 
         .line-diagram {
             max-width: 100%;
+            align-self: stretch;
         }
 
         .line-description {
@@ -663,7 +693,7 @@
                 </div>
                 <!-- Line Diagram -->
                 <div class="line-diagram">
-                    <div class="line-container">
+                    <div class="line-container show" id="main">
                         <!-- NE 1 HarbourFront -->
                         <div class="station">
                             <div class="station-dot"></div>
@@ -902,16 +932,65 @@
     <script src="../../js/default-assets/active.js"></script>
 
     <script>
-        function toggleStations() {
-            const hiddenStations = document.getElementById('hidden-stations');
-            const toggleBtn = document.getElementById('toggleBtn');
+        function renderStation(station) {
+            const interchangesHTML = station.interchanges
+                .map(i => `<span class="interchange-badge ${i.lineClass}">${i.code}</span>`)
+                .join('');
+            return `<div class="station">
+                        <div class="station-dot"></div>
+                        <div class="station-content">
+                            <div class="station-codes">
+                                <span class="station-code">${station.code}</span>
+                                ${interchangesHTML}
+                            </div>
+                            <div class="station-name">${station.name}</div>
+                        </div>
+                    </div>`;
+        }
 
-            if (hiddenStations.classList.contains('show')) {
-                hiddenStations.classList.remove('show');
-                toggleBtn.innerHTML = '<i class="fa-regular fa-chevron-down"></i> Show More';
+        const branchSplits = { main: 'NE 9' };
+
+        fetch('../json/nel.json')
+            .then(res => res.json())
+            .then(data => {
+                data.branches.forEach(branch => {
+                    const container = document.getElementById(branch.id);
+                    if (!container) return;
+                    const splitCode = branchSplits[branch.id];
+                    if (splitCode) {
+                        const splitIdx = branch.stations.findIndex(s => s.code === splitCode);
+                        const visibleCount = splitIdx >= 0 ? splitIdx + 1 : branch.stations.length;
+                        const visible = branch.stations.slice(0, visibleCount);
+                        const hidden = branch.stations.slice(visibleCount);
+                        container.innerHTML = visible.map(renderStation).join('');
+                        if (hidden.length > 0) {
+                            const hiddenDiv = document.createElement('div');
+                            hiddenDiv.className = 'branch-hidden-stations';
+                            hiddenDiv.dataset.forBranch = branch.id;
+                            hiddenDiv.innerHTML = hidden.map(renderStation).join('');
+                            container.insertAdjacentElement('afterend', hiddenDiv);
+                            const btnDiv = document.createElement('div');
+                            btnDiv.className = 'show-more-button';
+                            btnDiv.dataset.forBranch = branch.id;
+                            btnDiv.innerHTML = `<button onclick="toggleBranchStations('${branch.id}')"><i class="fa-regular fa-chevron-down"></i> Show More</button>`;
+                            hiddenDiv.insertAdjacentElement('afterend', btnDiv);
+                        }
+                    } else {
+                        container.innerHTML = branch.stations.map(renderStation).join('');
+                    }
+                });
+            })
+            .catch(err => console.error('Failed to load line data:', err));
+
+        function toggleBranchStations(branchId) {
+            const hiddenDiv = document.querySelector(`.branch-hidden-stations[data-for-branch="${branchId}"]`);
+            const btn = document.querySelector(`.show-more-button[data-for-branch="${branchId}"] button`);
+            if (hiddenDiv.classList.contains('show')) {
+                hiddenDiv.classList.remove('show');
+                btn.innerHTML = '<i class="fa-regular fa-chevron-down"></i> Show More';
             } else {
-                hiddenStations.classList.add('show');
-                toggleBtn.innerHTML = '<i class="fa-regular fa-chevron-up"></i> Show Less';
+                hiddenDiv.classList.add('show');
+                btn.innerHTML = '<i class="fa-regular fa-chevron-up"></i> Show Less';
             }
         }
     </script>
