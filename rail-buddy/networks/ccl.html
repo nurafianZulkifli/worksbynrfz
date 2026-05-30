@@ -36,6 +36,7 @@
         box-shadow: 3px 0 15px -1px rgba(0, 0, 0, 0.15);
         margin-bottom: 40px;
         padding-right: 4em;
+        align-self: flex-start;
     }
 
     .line-content-wrapper {
@@ -128,6 +129,34 @@
     }
 
     #hidden-stations.show {
+        display: flex;
+    }
+
+    .branch-hidden-stations {
+        display: none;
+        flex-direction: column;
+        gap: 0;
+        position: relative;
+        padding-left: 30px;
+        margin-top: 5px;
+    }
+
+    .branch-hidden-stations::before {
+        content: '';
+        position: absolute;
+        left: 6px;
+        top: -23px;
+        bottom: 22px;
+        width: 3px;
+        background: #fa9e0d;
+        z-index: 1;
+    }
+
+    .branch-hidden-stations .station:first-child {
+        padding-top: 0;
+    }
+
+    .branch-hidden-stations.show {
         display: flex;
     }
 
@@ -722,8 +751,10 @@
         <div class="container container-xxl container-mobile">
             <div class="line-content-wrapper">
 
+                <!-- Left Column -->
+                <div style="display: flex; flex-direction: column; flex: 1;">
                 <!-- Line Description Box -->
-                <div class="line-description">
+                <div class="line-description" style="flex: unset;">
                     <p> Building the Circle Line (CCL) was a feat that required innovations in design, engineering and
                         construction. It took place in challenging soil conditions, a maze of underground structures,
                         and under a densely packed surface of roads, expressways and buildings. <br><br>
@@ -740,6 +771,19 @@
                     </p>
 
                 </div>
+                <!-- Journey Planner -->
+                <div class="port-summary text-center mb-80">
+                    <div class="summ-icon">
+                        <i class="fa-regular fa-map-location-dot"></i>
+                    </div>
+                    <h3 style="font-size: 18px; font-weight: bolder;">Wayfinding &amp; Journey Planner</h3>
+                    <p style="font-size: 14px; margin-bottom: 20px;">Plan your journey on the Circle Line with LTA's interactive wayfinding tool.</p>
+                    <a href="https://www.lta.gov.sg/cclwayfinding/" target="_blank" rel="noopener noreferrer"
+                        style="display: inline-block; background: #fa9e0d; color: #000; font-weight: bold; padding: 12px 28px; border-radius: 24px; text-decoration: none; font-size: 14px; transition: background 0.3s ease;">
+                        Open Journey Planner <i class="fa-regular fa-arrow-up-right-from-square" style="margin-left: 6px;"></i>
+                    </a>
+                </div>
+                </div><!-- end left column -->
                 <!-- Line Diagram -->
                 <div class="line-diagram">
                     <div class="branch-selector">
@@ -806,23 +850,68 @@
                     </div>`;
         }
 
+        const branchSplits = {
+            clockwiseLoop: 'CC 29',
+            anticlockwiseLoop: 'CC 10',
+        };
+
         fetch('../json/ccl.json')
             .then(res => res.json())
             .then(data => {
                 data.branches.forEach(branch => {
                     const container = document.getElementById(branch.id);
-                    if (container) {
+                    if (!container) return;
+
+                    const splitCode = branchSplits[branch.id];
+                    if (splitCode) {
+                        const splitIdx = branch.stations.findIndex(s => s.code === splitCode);
+                        const visibleCount = splitIdx >= 0 ? splitIdx + 1 : branch.stations.length;
+                        const visible = branch.stations.slice(0, visibleCount);
+                        const hidden = branch.stations.slice(visibleCount);
+
+                        container.innerHTML = visible.map(renderStation).join('');
+
+                        if (hidden.length > 0) {
+                            const hiddenDiv = document.createElement('div');
+                            hiddenDiv.className = 'branch-hidden-stations';
+                            hiddenDiv.dataset.forBranch = branch.id;
+                            hiddenDiv.innerHTML = hidden.map(renderStation).join('');
+                            container.insertAdjacentElement('afterend', hiddenDiv);
+
+                            const btnDiv = document.createElement('div');
+                            btnDiv.className = 'show-more-button';
+                            btnDiv.dataset.forBranch = branch.id;
+                            btnDiv.innerHTML = `<button onclick="toggleBranchStations('${branch.id}')"><i class="fa-regular fa-chevron-down"></i> Show More</button>`;
+                            hiddenDiv.insertAdjacentElement('afterend', btnDiv);
+                        }
+                    } else {
                         container.innerHTML = branch.stations.map(renderStation).join('');
                     }
                 });
+                switchBranch();
             })
             .catch(err => console.error('Failed to load line data:', err));
+
+        function toggleBranchStations(branchId) {
+            const hiddenDiv = document.querySelector(`.branch-hidden-stations[data-for-branch="${branchId}"]`);
+            const btn = document.querySelector(`.show-more-button[data-for-branch="${branchId}"] button`);
+            if (hiddenDiv.classList.contains('show')) {
+                hiddenDiv.classList.remove('show');
+                btn.innerHTML = '<i class="fa-regular fa-chevron-down"></i> Show More';
+            } else {
+                hiddenDiv.classList.add('show');
+                btn.innerHTML = '<i class="fa-regular fa-chevron-up"></i> Show Less';
+            }
+        }
 
         function switchBranch() {
             const value = document.getElementById('branchSelect').value;
             document.querySelectorAll('.line-container').forEach(c => {
                 c.classList.toggle('show', c.id === value);
                 c.classList.toggle('hidden', c.id !== value);
+            });
+            document.querySelectorAll('[data-for-branch]').forEach(el => {
+                el.style.display = el.dataset.forBranch === value ? '' : 'none';
             });
         }
     </script>
