@@ -35,7 +35,7 @@
         border-radius: 25px;
         box-shadow: 3px 0 15px -1px rgba(0, 0, 0, 0.15);
         margin-bottom: 40px;
-        padding-right: 4em;
+        padding-right: 1em;
         align-self: flex-start;
     }
 
@@ -548,6 +548,46 @@
         .interchange-badge {
             font-size: 10px;
         }
+
+        .line-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .branch-hidden-stations {
+            display: none;
+            flex-direction: column;
+            gap: 0;
+            position: relative;
+            padding-left: 25px;
+            margin-top: 5px;
+        }
+
+        /* Vertical line connecting all stations */
+        .line-container::before {
+            content: '';
+            position: absolute;
+            left: 1px;
+            top: 30px;
+            bottom: 22px;
+            width: 3px;
+            background: #fa9e0d;
+            z-index: 1;
+        }
+
+        .branch-hidden-stations::before {
+            content: '';
+            position: absolute;
+            left: 1px;
+            top: -23px;
+            bottom: 22px;
+            width: 3px;
+            background: #fa9e0d;
+            z-index: 1;
+        }
     }
 </style>
 
@@ -753,36 +793,40 @@
 
                 <!-- Left Column -->
                 <div style="display: flex; flex-direction: column; flex: 1;">
-                <!-- Line Description Box -->
-                <div class="line-description" style="flex: unset;">
-                    <p> Building the Circle Line (CCL) was a feat that required innovations in design, engineering and
-                        construction. It took place in challenging soil conditions, a maze of underground structures,
-                        and under a densely packed surface of roads, expressways and buildings. <br><br>
+                    <!-- Line Description Box -->
+                    <div class="line-description" style="flex: unset;">
+                        <p> Building the Circle Line (CCL) was a feat that required innovations in design, engineering
+                            and
+                            construction. It took place in challenging soil conditions, a maze of underground
+                            structures,
+                            and under a densely packed surface of roads, expressways and buildings. <br><br>
 
-                        Proposals for the line began in the 1990s, and plans for the CCL evolved to: <br><br>
+                            Proposals for the line began in the 1990s, and plans for the CCL evolved to: <br><br>
 
-                        - cater to growing public transport demand, <br><br>
-                        - distribute commuter traffic away from busy interchanges, and <br><br>
-                        - create a greater number of connections and faster journeys. <br><br>
-                        As its name suggests, the 30-station CCL is a circular rail line linking the North-South,
-                        East-West and North East Lines to the city.<br><br> (Source: <a class="hyperlink"
-                            href="https://www.lta.gov.sg/content/ltagov/en/getting_around/public_transport/rail_network/circle_line.html">LTA</a>
-                        )
-                    </p>
+                            - cater to growing public transport demand, <br><br>
+                            - distribute commuter traffic away from busy interchanges, and <br><br>
+                            - create a greater number of connections and faster journeys. <br><br>
+                            As its name suggests, the 30-station CCL is a circular rail line linking the North-South,
+                            East-West and North East Lines to the city.<br><br> (Source: <a class="hyperlink"
+                                href="https://www.lta.gov.sg/content/ltagov/en/getting_around/public_transport/rail_network/circle_line.html">LTA</a>
+                            )
+                        </p>
 
-                </div>
-                <!-- Journey Planner -->
-                <div class="port-summary text-center mb-80">
-                    <div class="summ-icon">
-                        <i class="fa-regular fa-map-location-dot"></i>
                     </div>
-                    <h3 style="font-size: 18px; font-weight: bolder;">Wayfinding &amp; Journey Planner</h3>
-                    <p style="font-size: 14px; margin-bottom: 20px;">Plan your journey on the Circle Line with LTA's interactive wayfinding tool.</p>
-                    <a href="https://www.lta.gov.sg/cclwayfinding/" target="_blank" rel="noopener noreferrer"
-                        style="display: inline-block; background: #fa9e0d; color: #000; font-weight: bold; padding: 12px 28px; border-radius: 24px; text-decoration: none; font-size: 14px; transition: background 0.3s ease;">
-                        Open Journey Planner <i class="fa-regular fa-arrow-up-right-from-square" style="margin-left: 6px;"></i>
-                    </a>
-                </div>
+                    <!-- Journey Planner -->
+                    <div class="port-summary text-center mb-80">
+                        <div class="summ-icon">
+                            <i class="fa-regular fa-map-location-dot"></i>
+                        </div>
+                        <h3 style="font-size: 18px; font-weight: bolder;">Wayfinding &amp; Journey Planner</h3>
+                        <p style="font-size: 14px; margin-bottom: 20px;">Plan your journey on the Circle Line with LTA's
+                            interactive wayfinding tool.</p>
+                        <a href="https://www.lta.gov.sg/cclwayfinding/" target="_blank" rel="noopener noreferrer"
+                            style="display: inline-block; background: #fa9e0d; color: #000; font-weight: bold; padding: 12px 28px; border-radius: 24px; text-decoration: none; font-size: 14px; transition: background 0.3s ease;">
+                            Open Journey Planner <i class="fa-regular fa-arrow-up-right-from-square"
+                                style="margin-left: 6px;"></i>
+                        </a>
+                    </div>
                 </div><!-- end left column -->
                 <!-- Line Diagram -->
                 <div class="line-diagram">
