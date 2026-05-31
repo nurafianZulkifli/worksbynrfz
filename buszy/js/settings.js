@@ -43,7 +43,7 @@ function initializeDefaultPreferences() {
         localStorage.setItem('buszy_notif_when_arriving', 'true');
     }
     if (!localStorage.getItem('buszy_notif_when_arrived')) {
-        localStorage.setItem('buszy_notif_when_arrived', 'false');
+        localStorage.setItem('buszy_notif_when_arrived', 'true');
     }
 }
 
@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const notifWhenArrived = document.getElementById('notif-when-arrived');
     if (notifWhenArrived) {
-        notifWhenArrived.checked = localStorage.getItem('buszy_notif_when_arrived') === 'true';
+        notifWhenArrived.checked = localStorage.getItem('buszy_notif_when_arrived') !== 'false';
         notifWhenArrived.addEventListener('change', (event) => {
             localStorage.setItem('buszy_notif_when_arrived', event.target.checked ? 'true' : 'false');
         });

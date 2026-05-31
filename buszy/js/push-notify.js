@@ -47,7 +47,8 @@
 
   function getNotifWhen() {
     const arriving = localStorage.getItem('buszy_notif_when_arriving') !== 'false';
-    const arrived  = localStorage.getItem('buszy_notif_when_arrived') === 'true';
+    // Default: arrived is ON (null means never set → treat as 'true')
+    const arrived  = localStorage.getItem('buszy_notif_when_arrived') !== 'false';
     if (arriving && arrived) return 'both';
     if (arrived) return 'arrived';
     return 'arriving';
@@ -155,7 +156,7 @@
           serviceNo: serviceNo,
           threshold: thresholdMinutes || 2,
           notifyMode: getNotifMode(),
-          notifyWhen: 'both'
+          notifyWhen: getNotifWhen()
         })
       });
       if (!res.ok) throw new Error('Server rejected: ' + res.status);
@@ -350,7 +351,7 @@
             serviceNo: serviceNo,
             threshold: 2,
             notifyMode: getNotifMode(),
-            notifyWhen: 'both'
+            notifyWhen: getNotifWhen()
           })
         });
       } catch { /* network unavailable — will retry on next load */ }
