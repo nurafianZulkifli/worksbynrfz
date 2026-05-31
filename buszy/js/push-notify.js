@@ -166,6 +166,14 @@
     }
 
     addTracked(stopCode, serviceNo);
+
+    // Auto-subscribe to service alerts immediately (default on) now that permission is granted.
+    // buszy-subp.js may have already run _bzAutoSubAlerts at DOMContentLoaded with
+    // permission === 'default', so we call it again now that it's 'granted'.
+    if (typeof window._bzAutoSubAlerts === 'function') {
+      window._bzAutoSubAlerts().catch(() => {});
+    }
+
     return true;
   }
 
@@ -298,6 +306,11 @@
         document.querySelectorAll(
           `.notif-toggle-btn[data-stop="${busStopCode}"][data-service="${serviceNo}"]`
         ).forEach(btn => setButtonInactive(btn));
+      }
+      // Push subscription was rotated by the browser — re-register all tracked
+      // bus timing subscriptions so the server has the up-to-date endpoint.
+      if (event.data?.type === 'PUSH_SUBSCRIPTION_CHANGED') {
+        reRegisterAll().catch(() => {});
       }
     });
   }

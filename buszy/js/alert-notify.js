@@ -168,4 +168,13 @@
     reRegister();
   });
 
+  // Re-register when the SW reports a subscription rotation
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.addEventListener('message', event => {
+      if (event.data?.type === 'PUSH_SUBSCRIPTION_CHANGED') {
+        reRegister().catch(() => {});
+      }
+    });
+  }
+
 })();

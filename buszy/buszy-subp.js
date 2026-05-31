@@ -323,6 +323,8 @@ function _bzEscHtml(str) {
 // ── Auto-subscribe to bus service alerts ──────────────────────────────
 // Silently subscribes to bus service disruption alerts on every page load
 // when notification permission is granted and the user hasn't opted out.
+// Exposed as window._bzAutoSubAlerts so push-notify.js can trigger it
+// immediately when the user grants notification permission.
 (function () {
     const _BZ_ALERT_SERVER = 'https://bat-lta-9eb7bbf231a2.herokuapp.com';
     const _BZ_ALERT_KEY    = 'buszy_alert_notif_subscribed';
@@ -361,5 +363,24 @@ function _bzEscHtml(str) {
         } catch { /* network unavailable — will retry on next load */ }
     }
 
+    // Expose globally so push-notify.js can call it right after permission is granted,
+    // without waiting for the next page load.
+    window._bzAutoSubAlerts = _bzAutoSubAlerts;
+
     document.addEventListener('DOMContentLoaded', _bzAutoSubAlerts);
 })();
+
+// ── Handle push subscription rotation ────────────────────────────────
+// When the SW detects a subscription change (pushsubscriptionchange event),
+// it notifies open pages so they can re-register bus timing subscriptions
+// with the server under the new push endpoint.
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.addEventListener('message', event => {
+        if (event.data?.type === 'PUSH_SUBSCRIPTION_CHANGED') {
+            // Delegate to push-notify.js reRegisterAll if available, otherwise retry on next load
+            if (window.BuszyPushNotify && typeof window.BuszyPushNotify.reRegisterAll === 'function') {
+                window.BuszyPushNotify.reRegisterAll().catch(() => {});
+            }
+        }
+    });
+}

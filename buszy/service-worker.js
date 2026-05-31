@@ -178,7 +178,20 @@ function shouldCache(url) {
 
 // ── Push Notification Handlers ───────────────────────────────────────
 
-// Receive a push from the server and show a notification
+const PUSH_SERVER = 'https://bat-lta-9eb7bbf231a2.herokuapp.com';
+
+function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const raw = atob(base64);
+  const out = new Uint8Array(raw.length);
+  for (let i = 0; i < raw.length; i++) out[i] = raw.charCodeAt(i);
+  return out;
+}
+
+// Receive a push from the server and show a notification.
+// event.waitUntil keeps the SW alive until showNotification resolves,
+// which ensures delivery even when the web app is closed on mobile.
 self.addEventListener('push', event => {
   let data = { title: 'Bus arriving soon', body: '', data: {} };
   try {
@@ -209,35 +222,69 @@ self.addEventListener('push', event => {
     data: data.data || {}
   };
 
-  // Always show OS notification from SW — reliable delivery regardless of app state.
-  // The page (buszy-subp.js) handles the in-app banner via BroadcastChannel but no longer
-  // re-fires the OS notification, so there are no duplicates.
-  const showNotif = self.registration.showNotification(data.title, options);
-
   const isOnce = data.data?.notifyMode === 'once' && data.data?.busStopCode && data.data?.serviceNo;
 
-  // Broadcast to all open pages via BroadcastChannel
-  // (more reliable than client.postMessage for foreground delivery)
-  const bc = new BroadcastChannel('buszy-push');
-  bc.postMessage({ type: 'PUSH_RECEIVED', title: data.title, body: data.body, data: data.data || {} });
-  bc.close();
+  // Broadcast to open pages (best-effort — app may be closed)
+  try {
+    const bc = new BroadcastChannel('buszy-push');
+    bc.postMessage({ type: 'PUSH_RECEIVED', title: data.title, body: data.body, data: data.data || {} });
+    bc.close();
+  } catch {}
 
-  // Store notification so the page can show a banner even after backgrounding/closing
+  // Store notification so the page can show an in-app banner when it next opens
   const storePending = caches.open('buszy-pending-notif').then(cache =>
     cache.put('pending', new Response(JSON.stringify({
       title: data.title, body: data.body, data: data.data || {}, ts: Date.now()
     }), { headers: { 'Content-Type': 'application/json' } }))
   ).catch(() => {});
 
-  // NOTIF_ONCE_FIRED: send to active clients for 'once' mode cleanup
+  // 'once' mode: tell open clients to clean up the tracked subscription
   const notifyOnce = isOnce
     ? self.clients.matchAll({ type: 'window', includeUncontrolled: true })
         .then(clients => clients.forEach(c =>
           c.postMessage({ type: 'NOTIF_ONCE_FIRED', busStopCode: data.data.busStopCode, serviceNo: data.data.serviceNo })
-        ))
+        )).catch(() => {})
     : Promise.resolve();
 
-  event.waitUntil(Promise.all([showNotif, storePending, notifyOnce]));
+  // showNotification MUST be inside event.waitUntil for reliable background delivery
+  event.waitUntil(Promise.all([
+    self.registration.showNotification(data.title, options),
+    storePending,
+    notifyOnce
+  ]));
+});
+
+// Handle push subscription rotation (browser auto-renews subscriptions periodically).
+// Without this, the server's stored endpoint becomes stale and pushes stop working
+// even when the app is closed — the most common cause of "background push stopped".
+self.addEventListener('pushsubscriptionchange', event => {
+  event.waitUntil((async () => {
+    try {
+      const vapidRes = await fetch(PUSH_SERVER + '/push/vapid-public-key');
+      if (!vapidRes.ok) return;
+      const vapidKey = await vapidRes.text();
+
+      const newSub = await self.registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(vapidKey)
+      });
+
+      // Always re-register for service alerts (safe to call multiple times)
+      await fetch(PUSH_SERVER + '/push/subscribe-alerts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ subscription: newSub.toJSON() })
+      });
+
+      // Tell open pages to re-register their bus timing subscriptions with the new endpoint
+      const windowClients = await clients.matchAll({ type: 'window', includeUncontrolled: true });
+      windowClients.forEach(c =>
+        c.postMessage({ type: 'PUSH_SUBSCRIPTION_CHANGED', subscription: newSub.toJSON() })
+      );
+    } catch (e) {
+      console.error('[Buszy SW] pushsubscriptionchange error:', e);
+    }
+  })());
 });
 
 // Handle notification tap / action button — open or focus the arrivals page
