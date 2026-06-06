@@ -462,15 +462,6 @@ function displayBusStops(busStops, isCached = true) {
         function endPinLongPress() {
             clearTimeout(longPressTimer);
             if (longPressTriggered) { longPressTriggered = false; return; }
-            if (pinButton) {
-                setTimeout(() => {
-                    if (pinButton && pinButton.parentNode) {
-                        pinButton.classList.remove('pin-btn-fade-in');
-                        pinButton.classList.add('pin-btn-fade-out');
-                        setTimeout(() => { if (pinButton && pinButton.parentNode) { pinButton.remove(); } pinButton = null; }, 300);
-                    }
-                }, 3000);
-            }
         }
         busStopElement.addEventListener('touchstart', (event) => { startPinLongPress(event.touches[0].clientX, event.touches[0].clientY); }, { passive: true });
         busStopElement.addEventListener('touchend', () => { endPinLongPress(); });
@@ -620,6 +611,67 @@ function handleRefreshClick() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialize default refresh interval if not already set (in seconds)
+    if (!localStorage.getItem('refreshInterval')) {
+        localStorage.setItem('refreshInterval', '2');
+    }
+
+    // Setup dynamic refresh interval for arrival times in nearby bus stops
+    let refreshIntervalId = null;
+
+    function startRefreshInterval() {
+        // Clear existing interval if any
+        if (refreshIntervalId !== null) {
+            clearInterval(refreshIntervalId);
+        }
+
+        // Get refresh interval from localStorage (in seconds), default to 2 seconds
+        const refreshSeconds = parseFloat(localStorage.getItem('refreshInterval') || '2');
+        const refreshMs = refreshSeconds * 1000;
+
+        // Start new interval - refresh only the arrival summaries in open sections
+        refreshIntervalId = setInterval(() => {
+            // Only refresh visible arrival summary cards
+            document.querySelectorAll('.bus-stop-arrivals-summary.card-content-art').forEach((summaryEl) => {
+                const busStopElement = summaryEl.closest('.bus-stop');
+                if (busStopElement) {
+                    const collapseSection = busStopElement.querySelector('.bus-stop-options-collapse');
+                    const busStopCode = busStopElement.querySelector('.bus-stop-code-text')?.textContent;
+                    if (busStopCode && collapseSection && collapseSection.classList.contains('show')) {
+                        getArrivalSummaryForStop(busStopCode).then((arrivals) => {
+                            summaryEl.innerHTML = renderArrivalSummary(arrivals);
+                            if (collapseSection.classList.contains('show')) {
+                                collapseSection.style.maxHeight = collapseSection.scrollHeight + 'px';
+                            }
+                        });
+                    }
+                }
+            });
+        }, refreshMs);
+    }
+
+    // Re-fetch when the tab becomes visible again after being backgrounded
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+            startRefreshInterval();
+        }
+    });
+
+    // Listen for refresh interval changes from settings
+    window.addEventListener('refreshIntervalChanged', (event) => {
+        startRefreshInterval();
+    });
+
+    // Listen for storage changes from other tabs
+    window.addEventListener('storage', (event) => {
+        if (event.key === 'refreshInterval') {
+            startRefreshInterval();
+        }
+    });
+
+    // Start the refresh interval
+    startRefreshInterval();
+
     // Select the "Search Bus Stop" button - look for links to index or ./
     const searchBusStopButton = document.querySelector('a[href="./"], a[href="index.html"]'); // Select the "Search Bus Stop" button
     const searchInput = document.getElementById('bus-stop-search'); // Select the search input field

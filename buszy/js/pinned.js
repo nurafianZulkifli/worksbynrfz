@@ -716,15 +716,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                     }
                     function endPinLongPress() {
                         clearTimeout(longPressTimer);
-                        if (pinButton) {
-                            setTimeout(() => {
-                                if (pinButton && pinButton.parentNode) {
-                                    pinButton.classList.remove('pin-btn-fade-in');
-                                    pinButton.classList.add('pin-btn-fade-out');
-                                    setTimeout(() => { if (pinButton && pinButton.parentNode) { pinButton.remove(); } pinButton = null; }, 300);
-                                }
-                            }, 2000);
-                        }
                     }
                     listItem.addEventListener('touchstart', (event) => { startPinLongPress(event.touches[0].clientX, event.touches[0].clientY); }, { passive: true });
                     listItem.addEventListener('touchend', () => { endPinLongPress(); });
@@ -1045,9 +1036,61 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
+    // Initialize default refresh interval if not already set (in seconds)
+    if (!localStorage.getItem('refreshInterval')) {
+        localStorage.setItem('refreshInterval', '2');
+    }
+
+    // Setup dynamic refresh interval for arrival times
+    let refreshIntervalId = null;
+
+    function startRefreshInterval() {
+        // Clear existing interval if any
+        if (refreshIntervalId !== null) {
+            clearInterval(refreshIntervalId);
+        }
+
+        // Get refresh interval from localStorage (in seconds), default to 2 seconds
+        const refreshSeconds = parseFloat(localStorage.getItem('refreshInterval') || '2');
+        const refreshMs = refreshSeconds * 1000;
+
+        // Start new interval - refresh only the arrival summaries in open sections
+        refreshIntervalId = setInterval(() => {
+            // Only refresh visible arrival summary cards
+            document.querySelectorAll('.bus-stop-arrivals-summary.card-content-art').forEach((summaryEl) => {
+                const busStopCode = summaryEl.closest('.bus-stop-options-collapse')?.parentElement?.querySelector('.bus-stop-code-text')?.textContent;
+                if (busStopCode && summaryEl.parentElement.parentElement.classList.contains('show')) {
+                    getArrivalSummaryForStop(busStopCode).then((arrivals) => {
+                        applyArrivalFilter(summaryEl, arrivals, busStopCode, summaryEl.closest('.bus-stop-options-collapse'));
+                    });
+                }
+            });
+        }, refreshMs);
+    }
+
+    // Re-fetch when the tab becomes visible again after being backgrounded
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+            startRefreshInterval();
+        }
+    });
+
+    // Listen for refresh interval changes from settings
+    window.addEventListener('refreshIntervalChanged', (event) => {
+        startRefreshInterval();
+    });
+
+    // Listen for storage changes from other tabs
+    window.addEventListener('storage', (event) => {
+        if (event.key === 'refreshInterval') {
+            startRefreshInterval();
+        }
+    });
+
     // Load bookmarks and setup listeners
     loadBookmarks().then(() => {
         items = [];
         setupDragListeners();
+        startRefreshInterval();
     });
 });

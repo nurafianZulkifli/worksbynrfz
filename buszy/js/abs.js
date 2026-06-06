@@ -373,15 +373,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
             function endBookmarkLongPress() {
                 clearTimeout(longPressTimer);
-                if (bookmarkButton) {
-                    setTimeout(() => {
-                        if (bookmarkButton && bookmarkButton.parentNode) {
-                            bookmarkButton.classList.remove('pin-btn-fade-in');
-                            bookmarkButton.classList.add('pin-btn-fade-out');
-                            setTimeout(() => { if (bookmarkButton && bookmarkButton.parentNode) { bookmarkButton.remove(); } bookmarkButton = null; }, 300);
-                        }
-                    }, 2000);
-                }
             }
             listItem.addEventListener('touchstart', (event) => { startBookmarkLongPress(event.touches[0].clientX, event.touches[0].clientY); }, { passive: true });
             listItem.addEventListener('touchend', () => { endBookmarkLongPress(); });
