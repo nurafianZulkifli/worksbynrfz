@@ -57,6 +57,7 @@ const STATIC_ASSETS = [
   buildPath('buszy/js/abs.js'),
   buildPath('buszy/js/ann.js'),
   buildPath('buszy/js/art.js'),
+  buildPath('buszy/js/shared-arrivals.js'),
   buildPath('buszy/js/fl-bus.js'),
   buildPath('buszy/js/mob-navtabs.js'),
   buildPath('buszy/js/nbs.js'),

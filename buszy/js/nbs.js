@@ -1,4 +1,138 @@
 const apiUrl = 'https://bat-lta-9eb7bbf231a2.herokuapp.com/nearby-bus-stops';
+const arrivalsApiUrl = 'https://bat-lta-9eb7bbf231a2.herokuapp.com/bus-arrivals';
+const arrivalsSummaryCache = new Map();
+
+function getLoadIcon(load, type) {
+    if (window.SharedArrivals && typeof window.SharedArrivals.getLoadIcon === 'function') {
+        return window.SharedArrivals.getLoadIcon(load, type);
+    }
+    let fleetIcon = '';
+    if (type) {
+        switch (String(type).toUpperCase()) {
+            case 'SD':
+            case 'SINGLE DECK':
+                fleetIcon = '<i class="fa-kit fa-lta-bus" title="Single Deck"></i>';
+                break;
+            case 'DD':
+            case 'DOUBLE DECK':
+                fleetIcon = '<i class="fa-kit fa-lta-dd" title="Double Deck"></i>';
+                break;
+            case 'BD':
+            case 'BENDY':
+            case 'BENDY BUS':
+                fleetIcon = '<i class="fa-kit fa-lta-bb" title="Bendy Bus"></i>';
+                break;
+            default:
+                fleetIcon = '<i class="fa-kit fa-lta-bus" title="Bus"></i>';
+        }
+    }
+
+    const loadClass = load ? String(load).toLowerCase() : 'sea';
+    return `<span class="load-indicator ${loadClass}">${fleetIcon || '<i class="fa-kit fa-lta-bus" title="Bus"></i>'}</span>`;
+}
+
+function formatArrivalTimeStyled(isoString) {
+    if (window.SharedArrivals && typeof window.SharedArrivals.formatArrivalTimeOrArr === 'function') {
+        try { return window.SharedArrivals.formatArrivalTimeOrArr(isoString, new Date(), false); } catch(e) {}
+    }
+    if (!isoString) return '--';
+    const arrivalTime = new Date(isoString);
+    if (Number.isNaN(arrivalTime.getTime())) return '--';
+
+    const now = new Date();
+    const timeDifference = arrivalTime - now;
+    if (timeDifference <= 0) {
+        return '<span class="arrival-now">Arr</span>';
+    }
+
+    const savedFormat = localStorage.getItem('timeFormat') || '12-hour';
+    if (savedFormat === 'mins') {
+        const minutes = Math.floor(timeDifference / (1000 * 60));
+        if (minutes <= 0) {
+            return '<span class="arrival-now">Arr</span>';
+        }
+        const minText = minutes === 1 ? 'min' : 'mins';
+        return `${minutes}<span class="mins"> ${minText}</span>`;
+    }
+
+    const options = savedFormat === '24-hour'
+        ? { hour: '2-digit', minute: '2-digit', hour12: false }
+        : { hour: '2-digit', minute: '2-digit', hour12: true };
+
+    const timeString = arrivalTime.toLocaleTimeString('en-US', options);
+    if (savedFormat === '12-hour') {
+        const parts = timeString.split(' ');
+        if (parts.length === 2) {
+            return `${parts[0]}<span style="font-size: 0.5em; margin-left: 1.5px; position: relative; display: inline-block;">${parts[1]}</span>`;
+        }
+    }
+    return timeString;
+}
+
+function renderArrivalSummary(arrivals) {
+    if (!arrivals?.length) {
+        return `
+            <div class="busNo-card d-flex justify-content-between">
+                <span class="arrival-svc-no">--</span>
+                <span class="bus-time"></span>
+                <span style="display: flex; align-items: center; gap: 0.3rem;">${getLoadIcon('sea', 'SD')}</span>
+            </div>
+            <div class="busNo-card d-flex justify-content-between">
+                <span class="arrival-svc-no">--</span>
+                <span class="bus-time"></span>
+                <span style="display: flex; align-items: center; gap: 0.3rem;">${getLoadIcon('sea', 'SD')}</span>
+            </div>
+        `;
+    }
+    return arrivals.map(a => `
+        <div class="busNo-card d-flex justify-content-between">
+            <span class="arrival-svc-no">${a.serviceNo}</span>
+            <span class="bus-time">${formatArrivalTimeStyled(a.eta)}</span>
+            <span style="display: flex; align-items: center; gap: 0.3rem;">${getLoadIcon(a.load, a.type)}</span>
+        </div>
+    `).join('');
+}
+
+async function getArrivalSummaryForStop(busStopCode) {
+    if (arrivalsSummaryCache.has(busStopCode)) {
+        return arrivalsSummaryCache.get(busStopCode);
+    }
+
+    try {
+        let data;
+        if (window.SharedArrivals && typeof window.SharedArrivals.fetchArrivals === 'function') {
+            data = await window.SharedArrivals.fetchArrivals(busStopCode);
+        } else {
+            const url = new URL(arrivalsApiUrl);
+            url.searchParams.append('BusStopCode', busStopCode);
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            data = await response.json();
+        }
+        const arrivals = [];
+        (data.Services || []).forEach((service) => {
+            if (service.NextBus?.EstimatedArrival) {
+                arrivals.push({
+                    serviceNo: service.ServiceNo,
+                    eta: service.NextBus.EstimatedArrival,
+                    load: service.NextBus.Load,
+                    type: service.NextBus.Type
+                });
+            }
+        });
+
+        const sortByArrival = localStorage.getItem('sortByArrival') !== 'disabled';
+        if (sortByArrival) {
+            arrivals.sort((a, b) => new Date(a.eta) - new Date(b.eta));
+        }
+        arrivalsSummaryCache.set(busStopCode, arrivals);
+        return arrivals;
+    } catch (error) {
+        console.warn('[nbs.js] Failed to load arrival summary:', error);
+        arrivalsSummaryCache.set(busStopCode, []);
+        return [];
+    }
+}
 
 // Helper function to detect Instagram in-app browser
 function isInstagramInAppBrowser() {
@@ -183,7 +317,7 @@ async function fetchNearbyBusStops(latitude, longitude, onError) {
 
 
 // Function to toggle pin/unpin for a bus stop
-function togglePinBusStop(busStop, pinButton) {
+function togglePinBusStop(busStop, button) {
     // Retrieve existing pinned bus stops from localStorage
     let pinnedBusStops = JSON.parse(localStorage.getItem('bookmarkedBusStops')) || [];
 
@@ -199,8 +333,8 @@ function togglePinBusStop(busStop, pinButton) {
             alert(`Bus Stop Unpinned.`);
 
             // Update the button class and icon to "unpin"
-            pinButton.className = 'btn btn-toPin btn-2';
-            pinButton.innerHTML = '<i class="fa-sharp fa-regular fa-thumbtack-angle"></i>';
+            button.className = 'btn btn-toPin btn-2';
+            button.innerHTML = '<i class="fa-sharp fa-regular fa-thumbtack-angle"></i>';
         }
     } else {
         // Pin the bus stop
@@ -209,8 +343,8 @@ function togglePinBusStop(busStop, pinButton) {
         alert(`Bus Stop Pinned.`);
 
         // Update the button class and icon to "pin"
-        pinButton.className = 'btn btn-unpin btn-2';
-        pinButton.innerHTML = '<i class="fa-regular fa-thumbtack-angle-slash"></i>';
+        button.className = 'btn btn-unpin btn-2';
+        button.innerHTML = '<i class="fa-regular fa-thumbtack-angle-slash"></i>';
     }
 }
 
@@ -244,6 +378,13 @@ function displayBusStops(busStops, isCached = true) {
         busStopElement.className = 'bus-stop' + (idx === 0 ? ' nearest-stop' : '');
         busStopElement.dataset.busStopCode = busStop.BusStopCode;
         
+        // If this is the nearest stop, remove the highlight after 4 seconds
+        if (idx === 0) {
+            setTimeout(() => {
+                busStopElement.classList.remove('nearest-stop');
+            }, 4000);
+        }
+        
         // Build correct image path for GitHub Pages and Heroku
         const basePath = (window.PWAConfig ? window.PWAConfig.basePath : '/');
         const busIconPath = basePath + 'buszy/assets/bus-icon.png';
@@ -253,37 +394,136 @@ function displayBusStops(busStops, isCached = true) {
             : `<span class="distance-badge"><i class="fa-kit fa-lta-location"></i> ${distance}</span>`;
 
         busStopElement.innerHTML = `
-            <div class="bus-stop-info">
-                <div class="bus-stop-code-row">
-                    <div class="bus-stop-code">
-                        <img src="${busIconPath}" alt="Bus Icon">
-                        <span class="bus-stop-code-text">${busStop.BusStopCode}</span>
+            <div class="bus-stop-main-row">
+                <div class="bus-stop-info">
+                    <div class="bus-stop-code-row">
+                        <div class="bus-stop-code">
+                            <img src="${busIconPath}" alt="Bus Icon">
+                            <span class="bus-stop-code-text">${busStop.BusStopCode}</span>
+                        </div>
+                        <span class="distance-mobile">${distanceBadgeHtml}</span>
                     </div>
-                    <span class="distance-mobile">${distanceBadgeHtml}</span>
+                    <div class="bus-stop-details">
+                    <span class="bus-stop-description">${busStop.Description}</span>&nbsp;&nbsp;|&nbsp;
+                    <span class="road-name">${busStop.RoadName}</span>
+                    &nbsp;&nbsp;&nbsp;<span class="distance-desktop">${distanceBadgeHtml}</span>
+                    </div>
                 </div>
-                <div class="bus-stop-details">
-                <span class="bus-stop-description">${busStop.Description}</span>&nbsp;&nbsp;|&nbsp;
-                <span class="road-name">${busStop.RoadName}</span>
-                &nbsp;&nbsp;&nbsp;<span class="distance-desktop">${distanceBadgeHtml}</span>
+                <div class="bus-stop-actions-controls">
+                    <button class="bus-stop-collapsible-btn" title="Show options">
+                        <i class="fa-regular fa-chevron-down"></i>
+                    </button>
                 </div>
             </div>
-            <button class="${isPinned ? 'btn btn-unpin btn-2' : 'btn btn-toPin btn-2'} pin-button">
-                <i class="${isPinned ? 'fa-regular fa-thumbtack-angle-slash' : 'fa-sharp fa-regular fa-thumbtack-angle'}"></i>
-            </button>
+            <div class="bus-stop-options-collapse">
+                <div class="bus-stop-options-inner">
+                    <div class="bus-stop-arrivals-summary card-content-art">
+                        ${renderArrivalSummary([])}
+                    </div>
+                    <a href="${basePath}buszy/art.html?BusStopCode=${encodeURIComponent(busStop.BusStopCode)}" class="btn btn-busloc btn-sm open-art-btn" title="Open arrival timings page">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
         `;
 
-        // Add click event listener to the entire div
+        // Long press variables
+        let longPressTimer = null;
+        let pinButton = null;
+        let longPressTriggered = false;
+        let touchStartX = 0;
+        let touchStartY = 0;
+
+        // Add long press listener for pin/unpin button
+        function startPinLongPress(x, y) {
+            longPressTriggered = false;
+            touchStartX = x;
+            touchStartY = y;
+            longPressTimer = setTimeout(() => {
+                if (!pinButton) {
+                    longPressTriggered = true;
+                    const controlsDiv = busStopElement.querySelector('.bus-stop-actions-controls');
+                    pinButton = document.createElement('button');
+                    pinButton.className = (isPinned ? 'btn btn-unpin btn-2' : 'btn btn-toPin btn-2') + ' pin-btn-fade-in';
+                    pinButton.innerHTML = isPinned ? '<i class="fa-regular fa-thumbtack-angle-slash"></i>' : '<i class="fa-regular fa-thumbtack-angle"></i>';
+                    pinButton.style.order = '-1';
+                    pinButton.addEventListener('click', (event) => {
+                        event.stopPropagation();
+                        event.preventDefault();
+                        togglePinBusStop(busStop, pinButton);
+                        pinButton.classList.remove('pin-btn-fade-in');
+                        pinButton.classList.add('pin-btn-fade-out');
+                        setTimeout(() => { if (pinButton && pinButton.parentNode) { pinButton.remove(); } pinButton = null; }, 300);
+                    });
+                    controlsDiv.insertBefore(pinButton, controlsDiv.firstChild);
+                }
+            }, 500);
+        }
+        function endPinLongPress() {
+            clearTimeout(longPressTimer);
+            if (longPressTriggered) { longPressTriggered = false; return; }
+            if (pinButton) {
+                setTimeout(() => {
+                    if (pinButton && pinButton.parentNode) {
+                        pinButton.classList.remove('pin-btn-fade-in');
+                        pinButton.classList.add('pin-btn-fade-out');
+                        setTimeout(() => { if (pinButton && pinButton.parentNode) { pinButton.remove(); } pinButton = null; }, 300);
+                    }
+                }, 3000);
+            }
+        }
+        busStopElement.addEventListener('touchstart', (event) => { startPinLongPress(event.touches[0].clientX, event.touches[0].clientY); }, { passive: true });
+        busStopElement.addEventListener('touchend', () => { endPinLongPress(); });
+        busStopElement.addEventListener('touchmove', (event) => {
+            const dx = event.touches[0].clientX - touchStartX;
+            const dy = event.touches[0].clientY - touchStartY;
+            if (Math.abs(dx) > 10 || Math.abs(dy) > 10) clearTimeout(longPressTimer);
+        });
+        busStopElement.addEventListener('touchcancel', () => { clearTimeout(longPressTimer); });
+        busStopElement.addEventListener('mousedown', (event) => { if (event.button === 0) startPinLongPress(event.clientX, event.clientY); });
+        busStopElement.addEventListener('mouseup', () => { endPinLongPress(); });
+        busStopElement.addEventListener('mouseleave', () => { clearTimeout(longPressTimer); });
+
+        // Tap anywhere on the card to expand/collapse
         busStopElement.addEventListener('click', () => {
-            // Navigate to buszy.html with the BusStopCode as a query parameter
-            window.location.href = `art.html?BusStopCode=${encodeURIComponent(busStop.BusStopCode)}`;
+            if (longPressTriggered) { longPressTriggered = false; return; }
+            collapseButton.click();
         });
 
+        const collapseButton = busStopElement.querySelector('.bus-stop-collapsible-btn');
+        const collapseSection = busStopElement.querySelector('.bus-stop-options-collapse');
+        const summaryEl = busStopElement.querySelector('.bus-stop-arrivals-summary');
+        collapseButton.addEventListener('click', (event) => {
+            event.preventDefault();
+            event.stopPropagation();
 
-        // Add click event listener to the "Pin" button
-        const pinButton = busStopElement.querySelector('.pin-button');
-        pinButton.addEventListener('click', (event) => {
-            event.stopPropagation(); // Prevent triggering the parent div's click event
-            togglePinBusStop(busStop, pinButton); // Toggle pin/unpin
+            const isOpen = collapseSection.classList.contains('show');
+            if (isOpen) {
+                collapseSection.style.maxHeight = '0';
+                collapseSection.style.opacity = '0';
+                collapseSection.classList.remove('show');
+                collapseButton.classList.remove('active');
+            } else {
+                collapseSection.getBoundingClientRect();
+                collapseSection.style.maxHeight = collapseSection.scrollHeight + 'px';
+                collapseSection.style.opacity = '1';
+                collapseSection.classList.add('show');
+                collapseButton.classList.add('active');
+
+                summaryEl.innerHTML = '<div class="busNo-card d-flex justify-content-between"><span class="bus-time">--</span><span style="display: flex; align-items: center; gap: 0.3rem;">' + getLoadIcon('sea', 'SD') + '</span></div>';
+                getArrivalSummaryForStop(busStop.BusStopCode).then((summary) => {
+                    summaryEl.innerHTML = renderArrivalSummary(summary);
+                    if (collapseSection.classList.contains('show')) {
+                        collapseSection.style.maxHeight = collapseSection.scrollHeight + 'px';
+                    }
+                });
+            }
+        });
+
+        collapseSection.querySelectorAll('a').forEach((anchor) => {
+            anchor.addEventListener('click', (event) => {
+                event.stopPropagation();
+            });
         });
 
         busStopsContainer.appendChild(busStopElement);
@@ -431,4 +671,10 @@ document.addEventListener('DOMContentLoaded', () => {
             searchInput.value = busStopCode; // Populate the search bar with the BusStopCode
         }
     }
+});
+
+// Suppress context menu on the bus-stops container
+// (prevents native long-press menu from interfering with touch interactions)
+document.addEventListener('contextmenu', (e) => {
+    if (e.target.closest('#bus-stops')) e.preventDefault();
 });

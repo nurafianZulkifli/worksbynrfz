@@ -32,6 +32,45 @@ initializeDefaultPreferences();
 // Load destination codes as fallback for missing stops
 let destinationCodesData = null;
 
+let busServiceTerminalData = null;
+
+async function loadBusServiceTerminals() {
+    if (busServiceTerminalData !== null) {
+        return busServiceTerminalData; // Already loaded
+    }
+
+    try {
+        const basePath = getBasePath();
+        const jsonPath = basePath + 'buszy/json/bus-service-data.json';
+        console.log('Loading bus service terminals from:', jsonPath);
+        const response = await fetch(jsonPath);
+        if (!response.ok) {
+            throw new Error(`Failed to load data: ${response.statusText}`);
+        }
+
+        const services = await response.json();
+        const terminalMap = {};
+
+        if (Array.isArray(services)) {
+            services.forEach((service) => {
+                const serviceNo = service.n || service.ServiceNo;
+                const terminalName = service.te || service.direction_routes?.[1]?.te || service.direction_routes?.['1']?.te;
+                if (serviceNo && terminalName) {
+                    terminalMap[String(serviceNo)] = terminalName;
+                }
+            });
+        }
+
+        busServiceTerminalData = terminalMap;
+        console.log('Successfully loaded bus service terminals:', Object.keys(busServiceTerminalData).length, 'services');
+        return busServiceTerminalData;
+    } catch (error) {
+        console.warn('Error loading bus service terminals:', error);
+        busServiceTerminalData = {};
+        return busServiceTerminalData;
+    }
+}
+
 async function loadDestinationCodes() {
     if (destinationCodesData !== null) {
         return destinationCodesData; // Already loaded
@@ -654,7 +693,16 @@ async function fetchBusArrivals() {
 
         // Create a map of destination codes to names from cached bus stops
         let destinationMap = {};
+        let serviceTerminalMap = {};
         let customDestinationMap = {};
+
+        // Load terminal names from bus-service-data.json so destination labels
+        // can use the shared service terminal source of truth.
+        try {
+            serviceTerminalMap = await loadBusServiceTerminals();
+        } catch (error) {
+            console.warn('Error loading bus service terminals:', error);
+        }
 
         // Load custom destination code mappings
         try {
@@ -678,7 +726,12 @@ async function fetchBusArrivals() {
         }
 
         // Function to get destination name
-        function getDestinationName(destinationCode) {
+        function getDestinationName(serviceNo, destinationCode) {
+            // Prefer the service terminal from bus-service-data.json
+            if (serviceNo && serviceTerminalMap[String(serviceNo)]) {
+                return serviceTerminalMap[String(serviceNo)];
+            }
+
             // First try to find in bus stops map
             if (destinationMap[destinationCode]) {
                 return destinationMap[destinationCode];
@@ -820,7 +873,7 @@ async function fetchBusArrivals() {
                                 <span class="service-no">${service.ServiceNo}</span>
                                 <i class="fa-regular fa-chevron-down" style="transition: transform 0.3s ease; margin-left: 0.5rem;"></i>
                             </button>
-                            ${hasNextBus && service.NextBus.DestinationCode ? `<div class="destination-code"><i class="fa-kit fa-lta-to-right"></i>&nbsp;${getDestinationName(service.NextBus.DestinationCode)}</div>` : ''}
+                            ${hasNextBus && service.NextBus.DestinationCode ? `<div class="destination-code"><i class="fa-kit fa-lta-to-right"></i>&nbsp;${getDestinationName(service.ServiceNo, service.NextBus.DestinationCode)}</div>` : ''}
                         </div>
                         <div style="display: flex; flex-direction: row; gap: 0.5rem; align-items: center; flex-shrink: 0;">
                             ${service.Operator ? `<img src="assets/${service.Operator.toLowerCase()}.png" alt="${service.Operator}" class="img-fluid" style="width: 50px; margin-left: auto;">` : ''}

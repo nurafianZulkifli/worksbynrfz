@@ -1,4 +1,40 @@
 // Bus First & Last Timings Page
+let busServiceTerminalData = null;
+
+async function loadBusServiceTerminals() {
+    if (busServiceTerminalData !== null) {
+        return busServiceTerminalData;
+    }
+
+    try {
+        const basePath = getBasePath();
+        const jsonPath = basePath + 'buszy/json/bus-service-data.json';
+        const response = await fetch(jsonPath);
+        if (!response.ok) {
+            throw new Error(`Failed to load bus service data: ${response.status}`);
+        }
+
+        const services = await response.json();
+        const terminalMap = {};
+
+        if (Array.isArray(services)) {
+            services.forEach((service) => {
+                const serviceNo = service.n || service.ServiceNo;
+                const terminalName = service.te || service.direction_routes?.[1]?.te || service.direction_routes?.['1']?.te;
+                if (serviceNo && terminalName) {
+                    terminalMap[String(serviceNo)] = terminalName;
+                }
+            });
+        }
+
+        busServiceTerminalData = terminalMap;
+        return busServiceTerminalData;
+    } catch (error) {
+        console.warn('[fl-bus.js] Error loading bus service terminals:', error);
+        busServiceTerminalData = {};
+        return busServiceTerminalData;
+    }
+}
 
 // Get base path for the application
 function getBasePath() {
@@ -137,19 +173,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Fetch destination codes from live API (like art.js does)
     async function fetchDestinationCodesForStop(busStopCode) {
         try {
+            if (window.SharedArrivals && typeof window.SharedArrivals.fetchArrivals === 'function') {
+                const data = await window.SharedArrivals.fetchArrivals(busStopCode);
+                return window.SharedArrivals.getDestinationMapFromArrivals(data);
+            }
+            // Fallback to inline fetch
             const url = new URL('https://bat-lta-9eb7bbf231a2.herokuapp.com/bus-arrivals');
             url.searchParams.append('BusStopCode', busStopCode);
             const response = await fetch(url);
             if (!response.ok) return {};
-
             const data = await response.json();
-            const destinationCodeMap = {}; // Map service number to destination code
-
+            const destinationCodeMap = {};
             if (data.Services && Array.isArray(data.Services)) {
                 data.Services.forEach(service => {
-                    if (service.NextBus?.DestinationCode) {
-                        destinationCodeMap[service.ServiceNo] = service.NextBus.DestinationCode;
-                    }
+                    if (service.NextBus?.DestinationCode) destinationCodeMap[service.ServiceNo] = service.NextBus.DestinationCode;
                 });
             }
             return destinationCodeMap;
@@ -244,41 +281,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                 throw titleError;
             }
 
-            // Load destination maps (like in art.js)
-            let destinationMap = {};
-            let customDestinationMap = {};
-
-            // Load custom destination code mappings from art.js approach
-            try {
-                const response = await fetch('json/destination-codes.json');
-                if (response.ok) {
-                    customDestinationMap = await response.json();
-                }
-            } catch (error) {
-                console.warn('Custom destination codes file not found or error loading:', error);
-            }
-
-            try {
-                const allBusStopsData = JSON.parse(localStorage.getItem('allBusStops')) || [];
-                allBusStopsData.forEach((stop) => {
-                    destinationMap[stop.BusStopCode] = stop.Description;
-                });
-            } catch (error) {
-                console.error('Error creating destination map:', error);
-            }
-
-            // Fetch live destination codes from API (same as art.js)
-            const liveDestinationCodes = await fetchDestinationCodesForStop(busStopCode);
+            const serviceTerminals = await loadBusServiceTerminals();
 
             // Display services
             servicesContainer.innerHTML = '';
 
             busServices.forEach(service => {
-                // If service is live, use the live destination code; otherwise use stored data
-                if (liveDestinationCodes[service.service]) {
-                    service.destinationCode = liveDestinationCodes[service.service];
-                }
-                const card = createServiceCard(service, destinationMap, customDestinationMap);
+                const card = createServiceCard(service, serviceTerminals);
                 servicesContainer.appendChild(card);
             });
 
@@ -332,22 +341,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         return result;
     }
 
-    // Function to get destination name from code or fallback to route name
-    function getDestinationName(destinationCode, destinationMap, customDestinationMap) {
-        // First try to find in bus stops map
-        if (destinationMap[destinationCode]) {
-            return destinationMap[destinationCode];
-        }
-        // Then try custom destination codes mapping
-        if (customDestinationMap[destinationCode]) {
-            return customDestinationMap[destinationCode];
-        }
-        // Finally return the code itself if not found
-        return destinationCode;
-    }
-
     // Create service card
-    function createServiceCard(service, destinationMap, customDestinationMap) {
+    function createServiceCard(service, serviceTerminals) {
         const card = document.createElement('div');
         card.className = 'service-card';
         card.setAttribute('data-service', service.service);
@@ -369,11 +364,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
         card.appendChild(header);
 
-        // Route name with "To" prefix - using destination code mapping from art.js
+        // Route name with "To" prefix - prefer the service terminal from bus-service-data.json
         const routeName = document.createElement('div');
         routeName.className = 'service-route';
-        const destination = service.destinationCode || service.routeName;
-        const destinationName = getDestinationName(destination, destinationMap, customDestinationMap);
+        const destinationName = serviceTerminals[String(service.service)] || service.routeName;
         routeName.innerHTML = destinationName ? `<i class="fa-kit fa-lta-to-right"></i>&nbsp;${capitalizeWords(destinationName)}` : '';
         card.appendChild(routeName);
 

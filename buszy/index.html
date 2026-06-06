@@ -130,8 +130,15 @@
     }
 
     @keyframes pulse-ann-btn {
-        0%, 100% { border-color: #ff6b35; }
-        50% { border-color: rgba(255, 107, 53, 0.4); }
+
+        0%,
+        100% {
+            border-color: #ff6b35;
+        }
+
+        50% {
+            border-color: rgba(255, 107, 53, 0.4);
+        }
     }
 
     .alerts-btn .ann-indicator-dot,
@@ -536,8 +543,8 @@
     /* Nearby Bus Stops Styles */
     .bus-stop {
         display: flex;
-        justify-content: space-between;
-        align-items: center;
+        flex-direction: column;
+        align-items: stretch;
         border: 1px solid #ddd;
         border-radius: 25px;
         background-color: #fff;
@@ -549,6 +556,400 @@
         background-color: #1c1f2b;
         border: 1px solid #2b2b2b33;
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .bus-stop-main-row {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .bus-stop-actions-controls {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex-shrink: 0;
+    }
+
+    .bus-stop-actions-controls .btn-unpin,
+    .bus-stop-actions-controls .btn-toPin {
+        margin-left: 0;
+        padding: 0 12px;
+        height: 36px;
+        line-height: 36px;
+        font-size: 16px;
+        min-width: unset;
+    }
+
+    .bus-stop-collapsible-btn {
+        background: none;
+        border: none;
+        padding: 4px 6px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        color: inherit;
+        transition: all 0.3s ease;
+    }
+
+    .bus-stop-collapsible-btn i {
+        display: inline-block;
+        transition: transform 0.25s ease;
+    }
+
+    .bus-stop-collapsible-btn.active i {
+        transform: rotate(180deg);
+    }
+
+    .bus-stop-options-collapse {
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        pointer-events: none;
+        transition: max-height 0.3s ease, opacity 0.25s ease;
+        width: 100%;
+        margin-top: 0;
+        padding-top: 0;
+        border-top: 1px solid transparent;
+    }
+
+    .bus-stop-options-collapse.show {
+        margin-top: 0.6rem;
+        padding-top: 0.45rem;
+        border-top: 1px solid rgba(96, 125, 150, 0.25);
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .bus-stop-options-inner {
+        display: flex;
+        gap: 0.7rem;
+        justify-content: flex-start;
+        align-items: center;
+        flex-wrap: wrap;
+        width: 100%;
+    }
+
+    .bus-stop-options-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 0.4rem;
+        min-height: 32px;
+    }
+
+    .arrival-filter-reset-slot {
+        flex: 1;
+    }
+
+    .bus-stop-arrivals-summary.card-content-art {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 190px));
+        gap: 1.05rem 2.6rem;
+        width: 100%;
+        padding: 0.2rem 0.3rem;
+    }
+
+    .bus-stop-arrivals-summary.card-content-art span {
+        display: flex;
+        align-items: baseline;
+        gap: 0.5px;
+    }
+
+    .busNo-card {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        min-width: 0;
+    }
+
+    .arrival-svc-no {
+        font-size: 17px;
+        font-weight: 700;
+        min-width: 42px;
+        text-align: center;
+        background: #94d40b;
+        color: #000 !important;
+        border-radius: 6px;
+        padding: 2px 15px;
+        flex-shrink: 0;
+    }
+
+    body.dark-mode .arrival-svc-no {
+        background: #7db603;
+        color: #000 !important;
+        text-align: center;
+    }
+
+    .arrival-svc-toggle {
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .arrival-svc-toggle:active {
+        opacity: 0.6;
+    }
+
+    .arrival-filter-reset {
+        font-size: 0.72em;
+        color: #3294ac;
+        cursor: pointer;
+        text-decoration: underline;
+        user-select: none;
+    }
+
+    .arrival-all-hidden {
+        font-size: 0.8em;
+        color: #888;
+        font-style: italic;
+    }
+
+    /* Hide stop button */
+    .btn-hide-stop {
+        background: rgba(60, 60, 80, 0.85);
+        color: #ccc;
+        border: 1px solid rgba(150, 150, 180, 0.25);
+        margin-left: 4px;
+    }
+
+    .btn-hide-stop:hover {
+        color: #fff;
+    }
+
+    /* Hide stop confirmation popup */
+    .pin-hide-popup {
+        position: relative;
+        margin-top: 0.5rem;
+        background: #1e2535;
+        border: 1px solid rgba(100, 140, 180, 0.3);
+        border-radius: 10px;
+        padding: 0.6rem 0.8rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        z-index: 10;
+    }
+
+    .pin-hide-popup-msg {
+        font-size: 0.9em;
+    }
+
+    .pin-hide-popup-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .pin-hide-confirm {
+        background: #c0392b;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 4px 14px;
+        font-size: 0.85em;
+        cursor: pointer;
+    }
+
+    .pin-hide-cancel {
+        background: rgba(255, 255, 255, 0.08);
+        color: #ccc;
+        border: none;
+        border-radius: 6px;
+        padding: 4px 14px;
+        font-size: 0.85em;
+        cursor: pointer;
+    }
+
+    /* Hidden stops toggle row */
+    .pin-hidden-toggle-row {
+        padding: 0.4rem 0.8rem;
+        text-align: center;
+        width: 100%;
+    }
+
+    .pin-hidden-toggle {
+        font-size: 0.8em;
+        color: #888;
+    }
+
+    .pin-hidden-show-link {
+        color: #3294ac;
+        cursor: pointer;
+        text-decoration: underline;
+        font-size: 0.8em;
+    }
+
+    /* Hidden stops panel */
+    .pin-hidden-panel {
+        margin: 0.5rem 0;
+        background: #1e2535;
+        border: 1px solid rgba(100, 140, 180, 0.3);
+        border-radius: 10px;
+        padding: 0.7rem 0.9rem;
+    }
+
+    .pin-hidden-panel-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        font-size: 0.9em;
+    }
+
+    .pin-hidden-panel-close {
+        background: none;
+        border: none;
+        color: #aaa;
+        font-size: 1.2em;
+        cursor: pointer;
+        padding: 0 4px;
+    }
+
+    .pin-hidden-panel-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+    }
+
+    .pin-hidden-panel-list li {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.85em;
+        color: #ccc;
+    }
+
+    .pin-hidden-code {
+        background: #1f84a2;
+        color: #fff;
+        border-radius: 5px;
+        padding: 1px 6px;
+        font-size: 0.85em;
+        font-weight: 700;
+    }
+
+    .pin-hidden-unhide-btn {
+        margin-left: auto;
+        background: rgba(50, 148, 172, 0.15);
+        color: #3294ac;
+        border: 1px solid rgba(50, 148, 172, 0.3);
+        border-radius: 6px;
+        padding: 2px 10px;
+        font-size: 0.8em;
+        cursor: pointer;
+    }
+
+    .bus-time {
+        display: inline-flex;
+        width: 200px;
+        text-align: center;
+        margin-left: 0em;
+        margin-right: 0em;
+        font-size: 20px;
+        font-weight: bold;
+        margin-top: 2px;
+        margin-bottom: 2px;
+        cursor: default;
+        padding-left: 0.2em;
+    }
+
+    .mins {
+        font-size: 0.6em;
+        font-weight: 700;
+        margin-left: 3px;
+    }
+
+    .arrival-now {
+        color: #7db603;
+        font-weight: 700;
+    }
+
+    .load-indicator {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.35rem;
+        line-height: 1;
+        color: #7db603;
+    }
+
+    .load-indicator.sea {
+        color: #7db603;
+    }
+
+    .load-indicator.sda {
+        color: #f5a623;
+    }
+
+    .load-indicator.lsd {
+        color: #e74c3c;
+    }
+
+    .open-art-btn {
+        min-width: 44px;
+        flex-shrink: 0;
+        align-self: center;
+        margin-left: auto;
+        margin-top: 4px;
+        margin-bottom: 4px;
+    }
+
+    .btn-busloc {
+        background-color: #1f84a2;
+        color: #fff;
+        transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        border: 1px solid #cccccc;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 12px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        white-space: nowrap;
+        width: max-content !important;
+        font-size: 15px;
+    }
+
+    body.dark-mode .load-indicator {
+        color: #8be66f;
+    }
+
+    body.dark-mode .load-indicator.sea {
+        color: #8be66f;
+    }
+
+    body.dark-mode .load-indicator.sda {
+        color: #ffbe55;
+    }
+
+    body.dark-mode .load-indicator.lsd {
+        color: #ff7f73;
+    }
+
+    body.dark-mode .bus-time {
+        color: #e7edf5;
+    }
+
+    body.dark-mode .mins {
+        color: #e7edf5;
+    }
+
+    @media (max-width: 545px) {
+        .bus-time {
+            font-size: 20px;
+            width: 70px;
+        }
+    }
+
+    .arrival-value {
+        font-weight: 700;
+        color: #2b2b2b;
+        text-align: right;
+    }
+
+    body.dark-mode .arrival-value {
+        color: #e7edf5;
     }
 
     .bus-stop-details {
@@ -994,13 +1395,13 @@
 
                         <div class="category-tabs-container">
                             <div class="category-tabs" id="category-tabs">
-                                <button class="category-tab active" data-category="pinned">
-                                    <i class="fa-sharp fa-regular fa-thumbtack-angle"></i>&nbsp;
-                                    Pinned
-                                </button>
-                                <button class="category-tab" data-category="nearby">
+                                <button class="category-tab active" data-category="nearby">
                                     <i class="fa-kit fa-lta-location"></i>&nbsp;
                                     Nearby
+                                </button>
+                                <button class="category-tab" data-category="pinned">
+                                    <i class="fa-sharp fa-regular fa-thumbtack-angle"></i>&nbsp;
+                                    Pinned
                                 </button>
                                 <button class="category-tab" data-category="all">
                                     <i class="fa-kit fa-lta-bus-stop"></i>&nbsp;
@@ -1058,14 +1459,14 @@
             </div>
 
             <!-- Pinned Tab -->
-            <div id="pinned-content" class="tab-content active">
+            <div id="pinned-content" class="tab-content">
                 <section class="about-me-summ clearfix" style="padding-bottom: 5em;">
                     <div id="bookmarks-container" class="list-group"></div>
                 </section>
             </div>
 
             <!-- Nearby Tab -->
-            <div id="nearby-content" class="tab-content">
+            <div id="nearby-content" class="tab-content active">
                 <section class="about-me-summ clearfix" style="padding-bottom: 5em;">
 
                     <div id="bus-stops"></div>
@@ -1093,7 +1494,8 @@
                         <strong>pin icon</strong> on a result to save it here for quick access.
                         <div class="guide-tip">
                             <i class="fa-regular fa-lightbulb"></i>
-                            Switch to the <strong>Nearby</strong> tab to discover stops around your current location without typing anything.
+                            Switch to the <strong>Nearby</strong> tab to discover stops around your current location
+                            without typing anything.
                         </div>
                     </div>
                 </div>
@@ -1110,7 +1512,8 @@
                         the next few buses and their seat load status.
                         <div class="guide-tip">
                             <i class="fa-regular fa-lightbulb"></i>
-                            Timings auto-refresh every 2 seconds by default. You can adjust this interval in the Settings page.
+                            Timings auto-refresh every 2 seconds by default. You can adjust this interval in the
+                            Settings page.
                         </div>
                     </div>
                 </div>
@@ -1144,7 +1547,8 @@
                         options like fleet legend and incoming buses, and control notification behaviour.
                         <div class="guide-tip">
                             <i class="fa-regular fa-lightbulb"></i>
-                            You can adjust what you want to see and the way Bus Service information is displayed, and export your pinned stops as a backup from the Settings page.
+                            You can adjust what you want to see and the way Bus Service information is displayed, and
+                            export your pinned stops as a backup from the Settings page.
                         </div>
                     </div>
                 </div>
@@ -1161,7 +1565,8 @@
                         to get notified when that bus is approaching your stop.
                         <div class="guide-tip">
                             <i class="fa-regular fa-lightbulb"></i>
-                            Control how long Buszy watches for your bus under <strong>Menu &gt; Settings &gt; Notify Mode</strong> &mdash; choose once, 24 hours, or always-on.
+                            Control how long Buszy watches for your bus under <strong>Menu &gt; Settings &gt; Notify
+                                Mode</strong> &mdash; choose once, 24 hours, or always-on.
                         </div>
                     </div>
                 </div>
@@ -1182,7 +1587,8 @@
                 <button class="sht-btn sht-btn-ghost" id="guidePrevBtn" onclick="guidePrev()" style="display:none;">
                     <i class="fa-regular fa-chevron-left"></i> Back
                 </button>
-                <button class="sht-btn sht-btn-ghost guide-skip-btn" onclick="guideFinish()"><i class="fa-regular fa-x"></i> Skip</button>
+                <button class="sht-btn sht-btn-ghost guide-skip-btn" onclick="guideFinish()"><i
+                        class="fa-regular fa-x"></i> Skip</button>
                 <button class="sht-btn sht-btn-primary" id="guideNextBtn" onclick="guideNext()">
                     Next <i class="fa-regular fa-chevron-right"></i>
                 </button>
@@ -1223,6 +1629,7 @@
 
     <script src="../js/pwa-config.js"></script>
 
+    <script src="./js/shared-arrivals.js"></script>
     <script src="./js/nbs.js"></script>
 
     <script>

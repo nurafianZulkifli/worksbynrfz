@@ -355,7 +355,7 @@
         font-size: 14px;
     }
 
-   .notif-active-btn-label {
+    .notif-active-btn-label {
         color: #000 !important;
     }
 
@@ -472,6 +472,18 @@
         stroke-width: 11;
         stroke-linecap: round;
         transform-origin: center;
+    }
+
+    .btn-busloc {
+        background-color: #1f84a2;
+        color: #fff;
+        transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        border: 1px solid #cccccc;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 12px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        white-space: nowrap;
+        width: max-content !important;
+        font-size: 15px;
     }
 
     body.dark-mode .card .card-header .destination-code {
@@ -683,7 +695,9 @@
         color: #e0e0e0;
     }
 
-    .notif-banner-text { flex: 1; }
+    .notif-banner-text {
+        flex: 1;
+    }
 
     .notif-banner-actions {
         display: flex;
@@ -1155,8 +1169,8 @@
                             </ol>
                         </nav>
                         <div class="page-title-wrapper">
-                            <div
-                                style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;" title="Click once for Chime A, thrice for Chime B">
+                            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;"
+                                title="Click once for Chime A, thrice for Chime B">
                                 <div>
                                     <h1 class="page-title" id="filter-title">
                                         Arrival Timings
@@ -1172,7 +1186,8 @@
                             </div>
                             <!-- All Bus Services Timings -->
                             <div id="all-timings-section" style="display: none; margin-top: 0.75em;">
-                                <a id="all-timings-link" href="javascript:void(0)" class="btn btn-busloc btn-busloc2 btn-sm">
+                                <a id="all-timings-link" href="javascript:void(0)"
+                                    class="btn btn-busloc btn-busloc2 btn-sm">
                                     <i class="fa-regular fa-clock"></i>&nbsp;First/Last Bus Timings
                                 </a>
                             </div>
@@ -1209,7 +1224,8 @@
                     <strong>Notifications are blocked.</strong>
                     To receive bus arrival alerts, allow notifications in your browser or app settings.
                 </span>
-                <button class="btn btn-sm" style="margin-left:auto; flex-shrink:0; opacity:0.6;" onclick="BuszyPushNotify.dismissBlockedBanner()" aria-label="Dismiss">
+                <button class="btn btn-sm" style="margin-left:auto; flex-shrink:0; opacity:0.6;"
+                    onclick="BuszyPushNotify.dismissBlockedBanner()" aria-label="Dismiss">
                     <i class="fa-regular fa-xmark"></i>
                 </button>
             </div>
@@ -1223,7 +1239,8 @@
                 </span>
                 <div class="notif-banner-actions">
                     <button class="btn btn-busloc btn-sm" onclick="BuszyPushNotify.enableFromBanner()">Enable</button>
-                    <button class="btn btn-sm notif-dismiss-btn" onclick="BuszyPushNotify.dismissPromptBanner()">Not now</button>
+                    <button class="btn btn-sm notif-dismiss-btn" onclick="BuszyPushNotify.dismissPromptBanner()">Not
+                        now</button>
                 </div>
             </div>
 

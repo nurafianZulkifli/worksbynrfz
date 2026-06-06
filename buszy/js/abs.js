@@ -1,4 +1,10 @@
 
+// Suppress context menu on the bus stops container
+// (prevents native long-press menu from interfering with touch interactions)
+document.addEventListener('contextmenu', (e) => {
+    if (e.target.closest('.list-group')) e.preventDefault();
+});
+
 // *****************************
 // :: Service Parameter Redirect
 // *****************************
@@ -49,6 +55,138 @@ document.addEventListener('DOMContentLoaded', async () => {
     let currentDisplayList = []; // Track the current list being displayed (full or filtered)
     let currentPage = 1;
     let totalPages = 1;
+    const arrivalsSummaryCache = new Map();
+
+    function getLoadIcon(load, type) {
+        if (window.SharedArrivals && typeof window.SharedArrivals.getLoadIcon === 'function') {
+            return window.SharedArrivals.getLoadIcon(load, type);
+        }
+        let fleetIcon = '';
+        if (type) {
+            switch (String(type).toUpperCase()) {
+                case 'SD':
+                case 'SINGLE DECK':
+                    fleetIcon = '<i class="fa-kit fa-lta-bus" title="Single Deck"></i>';
+                    break;
+                case 'DD':
+                case 'DOUBLE DECK':
+                    fleetIcon = '<i class="fa-kit fa-lta-dd" title="Double Deck"></i>';
+                    break;
+                case 'BD':
+                case 'BENDY':
+                case 'BENDY BUS':
+                    fleetIcon = '<i class="fa-kit fa-lta-bb" title="Bendy Bus"></i>';
+                    break;
+                default:
+                    fleetIcon = '<i class="fa-kit fa-lta-bus" title="Bus"></i>';
+            }
+        }
+
+        const loadClass = load ? String(load).toLowerCase() : 'sea';
+        return `<span class="load-indicator ${loadClass}">${fleetIcon || '<i class="fa-kit fa-lta-bus" title="Bus"></i>'}</span>`;
+    }
+
+    function formatArrivalTimeStyled(isoString) {
+        if (window.SharedArrivals && typeof window.SharedArrivals.formatArrivalTimeOrArr === 'function') {
+            try { return window.SharedArrivals.formatArrivalTimeOrArr(isoString, new Date(), false); } catch(e) {}
+        }
+        if (!isoString) return '--';
+        const arrivalTime = new Date(isoString);
+        if (Number.isNaN(arrivalTime.getTime())) return '--';
+
+        const now = new Date();
+        const timeDifference = arrivalTime - now;
+        if (timeDifference <= 0) {
+            return '<span class="arrival-now">Arr</span>';
+        }
+
+        const savedFormat = localStorage.getItem('timeFormat') || '12-hour';
+        if (savedFormat === 'mins') {
+            const minutes = Math.floor(timeDifference / (1000 * 60));
+            if (minutes <= 0) {
+                return '<span class="arrival-now">Arr</span>';
+            }
+            const minText = minutes === 1 ? 'min' : 'mins';
+            return `${minutes}<span class="mins"> ${minText}</span>`;
+        }
+
+        const options = savedFormat === '24-hour'
+            ? { hour: '2-digit', minute: '2-digit', hour12: false }
+            : { hour: '2-digit', minute: '2-digit', hour12: true };
+
+        const timeString = arrivalTime.toLocaleTimeString('en-US', options);
+        if (savedFormat === '12-hour') {
+            const parts = timeString.split(' ');
+            if (parts.length === 2) {
+                return `${parts[0]}<span style="font-size: 0.5em; margin-left: 1.5px; position: relative; display: inline-block;">${parts[1]}</span>`;
+            }
+        }
+        return timeString;
+    }
+
+    function renderArrivalSummary(arrivals) {
+        if (!arrivals?.length) {
+            return `
+                <div class="busNo-card d-flex justify-content-between">
+                    <span class="arrival-svc-no">--</span>
+                    <span class="bus-time"></span>
+                    <span style="display: flex; align-items: center; gap: 0.3rem;">${getLoadIcon('sea', 'SD')}</span>
+                </div>
+                <div class="busNo-card d-flex justify-content-between">
+                    <span class="arrival-svc-no">--</span>
+                    <span class="bus-time"></span>
+                    <span style="display: flex; align-items: center; gap: 0.3rem;">${getLoadIcon('sea', 'SD')}</span>
+                </div>
+            `;
+        }
+        return arrivals.map(a => `
+            <div class="busNo-card d-flex justify-content-between">
+                <span class="arrival-svc-no">${a.serviceNo}</span>
+                <span class="bus-time">${formatArrivalTimeStyled(a.eta)}</span>
+                <span style="display: flex; align-items: center; gap: 0.3rem;">${getLoadIcon(a.load, a.type)}</span>
+            </div>
+        `).join('');
+    }
+
+    async function getArrivalSummaryForStop(busStopCode) {
+        if (arrivalsSummaryCache.has(busStopCode)) {
+            return arrivalsSummaryCache.get(busStopCode);
+        }
+
+        try {
+            let data;
+            if (window.SharedArrivals && typeof window.SharedArrivals.fetchArrivals === 'function') {
+                data = await window.SharedArrivals.fetchArrivals(busStopCode);
+            } else {
+                const url = new URL('https://bat-lta-9eb7bbf231a2.herokuapp.com/bus-arrivals');
+                url.searchParams.append('BusStopCode', busStopCode);
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                data = await response.json();
+            }
+
+            const arrivals = [];
+            (data.Services || []).forEach((service) => {
+                if (service.NextBus?.EstimatedArrival) {
+                    arrivals.push({
+                        serviceNo: service.ServiceNo,
+                        eta: service.NextBus.EstimatedArrival,
+                        load: service.NextBus.Load,
+                        type: service.NextBus.Type
+                    });
+                }
+            });
+
+            const sortByArrival = localStorage.getItem('sortByArrival') !== 'disabled';
+            if (sortByArrival) arrivals.sort((a, b) => new Date(a.eta) - new Date(b.eta));
+            arrivalsSummaryCache.set(busStopCode, arrivals);
+            return arrivals;
+        } catch (error) {
+            console.warn('[abs.js] Failed to load arrival summary:', error);
+            arrivalsSummaryCache.set(busStopCode, []);
+            return [];
+        }
+    }
 
     // Function to fetch all bus stops in batches
     async function fetchAllBusStops() {
@@ -135,12 +273,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             const listItem = document.createElement('div');
             listItem.className = 'list-group-item';
             listItem.style.display = 'flex';
-            listItem.style.justifyContent = 'space-between';
-            listItem.style.alignItems = 'center';
+            listItem.style.flexDirection = 'column';
+            listItem.style.alignItems = 'stretch';
 
-            // Make the bus stop details clickable
+            // Make the bus stop details clickable (navigation via open-art-btn in collapse)
             const link = document.createElement('a');
-            link.href = `art.html?BusStopCode=${encodeURIComponent(busStop.BusStopCode)}`;
+            link.href = 'javascript:void(0)';
+            link.addEventListener('click', e => e.preventDefault());
             
             // Build correct image path for GitHub Pages and Heroku
             const basePath = (window.PWAConfig ? window.PWAConfig.basePath : '/');
@@ -159,29 +298,121 @@ document.addEventListener('DOMContentLoaded', async () => {
             link.style.textDecoration = 'none';
             link.style.color = 'inherit';
 
-            // Pinned button
-            const bookmarkButton = document.createElement('button');
-            const isPinned = bookmarks.some((b) => b.BusStopCode === busStop.BusStopCode);
+            const actionsToggleBtn = document.createElement('button');
+            actionsToggleBtn.className = 'bus-stop-collapsible-btn';
+            actionsToggleBtn.title = 'Show options';
+            actionsToggleBtn.innerHTML = '<i class="fa-regular fa-chevron-down"></i>';
+            actionsToggleBtn.addEventListener('click', (event) => {
+                event.preventDefault();
+                event.stopPropagation();
 
-            if (isPinned) {
-                // If already bookmarked, show as bookmarked
-                bookmarkButton.innerHTML = '<i class="fa-regular fa-thumbtack-angle-slash"></i>'
-                bookmarkButton.className = 'btn btn-unpin btn-sm';
-            } else {
-                // If not bookmarked, show as a regular bookmark button
-                bookmarkButton.innerHTML = '<i class="fa-sharp fa-regular fa-thumbtack-angle"></i>';
-                bookmarkButton.className = 'btn btn-toPin btn-sm';
-            }
+                const isOpen = actionCollapse.classList.contains('show');
+                if (isOpen) {
+                    actionCollapse.style.maxHeight = '0';
+                    actionCollapse.style.opacity = '0';
+                    actionCollapse.classList.remove('show');
+                    actionsToggleBtn.classList.remove('active');
+                } else {
+                    actionCollapse.getBoundingClientRect();
+                    actionCollapse.style.maxHeight = actionCollapse.scrollHeight + 'px';
+                    actionCollapse.style.opacity = '1';
+                    actionCollapse.classList.add('show');
+                    actionsToggleBtn.classList.add('active');
 
-            // Add event listener to toggle bookmark
-            bookmarkButton.addEventListener('click', (event) => {
-                event.stopPropagation(); // Prevent the click from triggering the link
-                event.preventDefault(); // Prevent default link behavior
-                togglePinned(busStop, bookmarkButton);
+                    const summaryEl = actionCollapse.querySelector('.bus-stop-arrivals-summary');
+                    summaryEl.innerHTML = '<div class="busNo-card d-flex justify-content-between"><span class="bus-time">--</span><span style="display: flex; align-items: center; gap: 0.3rem;">' + getLoadIcon('sea', 'SD') + '</span></div>';
+                    getArrivalSummaryForStop(busStop.BusStopCode).then((summary) => {
+                        summaryEl.innerHTML = renderArrivalSummary(summary);
+                        if (actionCollapse.classList.contains('show')) {
+                            actionCollapse.style.maxHeight = actionCollapse.scrollHeight + 'px';
+                        }
+                    });
+                }
             });
 
-            listItem.appendChild(link);
-            listItem.appendChild(bookmarkButton);
+            const controls = document.createElement('div');
+            controls.className = 'bus-stop-actions-controls';
+            controls.appendChild(actionsToggleBtn);
+
+            const mainRow = document.createElement('div');
+            mainRow.className = 'bus-stop-main-row';
+            mainRow.appendChild(link);
+            mainRow.appendChild(controls);
+
+            // Long press variables for bookmark button
+            let longPressTimer = null;
+            let bookmarkButton = null;
+            let longPressTriggered = false;
+            let touchStartX = 0;
+            let touchStartY = 0;
+            const isPinned = bookmarks.some((b) => b.BusStopCode === busStop.BusStopCode);
+
+            // Add long press listener for bookmark button
+            function startBookmarkLongPress(x, y) {
+                longPressTriggered = false;
+                touchStartX = x;
+                touchStartY = y;
+                longPressTimer = setTimeout(() => {
+                    if (!bookmarkButton) {
+                        longPressTriggered = true;
+                        bookmarkButton = document.createElement('button');
+                        bookmarkButton.innerHTML = isPinned ? '<i class="fa-regular fa-thumbtack-angle-slash"></i>' : '<i class="fa-regular fa-thumbtack-angle"></i>';
+                        bookmarkButton.className = (isPinned ? 'btn btn-unpin btn-sm' : 'btn btn-toPin btn-sm') + ' pin-btn-fade-in';
+                        bookmarkButton.style.order = '-1';
+                        bookmarkButton.addEventListener('click', (event) => {
+                            event.stopPropagation();
+                            event.preventDefault();
+                            togglePinned(busStop, bookmarkButton);
+                            bookmarkButton.classList.remove('pin-btn-fade-in');
+                            bookmarkButton.classList.add('pin-btn-fade-out');
+                            setTimeout(() => { if (bookmarkButton && bookmarkButton.parentNode) { bookmarkButton.remove(); } bookmarkButton = null; }, 300);
+                        });
+                        controls.insertBefore(bookmarkButton, controls.firstChild);
+                    }
+                }, 500);
+            }
+            function endBookmarkLongPress() {
+                clearTimeout(longPressTimer);
+                if (bookmarkButton) {
+                    setTimeout(() => {
+                        if (bookmarkButton && bookmarkButton.parentNode) {
+                            bookmarkButton.classList.remove('pin-btn-fade-in');
+                            bookmarkButton.classList.add('pin-btn-fade-out');
+                            setTimeout(() => { if (bookmarkButton && bookmarkButton.parentNode) { bookmarkButton.remove(); } bookmarkButton = null; }, 300);
+                        }
+                    }, 2000);
+                }
+            }
+            listItem.addEventListener('touchstart', (event) => { startBookmarkLongPress(event.touches[0].clientX, event.touches[0].clientY); }, { passive: true });
+            listItem.addEventListener('touchend', () => { endBookmarkLongPress(); });
+            listItem.addEventListener('touchmove', (event) => {
+                const dx = event.touches[0].clientX - touchStartX;
+                const dy = event.touches[0].clientY - touchStartY;
+                if (Math.abs(dx) > 10 || Math.abs(dy) > 10) clearTimeout(longPressTimer);
+            });
+            listItem.addEventListener('touchcancel', () => { clearTimeout(longPressTimer); });
+            listItem.addEventListener('mousedown', (event) => { if (event.button === 0) startBookmarkLongPress(event.clientX, event.clientY); });
+            listItem.addEventListener('mouseup', () => { endBookmarkLongPress(); });
+            listItem.addEventListener('mouseleave', () => { clearTimeout(longPressTimer); });
+
+            const actionCollapse = document.createElement('div');
+            actionCollapse.className = 'bus-stop-options-collapse';
+            const actionBasePath = (window.PWAConfig ? window.PWAConfig.basePath : '/');
+            actionCollapse.innerHTML = `
+                <div class="bus-stop-options-inner">
+                    <div class="bus-stop-arrivals-summary card-content-art">
+                        ${renderArrivalSummary([])}
+                    </div>
+                    <a href="${actionBasePath}buszy/art.html?BusStopCode=${encodeURIComponent(busStop.BusStopCode)}" class="btn btn-busloc btn-sm open-art-btn" title="Open arrival timings page">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            `;
+
+            actionCollapse.addEventListener('click', e => e.stopPropagation());
+            listItem.appendChild(mainRow);
+            listItem.appendChild(actionCollapse);
+            listItem.addEventListener('click', () => actionsToggleBtn.click());
             listGroup.appendChild(listItem);
         });
 
