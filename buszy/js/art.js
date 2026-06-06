@@ -180,8 +180,10 @@ async function refreshActiveMapMarkers() {
             freshLocations.push({ lat: parseFloat(activeService.NextBus2.Latitude), lng: parseFloat(activeService.NextBus2.Longitude), estimatedArrival: activeService.NextBus2.EstimatedArrival || null, busLabel: 'Subsequent Bus' });
         }
 
-        // Use server time for accurate calculations across all devices
-        const refreshNow = data.serverTime ? new Date(data.serverTime) : new Date();
+        // Use synchronized time for accurate calculations across all devices
+        const refreshNow = (window.SharedArrivals && typeof window.SharedArrivals.getSynchronizedNow === 'function')
+            ? window.SharedArrivals.getSynchronizedNow()
+            : (data.serverTime ? new Date(data.serverTime) : new Date());
         const savedFormat = localStorage.getItem('timeFormat') || '12-hour';
 
         freshLocations.forEach((loc, index) => {
@@ -687,9 +689,11 @@ async function fetchBusArrivals() {
             return;
         }
 
-        // Use server time for accurate calculations across all devices
+        // Use synchronized time for accurate calculations across all devices
         // This ensures consistent timings between PC, mobile, and other devices
-        const now = data.serverTime ? new Date(data.serverTime) : new Date();
+        const now = (window.SharedArrivals && typeof window.SharedArrivals.getSynchronizedNow === 'function')
+            ? window.SharedArrivals.getSynchronizedNow()
+            : (data.serverTime ? new Date(data.serverTime) : new Date());
 
         // Connection restored — remove offline banner if visible
         hideOfflineBanner();

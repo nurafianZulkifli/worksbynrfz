@@ -387,10 +387,10 @@ table th {
     box-shadow: 0 0 15px #1c748f, 0 2px 4px #0000004d;
 }
 
-.bus-stop.nearest-stop:hover {
+/* .bus-stop.nearest-stop:hover {
     background-color: #d8e6f3;
     box-shadow: 0 0 24px rgba(28, 116, 143, 0.6), 0 8px 20px rgba(0, 0, 0, 0.15);
-}
+} */
 
 .nearest-stop-badge {
     font-size: 0.72rem;
@@ -487,12 +487,12 @@ table th {
     user-select: none;
 }
 
-.list-group-item:hover {
+/* .list-group-item:hover {
     background-color: #d8e6f3;
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
     transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
+} */
 
 /* Drag to reorder states */
 .js-drag-handle {
@@ -1013,10 +1013,10 @@ body.dark-mode .bus-stop.nearest-stop {
     box-shadow: 0 0 15px #1c748f, 0 2px 4px #0000004d;
 }
 
-body.dark-mode .bus-stop.nearest-stop:hover {
+/* body.dark-mode .bus-stop.nearest-stop:hover {
     background-color: #4a5568;
     box-shadow: 0 0 25px rgba(129, 144, 161, 0.5), 0 8px 20px rgba(0, 0, 0, 0.15);
-}
+} */
 
 body.dark-mode .nearest-stop-badge {
     color: #bcc5db;
@@ -1096,12 +1096,12 @@ body.dark-mode .list-group-item.drag-selected {
     box-shadow: 0 0 15px #8190a1, 0 2px 4px #0000004d;
 }
 
-body.dark-mode .list-group-item:hover {
+/* body.dark-mode .list-group-item:hover {
     background-color: #334250;
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
     transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
+} */
 
 /*  */
 body.dark-mode .card-bz {
