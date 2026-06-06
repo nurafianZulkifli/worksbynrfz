@@ -14,7 +14,25 @@
         url.searchParams.append('BusStopCode', busStopCode);
         const resp = await fetch(url.toString());
         if (!resp.ok) throw new Error('Failed to fetch arrivals: ' + resp.status);
-        return await resp.json();
+        const data = await resp.json();
+        
+        // Store server time offset for clock synchronization
+        if (data.serverTime) {
+            const serverTime = new Date(data.serverTime);
+            const clientTime = new Date();
+            window.__timeOffset = serverTime - clientTime;
+        }
+        
+        return data;
+    }
+
+    function getSynchronizedNow() {
+        // Returns the current time synchronized with server
+        // If server time offset is available, use it; otherwise use local time
+        if (window.__timeOffset !== undefined) {
+            return new Date(new Date().getTime() + window.__timeOffset);
+        }
+        return new Date();
     }
 
     function getDestinationMapFromArrivals(data) {
@@ -136,6 +154,7 @@
         getLoadIcon,
         formatArrivalTimeOrArr,
         getBusStops,
-        loadBusServiceTerminals
+        loadBusServiceTerminals,
+        getSynchronizedNow
     };
 })(window);

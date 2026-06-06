@@ -192,9 +192,16 @@ app.get('/bus-arrivals', async (req, res) => {
 
     const response = await ltaApi.get(`/v3/BusArrival?BusStopCode=${busStopCode}`);
 
+    // Add server timestamp for client-side clock synchronization
+    // This ensures consistent time calculations across all devices
+    const responseWithTime = {
+      ...response.data,
+      serverTime: new Date().toISOString()
+    };
+
     // Real-time data — never cache (auto-refreshes every 2s on client)
     res.set('Cache-Control', 'no-store');
-    res.json(response.data);
+    res.json(responseWithTime);
   } catch (error) {
     console.error('Error fetching data from LTA:', error.message);
     res.status(500).send('Error connecting to LTA DataMall');

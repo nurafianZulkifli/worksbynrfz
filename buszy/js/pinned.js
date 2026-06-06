@@ -50,7 +50,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     function formatArrivalTimeStyled(isoString) {
         if (window.SharedArrivals && typeof window.SharedArrivals.formatArrivalTimeOrArr === 'function') {
             try {
-                return window.SharedArrivals.formatArrivalTimeOrArr(isoString, new Date(), false);
+                // Use synchronized time if available
+                const now = (window.SharedArrivals && typeof window.SharedArrivals.getSynchronizedNow === 'function')
+                    ? window.SharedArrivals.getSynchronizedNow()
+                    : new Date();
+                return window.SharedArrivals.formatArrivalTimeOrArr(isoString, now, false);
             } catch (e) {
                 // fallback to local implementation
             }
@@ -59,7 +63,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         const arrivalTime = new Date(isoString);
         if (Number.isNaN(arrivalTime.getTime())) return '--';
 
-        const now = new Date();
+        // Use synchronized time if available
+        const now = (window.SharedArrivals && typeof window.SharedArrivals.getSynchronizedNow === 'function')
+            ? window.SharedArrivals.getSynchronizedNow()
+            : new Date();
         const timeDifference = arrivalTime - now;
         if (timeDifference <= 0) {
             return '<span class="arrival-now">Arr</span>';
