@@ -75,14 +75,15 @@
 
      function extractBusServiceCodes(text) {
          // Extract only the portion mentioning "bus services"
-         const busServicesRegex = /bus services?\s*[:\-]?\s*([^.]+?)(?:\s+(?:are|is)\s+(?:affected|diverted|disrupted|delayed)|\s*$)/i;
+         // Match "bus services" followed by codes, handling various verb patterns: "have been diverted", "are affected", etc.
+         const busServicesRegex = /bus services?\s*[:\-]?\s*([^,]+?)(?:\s+(?:have|has|are|is)\s+(?:been\s+)?(?:affected|diverted|disrupted|delayed))/i;
          const match = text.match(busServicesRegex);
 
          if (!match) {
              return [];
          }
 
-         // Get the portion after "bus services" but before "are affected/diverted/etc"
+         // Get the portion after "bus services"
          const servicesText = match[1];
 
          // Extract service codes from this portion: numbers (2-4 digits) optionally followed by a letter
