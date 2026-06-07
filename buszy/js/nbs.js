@@ -442,6 +442,29 @@ function displayBusStops(busStops, isCached = true) {
         let longPressTriggered = false;
         let touchStartX = 0;
         let touchStartY = 0;
+        let buttonJustCreated = false;
+
+        // Function to remove the pin button
+        function removePinButton() {
+            if (pinButton && pinButton.parentNode) {
+                pinButton.classList.remove('pin-btn-fade-in');
+                pinButton.classList.add('pin-btn-fade-out');
+                setTimeout(() => {
+                    if (pinButton && pinButton.parentNode) {
+                        pinButton.remove();
+                    }
+                    pinButton = null;
+                    document.removeEventListener('click', dismissPinButton);
+                }, 300);
+            }
+        }
+
+        // Function to dismiss the button when clicking outside
+        function dismissPinButton(event) {
+            if (!buttonJustCreated && pinButton && event.target !== pinButton && !pinButton.contains(event.target) && !busStopElement.contains(event.target)) {
+                removePinButton();
+            }
+        }
 
         // Add long press listener for pin/unpin button
         function startPinLongPress(x, y) {
@@ -460,11 +483,13 @@ function displayBusStops(busStops, isCached = true) {
                         event.stopPropagation();
                         event.preventDefault();
                         togglePinBusStop(busStop, pinButton);
-                        pinButton.classList.remove('pin-btn-fade-in');
-                        pinButton.classList.add('pin-btn-fade-out');
-                        setTimeout(() => { if (pinButton && pinButton.parentNode) { pinButton.remove(); } pinButton = null; }, 300);
+                        removePinButton();
                     });
                     controlsDiv.insertBefore(pinButton, controlsDiv.firstChild);
+                    // Add global click listener to dismiss when clicking outside
+                    buttonJustCreated = true;
+                    setTimeout(() => { buttonJustCreated = false; }, 300);
+                    document.addEventListener('click', dismissPinButton);
                 }
             }, 500);
         }

@@ -354,7 +354,30 @@ document.addEventListener('DOMContentLoaded', async () => {
             let longPressTriggered = false;
             let touchStartX = 0;
             let touchStartY = 0;
+            let buttonJustCreated = false;
             const isPinned = bookmarks.some((b) => b.BusStopCode === busStop.BusStopCode);
+
+            // Function to remove the bookmark button
+            function removeBookmarkButton() {
+                if (bookmarkButton && bookmarkButton.parentNode) {
+                    bookmarkButton.classList.remove('pin-btn-fade-in');
+                    bookmarkButton.classList.add('pin-btn-fade-out');
+                    setTimeout(() => {
+                        if (bookmarkButton && bookmarkButton.parentNode) {
+                            bookmarkButton.remove();
+                        }
+                        bookmarkButton = null;
+                        document.removeEventListener('click', dismissBookmarkButton);
+                    }, 300);
+                }
+            }
+
+            // Function to dismiss the button when clicking outside
+            function dismissBookmarkButton(event) {
+                if (!buttonJustCreated && bookmarkButton && event.target !== bookmarkButton && !bookmarkButton.contains(event.target) && !listItem.contains(event.target)) {
+                    removeBookmarkButton();
+                }
+            }
 
             // Add long press listener for bookmark button
             function startBookmarkLongPress(x, y) {
@@ -372,11 +395,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                             event.stopPropagation();
                             event.preventDefault();
                             togglePinned(busStop, bookmarkButton);
-                            bookmarkButton.classList.remove('pin-btn-fade-in');
-                            bookmarkButton.classList.add('pin-btn-fade-out');
-                            setTimeout(() => { if (bookmarkButton && bookmarkButton.parentNode) { bookmarkButton.remove(); } bookmarkButton = null; }, 300);
+                            removeBookmarkButton();
                         });
                         controls.insertBefore(bookmarkButton, controls.firstChild);
+                        // Add global click listener to dismiss when clicking outside
+                        buttonJustCreated = true;
+                        setTimeout(() => { buttonJustCreated = false; }, 300);
+                        document.addEventListener('click', dismissBookmarkButton);
                     }
                 }, 500);
             }

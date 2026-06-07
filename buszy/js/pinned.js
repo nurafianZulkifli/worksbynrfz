@@ -689,9 +689,32 @@ document.addEventListener('DOMContentLoaded', async () => {
                     let longPressTimer = null;
                     let pinButton = null;
                     let longPressTriggered = false;
+                    let buttonJustCreated = false;
 
                     let itemTouchStartX = 0;
                     let itemTouchStartY = 0;
+
+                    // Function to remove the pin button
+                    function removePinButton() {
+                        if (pinButton && pinButton.parentNode) {
+                            pinButton.classList.remove('pin-btn-fade-in');
+                            pinButton.classList.add('pin-btn-fade-out');
+                            setTimeout(() => {
+                                if (pinButton && pinButton.parentNode) {
+                                    pinButton.remove();
+                                }
+                                pinButton = null;
+                                document.removeEventListener('click', dismissPinButton);
+                            }, 300);
+                        }
+                    }
+
+                    // Function to dismiss the button when clicking outside
+                    function dismissPinButton(event) {
+                        if (!buttonJustCreated && pinButton && event.target !== pinButton && !pinButton.contains(event.target) && !listItem.contains(event.target)) {
+                            removePinButton();
+                        }
+                    }
 
                     // Add long press listener for pin button
                     function startPinLongPress(x, y) {
@@ -713,11 +736,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                                     event.stopPropagation();
                                     event.preventDefault();
                                     confirmAndRemoveBookmark(bookmark.BusStopCode);
-                                    pinButton.classList.remove('pin-btn-fade-in');
-                                    pinButton.classList.add('pin-btn-fade-out');
-                                    setTimeout(() => { if (pinButton && pinButton.parentNode) { pinButton.remove(); } pinButton = null; }, 300);
+                                    removePinButton();
                                 });
                                 controls.insertBefore(pinButton, controls.firstChild);
+                                // Add global click listener to dismiss when clicking outside
+                                buttonJustCreated = true;
+                                setTimeout(() => { buttonJustCreated = false; }, 300);
+                                document.addEventListener('click', dismissPinButton);
                             }
                         }, 500);
                     }
