@@ -840,19 +840,30 @@ async function fetchBusArrivals() {
                     if (card) container.appendChild(card);
                 });
             }
-            // Only update span.bus-time elements in place
+            // Only update span.bus-time and load indicators in place
             data.Services.forEach((service) => {
                 const hasNextBus = service.NextBus && typeof service.NextBus === 'object' && Object.keys(service.NextBus).length > 0;
                 const hasNextBus2 = service.NextBus2 && typeof service.NextBus2 === 'object' && Object.keys(service.NextBus2).length > 0;
                 const cardBt = container.querySelector(`.card-bt[data-service="${service.ServiceNo}"]`);
                 if (!cardBt) return;
                 const busTimeSpans = cardBt.querySelectorAll('span.bus-time');
+                const loadContainers = cardBt.querySelectorAll('span.load-icon-container');
                 const times = [];
                 if (hasNextBus) times.push(service.NextBus?.EstimatedArrival ? formatArrivalTimeOrArr(service.NextBus.EstimatedArrival, now) : '--');
                 if (hasNextBus2) times.push(service.NextBus2?.EstimatedArrival ? formatArrivalTimeOrArr(service.NextBus2.EstimatedArrival, now) : '--');
                 busTimeSpans.forEach((span, i) => {
                     if (times[i] !== undefined && span.innerHTML !== times[i]) {
                         span.innerHTML = times[i];
+                    }
+                });
+                // Update load icons in real-time
+                loadContainers.forEach((container, i) => {
+                    const busData = i === 0 ? service.NextBus : service.NextBus2;
+                    if (busData) {
+                        const newLoadIcon = getLoadIcon(busData.Load, busData.Type);
+                        if (container.innerHTML !== newLoadIcon) {
+                            container.innerHTML = newLoadIcon;
+                        }
                     }
                 });
             });
@@ -909,7 +920,7 @@ async function fetchBusArrivals() {
                             ${hasNextBus ? `
                             <div class="busNo-card d-flex justify-content-between">
                                 <span class="bus-time">${service.NextBus?.EstimatedArrival ? formatArrivalTimeOrArr(service.NextBus.EstimatedArrival, now) : '--'}</span>
-                                <span style="display: flex; align-items: center; gap: 0.3rem; flex-wrap: wrap;">
+                                <span class="load-icon-container" data-bus="next" style="display: flex; align-items: center; gap: 0.3rem; flex-wrap: wrap;">
                                     ${getLoadIcon(service.NextBus?.Load, service.NextBus?.Type)}
                                 </span>
                             </div>
@@ -917,7 +928,7 @@ async function fetchBusArrivals() {
                             ${hasNextBus2 ? `
                             <div class="busNo-card d-flex justify-content-between">
                                 <span class="bus-time">${service.NextBus2?.EstimatedArrival ? formatArrivalTimeOrArr(service.NextBus2.EstimatedArrival, now) : '--'}</span>
-                                <span style="display: flex; align-items: center; gap: 0.3rem; flex-wrap: wrap;">
+                                <span class="load-icon-container" data-bus="next2" style="display: flex; align-items: center; gap: 0.3rem; flex-wrap: wrap;">
                                     ${getLoadIcon(service.NextBus2?.Load, service.NextBus2?.Type)}
                                 </span>
                             </div>
