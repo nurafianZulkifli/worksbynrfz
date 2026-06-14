@@ -49,6 +49,7 @@ button:active {
         opacity: 0;
         transform: scale(0.8);
     }
+
     to {
         opacity: 1;
         transform: scale(1);
@@ -60,6 +61,7 @@ button:active {
         opacity: 1;
         transform: scale(1);
     }
+
     to {
         opacity: 0;
         transform: scale(0.8);
@@ -382,7 +384,7 @@ table th {
 
 /* GPS nearest stop highlight on NBS */
 .bus-stop.nearest-stop {
-    background-color: #c5d9df;
+    background-color: #caf3ff;
     border: 2px solid #1c748f;
     box-shadow: 0 0 15px #1c748f, 0 2px 4px #0000004d;
 }
@@ -1196,6 +1198,12 @@ body.dark-mode .btn-busloc.notif-toggle-btn.notif-active {
     background-color: #393e53;
     border: 2px solid #91a5be;
     box-shadow: 0 0 15px #8190a1, 0 2px 4px #0000004d;
+}
+
+body.dark-mode .card-bt.notif-highlight .card {
+    background-color: #0e3f4e;
+    border: 2px solid #1c748f;
+    box-shadow: 0 0 15px #1c748f, 0 2px 4px #0000004d;
 }
 
 body.dark-mode .notif-toggle-btn.notif-active span {
@@ -2339,11 +2347,11 @@ body.dark-mode .form-check-input {
     transition: transform 0.3s;
 }
 
-.toggle-switch input:checked + .toggle-slider {
+.toggle-switch input:checked+.toggle-slider {
     background-color: #1f84a2;
 }
 
-.toggle-switch input:checked + .toggle-slider::before {
+.toggle-switch input:checked+.toggle-slider::before {
     transform: translateX(22px);
 }
 
@@ -2351,6 +2359,6 @@ body.dark-mode .toggle-slider {
     background-color: #4a4a5a;
 }
 
-body.dark-mode .toggle-switch input:checked + .toggle-slider {
+body.dark-mode .toggle-switch input:checked+.toggle-slider {
     background-color: #1f84a2;
 }
