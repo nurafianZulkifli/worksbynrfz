@@ -1,4 +1,17 @@
 [
+        {
+        "type": "Delay",
+        "title": "CCL Minor Delay - Lorong Chuan - Bishan",
+        "line": "CCL",
+        "from": "Lorong Chuan",
+        "to": "Bishan",
+        "start": "2026-06-15",
+        "end": "2026-06-15",
+        "status": "Resolved",
+        "tags": [
+            "Delay"
+        ]
+    },
     {
         "type": "Disruption",
         "title": "BP Major Delay - Senja  - Bukit Panjang",
