@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -1699,7 +1699,7 @@
                 searchInput.value = savedService;
                 busServiceTab.style.display = 'inline-flex';
                 sessionStorage.removeItem('lastServiceSearch');
-                // Grey out button if suggestion needed — re-evaluated once JSON loads too
+                // Grey out button if suggestion needed â€” re-evaluated once JSON loads too
                 updateDidYouMean(savedService);
             }
 
@@ -1760,7 +1760,7 @@
                 updateDidYouMean(val);
             });
 
-            // Handle Bus Service button click — use exact or suggested casing, never force uppercase
+            // Handle Bus Service button click â€” use exact or suggested casing, never force uppercase
             busServiceTab.addEventListener('click', (e) => {
                 e.preventDefault();
                 const val = searchInput.value.trim();
@@ -1894,7 +1894,7 @@
     <script src="../js/back-to-top.js"></script>
 
     <script>
-        // ── First-Time Guide ─────────────────────────────────────────────────────
+        // â”€â”€ First-Time Guide â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         (function () {
             var _guideStep = 1;
             var GUIDE_KEY = 'buszy-guide-done';
@@ -1963,6 +1963,9 @@
         })();
     </script>
 
+    
+    <script src="./js/pull-to-refresh.js"></script>
+    <script src="../js/ios-pwa-pull-to-refresh-init.js"></script>
 </body>
 
 </html>
