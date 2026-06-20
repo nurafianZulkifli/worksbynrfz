@@ -687,6 +687,7 @@ body.drag-mode .list-group-item:not(.drag-selected) {
 
 .pinned {
     margin-bottom: 2em;
+    padding-top: max(1em, calc(4.5em + env(safe-area-inset-top, 0)));
 }
 
 .pinned h2 {

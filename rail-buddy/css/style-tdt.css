@@ -434,7 +434,7 @@ body.dark-mode .ann-header-btn {
 
 
     .page-header-section {
-        padding-top: 0em;
+        padding-top: max(0em, calc(4.5em + env(safe-area-inset-top, 0)));
         background: #ececea;
     }
 
