@@ -3437,3 +3437,19 @@ img.mfp-img {
 .carousel-cell-count-1 .flickity-prev-next-button {
     display: none !important;
 }
+
+/* ------------------------------------------ 25.0 Icon Rounding ------------------------------------------ */
+/* Apply rounded corners to favicons and icons - respects device icon shape */
+link[rel="icon"],
+link[rel="apple-touch-icon"],
+link[rel="shortcut icon"],
+.favicon,
+.app-icon {
+    border-radius: 50%;
+}
+
+img[src*="icon"],
+img[src*="favicon"],
+img[src*="logo"] {
+    border-radius: 50%;
+}

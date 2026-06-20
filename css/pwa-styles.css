@@ -281,3 +281,27 @@ body.dark-mode #pwa-splash .splash-name {
 body.dark-mode #pwa-splash .splash-hero {
     background-image: url('../img/bg-img/hero-bg-dark.png');
 }
+
+/* ===== Icon Rounding Styles ===== */
+/* Apply rounded corners to favicon and icon elements */
+link[rel="icon"],
+link[rel="apple-touch-icon"],
+link[rel="shortcut icon"],
+.favicon,
+.app-icon,
+[class*="icon"],
+[id*="icon"] {
+    border-radius: 50%;
+}
+
+/* Ensure PWA icons display with rounded appearance where supported */
+img[src*="icon"],
+img[src*="favicon"] {
+    border-radius: 50%;
+}
+
+/* For any app icons or homescreen icons displayed on page */
+.pwa-icon,
+.app-shortcut-icon {
+    border-radius: 50%;
+}

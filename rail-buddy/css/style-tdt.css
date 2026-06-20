@@ -445,11 +445,12 @@ body.dark-mode .ann-header-btn {
 
     .breadcrumb.breadcrumb-fixed {
         position: fixed;
-        top: 20px;
-        left: 20px;
+        top: max(20px, env(safe-area-inset-top, 20px));
+        left: max(20px, env(safe-area-inset-left, 20px));
+        right: max(20px, env(safe-area-inset-right, 20px));
         transform: none;
         width: auto;
-        max-width: 90vw;
+        max-width: calc(90vw - max(40px, calc(2 * env(safe-area-inset-left, 20px))));
         z-index: 2000;
         background: rgba(253, 253, 253, 0.635);
         backdrop-filter: blur(25px);
@@ -468,11 +469,21 @@ body.dark-mode .ann-header-btn {
         backdrop-filter: blur(25px);
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
         position: fixed;
-        top: 20px;
-        left: 20px;
+        top: max(20px, env(safe-area-inset-top, 20px));
+        left: max(20px, env(safe-area-inset-left, 20px));
+        right: max(20px, env(safe-area-inset-right, 20px));
         transform: none;
         width: auto;
-        max-width: 90vw;
+        max-width: calc(90vw - max(40px, calc(2 * env(safe-area-inset-left, 20px))));
+        z-index: 2000;
+        margin: 0;
+        border-radius: 50px;
+        padding: 0.75em 0em;
+        display: flex;
+        align-items: center;
+        opacity: 0.97;
+        transition: background 0.2s, box-shadow 0.2s, top 0.2s;
+    }
         z-index: 2000;
         margin: 0;
         border-radius: 50px;
@@ -484,7 +495,7 @@ body.dark-mode .ann-header-btn {
     }
 
     .breadcrumb.breadcrumb-fixed.at-top {
-        top: 0;
+        top: max(0, env(safe-area-inset-top, 0));
         background: none;
         box-shadow: none;
         padding-top: 1.5em;
@@ -492,7 +503,7 @@ body.dark-mode .ann-header-btn {
     }
 
     body.dark-mode .breadcrumb.breadcrumb-fixed.at-top {
-        top: 0;
+        top: max(0, env(safe-area-inset-top, 0));
         background: none;
         box-shadow: none;
         padding-top: 1.5em;
@@ -1064,4 +1075,19 @@ body.dark-mode .form-check-input:checked {
 body.dark-mode .form-check-input {
     background-color: #313544;
     border-color: #ffffff3b;
+}
+
+/* ===== Icon Rounding ===== */
+/* Apply rounded corners to favicons and icons - respects device icon shape */
+link[rel="icon"],
+link[rel="apple-touch-icon"],
+link[rel="shortcut icon"],
+.favicon,
+.app-icon {
+    border-radius: 50%;
+}
+
+img[src*="icon"],
+img[src*="favicon"] {
+    border-radius: 50%;
 }

@@ -1517,11 +1517,12 @@ body.dark-mode .alerts-indicator-dot {
 
     .breadcrumb.breadcrumb-fixed {
         position: fixed;
-        top: 20px;
-        left: 20px;
+        top: max(20px, env(safe-area-inset-top, 20px));
+        left: max(20px, env(safe-area-inset-left, 20px));
+        right: max(20px, env(safe-area-inset-right, 20px));
         transform: none;
         width: auto;
-        max-width: 90vw;
+        max-width: calc(90vw - max(40px, calc(2 * env(safe-area-inset-left, 20px))));
         z-index: 2000;
         background: rgba(253, 253, 253, 0.635);
         backdrop-filter: blur(25px);
@@ -1540,11 +1541,12 @@ body.dark-mode .alerts-indicator-dot {
         backdrop-filter: blur(25px);
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
         position: fixed;
-        top: 20px;
-        left: 20px;
+        top: max(20px, env(safe-area-inset-top, 20px));
+        left: max(20px, env(safe-area-inset-left, 20px));
+        right: max(20px, env(safe-area-inset-right, 20px));
         transform: none;
         width: auto;
-        max-width: 90vw;
+        max-width: calc(90vw - max(40px, calc(2 * env(safe-area-inset-left, 20px))));
         z-index: 2000;
         margin: 0;
         border-radius: 50px;
@@ -1556,7 +1558,7 @@ body.dark-mode .alerts-indicator-dot {
     }
 
     .breadcrumb.breadcrumb-fixed.at-top {
-        top: 0;
+        top: max(0, env(safe-area-inset-top, 0));
         background: none;
         box-shadow: none;
         padding-top: 1.5em;
@@ -1564,7 +1566,7 @@ body.dark-mode .alerts-indicator-dot {
     }
 
     body.dark-mode .breadcrumb.breadcrumb-fixed.at-top {
-        top: 0;
+        top: max(0, env(safe-area-inset-top, 0));
         background: none;
         box-shadow: none;
         padding-top: 1.5em;
@@ -2361,4 +2363,19 @@ body.dark-mode .toggle-slider {
 
 body.dark-mode .toggle-switch input:checked+.toggle-slider {
     background-color: #1f84a2;
+}
+
+/* ===== Icon Rounding ===== */
+/* Apply rounded corners to favicons and icons - respects device icon shape */
+link[rel="icon"],
+link[rel="apple-touch-icon"],
+link[rel="shortcut icon"],
+.favicon,
+.app-icon {
+    border-radius: 50%;
+}
+
+img[src*="icon"],
+img[src*="favicon"] {
+    border-radius: 50%;
 }
