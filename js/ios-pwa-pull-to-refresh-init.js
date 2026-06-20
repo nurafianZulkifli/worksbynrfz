@@ -1,11 +1,17 @@
 /**
  * ios-pwa-pull-to-refresh-init.js
  * Detects iOS web app mode and initializes pull-to-refresh functionality
+ * NOTE: Disabled on iOS due to display issues in web app mode
  */
 (function () {
     // Check if running on iOS
     function isIOS() {
         return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    }
+
+    // Don't initialize pull-to-refresh on iOS due to display issues
+    if (isIOS()) {
+        return;
     }
 
     // Check if running as web app (PWA installed mode)
@@ -29,8 +35,8 @@
             return;
         }
 
-        // Only enable on iOS and in web app mode
-        if (!isIOS() || !isWebApp()) {
+        // Only enable in web app mode (not on iOS, as checked above)
+        if (!isWebApp()) {
             return;
         }
 
