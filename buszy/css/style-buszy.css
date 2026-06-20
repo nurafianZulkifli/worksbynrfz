@@ -1517,7 +1517,7 @@ body.dark-mode .alerts-indicator-dot {
 
     .breadcrumb.breadcrumb-fixed {
         position: fixed;
-        top: 20px;
+        top: max(20px, env(safe-area-inset-top, 20px));
         left: 20px;
         transform: none;
         width: auto;
@@ -1540,7 +1540,7 @@ body.dark-mode .alerts-indicator-dot {
         backdrop-filter: blur(25px);
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
         position: fixed;
-        top: 20px;
+        top: max(20px, env(safe-area-inset-top, 20px));
         left: 20px;
         transform: none;
         width: auto;
@@ -1556,7 +1556,7 @@ body.dark-mode .alerts-indicator-dot {
     }
 
     .breadcrumb.breadcrumb-fixed.at-top {
-        top: 0;
+        top: env(safe-area-inset-top, 0);
         background: none;
         box-shadow: none;
         padding-top: 1.5em;
@@ -1564,11 +1564,32 @@ body.dark-mode .alerts-indicator-dot {
     }
 
     body.dark-mode .breadcrumb.breadcrumb-fixed.at-top {
-        top: 0;
+        top: env(safe-area-inset-top, 0);
         background: none;
         box-shadow: none;
         padding-top: 1.5em;
         padding-left: 0em;
+    }
+
+    /* Top blur effect matching bottom navbar */
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: calc(120px + env(safe-area-inset-top));
+        background: linear-gradient(to bottom, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 100%);
+        -webkit-backdrop-filter: blur(20px);
+        backdrop-filter: blur(20px);
+        pointer-events: none;
+        -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
+        mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
+        z-index: 999;
+    }
+
+    body.dark-mode::before {
+        background: linear-gradient(to bottom, rgba(20, 24, 41, 1.7) 0%, rgba(31, 36, 59, 0) 100%);
     }
 
     .mobile-bottom-nav {
