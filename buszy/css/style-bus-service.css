@@ -400,7 +400,7 @@ body.dark-mode .terminal-name a.terminal-link {
 
 /* Stops Section */
 .stops-section {
-    margin: 8em 0;
+    margin: 9em 0;
 }
 
 .stops-section h2 {
@@ -1093,7 +1093,7 @@ body.dark-mode .info-item {
 @media (max-width: 768px) {
     .main-content {
         padding-top: 2em;
-        padding-bottom: 8em;
+        padding-bottom: 9em;
     }
 
     .service-header {
@@ -1158,7 +1158,7 @@ body.dark-mode .info-item {
     .main-content {
         padding-top: 2em;
         padding-right: 2em;
-        padding-bottom: 8em;
+        padding-bottom: 9em;
         padding-left: 2em;
     }
 
@@ -1193,7 +1193,7 @@ body.dark-mode .info-item {
     }
 
     .main-content {
-        padding-bottom: 8em;
+        padding-bottom: 9em;
         padding: 2em;
     }
 
