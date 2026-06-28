@@ -164,13 +164,90 @@ body.dark-mode li.breadcrumb-item a {
 
 /* Install Banner Styles */
 .pwa-install-banner {
-    background: linear-gradient(58deg, rgba(172, 55, 42, 0.60) 0%, rgba(163, 110, 17, 0.60) 100%);
-    backdrop-filter: blur(25px);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(58deg, rgba(172, 55, 42, 0.85) 0%, rgba(163, 110, 17, 0.85) 100%);
+  color: white;
+  padding: 16px;
+  z-index: 9999;
+  box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.3s ease-out;
+  border-radius: 24px;
+  margin: 1em;
+  backdrop-filter: blur(25px);
+  transition: bottom 0.3s ease;
+}
+
+.pwa-banner-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.pwa-banner-text h3 {
+  margin: 0 0 4px 0;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: #fff;
+}
+
+.pwa-banner-text p {
+  margin: 0;
+  font-size: 14px;
+  opacity: 0.95;
+  line-height: 1.4;
+  color: #fff;
+}
+
+.pwa-banner-buttons {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.pwa-banner-buttons button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 24px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
 .pwa-install-btn {
-    background: white;
-    color: #8f2d22;
+  background: white;
+  color: #8f2d22;
+}
+
+.pwa-install-btn:hover {
+  background: #f0f0f0;
+  transform: translateY(-2px);
+}
+
+.pwa-install-btn:active {
+  transform: translateY(0);
+}
+
+.pwa-cancel-btn {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.pwa-cancel-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.pwa-cancel-btn:active {
+  transform: translateY(0);
 }
 
 body.dark-mode .about-me-summ {
@@ -434,7 +511,7 @@ body.dark-mode .ann-header-btn {
 
 
     .page-header-section {
-        padding-top: max(0em, calc(4.5em + env(safe-area-inset-top, 0)));
+        padding-top: 0em;
         background: #ececea;
     }
 
@@ -485,7 +562,7 @@ body.dark-mode .ann-header-btn {
 
     .breadcrumb.breadcrumb-fixed.at-top {
         top: env(safe-area-inset-top, 0);
-        background: none;
+        background: transparent;
         box-shadow: none;
         padding-top: 1.5em;
         padding-left: 0em;
@@ -493,7 +570,7 @@ body.dark-mode .ann-header-btn {
 
     body.dark-mode .breadcrumb.breadcrumb-fixed.at-top {
         top: env(safe-area-inset-top, 0);
-        background: none;
+        background: transparent;
         box-shadow: none;
         padding-top: 1.5em;
         padding-left: 0em;
@@ -509,6 +586,7 @@ body.dark-mode .ann-header-btn {
         display: flex !important;
         justify-content: center;
         pointer-events: none;
+        padding-bottom: env(safe-area-inset-bottom);
     }
 
     .mobile-bottom-nav::before {
@@ -517,7 +595,7 @@ body.dark-mode .ann-header-btn {
         left: 0;
         right: 0;
         bottom: 0;
-        height: 120px;
+        height: calc(120px + env(safe-area-inset-bottom));
         background: linear-gradient(to top, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 100%);
         -webkit-backdrop-filter: blur(20px);
         backdrop-filter: blur(20px);
@@ -539,11 +617,17 @@ body.dark-mode .ann-header-btn {
         margin: 20px 20px;
         padding: 0 4px;
         width: 100%;
-        max-width: 340px;
+        max-width: 440px;
         justify-content: space-between;
         pointer-events: auto;
+        transition: transform 0.3s ease;
+        transform-origin: bottom center;
     }
 
+    .mobile-bottom-nav.shrunk ul {
+        transform: scale(0.9);
+        padding: 2px 1px !important;
+    }
 
     body.dark-mode .mobile-bottom-nav ul {
         background: #1f243bc9;
@@ -570,7 +654,7 @@ body.dark-mode .ann-header-btn {
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: 6px 0 6px;
+        padding: 14px 0 14px;
         width: 100%;
         text-decoration: none;
     }

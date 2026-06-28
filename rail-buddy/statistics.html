@@ -6,143 +6,33 @@
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="57TuruPNu5wqSSia_cUehl5t9Gh1AbxrHNPcMiFx-aQ" />
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover, user-scalable=no">
+    <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0f1419" media="(prefers-color-scheme: dark)">
     <title>Statistics | RailBuddy</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
     <meta property="og:image" content="https://i.imgur.com/i8n9KYs.png" />
 
-    <link rel="icon" href="assets/icon-512.png">
+    <link rel="icon" href="./assets/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="./assets/icon-512.png">
 
     <script src="https://kit.fontawesome.com/965e82ac01.js" crossorigin="anonymous"></script>
 
+    <!-- Core Stylesheet -->
     <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="css/style-tdt.css">
     <link rel="stylesheet" href="../css/style-breakpoints.css">
+    <link rel="stylesheet" href="../css/pwa-styles.css">
     <link rel="stylesheet" href="../css/dark-mode.css">
+    <link rel="stylesheet" href="../css/ios-safari.css">
 
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WN76281P3Q"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-
-        gtag('config', 'G-WN76281P3Q');
-    </script>
+    <!-- Page Specific Stylesheet -->
+    <link rel="stylesheet" href="./css/style-tdt.css">
+    <link rel="stylesheet" href="./css/stats.css">
 
 </head>
-
-<style>
-    #delays-bar-chart canvas {
-        height: 230px !important;
-        max-height: 230px;
-    }
-
-    #delays-bar-chart {
-        position: relative;
-    }
-
-    .chart-caplets {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        margin-top: -20px;
-        gap: 2px;
-    }
-
-    .chart-caplet {
-        flex: 0 1 auto;
-        display: inline-block;
-        writing-mode: vertical-rl;
-        text-orientation: mixed;
-        transform: rotate(180deg);
-        background: #e1251b;
-        color: #fff;
-        font-weight: bold;
-        border-radius: 13.6px / 8.2px;
-        padding: 6px 4px;
-        font-size: 15px;
-        letter-spacing: 1px;
-        border: 2px solid #fff;
-        font-family: 'Onest', sans-serif;
-    }
-
-    body.dark-mode .chart-caplet {
-        border: 2px solid #2e2e2e;
-    }
-
-    .chart-caplet.nsl {
-        background: #e1251b;
-    }
-
-    .chart-caplet.ewl {
-        background: #00953b;
-    }
-
-    .chart-caplet.ccl {
-        background: #ff9e18;
-        color: #000;
-    }
-
-    .chart-caplet.dtl {
-        background: #0055b8;
-    }
-
-    .chart-caplet.nel {
-        background: #9e28b5;
-    }
-
-    .chart-caplet.tel {
-        background: #9d5918;
-    }
-
-    .chart-caplet.lrt {
-        background: #718472;
-    }
-
-    .chart-container {
-        max-width: 600px;
-        width: 100%;
-        margin: 0 auto;
-        box-sizing: border-box;
-    }
-
-    .chart-container canvas {
-        max-width: 100%;
-        height: auto;
-        display: block;
-    }
-
-    body.dark-mode .mkbf-line-chart-lrt,
-    body.dark-mode .mkbf-line-chart-mrt {
-        border: 1px solid #2b2b2b33 !important;
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1) !important;
-    }
-
-    @media (max-width: 994px) {
-        .chart-caplets {
-            gap: 2px;
-            margin-top: -10px;
-            margin-left: 26px;
-            margin-right: 26px;
-        }
-
-        .chart-caplet {
-            font-size: 10px !important;
-            flex: 0 1 auto;
-        }
-
-        #delays-bar-chart canvas,
-        #mkbf-line-chart-mrt canvas,
-        #mkbf-line-chart-lrt canvas {
-            height: auto !important;
-            min-height: 120px !important;
-            width: 100% !important;
-        }
-
-    }
-</style>
 
 <body>
     <!-- Fixed Breadcrumb at very top (mobile/tablet only) -->
@@ -210,7 +100,7 @@
                     <span class="icon">
                         <i class="fa-sharp fa-regular fa-home"></i>
                     </span>
-                    <span class="label">Home</span>
+                    <!-- <span class="label">Home</span> -->
                 </a>
             </li>
             <li>
@@ -218,7 +108,7 @@
                     <span class="icon">
                         <i class="fa-regular fa-clock-rotate-left"></i>
                     </span>
-                    <span class="label">History</span>
+                    <!-- <span class="label">History</span> -->
                 </a>
             </li>
             <li>
@@ -226,7 +116,7 @@
                     <span class="icon">
                         <i class="fa-regular fa-clock"></i>
                     </span>
-                    <span class="label">Timings</span>
+                    <!-- <span class="label">Timings</span> -->
                 </a>
             </li>
             <li class="active">
@@ -234,7 +124,7 @@
                     <span class="icon">
                         <i class="fa-regular fa-bars"></i>
                     </span>
-                    <span class="label">Menu</span>
+                    <!-- <span class="label">Menu</span> -->
                 </a>
             </li>
         </ul>
@@ -268,7 +158,7 @@
                         </nav>
                         <div class="page-title-wrapper">
                             <div
-                                style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;" title="Click once for Chime A, thrice for Chime B">
+                                style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
                                 <div>
                                     <h1 class="page-title" id="filter-title">Statistics</h1>
                                 </div>
@@ -348,13 +238,12 @@
 
     <script src="js/hist.js"></script>
 
-    <script src="../js/back-to-top.js"></script>
+    <!-- <script src="../js/back-to-top.js"></script> -->
 
-    
-    <script src="./js/pull-to-refresh.js"></script>
-    <script src="../js/ios-pwa-pull-to-refresh-init.js"></script>
-    
-    <script src="../js/ios-pwa-warning.js"></script></body>
+    <!-- <script src="./js/pull-to-refresh.js"></script>
+    <script src="../js/ios-pwa-pull-to-refresh-init.js"></script> -->
+
+    <script src="../js/ios-pwa-warning.js"></script>
+</body>
 
 </html>
-

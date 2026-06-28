@@ -2,26 +2,38 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="description" content="Personal finance tracking with account management, budget monitoring, and transaction history">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover, user-scalable=no">
+    <meta name="color-scheme" content="light dark">
     <title>Home | FinTrack</title>
+    <meta property="og:image" content="https://i.imgur.com/i8n9KYs.png" />
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="FinTrack">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0f1419" media="(prefers-color-scheme: dark)">
+
+    <link rel="manifest" href="./manifest.json">
+
+    <link rel="icon" href="./assets/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="./assets/icon-512.png">
+    
+    <link rel="apple-touch-startup-image" href="../img/bg-img/hero-bg-dark.png">
 
     <script src="https://kit.fontawesome.com/965e82ac01.js" crossorigin="anonymous"></script>
 
+    <!-- Core Stylesheet -->
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="css/finTrack.css">
-    <link rel="stylesheet" href="../css/pwa-styles.css">
     <link rel="stylesheet" href="../css/style-breakpoints.css">
+    <link rel="stylesheet" href="../css/pwa-styles.css">
     <link rel="stylesheet" href="../css/dark-mode.css">
+    <link rel="stylesheet" href="../css/ios-safari.css">
 
-    <link rel="icon" href="./assets/icon-192.png" type="image/png">
-    <link rel="apple-touch-startup-image" href="../img/bg-img/hero-bg-dark.png">
-    <link rel="manifest" href="./manifest.json">
+    <!-- Page Specific Stylesheet -->
+    <link rel="stylesheet" href="css/finTrack.css">
 
 </head>
 <body>
@@ -83,19 +95,19 @@
             <li class="active">
                 <a href="#">
                     <span class="icon"><i class="fa-regular fa-money-bills-simple"></i></span>
-                    <span class="label">Transactions</span>
+                    <!-- <span class="label">Transactions</span> -->
                 </a>
             </li>
             <li>
                 <a href="repayments.html">
                     <span class="icon"><i class="fa-regular fa-money-bill-transfer"></i></span>
-                    <span class="label">Repayments</span>
+                    <!-- <span class="label">Repayments</span> -->
                 </a>
             </li>
             <li>
                 <a href="menu.html">
                     <span class="icon"><i class="fa-regular fa-bars"></i></span>
-                    <span class="label">Menu</span>
+                    <!-- <span class="label">Menu</span> -->
                 </a>
             </li>
         </ul>
@@ -200,7 +212,7 @@
                             budget</strong>.
                         <div class="guide-tip">
                             <i class="fa-regular fa-lightbulb"></i>
-                            You can create multiple accounts â€” one for each budget category, like <em>Commitments</em>
+                            You can create multiple accounts - one for each budget category, like <em>Commitments</em>
                             or <em>Fun Money</em>.
                         </div>
                     </div>
@@ -234,7 +246,7 @@
                     <div class="guide-step-title">New Month Reset</div>
                     <div class="guide-step-body">
                         At the start of a new month, tap <strong>New Month Reset</strong> on the main screen. This
-                        restarts your balance from zero â€” but <strong>all your transaction history is kept</strong> and
+                        restarts your balance from zero - but <strong>all your transaction history is kept</strong> and
                         still browsable via the month tabs.
                         <div class="guide-tip">
                             <i class="fa-regular fa-lightbulb"></i>
@@ -543,7 +555,7 @@
     <script src="js/mob-navtabs.js"></script>
     <script src="js/mob-navtabs-tooltip.js"></script>
     <script src="js/haptic.js"></script>
-    <script src="../js/back-to-top.js"></script>
+    <!-- <script src="../js/back-to-top.js"></script> -->
 
     <!-- Dismiss PWA Splash Screen -->
     <script>
@@ -571,9 +583,5 @@
     <!-- Service Worker Registration & Install Banner -->
     <script src="js/pwa-init.js"></script>
     
-    <script src="./js/pull-to-refresh.js"></script>
-    <script src="../js/ios-pwa-pull-to-refresh-init.js"></script>
-    
-    <script src="../js/ios-pwa-warning.js"></script></body>
 </html>
 

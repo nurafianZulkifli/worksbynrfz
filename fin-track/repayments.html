@@ -2,195 +2,40 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="description" content="Personal finance tracking with account management, budget monitoring, and transaction history">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover, user-scalable=no">
+    <meta name="color-scheme" content="light dark">
     <title>Repayments | FinTrack</title>
+    <meta property="og:image" content="https://i.imgur.com/i8n9KYs.png" />
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="FinTrack">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0f1419" media="(prefers-color-scheme: dark)">
+
+    <link rel="manifest" href="./manifest.json">
+
+    <link rel="icon" href="./assets/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="./assets/icon-512.png">
+    
+    <link rel="apple-touch-startup-image" href="../img/bg-img/hero-bg-dark.png">
 
     <script src="https://kit.fontawesome.com/965e82ac01.js" crossorigin="anonymous"></script>
 
-    <link rel="icon" href="./assets/icon-512.png">
-
+    <!-- Core Stylesheet -->
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="css/finTrack.css">
-    <link rel="stylesheet" href="../css/pwa-styles.css">
     <link rel="stylesheet" href="../css/style-breakpoints.css">
+    <link rel="stylesheet" href="../css/pwa-styles.css">
     <link rel="stylesheet" href="../css/dark-mode.css">
+    <link rel="stylesheet" href="../css/ios-safari.css">
 
-    <link rel="apple-touch-startup-image" href="../img/bg-img/hero-bg-dark.png">
-    <link rel="manifest" href="./manifest.json">
+    <!-- Page Specific Stylesheet -->
+    <link rel="stylesheet" href="./css/finTrack.css">
+    <link rel="stylesheet" href="./css/repayments.css">
 
-    <style>
-        /* Page title inside cover */
-        .rp-cover-title {
-            color: rgba(255, 255, 255, 0.92);
-            font-size: 0.72rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1.2px;
-            margin-bottom: 10px;
-            opacity: 0.85;
-        }
-
-        /* Loan summary badge in cover */
-        .rp-cover-badge {
-            color: rgba(255, 255, 255, 0.82);
-            font-size: 0.78rem;
-            font-weight: 500;
-            margin-top: 4px;
-        }
-
-        /* Outstanding amount badge */
-        .outstanding-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(220, 38, 38, 0.18);
-            border: 1px solid rgba(220, 38, 38, 0.35);
-            color: #fca5a5;
-            border-radius: 99px;
-            padding: 4px 12px;
-            font-size: 0.77rem;
-            font-weight: 600;
-            margin-top: 6px;
-        }
-
-        .outstanding-badge.fully-repaid {
-            background: rgba(22, 163, 74, 0.18);
-            border-color: rgba(22, 163, 74, 0.35);
-            color: #86efac;
-        }
-
-        /* Loan date sub-label */
-        .loan-date-label {
-            font-size: 0.72rem;
-            color: #6b7280;
-            margin-top: 2px;
-        }
-
-        body.dark-mode .loan-date-label {
-            color: #a0a0b0;
-        }
-
-        /* Repayment progress bar â€” use green always for repayment context */
-        .rp-progress-bar-wrap {
-            background: #f3f4f6;
-            border-radius: 99px;
-            height: 8px;
-            overflow: hidden;
-        }
-
-        body.dark-mode .rp-progress-bar-wrap {
-            background: #2e3244;
-        }
-
-        .rp-progress-fill {
-            height: 100%;
-            border-radius: 99px;
-            background: linear-gradient(90deg, #42c07e 0%, #239690 100%);
-            transition: width 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-
-        /* Action row below summary */
-        .rp-card-actions {
-            margin-top: 14px;
-            display: flex;
-            gap: 10px;
-            justify-content: flex-end;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        /* Note text in txn-item */
-        .rp-no-loans {
-            text-align: center;
-            padding: 56px 20px 40px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .rp-no-loans i {
-            font-size: 2.8rem;
-            color: #9ca3af;
-        }
-
-        body.dark-mode .rp-no-loans i {
-            color: #6b7280;
-        }
-
-        .rp-no-loans-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #374151;
-            cursor: default;
-        }
-
-        body.dark-mode .rp-no-loans-title {
-            color: #c9cade;
-        }
-
-        .rp-no-loans-desc {
-            font-size: 0.85rem;
-            color: #6b7280;
-            max-width: 260px;
-            line-height: 1.5;
-            cursor: default;
-        }
-
-        body.dark-mode .rp-no-loans-desc {
-            color: #9ca3af;
-        }
-
-        /* Loan note in summary */
-        .loan-note-display {
-            font-size: 0.78rem;
-            color: #6b7280;
-            margin-top: 6px;
-            font-style: italic;
-        }
-
-        body.dark-mode .loan-note-display {
-            color: #a0a0b0;
-        }
-
-        /* Loan switcher button highlight pulse */
-        @keyframes loanBtnPulse {
-            0% {
-                box-shadow: 0 0 0 0 rgba(66, 192, 126, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.233);
-                background: #ffffffb4;
-            }
-
-            40% {
-                box-shadow: 0 0 0 10px rgba(66, 192, 126, 0), inset 0 1px 0 rgba(255, 255, 255, 0.233);
-                background: #c6f6de;
-            }
-
-            60% {
-                box-shadow: 0 0 0 0 rgba(66, 192, 126, 0), inset 0 1px 0 rgba(255, 255, 255, 0.233);
-                background: #ffffffb4;
-            }
-
-            80% {
-                box-shadow: 0 0 0 8px rgba(66, 192, 126, 0), inset 0 1px 0 rgba(255, 255, 255, 0.233);
-                background: #c6f6de;
-            }
-
-            100% {
-                box-shadow: 0 0 0 0 rgba(66, 192, 126, 0), inset 0 1px 0 rgba(255, 255, 255, 0.233);
-                background: #ffffffb4;
-            }
-        }
-
-        .loan-switcher-highlight {
-            animation: loanBtnPulse 0.9s ease-out 2;
-        }
-    </style>
 </head>
 
 <body>
@@ -238,19 +83,19 @@
             <li>
                 <a href="index.html">
                     <span class="icon"><i class="fa-regular fa-money-bills-simple"></i></span>
-                    <span class="label">Transactions</span>
+                    <!-- <span class="label">Transactions</span> -->
                 </a>
             </li>
             <li class="active">
                 <a href="repayments.html">
                     <span class="icon"><i class="fa-regular fa-money-bill-transfer"></i></span>
-                    <span class="label">Repayments</span>
+                    <!-- <span class="label">Repayments</span> -->
                 </a>
             </li>
             <li>
                 <a href="menu.html">
                     <span class="icon"><i class="fa-regular fa-bars"></i></span>
-                    <span class="label">Menu</span>
+                    <!-- <span class="label">Menu</span> -->
                 </a>
             </li>
         </ul>
@@ -349,7 +194,7 @@
                         <strong>New Loan</strong> to record the loan name, amount, and date.
                         <div class="guide-tip">
                             <i class="fa-regular fa-lightbulb"></i>
-                            You can track multiple loans at once â€” switch between them anytime using the name button.
+                            You can track multiple loans at once - switch between them anytime using the name button.
                         </div>
                     </div>
                 </div>
@@ -366,7 +211,7 @@
                         The progress bar shows how much has been repaid so far.
                         <div class="guide-tip">
                             <i class="fa-regular fa-lightbulb"></i>
-                            Use <strong>Mark Fully Repaid</strong> to close out a loan in one tap â€” it records the
+                            Use <strong>Mark Fully Repaid</strong> to close out a loan in one tap - it records the
                             remaining balance automatically.
                         </div>
                     </div>
@@ -493,10 +338,5 @@
 
     <script src="js/repayments.js"></script>
 
-    
-    <script src="./js/pull-to-refresh.js"></script>
-    <script src="../js/ios-pwa-pull-to-refresh-init.js"></script>
-    
-    <script src="../js/ios-pwa-warning.js"></script></body>
+</body>
 </html>
-

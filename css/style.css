@@ -2512,7 +2512,7 @@ h2.page-title {
 }
 
 .page-header-section {
-    padding-top: 2em;
+    padding-top: calc(2em + max(0px, env(safe-area-inset-top, 0px)));
     background: #ececea;
 }
 

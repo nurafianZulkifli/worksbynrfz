@@ -1,27 +1,27 @@
-// Hide/show mobile bottom nav on scroll (mobile only)
+// Mobile bottom nav always visible - no hide/show on scroll
+
+// Mobile bottom nav shrink on scroll
 (function () {
     var lastScrollY = window.scrollY;
     var nav = document.querySelector('.mobile-bottom-nav');
+    if (!nav) return;
     var ticking = false;
-    var isHidden = false;
+    var isShrunken = false;
     var scrollThreshold = 8;
 
     function onScroll() {
         var currentScrollY = window.scrollY;
-        if (window.innerWidth > 600) return; // Only on mobile
         if (currentScrollY > lastScrollY + scrollThreshold) {
-            // Scrolling down — hide quickly
-            if (!isHidden) {
-                nav.classList.add('nav-hiding');
-                nav.style.transform = 'translateY(100%)';
-                isHidden = true;
+            // Scrolling down — shrink nav
+            if (!isShrunken) {
+                nav.classList.add('shrunk');
+                isShrunken = true;
             }
         } else if (currentScrollY < lastScrollY - scrollThreshold) {
-            // Scrolling up — show smoothly
-            if (isHidden) {
-                nav.classList.remove('nav-hiding');
-                nav.style.transform = 'translateY(0)';
-                isHidden = false;
+            // Scrolling up — expand nav
+            if (isShrunken) {
+                nav.classList.remove('shrunk');
+                isShrunken = false;
             }
         }
         lastScrollY = currentScrollY;
@@ -34,14 +34,6 @@
                 ticking = false;
             });
             ticking = true;
-        }
-    });
-
-    // Reset nav position on resize
-    window.addEventListener('resize', function () {
-        if (window.innerWidth > 600) {
-            nav.style.transform = '';
-            isHidden = false;
         }
     });
 })();

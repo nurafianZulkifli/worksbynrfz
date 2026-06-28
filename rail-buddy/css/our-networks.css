@@ -1,0 +1,86 @@
+.line {
+    font-size: 25px;
+    padding-left: 46px !important;
+    padding-top: 1px;
+    color: #fff;
+    cursor: default;
+    background-size: 1.5em;
+    background-repeat: no-repeat;
+    background-position: left center;
+}
+
+.line-nsl {
+    background-image: url("../assets/caplets/NSLCap.png");
+}
+
+.line-ewl {
+    background-image: url("../assets/caplets/EWLCap.png");
+}
+
+.line-nel {
+    background-image: url("../assets/caplets/NELCap.png");
+}
+
+.line-ccl {
+    background-image: url("../assets/caplets/CCLCap.png");
+}
+
+.line-dtl {
+    background-image: url("../assets/caplets/DTLCap.png");
+}
+
+.line-tel {
+    background-image: url("../assets/caplets/TELCap.png");
+}
+
+.line-bp {
+    background-image: url("../assets/caplets/BPCap.png");
+}
+
+.line-sk {
+    background-image: url("../assets/caplets/SKCap.png");
+}
+
+.line-pg {
+    background-image: url("../assets/caplets/PGCap.png");
+}
+
+.single-post-area .post-thumbnail {
+    display: block;
+    overflow: hidden;
+    border-radius: 20px;
+}
+
+.single-post-area .post-thumbnail img {
+    width: 100%;
+    transition-duration: 800ms;
+}
+
+.single-post-area {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 10px;
+    transition-duration: 500ms;
+    border-radius: 20px;
+}
+
+.single-post-area .post-content {
+    position: absolute;
+    left: 30px;
+    bottom: 15px;
+    right: 30px;
+    z-index: 100;
+}
+
+
+.single-post-area .post-content .post-title {
+    font-size: 20px;
+    color: #ffffff;
+    margin-top: 1px;
+    display: -webkit-box;
+    max-width: 14em;
+    line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+

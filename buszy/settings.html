@@ -7,6 +7,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="57TuruPNu5wqSSia_cUehl5t9Gh1AbxrHNPcMiFx-aQ" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover">
+    <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0f1419" media="(prefers-color-scheme: dark)">
     <title>Settings | Buszy</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
@@ -14,51 +17,24 @@
 
     <link rel="manifest" href="./manifest.json">
 
-    <link rel="icon" href="../buszy/assets/icon-512.png">
+    <link rel="icon" href="../buszy/assets/logo.png">
+    <link rel="apple-touch-icon" href="./assets/icon-512.png">
 
 
     <script src="https://kit.fontawesome.com/965e82ac01.js" crossorigin="anonymous"></script>
 
+    <!-- Core Stylesheet -->
     <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="css/style-buszy.css">
     <link rel="stylesheet" href="../css/style-breakpoints.css">
+    <link rel="stylesheet" href="../css/pwa-styles.css">
     <link rel="stylesheet" href="../css/dark-mode.css">
+    <link rel="stylesheet" href="../css/ios-safari.css">
 
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WN76281P3Q"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-
-        gtag('config', 'G-WN76281P3Q');
-    </script>
+    <!-- Page Specific Stylesheet -->
+    <link rel="stylesheet" href="./css/style-buszy.css">
+    <link rel="stylesheet" href="./css/settings.css">
 
 </head>
-
-<style>
-    .settings-switch-desc,
-    .settings-notify-desc {
-        text-align: left !important;
-        margin-bottom: 0rem;
-    }
-
-    #sync-copy-btn {
-        background: none;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        padding: 0.45rem 0.65rem;
-        cursor: pointer;
-        font-size: 14px;
-        flex-shrink: 0;
-        color: #000;
-    }
-
-    body.dark-mode #sync-copy-btn {
-        border-color: #555;
-        color: #fff;
-    }
-</style>
 
 
 <body>
@@ -104,9 +80,9 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="./alerts.html" class="nav-link">
-                        <i class="fa-regular fa-triangle-exclamation"></i>
-                        <span>Alerts</span>
+                    <a href="./ann.html" class="nav-link">
+                        <i class="fa-regular fa-arrows-rotate"></i>
+                        <span>Updates</span>
                         <span class="alerts-indicator-dot"></span>
                     </a>
                 </li>
@@ -141,12 +117,12 @@
                 </a>
             </li>
             <li>
-                <a href="./alerts.html">
+                <a href="./ann.html">
                     <span class="icon">
-                        <i class="fa-regular fa-triangle-exclamation"></i>
+                        <i class="fa-regular fa-arrows-rotate"></i>
                         <span class="alerts-indicator-dot"></span>
                     </span>
-                    <span class="label">Alerts</span>
+                    <!-- <span class="label">Updates</span> -->
                 </a>
             </li>
             <li class="active">
@@ -189,7 +165,7 @@
                         </nav>
                         <div class="page-title-wrapper">
                             <div
-                                style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;" title="Click once for Chime A, thrice for Chime B">
+                                style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
                                 <div>
                                     <h1 class="page-title" id="filter-title">Settings</h1>
                                 </div>
@@ -304,7 +280,8 @@
                     <span id="refresh-interval-value"
                         style="font-weight: 600; min-width: 60px; font-size: 15px; cursor: default;">2 sec</span>
                 </div>
-                <p class="settings-switch-desc">Adjust how often the Arrival Timings page refreshes (1â€“10 seconds).</p>
+                <p class="settings-switch-desc">Adjust how often the Arrival Timings page refreshes (1â€“10 seconds).
+                </p>
             </div>
 
             <div class="settings-page-section">
@@ -323,8 +300,9 @@
                             <span>Generate Sync Code</span>
                         </button>
                     </div>
-                    <p style="margin: 0.75rem 0 0.5rem; font-size: 13px; color: #888; text-align: center;">â€” or enter an
-                        existing code â€”</p>
+                    <p style="margin: 0.75rem 0 0.5rem; font-size: 13px; color: #888; text-align: center;">- or enter
+                        an
+                        existing code -</p>
                     <div style="display: flex; gap: 0.5rem;">
                         <input type="text" id="sync-code-input" placeholder="e.g. abc12-def34" autocomplete="off"
                             style="flex: 1; padding: 0.55rem 0.75rem; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; font-family: monospace; letter-spacing: 1px;">
@@ -430,17 +408,13 @@
 
     <script src="js/settings.js"></script>
     <script src="../js/sync.js"></script>
+
     <script>document.addEventListener('DOMContentLoaded', function () { AppSync.initUI('buszy'); });</script>
 
     <script src="./js/ann-indicator.js"></script>
     <script src="./js/alerts-indicator.js"></script>
 
-    <script src="../js/back-to-top.js"></script>
 
-    <script src="./js/pull-to-refresh.js"></script>
-    <script src="../js/ios-pwa-pull-to-refresh-init.js"></script>
-
-    
-    <script src="../js/ios-pwa-warning.js"></script></body>
+    <script src="../js/ios-pwa-warning.js"></script>
 
 </html>

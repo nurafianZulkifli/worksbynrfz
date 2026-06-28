@@ -3,198 +3,40 @@
 
 <head>
     <meta charset="UTF-8">
-
-    <meta name="description" content="">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="google-site-verification" content="57TuruPNu5wqSSia_cUehl5t9Gh1AbxrHNPcMiFx-aQ" />
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover">
-    <title>Line Status | RailBuddy</title>
-    <meta content="" name="description">
-    <meta content="" name="keywords">
-    <meta property="og:image" content="https://i.imgur.com/i8n9KYs.png" />
     <meta name="description" content="Real-time train line status, delays, and schedules for Singapore MRT and LRT networks">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover, user-scalable=no">
+    <meta name="color-scheme" content="light dark">
+    <title>Line Status | RailBuddy</title>
+    <meta property="og:image" content="https://i.imgur.com/i8n9KYs.png" />
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="RailBuddy">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0f1419" media="(prefers-color-scheme: dark)">
 
     <link rel="manifest" href="./manifest.json">
-    <link rel="icon" href="./assets/icon-512.png" type="image/png">
+
+    <link rel="icon" href="./assets/logo.png" type="image/png">
     <link rel="apple-touch-icon" href="./assets/icon-512.png">
-    <!-- iOS PWA Startup Image -->
+    
     <link rel="apple-touch-startup-image" href="../img/bg-img/hero-railbuddy-dark.png">
 
     <script src="https://kit.fontawesome.com/965e82ac01.js" crossorigin="anonymous"></script>
 
+    <!-- Core Stylesheet -->
     <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/pwa-styles.css">
-    <link rel="stylesheet" href="./css/style-tdt.css">
     <link rel="stylesheet" href="../css/style-breakpoints.css">
+    <link rel="stylesheet" href="../css/pwa-styles.css">
     <link rel="stylesheet" href="../css/dark-mode.css">
+    <link rel="stylesheet" href="../css/ios-safari.css">
 
-
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WN76281P3Q"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-
-        gtag('config', 'G-WN76281P3Q');
-    </script>
+    <!-- Page Specific Stylesheet -->
+    <link rel="stylesheet" href="./css/style-tdt.css">
+    <link rel="stylesheet" href="./css/main-page.css">
 
 </head>
-
-<style>
-    .container-mobile-header {
-        padding-right: 1em !important;
-        padding-left: 1em !important;
-    }
-
-    .custom-list-item {
-        display: flex;
-        align-items: center;
-        background: #fff;
-        border-radius: 40px;
-        padding: 12px 16px;
-        width: 100%;
-        margin: 24px 0;
-        box-sizing: border-box;
-        gap: 16px;
-        box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.04);
-        transition-duration: 800ms;
-    }
-
-    .custom-list-item img {
-        height: 35px;
-        width: auto;
-        flex-shrink: 0;
-    }
-
-    .custom-list-item:hover {
-        background-color: #d8e6f3;
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-    }
-
-    body.dark-mode .custom-list-item {
-        background-color: #1c1f2b;
-        color: #fff !important;
-        border: 1px solid #2b2b2b33;
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
-    body.dark-mode .custom-list-item:hover {
-        background-color: #334250;
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-    }
-
-    .line-label {
-        background: #ff3b3b;
-        color: #fff;
-        font-weight: bold;
-        border-radius: 13.6px / 19.2px;
-        padding: 5px 10px;
-        font-size: 15px;
-        letter-spacing: 1px;
-        margin-right: 0px;
-        border: 2px solid #fff;
-    }
-
-    .line-name {
-        font-weight: 600;
-        font-size: 18px;
-        color: #111;
-        flex: 1;
-    }
-
-    .status-icon {
-        background: #43b02a;
-        color: #fff;
-        border-radius: 50%;
-        width: 33px;
-        height: 33px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 15px;
-    }
-
-    .line-label.nsl {
-        background: #e1251b;
-    }
-
-    .line-label.ewl {
-        background: #00953b;
-    }
-
-    .line-label.ccl {
-        background: #ff9e18;
-        color: #000;
-    }
-
-    .line-label.dtl {
-        background: #0055b8;
-    }
-
-    .line-label.nel {
-        background: #9e28b5;
-    }
-
-    .line-label.tel {
-        background: #9d5918;
-    }
-
-    .line-label.lrt {
-        background: #718472;
-    }
-
-    .alert-message-content a {
-        color: #000;
-        text-decoration: underline;
-        font-weight: bold;
-    }
-
-    .pulse {
-        animation: pulse-animation 2s infinite;
-    }
-
-    @keyframes pulse-animation {
-        0% {
-            box-shadow: 0 0 0 0px rgba(148, 148, 148, 0.2);
-        }
-
-        100% {
-            box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
-        }
-    }
-
-    body.dark-mode .alert-message-content a {
-        color: #fff;
-        text-decoration: underline;
-        font-weight: bold;
-    }
-
-    .custom-list-item {
-        text-decoration: none;
-        color: inherit;
-    }
-
-    .custom-list-item:visited {
-        color: inherit;
-    }
-
-    .tsu {
-        padding: 7em 1em 3em 1em;
-    }
-
-    @media (max-width: 994px) {
-        .tsu {
-            padding: 3em 1em 7em 1em;
-        }
-    }
-</style>
 
 <body>
     <!-- Apply dark mode before splash renders to avoid flash -->
@@ -265,7 +107,7 @@
                     <span class="icon">
                         <i class="fa-sharp fa-regular fa-home"></i>
                     </span>
-                    <span class="label">Home</span>
+                    <!-- <span class="label">Home</span> -->
                 </a>
             </li>
             <li>
@@ -273,7 +115,7 @@
                     <span class="icon">
                         <i class="fa-regular fa-clock-rotate-left"></i>
                     </span>
-                    <span class="label">History</span>
+                    <!-- <span class="label">History</span> -->
                 </a>
             </li>
             <li>
@@ -281,7 +123,7 @@
                     <span class="icon">
                         <i class="fa-regular fa-clock"></i>
                     </span>
-                    <span class="label">Timings</span>
+                    <!-- <span class="label">Timings</span> -->
                 </a>
             </li>
             <li>
@@ -289,7 +131,7 @@
                     <span class="icon">
                         <i class="fa-regular fa-bars"></i>
                     </span>
-                    <span class="label">Menu</span>
+                    <!-- <span class="label">Menu</span> -->
                 </a>
             </li>
         </ul>
@@ -299,8 +141,8 @@
 
     <!------------------------------------------------------------------------ Start of Sections ------------------------------------------------------------------------>
 
-    <section class="tsu">
-        <div class="container container-xxl container-mobile container-mobile-header">
+    <section class="tsu clearfix" style="padding-bottom: 5em;">
+        <div class="container">
 
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <h2 style="margin: 0;">Line Status</h2>
@@ -430,7 +272,7 @@
                         system-matched themes to suit your preference.
                         <div class="guide-tip">
                             <i class="fa-regular fa-lightbulb"></i>
-                            Choose <strong>System</strong> to have RailBuddy automatically follow your device's display setting â€” no manual switching needed.
+                            Choose <strong>System</strong> to have RailBuddy automatically follow your device's display setting - no manual switching needed.
                         </div>
                     </div>
                 </div>
@@ -468,6 +310,7 @@
     <script src="./js/mob-navtabs.js"></script>
 
     <script src="./js/mob-navtabs-tooltip.js"></script>
+
     <script src="./js/haptic.js"></script>
 
     <script src="./tdt-subp.js"></script>
@@ -522,7 +365,7 @@
         })();
     </script>
 
-    <script src="../js/back-to-top.js"></script>
+    <!-- <script src="../js/back-to-top.js"></script> -->
 
     <script>
         // â”€â”€ First-Time Guide â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -594,11 +437,7 @@
         })();
     </script>
 
-    
-    <script src="./js/pull-to-refresh.js"></script>
-    <script src="../js/ios-pwa-pull-to-refresh-init.js"></script>
-    
-    <script src="../js/ios-pwa-warning.js"></script></body>
+
 
 </html>
 

@@ -6,96 +6,33 @@
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="57TuruPNu5wqSSia_cUehl5t9Gh1AbxrHNPcMiFx-aQ" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover">
-    <title>Announcements | Buszy</title>
-    <meta content="" name="description">
-    <meta content="" name="keywords">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover, user-scalable=no">
+    <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0f1419" media="(prefers-color-scheme: dark)">
+    <title>Updates | Buszy</title>
+    <meta content="Stay updated with the latest announcements from LTA" name="description">
+    <meta content="announcements, updates, news" name="keywords">
     <meta property="og:image" content="https://i.imgur.com/i8n9KYs.png" />
 
-    <link rel="icon" href="../buszy/assets/icon-512.png">
+    <link rel="icon" href="../buszy/assets/logo.png">
+    <link rel="apple-touch-icon" href="./assets/icon-512.png">
 
     <script src="https://kit.fontawesome.com/965e82ac01.js" crossorigin="anonymous"></script>
 
+    <!-- Core Stylesheet -->
     <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="css/style-buszy.css">
     <link rel="stylesheet" href="../css/style-breakpoints.css">
+    <link rel="stylesheet" href="../css/pwa-styles.css">
     <link rel="stylesheet" href="../css/dark-mode.css">
+    <link rel="stylesheet" href="../css/ios-safari.css">
 
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WN76281P3Q"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-        gtag('js', new Date());
-
-        gtag('config', 'G-WN76281P3Q');
-    </script>
+    <!-- Page Specific Stylesheet -->
+    <link rel="stylesheet" href="./css/style-buszy.css">
+    <link rel="stylesheet" href="./css/updates.css">
 
 </head>
-
-<style>
-    #cv-bat-subp {
-        height: 10vh;
-        position: relative;
-    }
-
-    .badges-btn {
-        background-color: #1f84a2;
-    }
-
-    .alert-warning p {
-        color: #000;
-        font-size: 16px;
-        overflow-wrap: break-word;
-        line-height: 1.7;
-        margin-bottom: 0rem !important;
-    }
-
-    .alert-warning a {
-        color: #000;
-        text-decoration: underline;
-        font-weight: bold;
-    }
-
-    .list-group-item {
-        transition-duration: 800ms;
-        border-radius: 20px;
-        margin-top: 1em;
-        font-size: 20px;
-        border: 1px solid #2b2b2b33;
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
-        padding-top: 1em;
-        padding-bottom: 1em;
-    }
-
-    body.dark-mode .alert-warning p {
-        color: #ffda6a;
-        font-size: 16px;
-        overflow-wrap: break-word;
-        line-height: 1.7;
-        margin-bottom: 0rem !important;
-        text-align: left;
-    }
-
-    body.dark-mode .alert-warning a {
-        color: #ffda6a;
-        text-decoration: underline;
-        font-weight: bold;
-    }
-
-    @media (max-width: 450px) {
-        .btn-mar {
-            width: auto;
-        }
-    }
-
-    .footer {
-        display: none;
-    }
-</style>
 
 
 <body>
@@ -109,7 +46,7 @@
                     </a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a href="#"><i class="fa-regular fa-bullhorn"></i>
+                    <a href="#"><i class="fa-regular fa-arrows-rotate"></i>
                     </a>
                 </li>
             </ol>
@@ -137,9 +74,9 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fa-regular fa-triangle-exclamation"></i>
-                        <span>Alerts</span>
+                    <a href="#" class="nav-link active">
+                        <i class="fa-regular fa-arrows-rotate"></i>
+                        <span>Updates</span>
                     </a>
                 </li>
                 <li class="nav-item ">
@@ -160,7 +97,7 @@
                     <span class="icon">
                         <i class="fa-sharp fa-regular fa-house"></i>
                     </span>
-                    <span class="label">Home</span>
+                    <!-- <span class="label">Home</span> -->
                 </a>
             </li>
             <li>
@@ -168,16 +105,15 @@
                     <span class="icon">
                         <i class="fa-regular fa-clock"></i>
                     </span>
-                    <span class="label">Timings</span>
+                    <!-- <span class="label">Timings</span> -->
                 </a>
             </li>
-            <li>
-                <a href="./alerts.html" id="ann-nav-mobile">
+            <li class="active">
+                <a href="#" id="ann-nav-mobile">
                     <span class="icon">
-                        <i class="fa-regular fa-triangle-exclamation"></i>
-                        <span class="alerts-indicator-dot"></span>
+                        <i class="fa-regular fa-arrows-rotate"></i>
                     </span>
-                    <span class="label">Alerts</span>
+                    <!-- <span class="label">Updates</span> -->
                 </a>
             </li>
             <li>
@@ -185,7 +121,7 @@
                     <span class="icon">
                         <i class="fa-regular fa-bars"></i>
                     </span>
-                    <span class="label">Menu</span>
+                    <!-- <span class="label">Menu</span> -->
                 </a>
             </li>
         </ul>
@@ -209,25 +145,36 @@
                                     </a>
                                 </li>
                                 <li class="breadcrumb-item">
-                                    <a href="menu.html"><i class="fa-regular fa-bars"></i>
-                                    </a>
-                                </li>
-                                <li class="breadcrumb-item">
-                                    <a href="#"><i class="fa-regular fa-bullhorn"></i>
+                                    <a href="#"><i class="fa-regular fa-arrows-rotate"></i>
                                     </a>
                                 </li>
                             </ol>
                         </nav>
                         <div class="page-title-wrapper">
                             <div
-                                style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                                style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; align-items: flex-start;">
                                 <div>
-                                    <h1 class="page-title" id="filter-title">Announcements</h1>
+                                    <h1 class="page-title" id="filter-title">Bus Service Alerts</h1>
+                                    <!-- Tab buttons -->
+                                    <div class="ann-alerts-tabs">
+                                        <button class="tab-button active" data-tab="alerts">
+                                            <i class="fa-regular fa-triangle-exclamation"></i>&nbsp;
+                                            Alerts
+                                        </button>
+                                        <button class="tab-button" data-tab="announcements">
+                                            <i class="fa-regular fa-bell"></i>&nbsp;
+                                            Announcements
+                                        </button>
+                                    </div>
                                 </div>
-                                <button id="mark-as-read-btn" class="btn btn-mar badges-btn"
-                                    style="margin: 0; cursor: pointer;">
-                                    <i class="fa-regular fa-check"></i> Mark as Read
-                                </button>
+                                <div
+                                    style="display: flex; flex-direction: column; align-items: flex-start; gap: 0.5rem;">
+                                    <div id="alerts-last-updated-top" style="font-size: 0.85rem; color: #666;"></div>
+                                    <button id="mark-as-read-btn" class="btn btn-mar badges-btn"
+                                        style="margin: 0; cursor: pointer; display: none;">
+                                        <i class="fa-regular fa-check"></i> Mark as Read
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -240,81 +187,140 @@
     <!-- Section Contents -->
     <section class="about-me-summ clearfix" style="padding-bottom: 5em;">
         <div class="container">
-            <div class="list-group">
-                <a href="settings.html#refetch-stops" data-ann-id="bus-stop-description-2026-04"
-                    data-ann-date="2026-04-12"
-                    class="list-group-item list-group-item-action flex-column align-items-start">
-                    <div class="d-flex">
-                        <div>
-                            <h5 class="lg-ann"><i class="fa-regular fa-thumbtack"></i> Bus Stop Description Changes -
-                                April 2026<span class="ann-badge-container"></span></h5>
+            <!-- Announcements Tab Content -->
+            <div id="announcements-content" class="tab-content-section">
+                <div class="list-group">
+                    <a href="settings.html#refetch-stops" data-ann-id="bus-stop-description-2026-04"
+                        data-ann-date="2026-04-12"
+                        class="list-group-item list-group-item-action flex-column align-items-start">
+                        <div class="d-flex">
+                            <div>
+                                <h5 class="lg-ann"><i class="fa-regular fa-thumbtack"></i> Bus Stop Description Changes
+                                    -
+                                    April 2026<span class="ann-badge-container"></span></h5>
+                            </div>
                         </div>
-                    </div>
-                    <p class="mb-1" style="cursor: pointer;">
-                        A few Bus Stop Descriptions (Names) have been updated in April 2026. Do head over to Settings
-                        and re-fetch
-                        your bus stop data to get the most up to date information.</p>
-                </a>
-                <hr>
-                <a href="https://landtransportguru.net/dtl-eclo-jul-sep-2026/"
-                    data-ann-id="dtl-service-adjustment-2026-04" data-ann-date="2026-04-28"
-                    class="list-group-item list-group-item-action flex-column align-items-start">
-                    <div class="d-flex">
-                        <div>
-                            <h5 class="lg-ann"><i class="fa-kit fa-lta-train"></i> Service Adjustments - DTL<span
-                                    class="ann-badge-container"></span></h5>
-                            <small class="lg-date">28 Apr 2026</small>
+                        <p class="mb-1" style="cursor: pointer;">
+                            A few Bus Stop Descriptions (Names) have been updated in April 2026. Do head over to
+                            Settings
+                            and re-fetch
+                            your bus stop data to get the most up to date information.</p>
+                    </a>
+                    <hr>
+                    <a href="https://landtransportguru.net/dtl-eclo-jul-sep-2026/"
+                        data-ann-id="dtl-service-adjustment-2026-04" data-ann-date="2026-04-28"
+                        class="list-group-item list-group-item-action flex-column align-items-start">
+                        <div class="d-flex">
+                            <div>
+                                <h5 class="lg-ann"><i class="fa-kit fa-lta-train"></i> Service Adjustments - DTL<span
+                                        class="ann-badge-container"></span></h5>
+                                <small class="lg-date">28 Apr 2026</small>
+                            </div>
                         </div>
-                    </div>
-                    <p class="mb-1" style="cursor: pointer;">
-                        Early Closures & Late Openings (ECLO) along the entire Downtown Line (DTL), between Bukit
-                        Panjang and Expo, will take place across nine consecutive Fridays & Saturdays between 10 July
-                        2026 and 4 September 2026.</p>
-                </a>
-                <a href="https://landtransportguru.net/tel-eclo-may-jul-2026/"
-                    data-ann-id="tel-service-adjustment-2026-04" data-ann-date="2026-04-28"
-                    class="list-group-item list-group-item-action flex-column align-items-start">
-                    <div class="d-flex">
-                        <div>
-                            <h5 class="lg-ann"><i class="fa-kit fa-lta-train"></i> Service Adjustments - TEL<span
-                                    class="ann-badge-container"></span></h5>
-                            <small class="lg-date">28 Apr 2026</small>
+                        <p class="mb-1" style="cursor: pointer;">
+                            Early Closures & Late Openings (ECLO) along the entire Downtown Line (DTL), between Bukit
+                            Panjang and Expo, will take place across nine consecutive Fridays & Saturdays between 10
+                            July
+                            2026 and 4 September 2026.</p>
+                    </a>
+                    <a href="https://landtransportguru.net/tel-eclo-may-jul-2026/"
+                        data-ann-id="tel-service-adjustment-2026-04" data-ann-date="2026-04-28"
+                        class="list-group-item list-group-item-action flex-column align-items-start">
+                        <div class="d-flex">
+                            <div>
+                                <h5 class="lg-ann"><i class="fa-kit fa-lta-train"></i> Service Adjustments - TEL<span
+                                        class="ann-badge-container"></span></h5>
+                                <small class="lg-date">28 Apr 2026</small>
+                            </div>
                         </div>
-                    </div>
-                    <p class="mb-1" style="cursor: pointer;">
-                        Early Closures & Late Openings (ECLO) along the entire Thomson-East Coast Line (TEL), between
-                        Woodlands North and Bayshore, will take place across seven consecutive Fridays & Saturdays
-                        between 22 May 2026 and 4 July 2026.</p>
-                </a>
-                <a href="https://landtransportguru.net/sklrt-west-single-loop-ops-apr-oct-2026/"
-                    data-ann-id="sklrt-closure-2026-04" data-ann-date="2026-02-20"
-                    class="list-group-item list-group-item-action flex-column align-items-start">
-                    <div class="d-flex">
-                        <div>
-                            <h5 class="lg-ann"><i class="fa-kit fa-lta-lrt"></i> Service Adjustments - SKLRT<span
-                                    class="ann-badge-container"></span></h5>
-                            <small class="lg-date">20 Feb 2026</small>
+                        <p class="mb-1" style="cursor: pointer;">
+                            Early Closures & Late Openings (ECLO) along the entire Thomson-East Coast Line (TEL),
+                            between
+                            Woodlands North and Bayshore, will take place across seven consecutive Fridays & Saturdays
+                            between 22 May 2026 and 4 July 2026.</p>
+                    </a>
+                    <a href="https://landtransportguru.net/sklrt-west-single-loop-ops-apr-oct-2026/"
+                        data-ann-id="sklrt-closure-2026-04" data-ann-date="2026-02-20"
+                        class="list-group-item list-group-item-action flex-column align-items-start">
+                        <div class="d-flex">
+                            <div>
+                                <h5 class="lg-ann"><i class="fa-kit fa-lta-lrt"></i> Service Adjustments - SKLRT<span
+                                        class="ann-badge-container"></span></h5>
+                                <small class="lg-date">20 Feb 2026</small>
+                            </div>
                         </div>
-                    </div>
-                    <p class="mb-1" style="cursor: pointer;">
-                        The West Inner Loop of the Sengkang LRT Line will be closed from 19 April 2026 to 18 October
-                        2026. This is to facilitate the track works needed to integrate the existing LRT line with the
-                        expanded Sengkang LRT Depot.</p>
-                </a>
-                <a href="https://www.ptc.gov.sg/newsroom/news-releases/newsroom-view/fare-review-exercise-2025"
-                    data-ann-id="fare-review-2025-10" data-ann-date="2025-10-14"
-                    class="list-group-item list-group-item-action flex-column align-items-start">
-                    <div class="d-flex">
-                        <div>
-                            <h5 class="lg-ann"><i class="fa-kit fa-lta-map"></i> Fare Review Exercise<span
-                                    class="ann-badge-container"></span></h5>
-                            <small class="lg-date">14 Oct 2025</small>
+                        <p class="mb-1" style="cursor: pointer;">
+                            The West Inner Loop of the Sengkang LRT Line will be closed from 19 April 2026 to 18 October
+                            2026. This is to facilitate the track works needed to integrate the existing LRT line with
+                            the
+                            expanded Sengkang LRT Depot.</p>
+                    </a>
+                    <a href="https://www.ptc.gov.sg/newsroom/news-releases/newsroom-view/fare-review-exercise-2025"
+                        data-ann-id="fare-review-2025-10" data-ann-date="2025-10-14"
+                        class="list-group-item list-group-item-action flex-column align-items-start">
+                        <div class="d-flex">
+                            <div>
+                                <h5 class="lg-ann"><i class="fa-kit fa-lta-map"></i> Fare Review Exercise<span
+                                        class="ann-badge-container"></span></h5>
+                                <small class="lg-date">14 Oct 2025</small>
+                            </div>
                         </div>
+                        <p class="mb-1" style="cursor: pointer;">
+                            PTC grants overall fare adjustment of 5.0% - below the maximum allowable quantum of 14.4%;
+                            deferment of remaining quantum (9.4%) supported by additional Government subsidies...</p>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Alerts Tab Content -->
+            <div id="alerts-content-section" class="tab-content-section active">
+
+                <div id="notif-blocked-banner">
+                    <i class="fa-regular fa-bell" style="font-size:1.3rem; flex-shrink:0;"></i>
+                    <span class="notif-banner-text">
+                        <strong>Notifications disabled</strong>
+                        Enable notifications in your browser settings to receive alerts.
+                    </span>
+                    <div class="notif-banner-actions">
+                        <button class="btn btn-sm notif-dismiss-btn"
+                            onclick="this.parentElement.parentElement.style.display='none'">Dismiss</button>
                     </div>
-                    <p class="mb-1" style="cursor: pointer;">
-                        PTC grants overall fare adjustment of 5.0% - below the maximum allowable quantum of 14.4%;
-                        deferment of remaining quantum (9.4%) supported by additional Government subsidies...</p>
-                </a>
+                </div>
+
+                <div id="notif-prompt-banner">
+                    <i class="fa-regular fa-bell" style="font-size:1.3rem; flex-shrink:0;"></i>
+                    <span class="notif-banner-text">
+                        <strong>Get bus service alerts!</strong>
+                        Enable notifications to be notified of a bus service delay.
+                    </span>
+                    <div class="notif-banner-actions">
+                        <button class="btn btn-busloc btn-sm"
+                            onclick="BuszyPushNotify.enableFromBanner()">Enable</button>
+                        <button class="btn btn-sm notif-dismiss-btn" onclick="BuszyPushNotify.dismissPromptBanner()">Not
+                            now</button>
+                    </div>
+                </div>
+
+                <div class="list-group" id="alerts-content">
+                    <div class="alerts-loading"
+                        style="text-align: center; padding: 3em 1em; display: flex; align-items: center; justify-content: center; gap: 1em; color: inherit;">
+                        <svg class="spinner" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="status"
+                            style="margin-right: 1em;">
+                            <circle cx="50" cy="50" r="45" stroke-dasharray="0% 314.159%">
+                                <animateTransform attributeName="transform" type="rotate" values="-90;810"
+                                    keyTimes="0;1" dur="2s" repeatCount="indefinite" />
+                                <animate attributeName="stroke-dashoffset" values="0%;0%;-157.080%" calcMode="spline"
+                                    keySplines="0.61, 1, 0.88, 1; 0.12, 0, 0.39, 0" keyTimes="0;0.5;1" dur="2s"
+                                    repeatCount="indefinite" />
+                                <animate attributeName="stroke-dasharray"
+                                    values="0% 314.159%;157.080% 157.080%;0% 314.159%" calcMode="spline"
+                                    keySplines="0.61, 1, 0.88, 1; 0.12, 0, 0.39, 0" keyTimes="0;0.5;1" dur="2s"
+                                    repeatCount="indefinite" />
+                            </circle>
+                        </svg>
+                        Loading Alerts...
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -355,12 +361,222 @@
 
     <script src="js/alerts-indicator.js"></script>
 
-    <script src="../js/back-to-top.js"></script>
+    <script src="js/push-notify.js"></script>
 
-    <script src="./js/pull-to-refresh.js"></script>
-    <script src="../js/ios-pwa-pull-to-refresh-init.js"></script>
+    <script src="js/bs-alerts.js"></script>
 
-    
-    <script src="../js/ios-pwa-warning.js"></script></body>
+    <script src="../js/ios-pwa-warning.js"></script>
+
+
+    <!-- Tab switching functionality -->
+    <script>
+        // Helper: convert URLs in text to clickable links
+        function linkify(text) {
+            const urlRegex = /(https?:\/\/[\w\-._~:/?#[\]@!$&'()*+,;=%]+)|(www\.[\w\-._~:/?#[\]@!$&'()*+,;=%]+)|(go\.gov\.sg\/[\w\-._~:/?#[\]@!$&'()*+,;=%]+)/gi;
+            let linked = text.replace(urlRegex, function (url) {
+                let href = url;
+                if (url.match(/^go\.gov\.sg\//i)) {
+                    href = 'https://' + url;
+                } else if (!href.match(/^https?:\/\//i)) {
+                    href = 'http://' + href;
+                }
+                return `<a href="${href}" target="_blank" rel="noopener noreferrer">${url}</a>`;
+            });
+            return linked.replace(/\n/g, '<br>');
+        }
+
+        function extractBusServiceCodes(text) {
+            // Extract only the portion mentioning "bus services"
+            // Match "bus services" followed by codes, handling various verb patterns: "have been diverted", "are affected", etc.
+            const busServicesRegex = /bus services?\s*[:\-]?\s*([^,]+?)(?:\s+(?:have|has|are|is)\s+(?:been\s+)?(?:affected|diverted|disrupted|delayed))/i;
+            const match = text.match(busServicesRegex);
+
+            if (!match) {
+                return [];
+            }
+
+            // Get the portion after "bus services"
+            const servicesText = match[1];
+
+            // Extract service codes from this portion: numbers (2-4 digits) optionally followed by a letter
+            const codeRegex = /\b(\d{2,4}[a-z]?)\b/gi;
+            const matches = servicesText.match(codeRegex) || [];
+            const codes = [...new Set(matches)].filter(code => {
+                const num = parseInt(code);
+                return num >= 10 && num <= 9999;
+            });
+            return codes;
+        }
+
+        function displayAlerts(alerts) {
+            const content = document.getElementById('alerts-content');
+            content.innerHTML = '';
+
+            alerts.forEach((alert, index) => {
+                const linkedContent = linkify(alert.content);
+                const alertDate = new Date(alert.createdDate);
+
+                // Format time as HH:MM
+                let hours = alertDate.getHours();
+                const mins = alertDate.getMinutes().toString().padStart(2, '0');
+                hours = hours.toString().padStart(2, '0');
+                const timeStr = `${hours}:${mins}`;
+
+                const codes = extractBusServiceCodes(alert.content);
+                let codesHTML = '';
+                if (codes.length > 0) {
+                    codesHTML = '<div class="bus-codes-container" style="margin: 0.5em 0;">';
+                    codes.forEach(code => {
+                        codesHTML += `<div class="bus-service-code"><span class="bus-service-code-text">${code}</span></div>`;
+                    });
+                    codesHTML += '</div>';
+                }
+
+                const alertDiv = document.createElement('div');
+                alertDiv.className = 'list-group-item list-group-item-action flex-column align-items-start';
+                alertDiv.innerHTML = `
+                    <div style="width: 100%; margin-bottom: 0.5em;">
+                        <small class="lg-date">Bus Services Affected:</small>
+                    </div>
+                    ${codesHTML}
+                    <p class="mb-1 alert-item-content">${linkedContent}</p>
+                `;
+                content.appendChild(alertDiv);
+            });
+        }
+
+        function showNoAlerts() {
+            const content = document.getElementById('alerts-content');
+            content.innerHTML = '<div class="no-alerts"><i class="fa-regular fa-check-circle"></i>&nbsp;No alerts at the moment.</div>';
+        }
+
+        function showErrorMessage(message) {
+            const content = document.getElementById('alerts-content');
+            content.innerHTML = `<div class="error-message"><i class="fa-regular fa-exclamation-circle"></i> ${message}</div>`;
+        }
+
+        // Function to fetch and populate alerts
+        function loadAlerts() {
+            const alertsContent = document.getElementById('alerts-content');
+            if (!alertsContent) return;
+
+            const CACHE_KEY = 'buszy_ann_alerts_cache';
+            const DATA_KEY = 'buszy_ann_alerts_data';
+            const CACHE_TTL = 30 * 60 * 1000; // 30 minutes
+
+            function processAlerts(data) {
+                if (!data || !data.value) {
+                    showNoAlerts();
+                    updateAlertsLastUpdated();
+                    return;
+                }
+
+                // Support both array and object for value
+                let alerts = [];
+                if (Array.isArray(data.value)) {
+                    alerts = data.value;
+                } else if (typeof data.value === 'object') {
+                    alerts = [data.value];
+                }
+
+                // Filter for bus service alerts only
+                let busAlerts = [];
+                alerts.forEach(alert => {
+                    if (alert.Message && Array.isArray(alert.Message)) {
+                        alert.Message.forEach(messageObj => {
+                            const msg = messageObj.Content || '';
+                            const msgLower = msg.toLowerCase();
+                            if (msgLower.includes('bus service') && (msgLower.includes('affected') || msgLower.includes('diverted') || msgLower.includes('delayed'))) {
+                                busAlerts.push({
+                                    content: msg,
+                                    status: alert.Status,
+                                    createdDate: messageObj.CreatedDate
+                                });
+                            }
+                        });
+                    }
+                });
+
+                if (busAlerts.length === 0) {
+                    showNoAlerts();
+                } else {
+                    displayAlerts(busAlerts);
+                }
+            }
+
+            // Check cache
+            const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
+            const cacheIsFresh = cached !== null && (Date.now() - cached.ts < CACHE_TTL);
+
+            // Show cached data if available
+            if (cacheIsFresh) {
+                const cachedData = JSON.parse(localStorage.getItem(DATA_KEY) || 'null');
+                if (cachedData) {
+                    processAlerts(cachedData);
+                    return; // Don't fetch again if cache is fresh
+                }
+            }
+
+            // Fetch only if cache is stale
+            fetch('https://bat-lta-9eb7bbf231a2.herokuapp.com/train-service-alerts')
+                .then(r => r.json())
+                .then(data => {
+                    localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now() }));
+                    localStorage.setItem(DATA_KEY, JSON.stringify(data));
+                    processAlerts(data);
+                })
+                .catch(err => {
+                    console.error('Error fetching alerts:', err);
+                    // Show error only if we have no cached fallback
+                    if (!cacheIsFresh && !JSON.parse(localStorage.getItem(DATA_KEY) || 'null')) {
+                        showErrorMessage('Failed to load alerts. Please try again later.');
+                    }
+                });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const contentSections = document.querySelectorAll('.tab-content-section');
+            const pageTitle = document.getElementById('filter-title');
+            const markAsReadBtn = document.getElementById('mark-as-read-btn');
+            const alertsLastUpdatedTop = document.getElementById('alerts-last-updated-top');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const tabName = this.getAttribute('data-tab');
+
+                    // Remove active class from all buttons
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+
+                    // Hide all content sections
+                    contentSections.forEach(section => section.classList.remove('active'));
+
+                    // Add active class to clicked button
+                    this.classList.add('active');
+
+                    // Update page title and mark-as-read button visibility
+                    if (tabName === 'announcements') {
+                        document.getElementById('announcements-content').classList.add('active');
+                        if (pageTitle) pageTitle.textContent = 'Announcements';
+                        document.title = 'Announcements | Buszy';
+                        if (markAsReadBtn) markAsReadBtn.style.display = 'block';
+                        if (alertsLastUpdatedTop) alertsLastUpdatedTop.style.display = 'none';
+                    } else if (tabName === 'alerts') {
+                        document.getElementById('alerts-content-section').classList.add('active');
+                        if (pageTitle) pageTitle.textContent = 'Bus Service Alerts';
+                        document.title = 'Bus Service Alerts | Buszy';
+                        if (markAsReadBtn) markAsReadBtn.style.display = 'none';
+                        if (alertsLastUpdatedTop) alertsLastUpdatedTop.style.display = 'block';
+                        // Load alerts when tab is clicked
+                        loadAlerts();
+                    }
+                });
+            });
+
+            // Load alerts on page load if needed
+            loadAlerts();
+        });
+    </script>
+</body>
 
 </html>

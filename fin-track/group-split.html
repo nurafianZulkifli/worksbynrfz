@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover, user-scalable=no">
+    <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0f1419" media="(prefers-color-scheme: dark)">
     <title>Group Split | FinTrack</title>
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -12,7 +16,8 @@
 
     <script src="https://kit.fontawesome.com/965e82ac01.js" crossorigin="anonymous"></script>
 
-    <link rel="icon" href="./assets/icon-512.png">
+    <link rel="icon" href="./assets/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="./assets/icon-512.png">
 
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/style.css">
@@ -20,6 +25,7 @@
     <link rel="stylesheet" href="../css/pwa-styles.css">
     <link rel="stylesheet" href="../css/style-breakpoints.css">
     <link rel="stylesheet" href="../css/dark-mode.css">
+    <link rel="stylesheet" href="../css/ios-safari.css">
 
     <link rel="apple-touch-startup-image" href="../img/bg-img/hero-bg-dark.png">
     <link rel="manifest" href="./manifest.json">
@@ -517,19 +523,19 @@
             <li>
                 <a href="index.html">
                     <span class="icon"><i class="fa-regular fa-money-bills-simple"></i></span>
-                    <span class="label">Transactions</span>
+                    <!-- <span class="label">Transactions</span> -->
                 </a>
             </li>
             <li>
                 <a href="repayments.html">
                     <span class="icon"><i class="fa-regular fa-money-bill-transfer"></i></span>
-                    <span class="label">Repayments</span>
+                    <!-- <span class="label">Repayments</span> -->
                 </a>
             </li>
             <li class="active">
                 <a href="menu.html">
                     <span class="icon"><i class="fa-regular fa-bars"></i></span>
-                    <span class="label">Menu</span>
+                    <!-- <span class="label">Menu</span> -->
                 </a>
             </li>
         </ul>
@@ -611,7 +617,7 @@
                     <div class="guide-step-title">Create a Session</div>
                     <div class="guide-step-body">
                         Tap the <strong>session name button</strong> at the top, then tap <strong>New Session</strong>
-                        to give your group outing a name â€” like <em>Dinner with Friends</em>.
+                        to give your group outing a name - like <em>Dinner with Friends</em>.
                         <div class="guide-tip">
                             <i class="fa-regular fa-lightbulb"></i>
                             You can create multiple sessions and switch between them anytime using the name button.
@@ -644,7 +650,7 @@
                     <div class="guide-step-label">Step 3 of 3</div>
                     <div class="guide-step-title">Add Items &amp; Split</div>
                     <div class="guide-step-body">
-                        Tap <strong>Add Item</strong> to log each dish or expense. Choose who shares it â€”
+                        Tap <strong>Add Item</strong> to log each dish or expense. Choose who shares it -
                         everyone is included by default, but you can deselect anyone.
                         <div class="guide-tip">
                             <i class="fa-regular fa-lightbulb"></i>
@@ -796,11 +802,7 @@
     <script src="../js/bootstrap.min.js"></script>
 
     <script src="js/group-split.js"></script>
-    
-    <script src="./js/pull-to-refresh.js"></script>
-    <script src="../js/ios-pwa-pull-to-refresh-init.js"></script>
-    
-    <script src="../js/ios-pwa-warning.js"></script></body>
+
+</body>
 
 </html>
-

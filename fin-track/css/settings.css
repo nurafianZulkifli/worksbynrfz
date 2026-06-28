@@ -1,0 +1,21 @@
+   #sync-copy-btn {
+       background: none;
+       border: 1px solid #ccc;
+       border-radius: 8px;
+       padding: 0.45rem 0.65rem;
+       cursor: pointer;
+       font-size: 14px;
+       flex-shrink: 0;
+       color: #000;
+   }
+
+   body.dark-mode #sync-copy-btn {
+       border-color: #555;
+       color: #fff;
+   }
+
+   body.dark-mode #sync-code-input {
+       background: #252840;
+       color: #e0e0f0;
+       border-color: #3a3f58 !important;
+   }

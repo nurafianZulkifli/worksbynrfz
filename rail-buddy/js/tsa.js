@@ -15,138 +15,138 @@
 
 // Ensure DOM is loaded before running script
 document.addEventListener('DOMContentLoaded', function() {
-  // Fetch both service alerts and train timings
-  Promise.all([
-    fetch('https://bat-lta-9eb7bbf231a2.herokuapp.com/train-service-alerts').then(r => r.json()),
-    fetch('json/ft-lt.json').then(r => r.json())
-  ]).then(([data, timings]) => {
-      if (!data || !data.value) return;
-      // Map line names to codes used in your HTML
-      const lineMap = {
-        'North-South Line': 'NSL',
-        'East-West Line': 'EWL',
-        'Circle Line': 'CCL',
-        'Downtown Line': 'DTL',
-        'Thomson-East Coast Line': 'TEL',
-        'North East Line': 'NEL',
-        'Bukit Panjang LRT': 'BP',
-        'Sengkang LRT': 'SK',
-        'Punggol LRT': 'PG'
-      };
-      // Support both array and object for value
-      let alerts = [];
-      if (Array.isArray(data.value)) {
-        alerts = data.value;
-      } else if (typeof data.value === 'object') {
-        alerts = [data.value];
-      }
-      // Show current date/time for 'Last updated' line
-      const now = new Date();
-      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-      let hours = now.getHours();
-      const ampm = hours >= 12 ? 'PM' : 'AM';
-      hours = hours % 12;
-      hours = hours ? hours : 12;
-      const mins = now.getMinutes().toString().padStart(2, '0');
-      const formatted = `Last updated: ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()} ${hours}:${mins} ${ampm}`;
-      const updatedDiv = document.querySelector('.tsu .alert-last-updated');
-      if (updatedDiv) updatedDiv.textContent = formatted;
+  const ALERTS_CACHE_KEY = 'railbuddy_tsa_alerts_cache';
+  const ALERTS_DATA_KEY = 'railbuddy_tsa_alerts_data';
+  const CACHE_TTL = 30 * 60 * 1000; // 30 minutes
 
-      // Helper function to parse time
-      function parseTime(str) {
-        const [h, m] = str.split(":").map(Number);
-        return h * 60 + m;
-      }
+  function processAlerts(data, timings) {
+    if (!data || !data.value) return;
+    // Map line names to codes used in your HTML
+    const lineMap = {
+      'North-South Line': 'NSL',
+      'East-West Line': 'EWL',
+      'Circle Line': 'CCL',
+      'Downtown Line': 'DTL',
+      'Thomson-East Coast Line': 'TEL',
+      'North East Line': 'NEL',
+      'Bukit Panjang LRT': 'BP',
+      'Sengkang LRT': 'SK',
+      'Punggol LRT': 'PG'
+    };
+    // Support both array and object for value
+    let alerts = [];
+    if (Array.isArray(data.value)) {
+      alerts = data.value;
+    } else if (typeof data.value === 'object') {
+      alerts = [data.value];
+    }
+    // Show current date/time for 'Last updated' line
+    const now = new Date();
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    let hours = now.getHours();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    const mins = now.getMinutes().toString().padStart(2, '0');
+    const formatted = `Last updated: ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()} ${hours}:${mins} ${ampm}`;
+    const updatedDiv = document.querySelector('.tsu .alert-last-updated');
+    if (updatedDiv) updatedDiv.textContent = formatted;
 
-      // First, grey out lines if they're outside operating hours
-      const nowMins = now.getHours() * 60 + now.getMinutes();
-      const isWeekend = (now.getDay() === 0 || now.getDay() === 6);
+    // Helper function to parse time
+    function parseTime(str) {
+      const [h, m] = str.split(":").map(Number);
+      return h * 60 + m;
+    }
+
+    // First, grey out lines if they're outside operating hours
+    const nowMins = now.getHours() * 60 + now.getMinutes();
+    const isWeekend = (now.getDay() === 0 || now.getDay() === 6);
+    
+    timings.forEach(timing => {
+      const tdata = isWeekend ? timing.weekends : timing.weekdays;
+      const firstTrain = parseTime(tdata.firstTrain);
+      let lastTrain = parseTime(tdata.lastTrain);
       
-      timings.forEach(timing => {
-        const tdata = isWeekend ? timing.weekends : timing.weekdays;
-        const firstTrain = parseTime(tdata.firstTrain);
-        let lastTrain = parseTime(tdata.lastTrain);
-        
-        // If lastTrain is after midnight (e.g. 01:00), treat as next day
-        if (lastTrain < firstTrain) {
-          lastTrain += 1440; // add 24h in minutes
-        }
-        
-        let checkNow = nowMins;
-        // If after midnight and lastTrain is next day, adjust nowMins
-        if (lastTrain >= 1440 && nowMins < firstTrain) {
-          checkNow = nowMins + 1440;
-        }
-        
-        // Check if outside operating hours
-        if (checkNow < firstTrain || checkNow > lastTrain) {
-          const items = document.querySelectorAll('.custom-list-item');
-          items.forEach(item => {
-            const img = item.querySelector('img');
-            if (img && img.alt === timing.line) {
-              const icon = item.querySelector('.status-icon');
-              if (icon) {
-                icon.style.background = '#888';
-                icon.innerHTML = '<i class="fa-regular fa-dash"></i>';
-                icon.style.color = '#fff';
+      // If lastTrain is after midnight (e.g. 01:00), treat as next day
+      if (lastTrain < firstTrain) {
+        lastTrain += 1440; // add 24h in minutes
+      }
+      
+      let checkNow = nowMins;
+      // If after midnight and lastTrain is next day, adjust nowMins
+      if (lastTrain >= 1440 && nowMins < firstTrain) {
+        checkNow = nowMins + 1440;
+      }
+      
+      // Check if outside operating hours
+      if (checkNow < firstTrain || checkNow > lastTrain) {
+        const items = document.querySelectorAll('.custom-list-item');
+        items.forEach(item => {
+          const img = item.querySelector('img');
+          if (img && img.alt === timing.line) {
+            const icon = item.querySelector('.status-icon');
+            if (icon) {
+              icon.style.background = '#888';
+              icon.innerHTML = '<i class="fa-regular fa-dash"></i>';
+              icon.style.color = '#fff';
+            }
+          }
+        });
+      }
+    });
+
+    // Then, process alerts (which can override grey status if trains are operating)
+    alerts.forEach(alert => {
+      if (alert.Status === 1 || alert.Status === 2) {
+        if (alert.Message && Array.isArray(alert.Message) && alert.Message.length > 0) {
+          // Process each message separately
+          alert.Message.forEach(messageObj => {
+            const msg = messageObj.Content || '';
+            const foundMsg = linkify(msg);
+            let foundLine = null;
+            
+            for (const [lineName, code] of Object.entries(lineMap)) {
+              if (msg.includes(lineName) || msg.includes(code)) {
+                foundLine = code;
+                break;
               }
+            }
+            
+            if (foundLine && foundMsg) {
+              const items = document.querySelectorAll('.custom-list-item');
+              items.forEach(item => {
+                const img = item.querySelector('img');
+                if (img && img.alt === foundLine) {
+                  const icon = item.querySelector('.status-icon');
+                  if (icon) {
+                    const isMajor = /major/i.test(msg);
+                    const isMinor = /minor/i.test(msg);
+                    if (isMajor) {
+                      icon.style.background = '#e53935'; // red
+                      icon.innerHTML = '<i class="fa-regular fa-diamond-exclamation"></i>'; // critical sign
+                      icon.style.color = '#fff';
+                    } else if (isMinor) {
+                      icon.style.background = '#ffb300'; // amber
+                      icon.innerHTML = '<i class="fa-regular fa-diamond-exclamation"></i>'; // warning sign
+                      icon.style.color = '#000';
+                    } else {
+                      icon.style.background = '#cabfa4'; // grey
+                      icon.innerHTML = '<i class="fa-regular fa-traffic-cone"></i>';
+                      icon.style.color = '#000';
+                    }
+                  }
+                  // Show alert message below the item
+                  const msgBox = document.createElement('div');
+                  msgBox.className = 'alert-message-box';
+                  msgBox.innerHTML = `<span class=\"alert-message-content\">${foundMsg}</span>`;
+                  item.parentNode.insertBefore(msgBox, item.nextSibling);
+                }
+              });
             }
           });
         }
-      });
-
-      // Then, process alerts (which can override grey status if trains are operating)
-      alerts.forEach(alert => {
-        if (alert.Status === 1 || alert.Status === 2) {
-          if (alert.Message && Array.isArray(alert.Message) && alert.Message.length > 0) {
-            // Process each message separately
-            alert.Message.forEach(messageObj => {
-              const msg = messageObj.Content || '';
-              const foundMsg = linkify(msg);
-              let foundLine = null;
-              
-              for (const [lineName, code] of Object.entries(lineMap)) {
-                if (msg.includes(lineName) || msg.includes(code)) {
-                  foundLine = code;
-                  break;
-                }
-              }
-              
-              if (foundLine && foundMsg) {
-                const items = document.querySelectorAll('.custom-list-item');
-                items.forEach(item => {
-                  const img = item.querySelector('img');
-                  if (img && img.alt === foundLine) {
-                    const icon = item.querySelector('.status-icon');
-                    if (icon) {
-                      const isMajor = /major/i.test(msg);
-                      const isMinor = /minor/i.test(msg);
-                      if (isMajor) {
-                        icon.style.background = '#e53935'; // red
-                        icon.innerHTML = '<i class="fa-regular fa-diamond-exclamation"></i>'; // critical sign
-                        icon.style.color = '#fff';
-                      } else if (isMinor) {
-                        icon.style.background = '#ffb300'; // amber
-                        icon.innerHTML = '<i class="fa-regular fa-diamond-exclamation"></i>'; // warning sign
-                        icon.style.color = '#000';
-                      } else {
-                        icon.style.background = '#cabfa4'; // grey
-                        icon.innerHTML = '<i class="fa-regular fa-traffic-cone"></i>';
-                        icon.style.color = '#000';
-                      }
-                    }
-                    // Show alert message below the item
-                    const msgBox = document.createElement('div');
-                    msgBox.className = 'alert-message-box';
-                    msgBox.innerHTML = `<span class=\"alert-message-content\">${foundMsg}</span>`;
-                    item.parentNode.insertBefore(msgBox, item.nextSibling);
-                  }
-                });
-              }
-            });
-          }
-        }
-      });
+      }
+    });
     // Add styles for alert message box
     const style = document.createElement('style');
     style.innerHTML = `
@@ -174,6 +174,32 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     `;
     document.head.appendChild(style);
-    })
-    .catch(err => {});
+  }
+
+  // Load train timings
+  fetch('json/ft-lt.json').then(r => r.json()).then(timings => {
+    // Check alerts cache
+    const cached = JSON.parse(localStorage.getItem(ALERTS_CACHE_KEY) || 'null');
+    const cacheIsFresh = cached !== null && (Date.now() - cached.ts < CACHE_TTL);
+
+    // Show cached alerts if available
+    if (cacheIsFresh) {
+      const cachedData = JSON.parse(localStorage.getItem(ALERTS_DATA_KEY) || 'null');
+      if (cachedData) {
+        processAlerts(cachedData, timings);
+      }
+    }
+
+    // Fetch alerts only if cache is stale
+    if (!cacheIsFresh) {
+      fetch('https://bat-lta-9eb7bbf231a2.herokuapp.com/train-service-alerts')
+        .then(r => r.json())
+        .then(data => {
+          localStorage.setItem(ALERTS_CACHE_KEY, JSON.stringify({ ts: Date.now() }));
+          localStorage.setItem(ALERTS_DATA_KEY, JSON.stringify(data));
+          processAlerts(data, timings);
+        })
+        .catch(err => {});
+    }
+  }).catch(err => {});
 });

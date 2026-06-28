@@ -1,52 +1,66 @@
-      // Hide/show mobile bottom nav on scroll (mobile only)
+      // Mobile bottom nav always visible - no hide/show on scroll
+        
+        // Mobile bottom nav shrink on scroll
         (function () {
-            var lastScrollY = window.scrollY;
+            var lastScrollY = 0;
             var nav = document.querySelector('.mobile-bottom-nav');
+            if (!nav) return;
+            
             var ticking = false;
-            var isHidden = false;
-            var scrollThreshold = 8;
+            var isShrunken = false;
+            var scrollThreshold = 10; // Require 10px scroll to trigger shrink/expand
+            var minScrollToShrink = 50; // Only shrink if scrolled down at least 50px from top
 
-            function onScroll() {
+            function updateNavState() {
                 var currentScrollY = window.scrollY;
-                if (window.innerWidth > 600) return; // Only on mobile
-                if (currentScrollY > lastScrollY + scrollThreshold) {
-                    // Scrolling down — hide quickly
-                    if (!isHidden) {
-                        nav.classList.add('nav-hiding');
-                        nav.style.transform = 'translateY(100%)';
-                        isHidden = true;
+                
+                // Always expand when at the very top
+                if (currentScrollY <= 0) {
+                    if (isShrunken) {
+                        nav.classList.remove('shrunk');
+                        isShrunken = false;
                     }
-                } else if (currentScrollY < lastScrollY - scrollThreshold) {
-                    // Scrolling up — show smoothly
-                    if (isHidden) {
-                        nav.classList.remove('nav-hiding');
-                        nav.style.transform = 'translateY(0)';
-                        isHidden = false;
+                    lastScrollY = 0;
+                    return;
+                }
+                
+                // Check if we've scrolled enough to trigger change
+                var scrollDelta = Math.abs(currentScrollY - lastScrollY);
+                if (scrollDelta < scrollThreshold) {
+                    return; // Not enough movement to trigger
+                }
+                
+                if (currentScrollY > lastScrollY && currentScrollY > minScrollToShrink) {
+                    // Scrolling down — shrink nav
+                    if (!isShrunken) {
+                        nav.classList.add('shrunk');
+                        isShrunken = true;
+                    }
+                } else if (currentScrollY < lastScrollY) {
+                    // Scrolling up — expand nav
+                    if (isShrunken) {
+                        nav.classList.remove('shrunk');
+                        isShrunken = false;
                     }
                 }
+                
                 lastScrollY = currentScrollY;
             }
 
             window.addEventListener('scroll', function () {
                 if (!ticking) {
                     window.requestAnimationFrame(function () {
-                        onScroll();
+                        updateNavState();
                         ticking = false;
                     });
                     ticking = true;
                 }
-            });
-
-            // Reset nav position on resize
-            window.addEventListener('resize', function () {
-                if (window.innerWidth > 600) {
-                    nav.style.transform = '';
-                    isHidden = false;
-                }
-            });
+            }, { passive: true });
+            
+            // Ensure nav is expanded on page load
+            updateNavState();
         })();
 
-        // Toggle .at-top class based on scroll position
         function updateBreadcrumbAtTop() {
             var bc = document.getElementById('floating-breadcrumb');
             if (!bc) return;

@@ -3,44 +3,41 @@
 
 <head>
     <meta charset="UTF-8">
-
-    <meta name="description" content="">
+    <meta name="description" content="Real-time train line status, delays, and schedules for Singapore MRT and LRT networks">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="google-site-verification" content="57TuruPNu5wqSSia_cUehl5t9Gh1AbxrHNPcMiFx-aQ" />
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover, user-scalable=no">
+    <meta name="color-scheme" content="light dark">
     <title>System Map | RailBuddy</title>
-    <meta content="" name="description">
-    <meta content="" name="keywords">
     <meta property="og:image" content="https://i.imgur.com/i8n9KYs.png" />
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="RailBuddy">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0f1419" media="(prefers-color-scheme: dark)">
 
-    <link rel="icon" href="assets/icon-512.png">
+    <link rel="manifest" href="./manifest.json">
+
+    <link rel="icon" href="./assets/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="./assets/icon-512.png">
+    
+    <link rel="apple-touch-startup-image" href="../img/bg-img/hero-railbuddy-dark.png">
 
     <script src="https://kit.fontawesome.com/965e82ac01.js" crossorigin="anonymous"></script>
 
+    <!-- Core Stylesheet -->
     <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="css/style-tdt.css">
     <link rel="stylesheet" href="../css/style-breakpoints.css">
+    <link rel="stylesheet" href="../css/pwa-styles.css">
     <link rel="stylesheet" href="../css/dark-mode.css">
+    <link rel="stylesheet" href="../css/ios-safari.css">
 
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WN76281P3Q"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-
-        gtag('config', 'G-WN76281P3Q');
-    </script>
+    <!-- Page Specific Stylesheet -->
+    <link rel="stylesheet" href="css/style-tdt.css">
+    <link rel="stylesheet" href="css/sys-map.css">
 
     <style>
-        .sys-map img {
-            border-radius: 25px;
-            cursor: pointer;
-        }
 
-        .sys-map a {
-            display: inline-block;
-        }
     </style>
 </head>
 
@@ -111,7 +108,7 @@
                     <span class="icon">
                         <i class="fa-sharp fa-regular fa-home"></i>
                     </span>
-                    <span class="label">Home</span>
+                    <!-- <span class="label">Home</span> -->
                 </a>
             </li>
             <li>
@@ -119,7 +116,7 @@
                     <span class="icon">
                         <i class="fa-regular fa-clock-rotate-left"></i>
                     </span>
-                    <span class="label">History</span>
+                    <!-- <span class="label">History</span> -->
                 </a>
             </li>
             <li>
@@ -127,7 +124,7 @@
                     <span class="icon">
                         <i class="fa-regular fa-clock"></i>
                     </span>
-                    <span class="label">Timings</span>
+                    <!-- <span class="label">Timings</span> -->
                 </a>
             </li>
             <li class="active">
@@ -135,7 +132,7 @@
                     <span class="icon">
                         <i class="fa-regular fa-bars"></i>
                     </span>
-                    <span class="label">Menu</span>
+                    <!-- <span class="label">Menu</span> -->
                 </a>
             </li>
         </ul>
@@ -155,8 +152,7 @@
                         <nav aria-label="breadcrumb" class="breadcrumb-desktop" style="display:none;">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item">
-                                    <a href="../buszy.html">
-                                        <i class="fa-regular fa-house"></i>
+                                    <a href="index.html"><i class="fa-regular fa-house"></i>
                                     </a>
                                 </li>
                                 <li class="breadcrumb-item">
@@ -164,14 +160,14 @@
                                     </a>
                                 </li>
                                 <li class="breadcrumb-item">
-                                    <a href="system-map.html"><i class="fa-kit fa-lta-map"></i>
+                                    <a href="system-map.html"><i class="fa-regular fa-map"></i>
                                     </a>
                                 </li>
                             </ol>
                         </nav>
                         <div class="page-title-wrapper">
                             <div
-                                style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;" title="Click once for Chime A, thrice for Chime B">
+                                style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
                                 <div>
                                     <h1 class="page-title" id="filter-title">System Map</h1>
                                 </div>
@@ -181,9 +177,7 @@
                 </div>
                 <hr>
             </div>
-
         </div>
-
     </section>
 
     <!-- Section Contents -->
@@ -234,13 +228,14 @@
 
     <script src="js/sysMap.js"></script>
     <script src="./js/ann-indicator.js"></script>
-    <script src="../js/back-to-top.js"></script>
 
+    <!-- <script src="../js/back-to-top.js"></script> -->
+
+    <!-- <script src="./js/pull-to-refresh.js"></script>
+    <script src="../js/ios-pwa-pull-to-refresh-init.js"></script> -->
     
-    <script src="./js/pull-to-refresh.js"></script>
-    <script src="../js/ios-pwa-pull-to-refresh-init.js"></script>
-    
-    <script src="../js/ios-pwa-warning.js"></script></body>
+    <script src="../js/ios-pwa-warning.js"></script>
+</body>
 
 </html>
 

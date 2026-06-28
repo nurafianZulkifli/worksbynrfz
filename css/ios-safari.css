@@ -1,0 +1,510 @@
+/* iOS Safari Specific Stylesheet */
+/* Targets Safari on iOS devices - PWA only */
+
+/* Support color-scheme for Safari address bar - applies to all modes */
+@media (prefers-color-scheme: dark) {
+
+  html,
+  body {
+    color-scheme: dark;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+
+  html,
+  body {
+    color-scheme: light;
+  }
+}
+
+/* Apply only to Apple devices in PWA standalone mode */
+@media (display-mode: standalone) {
+  @supports (-webkit-appearance: none) {
+
+    /* Prevent font size adjustment on landscape orientation */
+    body {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+      padding-top: env(safe-area-inset-top);
+    }
+
+    /* Remove default tap highlight color */
+    button,
+    a,
+    input,
+    select,
+    textarea {
+      -webkit-tap-highlight-color: transparent;
+      tap-highlight-color: transparent;
+    }
+
+    /* Fix input and textarea styling */
+    input,
+    select,
+    textarea {
+      -webkit-appearance: none;
+      appearance: none;
+      border-radius: 0;
+      font-size: 16px;
+      /* Prevents auto-zoom on focus */
+      /* padding: 8px; */
+      border: 1px solid #ccc;
+      background-color: #fff;
+    }
+
+    /* Remove Safari default select styling */
+    select {
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 8px center;
+      background-size: 20px;
+      padding-right: 32px;
+    }
+
+    /* Fix button styling */
+    button,
+    .btn,
+    [role="button"] {
+      -webkit-appearance: none;
+      appearance: none;
+      cursor: pointer;
+      background-color: transparent;
+      border: none;
+    }
+
+    /* Ensure proper focus states on iOS */
+    input:focus,
+    select:focus,
+    textarea:focus,
+    button:focus,
+    a:focus {
+      outline: none;
+      -webkit-outline: none;
+    }
+
+    /* Add visible focus for accessibility */
+    input:focus,
+    select:focus,
+    textarea:focus,
+    button:focus,
+    a:focus {
+      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+    }
+
+    /* Fix textarea resize behavior */
+    textarea {
+      resize: vertical;
+      -webkit-resize: vertical;
+    }
+
+    /* Prevent text selection on long press */
+    .no-select {
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+    }
+
+    /* Allow text selection where needed */
+    .text-selectable {
+      -webkit-user-select: text;
+      user-select: text;
+    }
+
+    /* Fix fixed positioning for iOS */
+    .fixed-ios {
+      position: fixed;
+      position: -webkit-fixed;
+    }
+
+    /* Safe area support for notched devices */
+    @supports (padding: max(0px)) {
+      body {
+        padding-left: max(12px, env(safe-area-inset-left));
+        padding-right: max(12px, env(safe-area-inset-right));
+      }
+
+      .safe-area-top {
+        padding-top: max(12px, env(safe-area-inset-top));
+      }
+
+      .safe-area-bottom {
+        padding-bottom: max(12px, env(safe-area-inset-bottom));
+      }
+
+      .safe-area-left {
+        padding-left: max(12px, env(safe-area-inset-left));
+      }
+
+      .safe-area-right {
+        padding-right: max(12px, env(safe-area-inset-right));
+      }
+
+      /* For full-bleed fixed elements */
+      .safe-area-inset-top {
+        padding-top: env(safe-area-inset-top);
+      }
+
+      .safe-area-inset-bottom {
+        padding-bottom: env(safe-area-inset-bottom);
+      }
+    }
+
+    /* Smooth scrolling */
+    html {
+      -webkit-scroll-behavior: smooth;
+      scroll-behavior: smooth;
+    }
+
+    /* Fix iOS scrolling momentum */
+    .scrollable,
+    .modal-body,
+    [data-scrollable] {
+      -webkit-overflow-scrolling: touch;
+      overflow-scrolling: touch;
+    }
+
+    /* Prevent horizontal scroll on landscape */
+    body {
+      overflow-x: hidden;
+    }
+
+    /* Fix input color in dark mode */
+    @media (prefers-color-scheme: dark) {
+
+      input,
+      select,
+      textarea {
+        background-color: #1e1e1e;
+        color: #fff;
+        border-color: #404040;
+      }
+
+      input::placeholder,
+      textarea::placeholder {
+        color: #999;
+      }
+
+      /* Prevent Safari address bar from showing white in dark mode */
+      body,
+      html {
+        background-color: #000000;
+        color: #ffffff;
+        color-scheme: dark;
+      }
+
+      button,
+      a,
+      input,
+      select,
+      textarea {
+        -webkit-appearance: none;
+      }
+    }
+
+    /* Light mode address bar support */
+    @media (prefers-color-scheme: light) {
+
+      body,
+      html {
+        background-color: #ffffff;
+        color: #000000;
+        color-scheme: light;
+      }
+    }
+
+    /* Fix range input styling */
+    input[type="range"] {
+      -webkit-appearance: slider-horizontal;
+      width: 100%;
+      height: 6px;
+    }
+
+    /* iOS specific link styling */
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* Prevent image zooming on double-tap */
+    img {
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+    }
+
+    /* Fix video element on iOS */
+    video {
+      -webkit-playsinline: playsinline;
+      playsinline: playsinline;
+      width: 100%;
+      height: auto;
+    }
+
+    /* Fix modal scrolling on iOS */
+    .modal-open {
+      position: fixed;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    /* Prevent elastic scrolling bounce on iOS */
+    .no-bounce {
+      overscroll-behavior: none;
+      -webkit-overscroll-behavior: none;
+    }
+
+    /* Fix font rendering on iOS */
+    body {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Improve text rendering */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Fix checkbox and radio styling */
+    input[type="checkbox"],
+    input[type="radio"] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid #ccc;
+      border-radius: 3px;
+      cursor: pointer;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    input[type="radio"] {
+      border-radius: 50%;
+    }
+
+    input[type="checkbox"]:checked::after,
+    input[type="radio"]:checked::after {
+      content: '';
+      display: block;
+      width: 10px;
+      height: 10px;
+      background-color: #007bff;
+      border-radius: 2px;
+      margin: auto;
+    }
+
+    /* Viewport fit for notched devices */
+    @supports (padding: max(0px)) {
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      header,
+      nav {
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+      }
+    }
+
+    /* iOS Top Gradient - similar to bottom nav */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 80px;
+      background: linear-gradient(to bottom, rgba(81, 167, 190, 0.8) 0%, rgba(53, 64, 117, 0.4) 50%, rgba(53, 64, 117, 0) 100%);
+      pointer-events: none;
+      z-index: 1000;
+      padding-top: env(safe-area-inset-top);
+    }
+
+    body.dark-mode::before {
+      background: linear-gradient(to bottom, rgba(31, 36, 59, 0.8) 0%, rgba(31, 36, 59, 0.4) 50%, rgba(31, 36, 59, 0) 100%);
+    }
+
+    /* Fix iOS status bar overlay */
+    @media screen and (device-aspect-ratio: 19.5 / 9) and (hover: none) and (pointer: coarse) {
+
+      /* iPhone X and later */
+      body {
+        padding-top: env(safe-area-inset-top);
+      }
+    }
+
+    /* Performance optimization for iOS */
+    * {
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    a,
+    button,
+    input,
+    textarea,
+    [role="button"] {
+      -webkit-user-select: text;
+      user-select: text;
+    }
+
+    /* iOS PWA Warning Banner Positioning */
+    #ios-pwa-warning-banner {
+      display: none !important;
+    }
+
+    /* Hide PWA migration/uninstall banner */
+    #pwa-migration-banner {
+      display: none !important;
+    }
+
+    /* Add safe area inset support for notched devices */
+    @supports (padding: max(0px)) {
+      #ios-pwa-warning-banner {
+        padding-top: env(safe-area-inset-top);
+      }
+    }
+
+    /* Adjust body padding to prevent content overlap with banner */
+    body:has(#ios-pwa-warning-banner) {
+      padding-top: 5px;
+      /* Approximate height of banner with padding */
+    }
+
+    /* Safe area support for body padding */
+    @supports (padding: max(0px)) {
+      body:has(#ios-pwa-warning-banner) {
+        padding-top: calc(5px + env(safe-area-inset-top));
+      }
+    }
+
+    @media (max-width: 994px) and (hover: none) and (pointer: coarse) {
+      .breadcrumb-fixed-placeholder {
+        padding-top: 6em;
+      }
+
+      .breadcrumb.breadcrumb-fixed.at-top {
+        top: calc(5px + env(safe-area-inset-top));
+        background: none;
+        box-shadow: none;
+        padding-top: 1.5em;
+        padding-left: 0em;
+      }
+    }
+
+    @media (max-width: 768px) and (hover: none) and (pointer: coarse) {
+      .pinned {
+        margin-top: -30rem;
+        margin-bottom: 2em;
+        position: relative;
+        z-index: 10;
+      }
+
+      .page-header-section {
+        margin-top: 0.2em !important;
+        padding-top: max(8px, env(safe-area-inset-top)) !important;
+      }
+
+      /* RailBuddy: Fix excessive margin on pages with about-me-sum wrapper */
+      .about-me-sum .page-header-section {
+        margin-top: -0.5em !important;
+        padding-top: 0 !important;
+      }
+
+      /* Fix page title wrapper flexbox layout on iOS */
+      .page-title-wrapper>div {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+
+      .page-title-wrapper h1 {
+        width: 100%;
+        margin-bottom: 0;
+      }
+
+      .ann-alerts-tabs {
+        width: 100%;
+        margin-top: 12px !important;
+      }
+
+      /* Fix mobile nav shrink effect on iOS PWA */
+      .mobile-bottom-nav ul {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        -webkit-transform-origin: bottom center;
+        transform-origin: bottom center;
+        transition: -webkit-transform 0.3s ease, transform 0.3s ease;
+      }
+
+      .mobile-bottom-nav.shrunk ul {
+        -webkit-transform: scale(0.9) translateZ(0);
+        transform: scale(0.9) translateZ(0);
+      }
+    }
+
+    /* FinTrack: Extend breadcrumb bg-overlay to status bar */
+    #cv-ft,
+    #cv-rp,
+    #cv-gr {
+      margin-top: calc(-1 * env(safe-area-inset-top));
+      padding-top: max(20px, env(safe-area-inset-top));
+    }
+
+    /* Buszy: Extend cover to status bar */
+    #cv-bat {
+      margin-top: calc(-1 * env(safe-area-inset-top));
+      padding-top: max(20px, env(safe-area-inset-top));
+    }
+
+    /* RailBuddy: Extend cover to status bar */
+    #cv-bat-subp {
+      margin-top: calc(-1 * env(safe-area-inset-top));
+      padding-top: max(20px, env(safe-area-inset-top));
+    }
+
+    /* Inner content wrappers - ensure they don't overlap Dynamic Island */
+    .ft-cover-wrapper {
+      padding-top: max(24px, calc(24px + env(safe-area-inset-top))) !important;
+    }
+
+    .cover-search-wrapper {
+      padding-top: max(48px, calc(48px + env(safe-area-inset-top))) !important;
+    }
+
+    /* Adjust ft-main negative margin to prevent overlap with increased padding */
+    .ft-main {
+      margin-top: 2rem !important;
+    }
+
+    .pinned {
+      margin-top: -7rem !important;
+    }
+
+    .tsu {
+      margin-top: 2rem !important;
+    }
+
+    /* iOS PWA specific - ensure about-me-sum page header margin matches other pages */
+    @media (max-width: 768px) and (hover: none) and (pointer: coarse) {
+    .about-me-sum .page-header-section {
+        margin-top: -0.5em !important;
+        padding-top: 0 !important;
+    }
+}
+
+
+  }
+
+  /* Close Apple devices @supports block */
+}
+
+/* Close PWA standalone media query block */

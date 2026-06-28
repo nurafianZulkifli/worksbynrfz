@@ -15,83 +15,85 @@
 
 // Ensure DOM is loaded before running script
 document.addEventListener('DOMContentLoaded', function() {
-  fetch('https://bat-lta-9eb7bbf231a2.herokuapp.com/train-service-alerts')
-    .then(response => response.json())
-    .then(data => {
-      if (!data || !data.value) return;
-      // Map line names to codes used in your HTML
-      const lineMap = {
-        'North-South Line': 'NSL',
-        'East-West Line': 'EWL',
-        'Circle Line': 'CCL',
-        'Downtown Line': 'DTL',
-        'Thomson-East Coast Line': 'TEL',
-        'North East Line': 'NEL',
-        'Bukit Panjang LRT': 'BP',
-        'Sengkang LRT': 'SK',
-        'Punggol LRT': 'PG'
-      };
-      // Support both array and object for value
-      let alerts = [];
-      if (Array.isArray(data.value)) {
-        alerts = data.value;
-      } else if (typeof data.value === 'object') {
-        alerts = [data.value];
-      }
-      // Show current date/time for 'Last updated' line
-      const now = new Date();
-      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-      let hours = now.getHours();
-      const ampm = hours >= 12 ? 'PM' : 'AM';
-      hours = hours % 12;
-      hours = hours ? hours : 12;
-      const mins = now.getMinutes().toString().padStart(2, '0');
-      const formatted = `Last updated: ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()} ${hours}:${mins} ${ampm}`;
-      const updatedDiv = document.querySelector('.tsu .alert-last-updated');
-      if (updatedDiv) updatedDiv.textContent = formatted;
-      alerts.forEach(alert => {
-        if (alert.Status === 1 || alert.Status === 2) {
-          let foundLine = null;
-          let foundMsg = '';
-          if (alert.Message && Array.isArray(alert.Message) && alert.Message.length > 0) {
-            const msg = alert.Message[0].Content || '';
-            foundMsg = linkify(msg);
-            for (const [lineName, code] of Object.entries(lineMap)) {
-              if (msg.includes(lineName) || msg.includes(code)) {
-                foundLine = code;
-                break;
-              }
+  const CACHE_KEY = 'buszy_tsa_alerts_cache';
+  const DATA_KEY = 'buszy_tsa_alerts_data';
+  const CACHE_TTL = 30 * 60 * 1000; // 30 minutes
+
+  function processAlerts(data) {
+    if (!data || !data.value) return;
+    // Map line names to codes used in your HTML
+    const lineMap = {
+      'North-South Line': 'NSL',
+      'East-West Line': 'EWL',
+      'Circle Line': 'CCL',
+      'Downtown Line': 'DTL',
+      'Thomson-East Coast Line': 'TEL',
+      'North East Line': 'NEL',
+      'Bukit Panjang LRT': 'BP',
+      'Sengkang LRT': 'SK',
+      'Punggol LRT': 'PG'
+    };
+    // Support both array and object for value
+    let alerts = [];
+    if (Array.isArray(data.value)) {
+      alerts = data.value;
+    } else if (typeof data.value === 'object') {
+      alerts = [data.value];
+    }
+    // Show current date/time for 'Last updated' line
+    const now = new Date();
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    let hours = now.getHours();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    const mins = now.getMinutes().toString().padStart(2, '0');
+    const formatted = `Last updated: ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()} ${hours}:${mins} ${ampm}`;
+    const updatedDiv = document.querySelector('.tsu .alert-last-updated');
+    if (updatedDiv) updatedDiv.textContent = formatted;
+    alerts.forEach(alert => {
+      if (alert.Status === 1 || alert.Status === 2) {
+        let foundLine = null;
+        let foundMsg = '';
+        if (alert.Message && Array.isArray(alert.Message) && alert.Message.length > 0) {
+          const msg = alert.Message[0].Content || '';
+          foundMsg = linkify(msg);
+          for (const [lineName, code] of Object.entries(lineMap)) {
+            if (msg.includes(lineName) || msg.includes(code)) {
+              foundLine = code;
+              break;
             }
           }
-          if (foundLine) {
-            const items = document.querySelectorAll('.custom-list-item');
-            items.forEach(item => {
-              const label = item.querySelector('.line-label');
-              if (label && label.textContent.trim() === foundLine) {
-                const icon = item.querySelector('.status-icon');
-                if (icon) {
-                  if (alert.Status === 1) {
-                    icon.style.background = '#ffb300'; // amber
-                    icon.innerHTML = '<i class="fa-regular fa-triangle-exclamation"></i>'; // warning sign
-                    icon.style.color = '#000';
-                  } else if (alert.Status === 2) {
-                    icon.style.background = '#e53935'; // red
-                    icon.innerHTML = '<i class="fa-regular fa-diamond-exclamation"></i>'; // critical sign
-                    icon.style.color = '#fff';
-                  }
-                }
-                // Show alert message below the item if not already present
-                if (foundMsg && !item.nextElementSibling?.classList.contains('alert-message-box')) {
-                  const msgBox = document.createElement('div');
-                  msgBox.className = 'alert-message-box';
-                  msgBox.innerHTML = `<span class=\"alert-message-content\">${foundMsg}</span>`;
-                  item.parentNode.insertBefore(msgBox, item.nextSibling);
+        }
+        if (foundLine) {
+          const items = document.querySelectorAll('.custom-list-item');
+          items.forEach(item => {
+            const label = item.querySelector('.line-label');
+            if (label && label.textContent.trim() === foundLine) {
+              const icon = item.querySelector('.status-icon');
+              if (icon) {
+                if (alert.Status === 1) {
+                  icon.style.background = '#ffb300'; // amber
+                  icon.innerHTML = '<i class="fa-regular fa-triangle-exclamation"></i>'; // warning sign
+                  icon.style.color = '#000';
+                } else if (alert.Status === 2) {
+                  icon.style.background = '#e53935'; // red
+                  icon.innerHTML = '<i class="fa-regular fa-diamond-exclamation"></i>'; // critical sign
+                  icon.style.color = '#fff';
                 }
               }
-            });
-          }
+              // Show alert message below the item if not already present
+              if (foundMsg && !item.nextElementSibling?.classList.contains('alert-message-box')) {
+                const msgBox = document.createElement('div');
+                msgBox.className = 'alert-message-box';
+                msgBox.innerHTML = `<span class=\"alert-message-content\">${foundMsg}</span>`;
+                item.parentNode.insertBefore(msgBox, item.nextSibling);
+              }
+            }
+          });
         }
-      });
+      }
+    });
     // Add styles for alert message box
     const style = document.createElement('style');
     style.innerHTML = `
@@ -119,6 +121,29 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     `;
     document.head.appendChild(style);
-    })
-    .catch(err => {});
+  }
+
+  // Check cache
+  const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
+  const cacheIsFresh = cached !== null && (Date.now() - cached.ts < CACHE_TTL);
+
+  // Show cached data if available
+  if (cacheIsFresh) {
+    const cachedData = JSON.parse(localStorage.getItem(DATA_KEY) || 'null');
+    if (cachedData) {
+      processAlerts(cachedData);
+    }
+  }
+
+  // Fetch only if cache is stale
+  if (!cacheIsFresh) {
+    fetch('https://bat-lta-9eb7bbf231a2.herokuapp.com/train-service-alerts')
+      .then(response => response.json())
+      .then(data => {
+        localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now() }));
+        localStorage.setItem(DATA_KEY, JSON.stringify(data));
+        processAlerts(data);
+      })
+      .catch(err => {});
+  }
 });

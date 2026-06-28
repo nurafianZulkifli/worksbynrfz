@@ -1,5 +1,10 @@
 /* ===== PWA Splash Screen ===== */
 
+/* ===== Prevent pinch-to-zoom on PWA ===== */
+body {
+    touch-action: manipulation;
+}
+
 /* ===== Native-feel: prevent text selection on interactive elements ===== */
 button,
 .bus-stop,
@@ -687,7 +692,7 @@ body.drag-mode .list-group-item:not(.drag-selected) {
 
 .pinned {
     margin-bottom: 2em;
-    padding-top: max(1em, calc(4.5em + env(safe-area-inset-top, 0)));
+    padding-top: 4em;
 }
 
 .pinned h2 {
@@ -887,7 +892,7 @@ body.drag-mode .list-group-item:not(.drag-selected) {
     align-items: center;
     justify-content: center;
     gap: 10px;
-    margin-top: 2em;
+    margin-top: 1em;
     padding-left: 1em;
     cursor: default !important;
 }
@@ -1443,7 +1448,7 @@ body.dark-mode .alerts-indicator-dot {
 .mobile-bottom-nav .alerts-indicator-dot.show {
     position: absolute;
     top: -2px;
-    right: -4px;
+    right: -11px;
     width: 8px;
     height: 8px;
     margin-left: 0;
@@ -1621,9 +1626,16 @@ body.dark-mode .alerts-indicator-dot {
         margin: 20px 20px;
         padding: 0 4px;
         width: 100%;
-        max-width: 340px;
+        max-width: 440px;
         justify-content: space-between;
         pointer-events: auto;
+        transition: transform 0.3s ease;
+        transform-origin: bottom center;
+    }
+
+    .mobile-bottom-nav.shrunk ul {
+        transform: scale(0.9);
+        padding: 2px 1px !important;
     }
 
     body.dark-mode .mobile-bottom-nav ul {
@@ -1651,7 +1663,7 @@ body.dark-mode .alerts-indicator-dot {
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: 6px 0 6px;
+        padding: 14px 0 14px;
         width: 100%;
         text-decoration: none;
     }

@@ -1,0 +1,1010 @@
+#cv-bat-subp {
+    height: 0vh;
+    position: relative;
+}
+
+
+
+.fl {
+    font-size: 15px;
+    background-color: #000;
+    color: #fff;
+    padding: 8px;
+    border-radius: 10px;
+}
+
+.footer {
+    display: none;
+}
+
+
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.card {
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    padding: 1rem;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s;
+    scroll-margin-top: 140px;
+    scroll-margin-bottom: 140px;
+}
+
+.card .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    border-radius: 15px;
+}
+
+.card .card-content-art {
+    display: flex;
+    flex-direction: row;
+    gap: 1.0rem;
+    justify-content: space-around;
+}
+
+.card .card-content-art span {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5px;
+}
+
+.card .operator-logo {
+    width: 50px;
+    height: auto;
+}
+
+.card-text {
+    text-align: left !important;
+}
+
+.card-bt {
+    margin-top: 2em;
+    padding: 1em;
+}
+
+.service-no {
+    background-color: #94d40b;
+    border-radius: 5px;
+    color: #000 !important;
+    font-weight: bold;
+    padding: 5px 10px;
+    display: inline-block;
+    white-space: nowrap;
+    font-size: 20px;
+    width: fit-content;
+    transition-duration: 500ms;
+}
+
+.service-no-collapsible-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.service-no-collapsible-btn:hover .service-no {
+    transform: translateY(-2px);
+    transition-duration: 500ms;
+    background-color: #c7e3fb;
+}
+
+.service-no-collapsible-btn i {
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.service-no-collapsible-btn.active i {
+    transform: rotate(180deg);
+}
+
+.service-options-collapse {
+    transition: max-height 0.35s ease, opacity 0.35s ease;
+    overflow: hidden;
+    opacity: 0;
+}
+
+.service-options-collapse.show {
+    opacity: 1;
+}
+
+body.dark-mode a.ib-svc:hover {
+    transform: translateY(-3px) !important;
+    color: #fff !important;
+    background-color: #52718d !important;
+}
+
+body.dark-mode a.service-no:hover {
+    transform: translateY(-3px);
+    color: #fff !important;
+    background-color: #52718d;
+}
+
+.bus-time {
+    display: inline-flex;
+    width: 85px;
+    text-align: center;
+    margin-right: 2px;
+    font-size: 25px;
+    font-weight: bold;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    cursor: default;
+}
+
+.bus-stop-code {
+    display: inline-flex;
+    align-items: center;
+    background-color: #94d40b;
+    color: #000;
+    font-weight: bold;
+    font-size: 20px;
+    padding: 5px 4px;
+    border-radius: 5px;
+    gap: 10px;
+    cursor: default;
+}
+
+body.dark-mode .bus-stop-code {
+    display: inline-flex;
+    align-items: center;
+    background-color: #7db603;
+    color: #000;
+    font-weight: bold;
+    font-size: 20px;
+    padding: 3px 4px;
+    border-radius: 5px;
+    gap: 10px;
+    cursor: default;
+}
+
+.bus-stop-code img {
+    width: 35px;
+    height: auto;
+    cursor: default;
+}
+
+.bus-location-section {
+    display: none;
+}
+
+#bus-map {
+    margin-bottom: 2em;
+    border-radius: 25px;
+}
+
+.bus-stop-code-text,
+body.dark-mode .bus-stop-code-text {
+    font-size: 20px;
+    font-weight: bold;
+    color: #000;
+    background-color: #fff;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    padding: 2px 6px;
+    cursor: default;
+}
+
+.bus-stop-description,
+body.dark-mode .bus-stop-description {
+    font-size: 35px;
+    font-weight: bold;
+    margin-left: 12px;
+    cursor: default;
+    flex: 1;
+    min-width: 0;
+}
+
+.bus-stop-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+#collapse-map-btn,
+#current-location-btn,
+#recenter-map-btn {
+    padding: 10px;
+    margin-bottom: 1em;
+    margin-right: 1em
+}
+
+#incoming-buses-section {
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    padding: 1rem;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#incoming-buses-section p {
+    text-align: left !important;
+}
+
+#incoming-buses-section h3 {
+    color: #000;
+}
+
+#incoming-buses-section p {
+    color: #999;
+}
+
+
+.ib-time {
+    font-size: 20px;
+    color: #000;
+    text-align: center;
+    font-weight: bold;
+    border: #bfbfbf 1px solid;
+    border-radius: 10px;
+    width: 100%;
+    cursor: default;
+    transition: border-color 0.3s ease;
+}
+
+.ib-time.arrived {
+    animation: pulse-indicator 2s infinite;
+    border-color: #7db603;
+}
+
+@keyframes pulse-indicator {
+
+    0%,
+    100% {
+        border-color: #94d40b;
+    }
+
+    50% {
+        border-color: rgb(104, 151, 2);
+    }
+}
+
+.ib-svc {
+    color: #000;
+    font-weight: bold;
+    font-size: 20px;
+    padding: 0.8rem 1rem;
+    text-align: center;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0 12px 12px 0;
+    clip-path: polygon(12% 0%, 100% 0%, 100% 100%, 12% 100%, 0% 50%);
+    position: relative;
+    cursor: default;
+}
+
+a.ib-svc:hover {
+    transform: translateY(-3px) !important;
+    color: #000 !important;
+    background-color: #c7e3fb !important;
+    font-weight: bold;
+}
+
+a.service-no:hover {
+    transform: translateY(-3px);
+    color: #fff !important;
+    background-color: #c7e3fb;
+}
+
+.btn-busloc2 {
+    background-color: #fff;
+    color: #000;
+    padding: 8px;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.notif-active-btn-label {
+    color: #000 !important;
+}
+
+body.dark-mode .btn-busloc2 {
+    background-color: #1c1f2b;
+    color: #fff;
+    border: 1px solid #2b2b2b33;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+
+body.dark-mode .ib-time {
+    color: #fff;
+}
+
+body.dark-mode .ib-time.arrived {
+    animation: pulse-indicator-dark 2s infinite;
+    border: 2px solid #7db603;
+    border-radius: 10px;
+}
+
+@keyframes pulse-indicator-dark {
+
+    0%,
+    100% {
+        border-color: #b0e63c;
+    }
+
+    50% {
+        border-color: #6ea100;
+    }
+}
+
+body.dark-mode .ib-svc {
+    color: #000 !important;
+    cursor: default;
+}
+
+body.dark-mode .card {
+    background-color: #1c1f2b;
+    border: 1px solid #2b2b2b33;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Bus Service Timings Button Styles */
+a.btn.btn-primary {
+    transition: all 0.3s ease;
+}
+
+a.btn.btn-primary:hover {
+    background-color: #c7e3fb !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+body.dark-mode a.btn.btn-primary {
+    background-color: #7db603 !important;
+    color: #000 !important;
+}
+
+body.dark-mode a.btn.btn-primary:hover {
+    background-color: #94d40b !important;
+    color: #000 !important;
+}
+
+body.dark-mode .card .card-header {
+    background-color: #0000002c;
+    border-radius: 15px;
+    color: #fff;
+}
+
+.card .card-header div {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    justify-content: flex-start;
+
+}
+
+.card .card-header .destination-code {
+    font-size: 0.85rem;
+    color: #666;
+    margin-top: 0.6rem;
+    line-height: 1.2;
+    cursor: default;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.busNo-card {
+    /* flex-wrap: wrap; */
+    gap: 0.5rem;
+}
+
+.spinner,
+.spinner-border {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    color: #1f84a2;
+    box-sizing: border-box;
+    padding: 3px;
+    overflow: visible;
+}
+
+.spinner circle,
+.spinner-border circle {
+    fill: none;
+    stroke: currentColor;
+    cx: 50%;
+    cy: 50%;
+    r: 50%;
+    stroke-width: 11;
+    stroke-linecap: round;
+    transform-origin: center;
+}
+
+.btn-busloc {
+    background-color: #1f84a2;
+    color: #fff;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    border: 1px solid #cccccc;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    white-space: nowrap;
+    width: max-content !important;
+    font-size: 17px;
+}
+
+.notbtn {
+    font-size: 14px;
+}
+
+body.dark-mode .card .card-header .destination-code {
+    color: #aaa;
+}
+
+body.dark-mode .service-no {
+    background-color: #7db603;
+    color: #000 !important;
+    width: fit-content;
+}
+
+body.dark-mode .service-no-collapsible-btn {
+    color: inherit;
+}
+
+body.dark-mode .service-no-collapsible-btn:hover .service-no {
+    transform: translateY(-3px);
+    background-color: #52718d;
+    color: #fff !important;
+}
+
+body.dark-mode .leaflet-touch .leaflet-bar a {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    background-color: #2e2e2e;
+}
+
+body.dark-mode #incoming-buses-section h3 {
+    color: #fff;
+}
+
+body.dark-mode #incoming-buses-section hr {
+    border-color: #444;
+}
+
+body.dark-mode #incoming-buses-section {
+    background-color: #1c1f2b;
+    border: 1px solid #2b2b2b33;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+body.dark-mode #incoming-buses-section h3 {
+    color: #fff;
+}
+
+body.dark-mode #incoming-buses-section p {
+    color: #999;
+}
+
+
+@media (max-width: 768px) {
+    #incoming-buses-grid {
+        grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)) !important;
+        overflow-x: visible;
+        overflow-y: hidden;
+        gap: 0.5rem;
+    }
+
+    .ib-svc {
+        clip-path: polygon(22% 0%, 100% 0%, 100% 100%, 22% 100%, 0% 50%);
+    }
+
+    .card-bt {
+        margin-top: 2em;
+        padding: 0em;
+    }
+
+    .card {
+        scroll-margin-top: 200px;
+        scroll-margin-bottom: 200px;
+    }
+
+}
+
+@media (min-width: 440px) and (max-width: 767px) {
+    #incoming-buses-grid {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)) !important;
+        overflow-x: visible !important;
+    }
+
+    .ib-svc {
+        clip-path: polygon(22% 0%, 100% 0%, 100% 100%, 22% 100%, 0% 50%);
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .col-xl-3 {
+        flex: 0 0 auto;
+        width: 50%;
+    }
+
+    #incoming-buses-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)) !important;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 880px) {
+    .bus-time {
+        width: 68px;
+        font-size: 22px;
+    }
+
+    .card .card-content-art {
+        gap: 0.4rem;
+    }
+
+    .card .operator-logo {
+        width: 38px;
+    }
+
+    .card {
+        padding: 0.75rem;
+    }
+
+    .card .card-header {
+        font-size: 1rem;
+    }
+
+    .service-no {
+        font-size: 17px;
+        padding: 4px 8px;
+    }
+}
+
+@media (min-width: 1025px) and (max-width: 1199px) {
+    .col-xl-3 {
+        flex: 0 0 auto;
+        width: 50%;
+    }
+
+    #incoming-buses-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)) !important;
+    }
+}
+
+@media (min-width: 1200px) {
+    .col-xl-3 {
+        flex: 0 0 auto;
+        width: 33%;
+    }
+
+    .bus-time {
+        width: 55px;
+        font-size: 20px;
+        vertical-align: middle;
+    }
+
+}
+
+/* Bus Load Legend Styling */
+.bus-load-legend {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    justify-content: center;
+    margin-top: 1.5em;
+    margin-bottom: 2em;
+    padding: 1rem;
+    background-color: #f9f9f9;
+    border-radius: 15px;
+    border: 1px solid #e0e0e0;
+    flex-wrap: wrap;
+}
+
+body.dark-mode .bus-load-legend {
+    background-color: #1c1f2b;
+    border: 1px solid #2b2b2b33;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+#art-offline-banner {
+    display: none;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 18px;
+    border-radius: 15px;
+    background: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    margin-top: 1.5em;
+    margin-bottom: 1em;
+}
+
+body.dark-mode #art-offline-banner {
+    background-color: #1c1f2b;
+    border: 1px solid rgba(27, 27, 27, 0.2);
+    color: #e0e0e0;
+}
+
+#notif-blocked-banner,
+#notif-prompt-banner {
+    display: none;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px 12px 16px;
+    border-radius: 15px;
+    background: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    margin-top: 0.75em;
+    margin-bottom: 0.5em;
+    font-size: 0.88rem;
+}
+
+body.dark-mode #notif-blocked-banner,
+body.dark-mode #notif-prompt-banner {
+    background-color: #1c1f2b;
+    border: 1px solid rgba(27, 27, 27, 0.2);
+    color: #e0e0e0;
+}
+
+.notif-banner-text {
+    flex: 1;
+}
+
+.notif-banner-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.notif-dismiss-btn {
+    background: transparent;
+    border: 1px solid #bbb;
+    border-radius: 10px;
+    color: #555;
+}
+
+body.dark-mode .notif-dismiss-btn {
+    border-color: #555;
+    color: #9a9a9a;
+}
+
+.bus-load-legend .fleet-legend {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+    justify-content: left;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    flex: 1;
+    min-width: 0;
+}
+
+.bus-load-legend .fleet-legend span {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5em;
+    border-radius: 15px;
+    font-weight: 600;
+    font-size: 14px;
+    background-color: #f8f8f8;
+    box-shadow: none;
+    border: 1px solid #ddd;
+    transition: transform 0.3s ease;
+    white-space: nowrap;
+}
+
+body.dark-mode .bus-load-legend .fleet-legend span {
+    background: none;
+    box-shadow: none;
+    border: 1px solid #bfbfbf;
+}
+
+.bus-load-legend .fleet-legend span:hover {
+    transform: translateY(-2px);
+}
+
+.load-indicators-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.0rem;
+    justify-content: flex-end;
+    flex: 1;
+    min-width: 250px;
+}
+
+.load-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 20px;
+    transition: transform 0.3s ease;
+}
+
+.load-indicator:hover {
+    transform: translateY(-2px);
+}
+
+.load-indicator.empty {
+    color: #28a745;
+    border-bottom: 3px solid #28a745;
+    font-size: 10px;
+    border-radius: 0px;
+    cursor: default;
+}
+
+.load-indicator.moderate {
+    color: #dfa908;
+    border-bottom: 3px solid #dfa908;
+    font-size: 10px;
+    border-radius: 0px;
+    cursor: default;
+}
+
+.load-indicator.full {
+    color: #dc3545;
+    border-bottom: 3px solid #dc3545;
+    font-size: 10px;
+    border-radius: 0px;
+    cursor: default;
+}
+
+.load-indicator i {
+    font-size: 1.2em;
+}
+
+.ib-time span.mins {
+    font-size: 0.7em;
+    margin-left: 0px;
+}
+
+.card .card-content-art span.mins {
+    font-size: 0.6em;
+    margin-left: 3px;
+}
+
+@media (min-width: 1200px) {
+    .col-xl-3 {
+        flex: 0 0 auto;
+        width: 33%;
+    }
+}
+
+@media (max-width: 954px) {
+    .bus-load-legend {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: center;
+        padding: 0.8rem;
+        margin-top: 1em;
+        margin-bottom: 1.5em;
+    }
+
+    .bus-time {
+        font-size: 25px;
+    }
+}
+
+@media (max-width: 576px) {
+    .bus-load-legend {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: center;
+        padding: 0.8rem;
+        margin-top: 1em;
+        margin-bottom: 1.5em;
+    }
+
+    .fleet-legend {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 0.4rem;
+        justify-content: center;
+        margin-top: 0;
+        padding-bottom: 0;
+        width: 100%;
+    }
+
+    .fleet-legend span {
+        font-size: 12px;
+        padding: 0.4rem 0.6rem;
+    }
+
+    .bus-load-legend .fleet-legend {
+        width: 100%;
+        gap: 0.4rem;
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: center;
+        min-width: unset;
+    }
+
+    .load-indicators-group {
+        width: 100%;
+        gap: 1.0rem;
+        flex: none;
+        min-width: unset;
+        flex-wrap: nowrap;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .load-indicator {
+        font-size: 12px;
+        padding: 0.4rem 0.8rem;
+        padding-top: 0px;
+        padding-bottom: 0px;
+    }
+
+    .img-fluid {
+        width: 40px !important;
+        height: auto;
+        object-fit: cover;
+    }
+
+    .card .card-content-art span {
+        font-size: 20px;
+    }
+
+    .load-indicator i {
+        font-size: 25px;
+    }
+
+    .bus-time {
+        display: inline-flex;
+        width: 63px;
+        text-align: center;
+        margin-right: 0em;
+        font-size: 25px;
+        font-weight: bold;
+        margin-top: 2px;
+        margin-bottom: 2px;
+        cursor: default;
+    }
+
+    .card .card-content-art span.mins {
+        font-size: 0.6em;
+        margin-left: 2px;
+    }
+}
+
+@media (max-width: 485px) {
+    .card .card-content-art span {
+        font-size: 20px;
+    }
+
+    .load-indicator i {
+        font-size: 25px;
+    }
+
+    .bus-stop-info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .bus-stop-description,
+    body.dark-mode .bus-stop-description {
+        font-size: 30px;
+        font-weight: bold;
+        margin-left: 0;
+        margin-top: 6px;
+        cursor: default;
+    }
+
+    .ib-time {
+        font-size: 18px;
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+
+    .bus-load-legend .fleet-legend {
+        width: 100%;
+        gap: 0.3rem;
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: center;
+        min-width: unset;
+    }
+
+}
+
+@media (max-width: 450px) {
+    .btn {
+        width: 35px;
+    }
+
+    #collapse-map-btn,
+    #current-location-btn,
+    #recenter-map-btn {
+        width: auto;
+        padding: 10px;
+        margin-bottom: 1em;
+        margin-right: 1em
+    }
+
+    .btn-mar {
+        width: auto;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .pin-msg {
+        font-size: 12px !important;
+        text-align: center;
+        display: flex;
+        align-items: center;
+    }
+}
+
+@media screen and (max-width: 417px) {
+    #incoming-buses-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.4rem;
+        padding: 0 0.25rem;
+    }
+
+    .ib-time {
+        font-size: 16px;
+        padding: 6px;
+        margin: 0;
+    }
+
+    .ib-svc {
+        font-size: 16px;
+        padding: 0.6rem 0.5rem;
+        margin: 0;
+    }
+
+    #incoming-buses-section {
+        padding: 0.8rem;
+        margin-bottom: 1.5em;
+    }
+
+    #incoming-buses-section h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.3rem;
+    }
+
+    #incoming-buses-section p {
+        font-size: 0.8rem;
+        margin-bottom: 0.75rem;
+    }
+}
+
+@media screen and (max-width: 380px) {
+    .busNo-card {
+        flex-wrap: wrap;
+        gap: 0.1rem !important;
+    }
+}
+
+.notif-toggle-btn.notif-active {
+    background-color: #94d40b;
+    color: #000 !important;
+}
+
+body.dark-mode .notif-toggle-btn.notif-active {
+    background-color: #7db603;
+    color: #000 !important;
+}

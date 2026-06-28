@@ -554,22 +554,12 @@ function displayBusStops(busStops, isCached = true) {
         busStopsContainer.appendChild(busStopElement);
     });
 
-    // Add refresh button to top right with proper layout
-    // Remove any existing refresh button container first
+    // Refresh button removed - auto-refresh triggered on nearby tab click instead
+    // Remove any existing refresh button container if it exists
     const existingHeader = busStopsContainer.parentElement.querySelector('[data-refresh-header]');
     if (existingHeader) {
         existingHeader.remove();
     }
-    
-    const headerDiv = document.createElement('div');
-    headerDiv.setAttribute('data-refresh-header', 'true');
-    headerDiv.style.cssText = 'display: flex; justify-content: flex-end; align-items: center; margin-bottom: 15px; width: 100%;';
-    headerDiv.innerHTML = `
-        <button id="refresh-nearby-btn" class="btn btn-rfetch">
-            <i class="fa-regular fa-rotate"></i>
-        </button>
-    `;
-    busStopsContainer.parentElement.insertBefore(headerDiv, busStopsContainer);
 
     // Apply current search filter if one exists
     const searchInput = document.getElementById('bus-stop-search');
@@ -589,15 +579,9 @@ function displayBusStops(busStops, isCached = true) {
     if (mobileBottomNav) mobileBottomNav.classList.remove('nav-disabled');
 }
 
-// Handle refresh button click using event delegation
-function handleRefreshClick() {
-    console.log('Refresh button clicked');
-    const refreshBtn = document.getElementById('refresh-nearby-btn');
-    if (!refreshBtn) {
-        console.log('Refresh button not found');
-        return;
-    }
-    
+// Refresh nearby bus stops - called when nearby tab is clicked
+function refreshNearbyBusStops() {
+    console.log('Refreshing nearby bus stops');
     const busStopsContainer = document.getElementById('bus-stops');
     const navbarContainer = document.querySelector('.navbar-container');
     const mobileBottomNav = document.querySelector('.mobile-bottom-nav');
@@ -643,6 +627,9 @@ function handleRefreshClick() {
         maximumAge: 0
     });
 }
+
+// Make refreshNearbyBusStops available globally
+window.refreshNearbyBusStops = refreshNearbyBusStops;
 
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize default refresh interval if not already set (in seconds)

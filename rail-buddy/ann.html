@@ -3,92 +3,42 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="">
+    <meta name="description"
+        content="Real-time train line status, delays, and schedules for Singapore MRT and LRT networks">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="google-site-verification" content="57TuruPNu5wqSSia_cUehl5t9Gh1AbxrHNPcMiFx-aQ" />
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover, user-scalable=no">
+    <meta name="color-scheme" content="light dark">
     <title>Announcements | RailBuddy</title>
-    <meta content="" name="description">
-    <meta content="" name="keywords">
     <meta property="og:image" content="https://i.imgur.com/i8n9KYs.png" />
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="RailBuddy">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0f1419" media="(prefers-color-scheme: dark)">
 
-    <link rel="icon" href="../rail-buddy/assets/icon-512.png">
+    <link rel="manifest" href="./manifest.json">
+    
+    <link rel="icon" href="./assets/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="./assets/icon-512.png">
+
+    <link rel="apple-touch-startup-image" href="../img/bg-img/hero-railbuddy-dark.png">
 
     <script src="https://kit.fontawesome.com/965e82ac01.js" crossorigin="anonymous"></script>
 
+    <!-- Core Stylesheet -->
     <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="css/style-tdt.css">
     <link rel="stylesheet" href="../css/style-breakpoints.css">
+    <link rel="stylesheet" href="../css/pwa-styles.css">
     <link rel="stylesheet" href="../css/dark-mode.css">
+    <link rel="stylesheet" href="../css/ios-safari.css">
 
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WN76281P3Q"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-        gtag('js', new Date());
-
-        gtag('config', 'G-WN76281P3Q');
-    </script>
+    <!-- Page Specific Stylesheet -->
+    <link rel="stylesheet" href="./css/style-tdt.css">
+    <link rel="stylesheet" href="./css/ann.css">
 
 </head>
-
-<style>
-    #cv-bat-subp {
-        height: 10vh;
-    }
-
-    .alert-warning p {
-        color: #000;
-        font-size: 16px;
-        overflow-wrap: break-word;
-        line-height: 1.7;
-        margin-bottom: 0rem !important;
-    }
-
-    .alert-warning a {
-        color: #000;
-        text-decoration: underline;
-        font-weight: bold;
-    }
-
-    .list-group-item {
-        transition-duration: 800ms;
-        border-radius: 20px;
-        margin-top: 1em;
-        font-size: 20px;
-        border: 1px solid #2b2b2b33;
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
-        padding-top: 1em;
-        padding-bottom: 1em;
-    }
-
-    body.dark-mode .alert-warning p {
-        color: #ffda6a;
-        font-size: 16px;
-        overflow-wrap: break-word;
-        line-height: 1.7;
-        margin-bottom: 0rem !important;
-        text-align: left;
-    }
-
-    body.dark-mode .alert-warning a {
-        color: #ffda6a;
-        text-decoration: underline;
-        font-weight: bold;
-    }
-
-    .btn-mar {
-        width: auto;
-    }
-
-    .footer {
-        display: none;
-    }
-</style>
 
 
 <body>
@@ -157,7 +107,7 @@
                     <span class="icon">
                         <i class="fa-sharp fa-regular fa-home"></i>
                     </span>
-                    <span class="label">Home</span>
+                    <!-- <span class="label">Home</span> -->
                 </a>
             </li>
             <li>
@@ -165,7 +115,7 @@
                     <span class="icon">
                         <i class="fa-regular fa-clock-rotate-left"></i>
                     </span>
-                    <span class="label">History</span>
+                    <!-- <span class="label">History</span> -->
                 </a>
             </li>
             <li>
@@ -173,7 +123,7 @@
                     <span class="icon">
                         <i class="fa-regular fa-clock"></i>
                     </span>
-                    <span class="label">Timings</span>
+                    <!-- <span class="label">Timings</span> -->
                 </a>
             </li>
             <li class="active">
@@ -181,7 +131,7 @@
                     <span class="icon">
                         <i class="fa-regular fa-bars"></i>
                     </span>
-                    <span class="label">Menu</span>
+                    <!-- <span class="label">Menu</span> -->
                 </a>
             </li>
         </ul>
@@ -200,8 +150,7 @@
                         <nav aria-label="breadcrumb" class="breadcrumb-desktop" style="display:none;">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item">
-                                    <a href="./">
-                                        <i class="fa-regular fa-house"></i>
+                                    <a href="index.html"><i class="fa-regular fa-house"></i>
                                     </a>
                                 </li>
                                 <li class="breadcrumb-item">
@@ -209,18 +158,19 @@
                                     </a>
                                 </li>
                                 <li class="breadcrumb-item">
-                                    <a href="ann.html"><i class="fa-regular fa-bullhorn"></i>
+                                    <a href="statistics.html"><i class="fa-regular fa-chart-bar"></i>
                                     </a>
                                 </li>
                             </ol>
                         </nav>
                         <div class="page-title-wrapper">
                             <div
-                                style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                                style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
                                 <div>
                                     <h1 class="page-title" id="filter-title">Announcements</h1>
                                 </div>
-                                <button id="mark-as-read-btn" class="btn btn-mar badges-btn" style="margin: 0; cursor: pointer;">
+                                <button id="mark-as-read-btn" class="btn btn-mar badges-btn"
+                                    style="margin: 0; cursor: pointer;">
                                     <i class="fa-regular fa-check"></i> Mark as Read
                                 </button>
                             </div>
@@ -236,7 +186,7 @@
     <section class="about-me-summ clearfix" style="padding-bottom: 5em;">
         <div class="container">
             <div class="list-group">
-                    <a href="https://landtransportguru.net/dtl-eclo-jul-sep-2026/"
+                <a href="https://landtransportguru.net/dtl-eclo-jul-sep-2026/"
                     data-ann-id="dtl-service-adjustment-2026-04" data-ann-date="2026-04-28"
                     class="list-group-item list-group-item-action flex-column align-items-start">
                     <div class="d-flex">
@@ -332,13 +282,9 @@
 
     <script src="js/ann.js"></script>
 
-    <script src="../js/back-to-top.js"></script>
+    <!-- <script src="../js/back-to-top.js"></script> -->
 
-    
-    <script src="./js/pull-to-refresh.js"></script>
-    <script src="../js/ios-pwa-pull-to-refresh-init.js"></script>
-    
-    <script src="../js/ios-pwa-warning.js"></script></body>
+
+</body>
 
 </html>
-

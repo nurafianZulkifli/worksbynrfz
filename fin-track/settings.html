@@ -2,46 +2,41 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="description" content="Personal finance tracking with account management, budget monitoring, and transaction history">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover, user-scalable=no">
+    <meta name="color-scheme" content="light dark">
     <title>Settings | FinTrack</title>
+    <meta property="og:image" content="https://i.imgur.com/i8n9KYs.png" />
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="FinTrack">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0f1419" media="(prefers-color-scheme: dark)">
+
+    <link rel="manifest" href="./manifest.json">
+
+    <link rel="icon" href="./assets/logo.png">
+    <link rel="apple-touch-icon" href="./assets/icon-512.png">
+    
+    <link rel="apple-touch-startup-image" href="../img/bg-img/hero-bg-dark.png">
 
     <script src="https://kit.fontawesome.com/965e82ac01.js" crossorigin="anonymous"></script>
 
-    <link rel="icon" href="./assets/logo.png">
-
+    <!-- Core Stylesheet -->
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="css/finTrack.css">
-    <link rel="stylesheet" href="../css/pwa-styles.css">
     <link rel="stylesheet" href="../css/style-breakpoints.css">
+    <link rel="stylesheet" href="../css/pwa-styles.css">
     <link rel="stylesheet" href="../css/dark-mode.css">
+    <link rel="stylesheet" href="../css/ios-safari.css">
 
-    <link rel="apple-touch-startup-image" href="../img/bg-img/hero-bg-dark.png">
-    <link rel="manifest" href="./manifest.json">
+    <!-- Page Specific Stylesheet -->
+    <link rel="stylesheet" href="css/finTrack.css">
+    <link rel="stylesheet" href="css/settings.css">
 
 </head>
-
-<style>
-    #sync-copy-btn {
-        background: none;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        padding: 0.45rem 0.65rem;
-        cursor: pointer;
-        font-size: 14px;
-        flex-shrink: 0;
-        color: #000;
-    }
-
-    body.dark-mode #sync-copy-btn {
-        border-color: #555;
-        color: #fff;
-    }
-</style>
 
 <body>
     <!-- Apply dark mode before render to avoid flash -->
@@ -105,19 +100,19 @@
             <li>
                 <a href="index.html">
                     <span class="icon"><i class="fa-regular fa-money-bills-simple"></i></span>
-                    <span class="label">Transactions</span>
+                    <!-- <span class="label">Transactions</span> -->
                 </a>
             </li>
             <li>
                 <a href="repayments.html">
                     <span class="icon"><i class="fa-regular fa-money-bill-transfer"></i></span>
-                    <span class="label">Repayments</span>
+                    <!-- <span class="label">Repayments</span> -->
                 </a>
             </li>
             <li class="active">
                 <a href="menu.html">
                     <span class="icon"><i class="fa-regular fa-bars"></i></span>
-                    <span class="label">Menu</span>
+                    <!-- <span class="label">Menu</span> -->
                 </a>
             </li>
         </ul>
@@ -148,8 +143,8 @@
                             </ol>
                         </nav>
                         <div class="page-title-wrapper">
-                            <div
-                                style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;" title="Click once for Chime A, thrice for Chime B">
+                            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;"
+                                >
                                 <div>
                                     <h1 class="page-title" id="filter-title">Settings</h1>
                                 </div>
@@ -226,9 +221,11 @@
                     <i class="fa-regular fa-display"></i>
                     Display Options
                 </div>
-                <a href="" class="settings-switch-row" id="theme-toggle-desktop" style="text-decoration: none; color: inherit;">
+                <a href="" class="settings-switch-row" id="theme-toggle-desktop"
+                    style="text-decoration: none; color: inherit;">
                     <span class="settings-switch-label">
-                        <i class="fa-regular fa-sun-bright" id="theme-icon-desktop"></i>&nbsp;<span id="theme-text-desktop">Theme: Light</span>
+                        <i class="fa-regular fa-sun-bright" id="theme-icon-desktop"></i>&nbsp;<span
+                            id="theme-text-desktop">Theme: Light</span>
                     </span>
                     <i class="fa-regular fa-chevron-right" style="color: #9ca3af;"></i>
                 </a>
@@ -264,7 +261,8 @@
                     Cloud Sync
                 </div>
                 <div class="settings-info-box">
-                    <i class="fa-regular fa-circle-info"></i>&nbsp;Sync your accounts and transactions across devices using a sync code. No account required.
+                    <i class="fa-regular fa-circle-info"></i>&nbsp;Sync your accounts and transactions across devices
+                    using a sync code. No account required.
                 </div>
                 <div id="sync-no-code">
                     <div style="display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 12px;">
@@ -273,17 +271,20 @@
                             <span>Generate Sync Code</span>
                         </button>
                     </div>
-                    <p style="margin: 0.75rem 0 0.5rem; font-size: 13px; color: #888; text-align: center;">â€” or enter an existing code â€”</p>
+                    <p style="margin: 0.75rem 0 0.5rem; font-size: 13px; color: #888; text-align: center;">- or enter
+                        an existing code -</p>
                     <div style="display: flex; gap: 0.5rem;">
                         <input type="text" id="sync-code-input" placeholder="e.g. abc12-def34" autocomplete="off"
-                               style="flex: 1; padding: 0.55rem 0.75rem; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; font-family: monospace; letter-spacing: 1px;">
-                        <button class="import-export-btn" id="sync-connect-btn" style="min-width: unset; padding: 0 1rem; flex-shrink: 0;">Connect</button>
+                            style="flex: 1; padding: 0.55rem 0.75rem; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; font-family: monospace; letter-spacing: 1px;">
+                        <button class="import-export-btn" id="sync-connect-btn"
+                            style="min-width: unset; padding: 0 1rem; flex-shrink: 0;">Connect</button>
                     </div>
                 </div>
                 <div id="sync-has-code" style="display: none;">
                     <p style="font-size: 14px; font-weight: 600; margin-bottom: 0.5rem;">Your sync code</p>
                     <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem;">
-                        <code id="sync-code-display" style="flex: 1; text-align: center; font-size: 1.1em; letter-spacing: 3px; padding: 0.45rem 0.75rem; border: 1px solid #ccc; border-radius: 8px; display: block;"></code>
+                        <code id="sync-code-display"
+                            style="flex: 1; text-align: center; font-size: 1.1em; letter-spacing: 3px; padding: 0.45rem 0.75rem; border: 1px solid #ccc; border-radius: 8px; display: block;"></code>
                         <button id="sync-copy-btn">
                             <i class="fa-regular fa-copy"></i>
                         </button>
@@ -432,31 +433,31 @@
             reader.onload = function (e) {
                 try {
                     const imported = JSON.parse(e.target.result);
-                    
+
                     // Handle both old format (direct state) and new format (backup object)
                     const state = imported.fintrack || imported;
                     const repayments = imported['fintrack-repayments'];
-                    
+
                     if (!state.accounts || !Array.isArray(state.accounts)) {
                         showToast('Invalid file format');
                         return;
                     }
                     if (!confirm('This will replace all your current accounts and repayments. Continue?')) return;
-                    
+
                     // Strip archived flags, cycleStartDate and resetOffset so all transactions count
-                    state.accounts.forEach(function(a) {
+                    state.accounts.forEach(function (a) {
                         delete a.cycleStartDate;
                         delete a.resetOffset;
-                        if (a.transactions) a.transactions.forEach(function(t) { delete t.archived; });
+                        if (a.transactions) a.transactions.forEach(function (t) { delete t.archived; });
                     });
                     state._migrated = true;
                     save(state);
-                    
+
                     // Import repayments data if present
                     if (repayments) {
                         localStorage.setItem('fintrack-repayments', JSON.stringify(repayments));
                     }
-                    
+
                     showToast('Data imported successfully');
                     setTimeout(() => { window.location.href = 'index.html'; }, 500);
                 } catch (err) {
@@ -476,7 +477,7 @@
     <script src="js/haptic.js"></script>
     <script src="../js/sync.js"></script>
     <script>document.addEventListener('DOMContentLoaded', function () { AppSync.initUI('fin-track'); });</script>
-    <script src="../js/back-to-top.js"></script>
+    <!-- <script src="../js/back-to-top.js"></script> -->
     <script>
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('./service-worker.js', { scope: './' })
@@ -488,10 +489,8 @@
                 });
         }
     </script>
-    
-    <script src="./js/pull-to-refresh.js"></script>
-    <script src="../js/ios-pwa-pull-to-refresh-init.js"></script>
-    
-    <script src="../js/ios-pwa-warning.js"></script></body>
-</html>
 
+
+    <script src="../js/ios-pwa-warning.js"></script>
+</body>
+</html>

@@ -3,629 +3,332 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="">
+    <meta name="description"
+        content="Personal finance tracking with account management, budget monitoring, and transaction history">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="google-site-verification" content="57TuruPNu5wqSSia_cUehl5t9Gh1AbxrHNPcMiFx-aQ" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover, user-scalable=no">
+    <meta name="color-scheme" content="light dark">
     <title>Menu | FinTrack</title>
-    <meta content="" name="description">
-    <meta content="" name="keywords">
     <meta property="og:image" content="https://i.imgur.com/i8n9KYs.png" />
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="FinTrack">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0f1419" media="(prefers-color-scheme: dark)">
 
-    <link rel="icon" href="./assets/icon-512.png">
+    <link rel="manifest" href="./manifest.json">
+
+    <link rel="icon" href="./assets/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="./assets/icon-512.png">
+    
+    <link rel="apple-touch-startup-image" href="../img/bg-img/hero-bg-dark.png">
 
     <script src="https://kit.fontawesome.com/965e82ac01.js" crossorigin="anonymous"></script>
 
+    <!-- Core Stylesheet -->
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="css/finTrack.css">
     <link rel="stylesheet" href="../css/style-breakpoints.css">
+    <link rel="stylesheet" href="../css/pwa-styles.css">
     <link rel="stylesheet" href="../css/dark-mode.css">
+    <link rel="stylesheet" href="../css/ios-safari.css">
 
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WN76281P3Q"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-        gtag('js', new Date());
-
-        gtag('config', 'G-WN76281P3Q');
-    </script>
+    <!-- Page Specific Stylesheet -->
+    <link rel="stylesheet" href="css/finTrack.css">
+    <link rel="stylesheet" href="css/menu.css">
 
 </head>
 
-<style>
-    .about-me-summ.clearfix {
-        padding-top: 1.5em;
-        padding-bottom: 5em;
-    }
-
-    @media (max-width: 768px) {
-        .about-me-summ .container {
-            max-width: 100%;
-            padding-left: 1rem;
-            padding-right: 1rem;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .about-me-summ .container {
-            padding-left: 0.75rem;
-            padding-right: 0.75rem;
-        }
-    }
-
-    .page-title {
-        font-size: 2rem;
-        font-weight: 700;
-        margin-bottom: 1.5em;
-    }
-
-    body.dark-mode .page-title {
-        color: #e8e8e8;
-    }
-
-    .app-branding-section {
-        text-align: center;
-        padding: 2em 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 1em;
-    }
-
-    .app-branding-logo {
-        display: flex;
-        justify-content: center;
-    }
-
-    .app-branding-icon {
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        object-fit: cover;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
-
-    .app-branding-title {
-        font-size: 2rem;
-        font-weight: 700;
-        margin: 0;
-        color: #000;
-    }
-
-    .app-branding-version {
-        font-size: 0.95rem;
-        color: rgba(0, 0, 0, 0.7);
-        margin: 0;
-    }
-
-    body.dark-mode .app-branding-title {
-        color: #ffffff;
-    }
-
-    body.dark-mode .app-branding-version {
-        color: rgba(255, 255, 255, 0.7);
-    }
-
-    @media (max-width: 480px) {
-        .app-branding-section {
-            padding: 1.5em 0;
-        }
-
-        .app-branding-icon {
-            width: 100px;
-            height: 100px;
-        }
-
-        .app-branding-title {
-            font-size: 1.5rem;
-        }
-
-        .app-branding-version {
-            font-size: 0.9rem;
-        }
-    }
-
-
-    .list-group {
-        gap: 8px;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .list-group-item {
-        padding: 18px 24px;
-        border-radius: 18px;
-        border: 1px solid rgba(0, 0, 0, 0.1);
-        background: #ffffff;
-        display: flex;
-        align-items: center;
-        text-decoration: none;
-        color: inherit;
-        transition: all 0.3s ease;
-    }
-
-    .list-group-item:hover {
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-        transform: translateY(-3px);
-        border-color: rgba(0, 0, 0, 0.15);
-    }
-
-    .list-group-item .d-flex {
-        align-items: center;
-        width: 100%;
-    }
-
-    .lg-menu {
-        margin: 0 !important;
-        font-size: 1.05rem;
-        font-weight: 500;
-        display: flex;
-        align-items: center;
-        gap: 16px;
-    }
-
-    .lg-menu i {
-        font-size: 1.3rem;
-        min-width: 28px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    body.dark-mode .list-group-item {
-        background: #1c1f2b;
-        border: 1px solid #2b2b2b33;
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
-    body.dark-mode .list-group-item:hover {
-        background: #334250;
-        border-color: rgba(255, 255, 255, 0.15);
-        border: 1px solid #2b2b2b33;
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
-    body.dark-mode .lg-menu {
-        color: #e8e8e8;
-    }
-
-    body.dark-mode .alert-warning p {
-        color: #ffda6a;
-        font-size: 16px;
-        overflow-wrap: break-word;
-        line-height: 1.7;
-        margin-bottom: 0rem !important;
-    }
-
-    .list-group>div {
-        height: 1px;
-        background: rgba(255, 255, 255, 0.1);
-        margin: 8px 0;
-    }
-
-    body.dark-mode .list-group>div {
-        background: rgba(255, 255, 255, 0.1);
-    }
-
-    .other-apps-heading {
-        font-size: 1rem;
-        font-weight: 600;
-        color: #393e53;
-        margin-bottom: 1.2em;
-        margin-top: 0;
-        text-transform: none;
-        letter-spacing: 0;
-    }
-
-    body.dark-mode .other-apps-heading {
-        color: #666d88;
-    }
-
-    .other-apps-grid {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 16px;
-        margin-bottom: 2em;
-        width: 100%;
-    }
-
-    .other-apps-card {
-        background: rgb(255, 255, 255);
-        border: 2px solid #d5d5d5;
-        border-radius: 18px;
-        padding: 16px 20px;
-        display: flex;
-        align-items: center;
-        gap: 16px;
-        text-decoration: none;
-        color: inherit;
-        transition: all 0.3s ease;
-    }
-
-    .other-apps-card:hover {
-        background: #d8e6f3;
-        border-color: rgba(255, 255, 255, 0.15);
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-        transform: translateY(-2px);
-    }
-
-    .other-apps-icon {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 48px;
-        height: 48px;
-        border-radius: 12px;
-        flex-shrink: 0;
-    }
-
-    .other-apps-icon img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 50%;
-    }
-
-    .other-apps-name {
-        margin: 0;
-        font-size: 1.1rem;
-        font-weight: 500;
-        color: #000;
-    }
-
-    .other-apps-chevron {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 8px 2px;
-        text-decoration: none;
-        color: inherit;
-        transition: all 0.3s ease;
-    }
-
-    .other-apps-chevron i {
-        font-size: 1.1rem;
-        color: rgba(0, 0, 0, 0.6);
-        flex-shrink: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .other-apps-chevron:hover i {
-        color: rgba(0, 0, 0, 0.9);
-    }
-
-    body.dark-mode .other-apps-chevron i {
-        font-size: 1.1rem;
-        color: rgba(232, 232, 232, 0.6);
-        flex-shrink: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    body.dark-mode .other-apps-chevron:hover i {
-        color: rgba(232, 232, 232, 0.9);
-    }
-
-    body.dark-mode .other-apps-card {
-        background: rgba(28, 31, 43, 0.5);
-        border: 2px solid #393e53;
-    }
-
-    body.dark-mode .other-apps-card:hover {
-        background: #334250;
-        border-color: rgba(255, 255, 255, 0.15);
-    }
-
-    body.dark-mode .other-apps-name {
-        color: #e8e8e8;
-    }
-
-    body.dark-mode .about-me-summ {
-        background-color: #121521;
-        transition: all 0.5s ease;
-    }
-
-    @media (max-width: 480px) {
-        .other-apps-heading {
-            font-size: 0.95rem;
-        }
-
-        .other-apps-card {
-            padding: 14px 16px;
-        }
-
-        .other-apps-name {
-            font-size: 1rem;
-        }
-    }
-
-    .footer {
-        display: none;
-    }
-
-    @media (max-width: 768px) {
-        .list-group-item {
-            padding: 15px 20px;
-        }
-
-        .lg-menu {
-            font-size: 1rem;
-        }
-
-        .lg-menu i {
-            font-size: 1.2rem;
-            min-width: 26px;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .list-group {
-            gap: 12px;
-        }
-
-        .list-group-item {
-            padding: 14px 18px;
-        }
-
-        .lg-menu {
-            font-size: 0.95rem;
-        }
-
-        .lg-menu i {
-            font-size: 1.1rem;
-            min-width: 24px;
-        }
-    }
-</style>
-
-
 <body>
+    <!-- Fixed Breadcrumb at very top (mobile/tablet only) -->
+    <div class="breadcrumb-fixed-placeholder">
+        <nav aria-label="breadcrumb" style="margin-bottom:0;">
+            <ol class="breadcrumb breadcrumb-fixed" id="floating-breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="index.html">
+                        <i class="fa-regular fa-house"></i>
+                    </a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="menu.html"><i class="fa-regular fa-bars"></i>
+                    </a>
+                </li>
+            </ol>
+        </nav>
+    </div>
 
-    <!-- Desktop Navbar -->
+    <!-- Navigation Bar -->
     <nav class="navbar-container">
         <div class="navbar">
-            <a href="index.html">
-                <img src="assets/logo.png" alt="logo" class="logo" onerror="this.style.display='none'">
-            </a>
+            <!-- Logo -->
+            <a href="index.html"><img src="assets/logo.png" alt="logo" class="logo" /></a>
+
+            <!-- Navigation Links -->
             <ul class="navbar-nav" id="navbarNav">
                 <li class="nav-item">
                     <a href="index.html" class="nav-link">
-                        <i class="fa-regular fa-money-bills-simple"></i>
-                        <span>Transactions</span>
+                        <i class="fa-sharp fa-regular fa-home"></i>
+                        <span>Home</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="repayments.html" class="nav-link">
-                        <i class="fa-regular fa-money-bill-transfer"></i>
+                        <i class="fa-regular fa-cash-register"></i>
                         <span>Repayments</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="menu.html" class="nav-link active">
-                        <i class="fa-regular fa-bars"></i>
-                        <span>Menu</span>
+                    <a href="group-split.html" class="nav-link">
+                        <i class="fa-regular fa-people-line"></i>
+                        <span>Group Split</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="settings.html" class="nav-link">
+                        <i class="fa-sharp fa-regular fa-gear"></i>
+                        <span>Settings</span>
                     </a>
                 </li>
             </ul>
         </div>
     </nav>
 
-    <!-- Mobile Bottom Navigation -->
+    <!-- Mobile bottom navigation -->
     <nav class="mobile-bottom-nav">
         <ul>
             <li>
                 <a href="index.html">
                     <span class="icon"><i class="fa-regular fa-money-bills-simple"></i></span>
-                    <span class="label">Transactions</span>
                 </a>
             </li>
             <li>
                 <a href="repayments.html">
                     <span class="icon"><i class="fa-regular fa-money-bill-transfer"></i></span>
-                    <span class="label">Repayments</span>
                 </a>
             </li>
             <li class="active">
                 <a href="menu.html">
                     <span class="icon"><i class="fa-regular fa-bars"></i></span>
-                    <span class="label">Menu</span>
                 </a>
             </li>
         </ul>
     </nav>
 
+    <body>
+
+        <!-- Desktop Navbar -->
+        <nav class="navbar-container">
+            <div class="navbar">
+                <a href="index.html">
+                    <img src="assets/logo.png" alt="logo" class="logo" onerror="this.style.display='none'">
+                </a>
+                <ul class="navbar-nav" id="navbarNav">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link">
+                            <i class="fa-regular fa-money-bills-simple"></i>
+                            <span>Transactions</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="repayments.html" class="nav-link">
+                            <i class="fa-regular fa-money-bill-transfer"></i>
+                            <span>Repayments</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="menu.html" class="nav-link active">
+                            <i class="fa-regular fa-bars"></i>
+                            <span>Menu</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
 
 
-    <!------------------------------------------------------------------------ Start of Sections ------------------------------------------------------------------------>
+
+        <!------------------------------------------------------------------------ Start of Sections ------------------------------------------------------------------------>
 
 
-    <!-- Title/Breadcrumbs -->
-    <section class="about-me-sum clearfix">
-        <div class="wbnrfz_eicw">
-            <div class="page-header-section">
-                <div class="container container-xxl container-mobile container-mobile-header">
-                    <div class="breadcrumb-wrapper">
-                        <nav aria-label="breadcrumb" class="breadcrumb-desktop" style="display:none;">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item">
-                                    <a href="index.html">
-                                        <i class="fa-regular fa-house"></i>
-                                    </a>
-                                </li>
-                                <li class="breadcrumb-item">
-                                    <a href="menu.html"><i class="fa-regular fa-bars"></i>
-                                    </a>
-                                </li>
-                            </ol>
-                        </nav>
-                        <div class="app-branding-section">
-                            <div class="app-branding-logo">
-                                <img src="assets/icon-512.png" alt="FinTrack" class="app-branding-icon">
+        <!-- Title/Breadcrumbs -->
+        <section class="about-me-sum clearfix">
+            <div class="wbnrfz_eicw">
+                <div class="page-header-section">
+                    <div class="container container-xxl container-mobile container-mobile-header">
+                        <div class="breadcrumb-wrapper">
+                            <nav aria-label="breadcrumb" class="breadcrumb-desktop" style="display:none;">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item">
+                                        <a href="index.html">
+                                            <i class="fa-regular fa-house"></i>
+                                        </a>
+                                    </li>
+                                    <li class="breadcrumb-item">
+                                        <a href="menu.html"><i class="fa-regular fa-bars"></i>
+                                        </a>
+                                    </li>
+                                </ol>
+                            </nav>
+                            <div class="app-branding-section">
+                                <div class="app-branding-logo">
+                                    <img src="assets/icon-512.png" alt="FinTrack" class="app-branding-icon">
+                                </div>
+                                <h1 class="app-branding-title">FinTrack</h1>
+                                <p class="app-branding-version" id="app-version-display"></p>
                             </div>
-                            <h1 class="app-branding-title">FinTrack</h1>
-                            <p class="app-branding-version" id="app-version-display"></p>
                         </div>
                     </div>
                 </div>
+
             </div>
 
-        </div>
+        </section>
 
-    </section>
-
-    <!-- Section Contents -->
-    <section class="about-me-summ clearfix" style="padding-bottom: 5em;">
-        <div class="container">
-            <!-- Other Apps Section -->
-            <div style="margin-bottom: 3em; margin-top: 0;">
-                <h3 class="other-apps-heading">Other Apps</h3>
-                <div class="other-apps-grid">
-                    <div class="other-apps-card" id="randomAppCard">
-                        <a href=""
-                            style="display: flex; align-items: center; gap: 16px; flex: 1; text-decoration: none; color: inherit;"
-                            id="appLink">
-                            <div class="other-apps-icon">
-                                <img id="appIcon" src="" alt="" width="48" height="48">
-                            </div>
-                            <h5 class="other-apps-name" id="appName"></h5>
-                        </a>
-                        <a href="../index.html" class="other-apps-chevron">
-                            <i class="fa-regular fa-chevron-right"></i>
-                        </a>
+        <!-- Section Contents -->
+        <section class="about-me-summ clearfix" style="padding-bottom: 8em;">
+            <div class="container">
+                <!-- Other Apps Section -->
+                <div style="margin-bottom: 3em; margin-top: 0;">
+                    <h3 class="other-apps-heading">Other Apps</h3>
+                    <div class="other-apps-grid">
+                        <div class="other-apps-card" id="randomAppCard">
+                            <a href=""
+                                style="display: flex; align-items: center; gap: 16px; flex: 1; text-decoration: none; color: inherit;"
+                                id="appLink">
+                                <div class="other-apps-icon">
+                                    <img id="appIcon" src="" alt="" width="48" height="48">
+                                </div>
+                                <h5 class="other-apps-name" id="appName"></h5>
+                            </a>
+                            <a href="../index.html" class="other-apps-chevron">
+                                <i class="fa-regular fa-chevron-right"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <hr>
+                <hr>
 
 
-            <!-- Main Menu List -->
-            <div class=" list-group">
-                <a href="group-split.html" class="list-group-item list-group-item-action">
-                    <div class="d-flex">
-                        <div>
-                            <h5 class="lg-menu"><i class="fa-regular fa-people-group"></i> Group Split</h5>
+                <!-- Main Menu List -->
+                <div class=" list-group">
+                    <a href="group-split.html" class="list-group-item list-group-item-action">
+                        <div class="d-flex">
+                            <div>
+                                <h5 class="lg-menu"><i class="fa-regular fa-people-group"></i> Group Split</h5>
+                            </div>
                         </div>
-                    </div>
-                </a>
-            </div>
+                    </a>
+                </div>
 
-            <hr>
+                <hr>
 
 
-            <!-- Settings -->
-            <div class=" list-group">
-                <a href="settings.html" class="list-group-item list-group-item-action">
-                    <div class="d-flex">
-                        <div>
-                            <h5 class="lg-menu"><i class="fa-regular fa-gear"></i> Settings</h5>
+                <!-- Settings -->
+                <div class=" list-group">
+                    <a href="settings.html" class="list-group-item list-group-item-action">
+                        <div class="d-flex">
+                            <div>
+                                <h5 class="lg-menu"><i class="fa-regular fa-gear"></i> Settings</h5>
+                            </div>
                         </div>
-                    </div>
-                </a>
+                    </a>
+                </div>
+
             </div>
-
-        </div>
-    </section>
+        </section>
 
 
-    <script src="../js/app-version.js"></script>
+        <script src="../js/app-version.js"></script>
 
-    <script type="text/javascript" id="cookiebanner" src="../js/cookies-banner.js" data-position="bottom"
-        data-bg="#f2f3e5" data-fg="#000" data-font-family="Onest, sans-serif" data-zindex="12345111111"
-        data-message="This website uses cookies to provide necessary site functionality and to improve your experience. By using this website, you agree to our use of cookies.">
+        <script type="text/javascript" id="cookiebanner" src="../js/cookies-banner.js" data-position="bottom"
+            data-bg="#f2f3e5" data-fg="#000" data-font-family="Onest, sans-serif" data-zindex="12345111111"
+            data-message="This website uses cookies to provide necessary site functionality and to improve your experience. By using this website, you agree to our use of cookies.">
+            </script>
+
+        <script src="../js/cookies-theme-sync.js"></script>
+
+        <script>
+            function displayVersion() {
+                const versionEl = document.getElementById('app-version-display');
+                if (versionEl && window.APP_VERSIONS && window.APP_VERSIONS['fin-track']) {
+                    versionEl.textContent = `Version ${window.APP_VERSIONS['fin-track']}`;
+                }
+            }
+
+            // Listen for version loading event from app-version.js
+            window.addEventListener('versionsLoaded', displayVersion);
+
+            // Also try on DOMContentLoaded in case event already fired
+            document.addEventListener('DOMContentLoaded', displayVersion);
+
+            // Fallback: check after a short delay
+            setTimeout(displayVersion, 500);
         </script>
 
-    <script src="../js/cookies-theme-sync.js"></script>
+        <script src="js/mob-navtabs.js"></script>
+        <script src="js/mob-navtabs-tooltip.js"></script>
+        <script src="js/haptic.js"></script>
 
-    <script>
-        function displayVersion() {
-            const versionEl = document.getElementById('app-version-display');
-            if (versionEl && window.APP_VERSIONS && window.APP_VERSIONS['fin-track']) {
-                versionEl.textContent = `Version ${window.APP_VERSIONS['fin-track']}`;
-            }
-        }
+        <script src="js/finTrack.js"></script>
 
-        // Listen for version loading event from app-version.js
-        window.addEventListener('versionsLoaded', displayVersion);
+        <script src="js/ft-subp.js"></script>
 
-        // Also try on DOMContentLoaded in case event already fired
-        document.addEventListener('DOMContentLoaded', displayVersion);
+        <script src="../js/jquery.min.js"></script>
 
-        // Fallback: check after a short delay
-        setTimeout(displayVersion, 500);
-    </script>
+        <script src="../js/popper.min.js"></script>
 
-    <script src="js/mob-navtabs.js"></script>
-    <script src="js/mob-navtabs-tooltip.js"></script>
-    <script src="js/haptic.js"></script>
+        <script src="../js/bootstrap.min.js"></script>
 
-    <script src="js/finTrack.js"></script>
+        <script src="../js/pw.bundle.js"></script>
 
-    <script src="js/ft-subp.js"></script>
+        <script src="../js/default-assets/active.js"></script>
 
-    <script src="../js/jquery.min.js"></script>
+        <script src="../js/isotope.pkgd.min.js"></script>
 
-    <script src="../js/popper.min.js"></script>
+        <script src="../js/dstabs.js"></script>
 
-    <script src="../js/bootstrap.min.js"></script>
+        <script src="../js/utils.js"></script>
 
-    <script src="../js/pw.bundle.js"></script>
+        <script src="js/menu.js"></script>
 
-    <script src="../js/default-assets/active.js"></script>
+        <!-- <script src="../js/back-to-top.js"></script> -->
 
-    <script src="../js/isotope.pkgd.min.js"></script>
+        <script src="../js/ios-pwa-warning.js"></script>
 
-    <script src="../js/dstabs.js"></script>
+        <script>
+            // Randomize Other Apps section
+            document.addEventListener('DOMContentLoaded', function () {
+                const apps = [
+                    {
+                        name: 'Buszy',
+                        href: '../buszy/index.html',
+                        icon: '../buszy/assets/icon-512.png'
+                    },
+                    {
+                        name: 'RailBuddy',
+                        href: '../rail-buddy/index.html',
+                        icon: '../rail-buddy/assets/icon-512.png'
+                    }
+                ];
 
-    <script src="../js/utils.js"></script>
+                const randomApp = apps[Math.floor(Math.random() * apps.length)];
 
-    <script src="js/menu.js"></script>
+                const appLink = document.getElementById('appLink');
+                const appIcon = document.getElementById('appIcon');
+                const appName = document.getElementById('appName');
 
-    <script src="../js/back-to-top.js"></script>
-
-    <script>
-        // Randomize Other Apps section
-        document.addEventListener('DOMContentLoaded', function () {
-            const apps = [
-                {
-                    name: 'Buszy',
-                    href: '../buszy/index.html',
-                    icon: '../buszy/assets/icon-512.png'
-                },
-                {
-                    name: 'RailBuddy',
-                    href: '../rail-buddy/index.html',
-                    icon: '../rail-buddy/assets/icon-512.png'
+                if (appLink && appIcon && appName) {
+                    appLink.href = randomApp.href;
+                    appIcon.src = randomApp.icon;
+                    appIcon.alt = randomApp.name;
+                    appName.textContent = randomApp.name;
                 }
-            ];
+            });
+        </script>
 
-            const randomApp = apps[Math.floor(Math.random() * apps.length)];
-
-            const appLink = document.getElementById('appLink');
-            const appIcon = document.getElementById('appIcon');
-            const appName = document.getElementById('appName');
-
-            if (appLink && appIcon && appName) {
-                appLink.href = randomApp.href;
-                appIcon.src = randomApp.icon;
-                appIcon.alt = randomApp.name;
-                appName.textContent = randomApp.name;
-            }
-        });
-    </script>
-
-    
-    <script src="./js/pull-to-refresh.js"></script>
-    <script src="../js/ios-pwa-pull-to-refresh-init.js"></script>
-    
-    <script src="../js/ios-pwa-warning.js"></script></body>
+    </body>
 
 </html>
-
