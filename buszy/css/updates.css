@@ -211,6 +211,7 @@ body.dark-mode .alerts-loading {
 #notif-blocked-banner,
 #notif-prompt-banner {
     display: none;
+    flex-direction: row;
     align-items: center;
     gap: 12px;
     padding: 12px 14px 12px 16px;
@@ -238,6 +239,34 @@ body.dark-mode #notif-prompt-banner {
     gap: 8px;
     flex-shrink: 0;
 }
+
+.notif-banner-actions button {
+    white-space: normal !important;
+}
+
+.notif-banner-actions .btn-busloc {
+    width: auto !important;
+    white-space: normal !important;
+}
+
+@media (max-width: 767px) {
+    #notif-blocked-banner,
+    #notif-prompt-banner {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+    }
+
+        .notif-banner-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    #notif-prompt-banner .notif-banner-actions .btn,
+    #notif-blocked-banner .notif-banner-actions .btn {
+        width: 100% !important;
+    }
+}
+
 
 .notif-dismiss-btn {
     background: transparent;
