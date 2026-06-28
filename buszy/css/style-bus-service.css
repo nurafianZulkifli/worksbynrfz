@@ -1261,3 +1261,12 @@ body.dark-mode .info-item {
 body.dark-mode .loading-spinner {
     color: #1f84a2;
 }
+
+
+/* iOS PWA specific - ensure about-me-sum page header margin matches other pages */
+@media (max-width: 768px) and (hover: none) and (pointer: coarse) {
+    hr {
+        margin-top: 6.5em !important;
+        padding-top: 0 !important;
+    }
+}
