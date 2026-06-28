@@ -400,7 +400,7 @@ body.dark-mode .terminal-name a.terminal-link {
 
 /* Stops Section */
 .stops-section {
-    margin: 2rem 0;
+    margin: 8em 0;
 }
 
 .stops-section h2 {
@@ -1156,8 +1156,10 @@ body.dark-mode .info-item {
     }
 
     .main-content {
+        padding-top: 2em;
+        padding-right: 2em;
         padding-bottom: 8em;
-        padding: 2em;
+        padding-left: 2em;
     }
 
     .bus-stop-inline {
