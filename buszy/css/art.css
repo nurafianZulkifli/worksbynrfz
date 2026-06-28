@@ -649,6 +649,7 @@ body.dark-mode #art-offline-banner {
     margin-bottom: 0.5em;
     font-size: 0.88rem;
 }
+
 body.dark-mode #notif-blocked-banner,
 body.dark-mode #notif-prompt-banner {
     background-color: #1c1f2b;
@@ -672,13 +673,14 @@ body.dark-mode #notif-prompt-banner {
 }
 
 @media (max-width: 767px) {
+
     #notif-blocked-banner,
     #notif-prompt-banner {
         flex-direction: column !important;
         align-items: flex-start !important;
     }
 
-        .notif-banner-actions {
+    .notif-banner-actions {
         flex-direction: column;
         width: 100%;
     }
