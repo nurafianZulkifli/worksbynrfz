@@ -318,7 +318,7 @@
 
   // ── Re-register all tracked subscriptions with the server ──────────
   // Called on every page load to restore subscriptions lost after a
-  // server restart or Heroku dyno wake-up (in-memory state is gone).
+  // server restart, subscription rotation, or Heroku dyno wake-up (in-memory state is gone).
 
   async function reRegisterAll() {
     const subs = getSubs();
@@ -333,12 +333,9 @@
 
     if (!subscription) return; // not subscribed at browser level — nothing to restore
 
-    // 'once' subscriptions are removed by the server after firing;
-    // re-registering them would cause repeated notifications.
-    // Only re-register 'day' and 'always' modes.
-    const mode = getNotifMode();
-    if (mode === 'once') return;
-
+    // Re-register all stored bus timing subscriptions with the current push subscription.
+    // This is critical after subscription rotation events and ensures notifications
+    // continue working even if no pages were open when rotation occurred.
     for (const key of subs) {
       const [stopCode, serviceNo] = key.split(':');
       try {
