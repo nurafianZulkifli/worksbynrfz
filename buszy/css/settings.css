@@ -20,8 +20,8 @@
      color: #fff;
  }
 
-    body.dark-mode #sync-code-input {
-       background: #252840;
-       color: #e0e0f0;
-       border-color: #3a3f58 !important;
-   }
+ body.dark-mode #sync-code-input {
+     background: #252840;
+     color: #e0e0f0;
+     border-color: #3a3f58 !important;
+ }

@@ -19,3 +19,7 @@
        color: #e0e0f0;
        border-color: #3a3f58 !important;
    }
+
+   body.dark-mode .page-header-section {
+       background: #121521 !important;
+   }
