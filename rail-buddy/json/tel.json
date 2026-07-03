@@ -26,7 +26,7 @@
         { "code": "TE 17", "name": "Outram Park", "interchanges": [{ "code": "NE 3", "lineClass": "mrt-nel" }, { "code": "EW 16", "lineClass": "mrt-ewl" }] },
         { "code": "TE 18", "name": "Maxwell", "interchanges": [] },
         { "code": "TE 19", "name": "Shenton Way", "interchanges": [] },
-        { "code": "TE 20", "name": "Marina Bay", "interchanges": [{ "code": "CE 2", "lineClass": "mrt-ccl" }, { "code": "NS 27", "lineClass": "mrt-nsl" }] },
+        { "code": "TE 20", "name": "Marina Bay", "interchanges": [{ "code": "CC 33", "lineClass": "mrt-ccl" }, { "code": "NS 27", "lineClass": "mrt-nsl" }] },
         { "code": "TE 22", "name": "Gardens by the Bay", "interchanges": [] },
         { "code": "TE 23", "name": "Tanjong Rhu", "interchanges": [] },
         { "code": "TE 24", "name": "Katong Park", "interchanges": [] },
