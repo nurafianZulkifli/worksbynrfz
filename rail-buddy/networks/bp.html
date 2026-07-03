@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="description" content>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover, user-scalable=no">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover, user-scalable=no">
     <meta name="color-scheme" content="light dark">
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#0f1419" media="(prefers-color-scheme: dark)">
@@ -156,8 +157,8 @@
                             </ol>
                         </nav>
                         <div class="page-title-wrapper">
-                            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;"
-                                >
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
                                 <div>
                                     <h1 class="filter-title" id="chimes"><img src="../assets/caplets/BPCap.png" alt="BP"
                                             class="caplet"> Bukit Panjang LRT</h1></a>
@@ -277,34 +278,34 @@
         data-message="This website uses cookies to provide necessary site functionality and to improve your experience. By using this website, you agree to our use of cookies.">
         </script>
 
-    <script src="../../js/cookies-theme-sync.js"></script>
+        <script src="../../js/cookies-theme-sync.js"></script>
 
-    <script src="../js/mob-navtabs.js"></script>
+        <script src="../js/mob-navtabs.js"></script>
 
-    <script src="../js/mob-navtabs-tooltip.js"></script>
+        <script src="../js/mob-navtabs-tooltip.js"></script>
 
-    <script src="../tdt-subp.js"></script>
+        <script src="../tdt-subp.js"></script>
 
-    <script src="../../js/jquery.min.js"></script>
+        <script src="../../js/jquery.min.js"></script>
 
-    <script src='https://unpkg.com/swiper@6.8.1/swiper-bundle.min.js'></script>
+        <script src='https://unpkg.com/swiper@6.8.1/swiper-bundle.min.js'></script>
 
-    <script src="../../js/dstabs.js"></script>
+        <script src="../../js/dstabs.js"></script>
 
-    <script src="../../js/popper.min.js"></script>
+        <script src="../../js/popper.min.js"></script>
 
-    <script src="../../js/bootstrap.min.js"></script>
+        <script src="../../js/bootstrap.min.js"></script>
 
-    <script src="../../js/pw.bundle.js"></script>
+        <script src="../../js/pw.bundle.js"></script>
 
-    <script src="../../js/default-assets/active.js"></script>
+        <script src="../../js/default-assets/active.js"></script>
 
-    <script>
-        function renderStation(station) {
-            const interchangesHTML = station.interchanges
-                .map(i => `<span class="interchange-badge ${i.lineClass}">${i.code}</span>`)
-                .join('');
-            return `<div class="station">
+        <script>
+            function renderStation(station) {
+                const interchangesHTML = station.interchanges
+                    .map(i => `<span class="interchange-badge ${i.lineClass}">${i.code}</span>`)
+                    .join('');
+                return `<div class="station">
                         <div class="station-dot"></div>
                         <div class="station-content">
                             <div class="station-codes">
@@ -314,68 +315,70 @@
                             <div class="station-name">${station.name}</div>
                         </div>
                     </div>`;
-        }
-
-        const branchSplits = { serviceA: 'BP 12', serviceB: 'BP 8' };
-
-        fetch('../json/bp.json')
-            .then(res => res.json())
-            .then(data => {
-                data.branches.forEach(branch => {
-                    const container = document.getElementById(branch.id);
-                    if (!container) return;
-                    const splitCode = branchSplits[branch.id];
-                    if (splitCode) {
-                        const splitIdx = branch.stations.findIndex(s => s.code === splitCode);
-                        const visibleCount = splitIdx >= 0 ? splitIdx + 1 : branch.stations.length;
-                        const visible = branch.stations.slice(0, visibleCount);
-                        const hidden = branch.stations.slice(visibleCount);
-                        container.innerHTML = visible.map(renderStation).join('');
-                        if (hidden.length > 0) {
-                            const hiddenDiv = document.createElement('div');
-                            hiddenDiv.className = 'branch-hidden-stations';
-                            hiddenDiv.dataset.forBranch = branch.id;
-                            hiddenDiv.innerHTML = hidden.map(renderStation).join('');
-                            container.insertAdjacentElement('afterend', hiddenDiv);
-                            const btnDiv = document.createElement('div');
-                            btnDiv.className = 'show-more-button';
-                            btnDiv.dataset.forBranch = branch.id;
-                            btnDiv.innerHTML = `<button onclick="toggleBranchStations('${branch.id}')"><i class="fa-regular fa-chevron-down"></i> Show More</button>`;
-                            hiddenDiv.insertAdjacentElement('afterend', btnDiv);
-                        }
-                    } else {
-                        container.innerHTML = branch.stations.map(renderStation).join('');
-                    }
-                });
-                switchBranch();
-            })
-            .catch(err => console.error('Failed to load line data:', err));
-
-        function toggleBranchStations(branchId) {
-            const hiddenDiv = document.querySelector(`.branch-hidden-stations[data-for-branch="${branchId}"]`);
-            const btn = document.querySelector(`.show-more-button[data-for-branch="${branchId}"] button`);
-            if (hiddenDiv.classList.contains('show')) {
-                hiddenDiv.classList.remove('show');
-                btn.innerHTML = '<i class="fa-regular fa-chevron-down"></i> Show More';
-            } else {
-                hiddenDiv.classList.add('show');
-                btn.innerHTML = '<i class="fa-regular fa-chevron-up"></i> Show Less';
             }
-        }
 
-        function switchBranch() {
-            const value = document.getElementById('branchSelect').value;
-            document.querySelectorAll('.line-container').forEach(c => {
-                c.classList.toggle('show', c.id === value);
-                c.classList.toggle('hidden', c.id !== value);
-            });
-            document.querySelectorAll('[data-for-branch]').forEach(el => {
-                el.style.display = el.dataset.forBranch === value ? '' : 'none';
-            });
-        }
-    </script>
+            const branchSplits = { serviceA: 'BP 12', serviceB: 'BP 8' };
 
-    <script src="../assets/chimes/chimes.js"></script>
+            fetch('../json/bp.json')
+                .then(res => res.json())
+                .then(data => {
+                    data.branches.forEach(branch => {
+                        const container = document.getElementById(branch.id);
+                        if (!container) return;
+                        const splitCode = branchSplits[branch.id];
+                        if (splitCode) {
+                            const splitIdx = branch.stations.findIndex(s => s.code === splitCode);
+                            const visibleCount = splitIdx >= 0 ? splitIdx + 1 : branch.stations.length;
+                            const visible = branch.stations.slice(0, visibleCount);
+                            const hidden = branch.stations.slice(visibleCount);
+                            container.innerHTML = visible.map(renderStation).join('');
+                            if (hidden.length > 0) {
+                                const hiddenDiv = document.createElement('div');
+                                hiddenDiv.className = 'branch-hidden-stations';
+                                hiddenDiv.dataset.forBranch = branch.id;
+                                hiddenDiv.innerHTML = hidden.map(renderStation).join('');
+                                container.insertAdjacentElement('afterend', hiddenDiv);
+                                const btnDiv = document.createElement('div');
+                                btnDiv.className = 'show-more-button';
+                                btnDiv.dataset.forBranch = branch.id;
+                                btnDiv.innerHTML = `<button onclick="toggleBranchStations('${branch.id}')"><i class="fa-regular fa-chevron-down"></i> Show More</button>`;
+                                hiddenDiv.insertAdjacentElement('afterend', btnDiv);
+                            }
+                        } else {
+                            container.innerHTML = branch.stations.map(renderStation).join('');
+                        }
+                    });
+                    switchBranch();
+                })
+                .catch(err => console.error('Failed to load line data:', err));
+
+            function toggleBranchStations(branchId) {
+                const hiddenDiv = document.querySelector(`.branch-hidden-stations[data-for-branch="${branchId}"]`);
+                const btn = document.querySelector(`.show-more-button[data-for-branch="${branchId}"] button`);
+                if (hiddenDiv.classList.contains('show')) {
+                    hiddenDiv.classList.remove('show');
+                    btn.innerHTML = '<i class="fa-regular fa-chevron-down"></i> Show More';
+                } else {
+                    hiddenDiv.classList.add('show');
+                    btn.innerHTML = '<i class="fa-regular fa-chevron-up"></i> Show Less';
+                }
+            }
+
+            function switchBranch() {
+                const value = document.getElementById('branchSelect').value;
+                document.querySelectorAll('.line-container').forEach(c => {
+                    c.classList.toggle('show', c.id === value);
+                    c.classList.toggle('hidden', c.id !== value);
+                });
+                document.querySelectorAll('[data-for-branch]').forEach(el => {
+                    el.style.display = el.dataset.forBranch === value ? '' : 'none';
+                });
+            }
+        </script>
+
+        <script src="../assets/chimes/chimes.js"></script>
+
+        <script src="../../js/ios-pwa-warning.js"></script>
 
 </body>
 
