@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -12,7 +12,7 @@
     <meta content="" name="keywords">
     <meta property="og:image" content="https://i.imgur.com/BUKPnjH.png" />
 
-    <link rel="icon" href="./assets/logo.png" type="image/png">
+    <link rel="icon" href="../assets/logo.png" type="image/png">
 
     <script src="https://kit.fontawesome.com/965e82ac01.js" crossorigin="anonymous"></script>
     <link rel='stylesheet' href='https://unpkg.com/swiper@6.8.1/swiper-bundle.min.css'>
@@ -254,372 +254,48 @@
                             <option value="serviceD">East Loop (via Ranggung)</option>
                         </select>
                     </div>
-                    <!-- Service A Container -->
-                    <div class="line-container show" id="serviceA">
-                        <!-- STC Sengkang -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">STC</span>
-                                    <span class="interchange-badge mrt-nel">NE 16</span>
-                                </div>
-                                <div class="station-name">Sengkang</div>
-                            </div>
-                        </div>
-
-
-                        <!-- SW 1 Cheng Lim -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">SW 1</span>
-                                </div>
-                                <div class="station-name">Cheng Lim</div>
-                            </div>
-                        </div>
-
-                        <!-- SW 2 Farmway -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">SW 2</span>
-                                </div>
-                                <div class="station-name">Farmway</div>
-                            </div>
-                        </div>
-
-                        <!-- SW 3 Kupang -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">SW 3</span>
-                                </div>
-                                <div class="station-name">Kupang</div>
-                            </div>
-                        </div>
-
-                        <!-- SW 4 Thanggam -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">SW 4</span>
-                                </div>
-                                <div class="station-name">Thanggam</div>
-                            </div>
-                        </div>
-
-                        <!-- SW 5 Fernvale -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">SW 5</span>
-                                </div>
-                                <div class="station-name">Fernvale</div>
-                            </div>
-                        </div>
-
-                        <div id="hidden-stations-a">
-                            <!-- SW 6 Layar -->
-                            <div class="station">
-                                <div class="station-dot"></div>
-                                <div class="station-content">
-                                    <div class="station-codes">
-                                        <span class="station-code">SW 6</span>
-                                    </div>
-                                    <div class="station-name">Layar</div>
-                                </div>
-                            </div>
-
-                            <!-- SW 7 Tongkang -->
-                            <div class="station">
-                                <div class="station-dot"></div>
-                                <div class="station-content">
-                                    <div class="station-codes">
-                                        <span class="station-code">SW 7</span>
-                                    </div>
-                                    <div class="station-name">Tongkang</div>
-                                </div>
-                            </div>
-
-                            <!-- SW 8 Renjong -->
-                            <div class="station">
-                                <div class="station-dot"></div>
-                                <div class="station-content">
-                                    <div class="station-codes station-connector">
-                                        <span class="station-code">SW 8</span>
-                                    </div>
-                                    <div class="station-name">Renjong</div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="show-more-button">
-                            <button id="toggleBtnA" onclick="toggleStationsA()">Show More</button>
-                        </div>
-                    </div>
-
-                    <!-- Service B Container -->
-                    <div class="line-container hidden" id="serviceB">
-                        <!-- STC Sengkang -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">STC</span>
-                                    <span class="interchange-badge mrt-nel">NE 16</span>
-                                </div>
-                                <div class="station-name">Sengkang</div>
-                            </div>
-                        </div>
-
-                        <!-- SW 8 Renjong -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes station-connector">
-                                    <span class="station-code">SW 8</span>
-                                </div>
-                                <div class="station-name">Renjong</div>
-                            </div>
-                        </div>
-
-                        <!-- SW 7 Tongkang -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">SW 7</span>
-                                </div>
-                                <div class="station-name">Tongkang</div>
-                            </div>
-                        </div>
-
-                        <!-- SW 6 Layar -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">SW 6</span>
-                                </div>
-                                <div class="station-name">Layar</div>
-                            </div>
-                        </div>
-
-                        <!-- SW 5 Fernvale -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">SW 5</span>
-                                </div>
-                                <div class="station-name">Fernvale</div>
-                            </div>
-                        </div>
-
-                        <!-- SW 4 Thanggam -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">SW 4</span>
-                                </div>
-                                <div class="station-name">Thanggam</div>
-                            </div>
-                        </div>
-
-                        <div id="hidden-stations-b">
-                            <!-- SW 3 Kupang -->
-                            <div class="station">
-                                <div class="station-dot"></div>
-                                <div class="station-content">
-                                    <div class="station-codes">
-                                        <span class="station-code">SW 3</span>
-                                    </div>
-                                    <div class="station-name">Kupang</div>
-                                </div>
-                            </div>
-
-                            <!-- SW 2 Farmway -->
-                            <div class="station">
-                                <div class="station-dot"></div>
-                                <div class="station-content">
-                                    <div class="station-codes">
-                                        <span class="station-code">SW 2</span>
-                                    </div>
-                                    <div class="station-name">Farmway</div>
-                                </div>
-                            </div>
-
-                            <!-- SW 1 Cheng Lim -->
-                            <div class="station">
-                                <div class="station-dot"></div>
-                                <div class="station-content">
-                                    <div class="station-codes">
-                                        <span class="station-code">SW 1</span>
-                                    </div>
-                                    <div class="station-name">Cheng Lim</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="show-more-button">
-                            <button id="toggleBtnB" onclick="toggleStationsB()">Show More</button>
-                        </div>
-                    </div>
-
-                    <!-- Service C Container -->
-                    <div class="line-container hidden" id="serviceC">
-                        <!-- STC Sengkang -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">STC</span>
-                                    <span class="interchange-badge mrt-nel">NE 16</span>
-                                </div>
-                                <div class="station-name">Sengkang</div>
-                            </div>
-                        </div>
-
-                        <!-- SE 1 Compassvale -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">SE 1</span>
-                                </div>
-                                <div class="station-name">Compassvale</div>
-                            </div>
-                        </div>
-
-                        <!-- SE 2 Rumbia -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">SE 2</span>
-                                </div>
-                                <div class="station-name">Rumbia</div>
-                            </div>
-                        </div>
-
-                        <!-- SE 3 Bakau-->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">SE 3</span>
-                                </div>
-                                <div class="station-name">Bakau</div>
-                            </div>
-                        </div>
-
-                        <!-- SE 4 Kangkar -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">SE 4</span>
-                                </div>
-                                <div class="station-name">Kangkar</div>
-                            </div>
-                        </div>
-
-                        <!-- SE 5 Ranggung -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes station-connector">
-                                    <span class="station-code">SE 5</span>
-                                </div>
-                                <div class="station-name">Ranggung</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Service D Container -->
-                    <div class="line-container hidden" id="serviceD">
-                        <!-- STC Sengkang -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">STC</span>
-                                    <span class="interchange-badge mrt-nel">NE 16</span>
-                                </div>
-                                <div class="station-name">Sengkang</div>
-                            </div>
-                        </div>
-
-                        <!-- SE 5 Ranggung -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes station-connector">
-                                    <span class="station-code">SE 5</span>
-                                </div>
-                                <div class="station-name">Ranggung</div>
-                            </div>
-                        </div>
-
-                        <!-- SE 4 Kangkar -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">SE 4</span>
-                                </div>
-                                <div class="station-name">Kangkar</div>
-                            </div>
-                        </div>
-
-                        <!-- SE 3 Bakau-->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">SE 3</span>
-                                </div>
-                                <div class="station-name">Bakau</div>
-                            </div>
-                        </div>
-
-                        <!-- SE 2 Rumbia -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">SE 2</span>
-                                </div>
-                                <div class="station-name">Rumbia</div>
-                            </div>
-                        </div>
-
-                        <!-- SE 1 Compassvale -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">SE 1</span>
-                                </div>
-                                <div class="station-name">Compassvale</div>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="line-container show" id="serviceA"></div>
+                    <div id="hidden-stations-a"></div>
+                    <div class="line-container hidden" id="serviceB"></div>
+                    <div id="hidden-stations-b"></div>
+                    <div class="line-container hidden" id="serviceC"></div>
+                    <div id="hidden-stations-c"></div>
+                    <div class="line-container hidden" id="serviceD"></div>
+                    <div id="hidden-stations-d"></div>
                 </div>
             </div>
+        </div>
 
 
     </section>
 
     <script type="text/javascript" id="cookiebanner" src="../../js/cookies-banner.js" data-position="bottom"
+        data-bg="#f2f3e5" data-fg="#000" data-font-family="Onest, sans-serif" data-zindex="12345111111"
+        data-message="This website uses cookies to provide necessary site functionality and to improve your experience. By using this website, you agree to our use of cookies.">
+        </script>
+
+
+    <script src="../js/mob-navtabs.js"></script>
+
+    <script src="../js/mob-navtabs-tooltip.js"></script>
+
+    <script src="../tdt-subp.js"></script>
+
+    <script src="../../js/jquery.min.js"></script>
+
+    <script src="https://unpkg.com/swiper@6.8.1/swiper-bundle.min.js"></script>
+
+    <script src="../../js/dstabs.js"></script>
+
+    <script src="../../js/popper.min.js"></script>
+
+    <script src="../../js/bootstrap.min.js"></script>
+
+    <script src="../../js/pw.bundle.js"></script>
+
+    <script src="../../js/default-assets/active.js"></script>
+
+    <<script type="text/javascript" id="cookiebanner" src="../../js/cookies-banner.js" data-position="bottom"
         data-bg="#f2f3e5" data-fg="#000" data-font-family="Onest, sans-serif" data-zindex="12345111111"
         data-message="This website uses cookies to provide necessary site functionality and to improve your experience. By using this website, you agree to our use of cookies.">
         </script>

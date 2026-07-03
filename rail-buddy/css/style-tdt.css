@@ -91,6 +91,10 @@ body.dark-mode .mobile-bottom-nav {
     color: #8f2d22 !important;
 }
 
+body.dark-mode .hyperlink {
+    color: #d65a4c !important;
+}
+
 .page-title-wrapper>div>div:first-child {
     margin-bottom: 0px;
 }

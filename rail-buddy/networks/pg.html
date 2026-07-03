@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -12,7 +12,7 @@
     <meta content="" name="keywords">
     <meta property="og:image" content="https://i.imgur.com/BUKPnjH.png" />
 
-    <link rel="icon" href="./assets/logo.png" type="image/png">
+    <link rel="icon" href="../assets/logo.png" type="image/png">
 
     <script src="https://kit.fontawesome.com/965e82ac01.js" crossorigin="anonymous"></script>
     <link rel='stylesheet' href='https://unpkg.com/swiper@6.8.1/swiper-bundle.min.css'>
@@ -238,7 +238,7 @@
                         more of such two-car trains will be added to the SPLRT fleet to better serve the long term
                         public transport needs of the communities in Punggol and Punggol. To accomodate more two-car
                         trains, the SPLRT depot will be expanded by 2027. <br><br> (Source: <a class="hyperlink"
-                            href="https://www.lta.gov.sg/content/ltagov/en/getting_around/public_transport/rail_network/Punggol_punggol_lrt.html">LTA</a>
+                            href="https://www.lta.gov.sg/content/ltagov/en/getting_around/public_transport/rail_network/sengkang_punggol_lrt.html">LTA</a>
                         )
                     </p>
 
@@ -254,405 +254,48 @@
                             <option value="serviceD">East Loop (via Damai)</option>
                         </select>
                     </div>
-                    <!-- Service A Container -->
-                    <div class="line-container show" id="serviceA">
-                        <!-- PTC Punggol -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">PTC</span>
-                                    <span class="interchange-badge mrt-nel">NE 17</span>
-                                </div>
-                                <div class="station-name">Punggol</div>
-                            </div>
-                        </div>
-
-
-                        <!-- PW 1 Sam Kee -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">PW 1</span>
-                                </div>
-                                <div class="station-name">Sam Kee</div>
-                            </div>
-                        </div>
-
-                        <!-- PW 2 Teck Lee -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">PW 2</span>
-                                </div>
-                                <div class="station-name">Teck Lee</div>
-                            </div>
-                        </div>
-
-                        <!-- PW 3 Punggol Point -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">PW 3</span>
-                                </div>
-                                <div class="station-name">Punggol Point</div>
-                            </div>
-                        </div>
-
-                        <!-- PW 4 Samudera -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">PW 4</span>
-                                </div>
-                                <div class="station-name">Samudera</div>
-                            </div>
-                        </div>
-
-                        <!-- PW 5 Nibong -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">PW 5</span>
-                                </div>
-                                <div class="station-name">Nibong</div>
-                            </div>
-                        </div>
-
-                        <div id="hidden-stations-a">
-                            <!-- PW 6 Sumang -->
-                            <div class="station">
-                                <div class="station-dot"></div>
-                                <div class="station-content">
-                                    <div class="station-codes">
-                                        <span class="station-code">PW 6</span>
-                                    </div>
-                                    <div class="station-name">Sumang</div>
-                                </div>
-                            </div>
-
-                            <!-- PW 7 Soo Teck -->
-                            <div class="station">
-                                <div class="station-dot"></div>
-                                <div class="station-content">
-                                    <div class="station-codes">
-                                        <span class="station-code">PW 7</span>
-                                    </div>
-                                    <div class="station-name">Soo Teck</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="show-more-button">
-                            <button id="toggleBtnA" onclick="toggleStationsA()">Show More</button>
-                        </div>
-                    </div>
-
-                    <!-- Service B Container -->
-                    <div class="line-container hidden" id="serviceB">
-                        <!-- PTC Punggol -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">PTC</span>
-                                    <span class="interchange-badge mrt-nel">NE 17</span>
-                                </div>
-                                <div class="station-name">Punggol</div>
-                            </div>
-                        </div>
-
-                        <!-- PW 7 Soo Teck -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes station-connector">
-                                    <span class="station-code">PW 7</span>
-                                </div>
-                                <div class="station-name">Soo Teck</div>
-                            </div>
-                        </div>
-
-                        <!-- PW 6 Sumang -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">PW 6</span>
-                                </div>
-                                <div class="station-name">Sumang</div>
-                            </div>
-                        </div>
-
-                        <!-- PW 5 Nibong -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">PW 5</span>
-                                </div>
-                                <div class="station-name">Nibong</div>
-                            </div>
-                        </div>
-
-                        <!-- PW 4 Samudera -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">PW 4</span>
-                                </div>
-                                <div class="station-name">Samudera</div>
-                            </div>
-                        </div>
-
-                        <!-- PW 3 Punggol Point -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">PW 3</span>
-                                </div>
-                                <div class="station-name">Punggol Point</div>
-                            </div>
-                        </div>
-
-                        <div id="hidden-stations-b">
-                            <!-- PW 2 Teck Lee -->
-                            <div class="station">
-                                <div class="station-dot"></div>
-                                <div class="station-content">
-                                    <div class="station-codes">
-                                        <span class="station-code">PW 2</span>
-                                    </div>
-                                    <div class="station-name">Teck Lee</div>
-                                </div>
-                            </div>
-
-                            <!-- PW 1 Sam Kee -->
-                            <div class="station">
-                                <div class="station-dot"></div>
-                                <div class="station-content">
-                                    <div class="station-codes">
-                                        <span class="station-code">PW 1</span>
-                                    </div>
-                                    <div class="station-name">Sam Kee</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="show-more-button">
-                            <button id="toggleBtnB" onclick="toggleStationsB()">Show More</button>
-                        </div>
-                    </div>
-
-                    <!-- Service C Container -->
-                    <div class="line-container hidden" id="serviceC">
-                        <!-- PTC Punggol -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">PTC</span>
-                                    <span class="interchange-badge mrt-nel">NE 17</span>
-                                </div>
-                                <div class="station-name">Punggol</div>
-                            </div>
-                        </div>
-
-                        <!-- PE 1 Cove -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">PE 1</span>
-                                </div>
-                                <div class="station-name">Cove</div>
-                            </div>
-                        </div>
-
-                        <!-- PE 2 Meridian -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">PE 2</span>
-                                </div>
-                                <div class="station-name">Meridian</div>
-                            </div>
-                        </div>
-
-                        <!-- PE 3 Coral Edge-->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">PE 3</span>
-                                </div>
-                                <div class="station-name">Coral Edge</div>
-                            </div>
-                        </div>
-
-                        <!-- PE 4 Riviera -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">PE 4</span>
-                                </div>
-                                <div class="station-name">Riviera</div>
-                            </div>
-                        </div>
-
-                        <!-- PE 5 Kadaloor -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes station-connector">
-                                    <span class="station-code">PE 5</span>
-                                </div>
-                                <div class="station-name">Kadaloor</div>
-                            </div>
-                        </div>
-
-                        <div id="hidden-stations-c">
-                            <!-- PW 2 Teck Lee -->
-                            <div class="station">
-                                <div class="station-dot"></div>
-                                <div class="station-content">
-                                    <div class="station-codes">
-                                        <span class="station-code">PW 2</span>
-                                    </div>
-                                    <div class="station-name">Teck Lee</div>
-                                </div>
-                            </div>
-
-                            <!-- PW 1 Sam Kee -->
-                            <div class="station">
-                                <div class="station-dot"></div>
-                                <div class="station-content">
-                                    <div class="station-codes">
-                                        <span class="station-code">PW 1</span>
-                                    </div>
-                                    <div class="station-name">Sam Kee</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="show-more-button">
-                            <button id="toggleBtnC" onclick="toggleStationsC()">Show More</button>
-                        </div>
-                    </div>
-
-                    <!-- Service D Container -->
-                    <div class="line-container hidden" id="serviceD">
-                        <!-- PTC Punggol -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">PTC</span>
-                                    <span class="interchange-badge mrt-nel">NE 17</span>
-                                </div>
-                                <div class="station-name">Punggol</div>
-                            </div>
-                        </div>
-
-                        <!-- PE 7 Damai -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">PE 7</span>
-                                </div>
-                                <div class="station-name">Damai</div>
-                            </div>
-                        </div>
-
-                        <!-- PE 6 Oasis -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">PE 6</span>
-                                </div>
-                                <div class="station-name">Oasis</div>
-                            </div>
-                        </div>
-
-                        <!-- PE 5 Kadaloor -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes station-connector">
-                                    <span class="station-code">PE 5</span>
-                                </div>
-                                <div class="station-name">Kadaloor</div>
-                            </div>
-                        </div>
-
-                        <!-- PE 4 Riviera -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes">
-                                    <span class="station-code">PE 4</span>
-                                </div>
-                                <div class="station-name">Riviera</div>
-                            </div>
-                        </div>
-
-                        <!-- PE 3 Coral Edge -->
-                        <div class="station">
-                            <div class="station-dot"></div>
-                            <div class="station-content">
-                                <div class="station-codes station-connector">
-                                    <span class="station-code">PE 3</span>
-                                </div>
-                                <div class="station-name">Coral Edge</div>
-                            </div>
-                        </div>
-
-                        <div id="hidden-stations-d">
-                            <!-- PE 2 Meridian -->
-                            <div class="station">
-                                <div class="station-dot"></div>
-                                <div class="station-content">
-                                    <div class="station-codes">
-                                        <span class="station-code">PE 2</span>
-                                    </div>
-                                    <div class="station-name">Meridian</div>
-                                </div>
-                            </div>
-
-                            <!-- PE 1 Cove -->
-                            <div class="station">
-                                <div class="station-dot"></div>
-                                <div class="station-content">
-                                    <div class="station-codes">
-                                        <span class="station-code">PE 1</span>
-                                    </div>
-                                    <div class="station-name">Cove</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="show-more-button">
-                            <button id="toggleBtnD" onclick="toggleStationsD()">Show More</button>
-                        </div>
-                    </div>
+                    <div class="line-container show" id="serviceA"></div>
+                    <div id="hidden-stations-a"></div>
+                    <div class="line-container hidden" id="serviceB"></div>
+                    <div id="hidden-stations-b"></div>
+                    <div class="line-container hidden" id="serviceC"></div>
+                    <div id="hidden-stations-c"></div>
+                    <div class="line-container hidden" id="serviceD"></div>
+                    <div id="hidden-stations-d"></div>
                 </div>
             </div>
+        </div>
 
 
     </section>
 
     <script type="text/javascript" id="cookiebanner" src="../../js/cookies-banner.js" data-position="bottom"
+        data-bg="#f2f3e5" data-fg="#000" data-font-family="Onest, sans-serif" data-zindex="12345111111"
+        data-message="This website uses cookies to provide necessary site functionality and to improve your experience. By using this website, you agree to our use of cookies.">
+        </script>
+
+
+    <script src="../js/mob-navtabs.js"></script>
+
+    <script src="../js/mob-navtabs-tooltip.js"></script>
+
+    <script src="../tdt-subp.js"></script>
+
+    <script src="../../js/jquery.min.js"></script>
+
+    <script src="https://unpkg.com/swiper@6.8.1/swiper-bundle.min.js"></script>
+
+    <script src="../../js/dstabs.js"></script>
+
+    <script src="../../js/popper.min.js"></script>
+
+    <script src="../../js/bootstrap.min.js"></script>
+
+    <script src="../../js/pw.bundle.js"></script>
+
+    <script src="../../js/default-assets/active.js"></script>
+
+    <<script type="text/javascript" id="cookiebanner" src="../../js/cookies-banner.js" data-position="bottom"
         data-bg="#f2f3e5" data-fg="#000" data-font-family="Onest, sans-serif" data-zindex="12345111111"
         data-message="This website uses cookies to provide necessary site functionality and to improve your experience. By using this website, you agree to our use of cookies.">
         </script>

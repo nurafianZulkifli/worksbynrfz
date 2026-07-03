@@ -23,7 +23,7 @@
         { "code": "DT 13", "name": "Rochor", "interchanges": [] },
         { "code": "DT 14", "name": "Bugis", "interchanges": [{ "code": "EW 12", "lineClass": "mrt-ewl" }] },
         { "code": "DT 15", "name": "Promenade", "interchanges": [{ "code": "CC 4", "lineClass": "mrt-ccl" }] },
-        { "code": "DT 16", "name": "Bayfront", "interchanges": [{ "code": "CE 1", "lineClass": "mrt-ccl" }] },
+        { "code": "DT 16", "name": "Bayfront", "interchanges": [{ "code": "CC 34", "lineClass": "mrt-ccl" }] },
         { "code": "DT 17", "name": "Downtown", "interchanges": [] },
         { "code": "DT 18", "name": "Telok Ayer", "interchanges": [] },
         { "code": "DT 19", "name": "Chinatown", "interchanges": [{ "code": "NE 4", "lineClass": "mrt-nel" }] },
