@@ -1,5 +1,4 @@
-<style>
-    .line-diagram {
+  .line-diagram {
         flex: 1;
         padding: 30px 20px;
         transition-duration: 800ms;
@@ -470,4 +469,3 @@
             padding-right: 1em;
         }
     }
-</style>
