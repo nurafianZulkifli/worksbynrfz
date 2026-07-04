@@ -118,8 +118,8 @@ document.addEventListener('DOMContentLoaded', function () {
             const alertDiv = document.createElement('div');
             alertDiv.className = 'list-group-item list-group-item-action flex-column align-items-start';
             alertDiv.innerHTML = `
-                        <div style="width: 100%; margin-bottom: 0.5em;">
-                            <small class="lg-date">Bus Services Affected:</small>
+                        <div style="width: 100%; display: block; margin-bottom: 0.3em;">
+                            <span class="lg-date" style="display: block; font-weight: 500;">Bus Services Affected:</span>
                         </div>
                         ${codesHTML}
                         <p class="mb-1 alert-item-content">${linkedContent}</p>
