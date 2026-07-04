@@ -76,7 +76,7 @@
   {
     "n": "4",
     "t": "Trunk",
-    "op": "SBST",
+    "op": "GAS",
     "directions": [1],
     "ts": "Tampines Int",
     "lp": "Changi North Way",
@@ -283,7 +283,7 @@
   {
     "n": "10",
     "t": "Trunk",
-    "op": "SBST",
+    "op": "GAS",
     "directions": [1,2],
     "ts": "Tampines Int",
     "te": "Kent Ridge Ter",
@@ -666,7 +666,7 @@
   {
     "n": "10e",
     "t": "Trunk",
-    "op": "SBST",
+    "op": "GAS",
     "directions": [1],
     "ts": "Opp Man Fatt Lam Tp",
     "te": "Hub Synergy Pt",
@@ -1318,7 +1318,7 @@
   {
     "n": "18",
     "t": "Trunk",
-    "op": "SBST",
+    "op": "GAS",
     "directions": [1,2],
     "ts": "Tampines North Int",
     "te": "Bedok Nth Depot",
@@ -1340,7 +1340,7 @@
   {
     "n": "18A",
     "t": "Short-Trip",
-    "op": "SBST",
+    "op": "GAS",
     "directions": [1],
     "ts": "Tampines North Int",
     "te": "Tampines East Stn Exit D",
@@ -1356,7 +1356,7 @@
   {
     "n": "18M",
     "t": "Trunk",
-    "op": "SBST",
+    "op": "GAS",
     "directions": [1],
     "ts": "Opp SBST Bedok Nth Depot",
     "lp": "Tampines St 96 ",
@@ -1373,7 +1373,7 @@
   {
     "n": "19",
     "t": "Trunk",
-    "op": "SBST",
+    "op": "GAS",
     "directions": [1],
     "ts": "Tampines Int",
     "lp": "Airport Cargo Rd",
@@ -1389,7 +1389,7 @@
   {
     "n": "20",
     "t": "Trunk",
-    "op": "SBST",
+    "op": "GAS",
     "directions": [1],
     "ts": "Tampines Int",
     "lp": "Changi Business Pk Ave 3",
@@ -1406,7 +1406,7 @@
   {
     "n": "20A",
     "t": "Short-Trip",
-    "op": "SBST",
+    "op": "GAS",
     "directions": [1],
     "ts": "Blk 148",
     "te": "Expo Stn Exit B",
@@ -1479,7 +1479,7 @@
   {
     "n": "23",
     "t": "Trunk",
-    "op": "SBST",
+    "op": "GAS",
     "directions": [1],
     "ts": "Tampines Int",
     "lp": "Rochor Canal Rd",
@@ -1567,7 +1567,7 @@
   {
     "n": "28",
     "t": "Trunk",
-    "op": "SBST",
+    "op": "GAS",
     "directions": [1,2],
     "ts": "Tampines Int",
     "te": "Toa Payoh Int",
@@ -1587,7 +1587,7 @@
   {
     "n": "29",
     "t": "Trunk",
-    "op": "SBST",
+    "op": "GAS",
     "directions": [1],
     "ts": "Tampines Int",
     "lp": "Changi Village Ter",
@@ -1603,7 +1603,7 @@
   {
     "n": "31",
     "t": "Trunk",
-    "op": "SBST",
+    "op": "GAS",
     "directions": [1,2],
     "ts": "Tampines Int",
     "te": "Toa Payoh Int",
@@ -1744,7 +1744,7 @@
   {
     "n": "37",
     "t": "Trunk",
-    "op": "SBST",
+    "op": "GAS",
     "directions": [1],
     "ts": "Tampines Int",
     "lp": "Changi Nth Crescent",
@@ -1760,7 +1760,7 @@
   {
     "n": "38",
     "t": "Trunk",
-    "op": "SBST",
+    "op": "GAS",
     "directions": [1,2],
     "ts": "Tampines Int",
     "te": "Bedok Int",
@@ -1780,7 +1780,7 @@
   {
     "n": "39",
     "t": "Trunk",
-    "op": "SBST",
+    "op": "GAS",
     "directions": [1,2],
     "ts": "Tampines Concourse Int",
     "te": "Yishun Int",
@@ -1965,7 +1965,7 @@
   {
     "n": "47",
     "t": "Trunk",
-    "op": "SBST",
+    "op": "GAS",
     "directions": [1],
     "ts": "Changi Business Pk Ter",
     "lp": "Amber Rd",
@@ -2471,7 +2471,7 @@
   {
     "n": "65",
     "t": "Trunk",
-    "op": "SBST",
+    "op": "GAS",
     "directions": [1,2],
     "ts": "Tampines Int",
     "te": "HarbourFront Int",
@@ -2644,7 +2644,7 @@
   {
     "n": "72",
     "t": "Trunk",
-    "op": "SBST",
+    "op": "GAS",
     "directions": [1,2],
     "ts": "Yio Chu Kang Int",
     "te": "Tampines Int",
@@ -2665,7 +2665,7 @@
   {
     "n": "72A",
     "t": "Short-Trip",
-    "op": "SBST",
+    "op": "GAS",
     "directions": [1],
     "ts": "Yio Chu Kang Int",
     "te": "Opp Hougang Ctrl Int",
@@ -2681,7 +2681,7 @@
   {
     "n": "72B",
     "t": "Short-Trip",
-    "op": "SBST",
+    "op": "GAS",
     "directions": [1],
     "ts": "Yio Chu Kang Int",
     "te": "ITE Coll Ctrl",
@@ -2879,7 +2879,7 @@
   {
     "n": "81",
     "t": "Trunk",
-    "op": "SBST",
+    "op": "GAS",
     "directions": [1],
     "ts": "Tampines Int",
     "lp": "Serangoon Ctrl",
@@ -4278,7 +4278,7 @@
   {
     "n": "127",
     "t": "Trunk",
-    "op": "SBST",
+    "op": "GAS",
     "directions": [1],
     "ts": "Tampines Int",
     "lp": "Tampines Ind Ave 5",
@@ -4295,7 +4295,7 @@
   {
     "n": "127A",
     "t": "Short-Trip",
-    "op": "SBST",
+    "op": "GAS",
     "directions": [1],
     "ts": "Tampines Int",
     "te": "Opp Blk 610C",
@@ -4311,7 +4311,7 @@
   {
     "n": "129",
     "t": "Trunk",
-    "op": "SBST",
+    "op": "GAS",
     "directions": [1,2],
     "ts": "Tampines North Int",
     "te": "St. Michael's Ter",
@@ -4332,7 +4332,7 @@
   {
     "n": "129A",
     "t": "Short-Trip",
-    "op": "SBST",
+    "op": "GAS",
     "directions": [1],
     "ts": "Temasek Poly East G",
     "te": "Bartley Stn Exit A",
@@ -4348,7 +4348,7 @@
   {
     "n": "129B",
     "t": "Short-Trip",
-    "op": "SBST",
+    "op": "GAS",
     "directions": [1],
     "ts": "Gambir Ridge",
     "te": "Opp Temasek Poly East G",
@@ -6780,7 +6780,7 @@
   {
     "n": "291",
     "t": "Feeder",
-    "op": "SBST",
+    "op": "GAS",
     "directions": [1],
     "ts": "Tampines Int",
     "lp": "Tampines St 81",
@@ -6796,7 +6796,7 @@
   {
     "n": "292",
     "t": "Feeder",
-    "op": "SBST",
+    "op": "GAS",
     "directions": [1],
     "ts": "Tampines Int",
     "lp": "Tampines St 22",
@@ -6812,7 +6812,7 @@
   {
     "n": "293",
     "t": "Feeder",
-    "op": "SBST",
+    "op": "GAS",
     "directions": [1],
     "ts": "Tampines Int",
     "lp": "Tampines St 71",
@@ -6828,7 +6828,7 @@
   {
     "n": "296",
     "t": "Feeder",
-    "op": "SBST",
+    "op": "GAS",
     "directions": [1],
     "ts": "Tampines Int",
     "lp": "Tampines Nth Drive 2",
@@ -6844,7 +6844,7 @@
   {
     "n": "298",
     "t": "Feeder",
-    "op": "SBST",
+    "op": "GAS",
     "directions": [1],
     "ts": "Tampines North Int",
     "lp": "Tampines Ave 5",
@@ -6860,7 +6860,7 @@
   {
     "n": "299",
     "t": "Feeder",
-    "op": "SBST",
+    "op": "GAS",
     "directions": [1],
     "ts": "Tampines North Int",
     "lp": "Tampines St 96",
@@ -7757,7 +7757,7 @@
   {
     "n": "454",
     "t": "Limited Stop",
-    "op": "SBST",
+    "op": "GAS",
     "directions": [1],
     "ts": "Tampines North Int",
     "lp": "Tampines St 86",
@@ -7849,7 +7849,7 @@
   {
     "n": "460",
     "t": "Limited Stop",
-    "op": "SBST",
+    "op": "GAS",
     "directions": [1],
     "ts": "Tampines Int",
     "lp": "Tampines North Dr 2",
@@ -9185,7 +9185,7 @@
   {
     "n": "646",
     "t": "City Direct",
-    "op": "SBST",
+    "op": "GAS",
     "directions": [1,2],
     "ts": "Opp Blk 662B",
     "te": "Opp MAS Bldg",

@@ -103,7 +103,7 @@ async function loadBusServiceData() {
                 console.log('API array length:', apiArray.length);
 
                 if (Array.isArray(apiArray) && apiArray.length > 0) {
-                    // Merge API operator data with local data
+                    // Merge API operator data with local data (only for missing operators)
                     const operatorMap = {};
                     apiArray.forEach(service => {
                         const serviceNo = service.ServiceNo || service.n;
@@ -114,20 +114,32 @@ async function loadBusServiceData() {
 
                     console.log('Built operator map:', operatorMap);
 
-                    // Update local data with API operators
+                    // Update local data with API operators only if missing (New Code - In Effect)
                     let updateCount = 0;
                     localData.forEach(service => {
-                        const oldOp = service.op;
-                        if (operatorMap[service.n]) {
+                        // Only update if local data doesn't have an operator (prioritize local JSON)
+                        if (!service.op && operatorMap[service.n]) {
                             service.op = operatorMap[service.n];
                             updateCount++;
-                            // console.log('Updated service', service.n, ': "' + oldOp + '" -> "' + service.op + '"');
-                        } else {
-                            // console.log('No operator found for service', service.n);
+                            console.log('Filled missing operator for service', service.n, '-> "' + service.op + '"');
                         }
                     });
 
-                    console.log('Updated', updateCount, 'services with API operators');
+                    console.log('Updated', updateCount, 'services with missing API operators');
+
+                    // OLD CODE (commented out - was overriding local JSON with API data)
+                    // let updateCount = 0;
+                    // localData.forEach(service => {
+                    //     const oldOp = service.op;
+                    //     if (operatorMap[service.n]) {
+                    //         service.op = operatorMap[service.n];
+                    //         updateCount++;
+                    //         // console.log('Updated service', service.n, ': "' + oldOp + '" -> "' + service.op + '"');
+                    //     } else {
+                    //         // console.log('No operator found for service', service.n);
+                    //     }
+                    // });
+                    // console.log('Updated', updateCount, 'services with API operators');
                 } else {
                     console.warn('API array is empty or not an array');
                 }
