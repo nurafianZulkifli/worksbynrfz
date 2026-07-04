@@ -19,6 +19,19 @@ document.addEventListener('DOMContentLoaded', function () {
     const API_DATA_KEY = 'buszy_alerts_api_data';
     const CACHE_TTL = 30 * 60 * 1000; // 30 minutes
     
+    // Set up event delegation for service code clicks
+    document.addEventListener('click', function(e) {
+        const badge = e.target.closest('.bus-service-code');
+        if (badge && badge.hasAttribute('data-service-code')) {
+            e.preventDefault();
+            e.stopPropagation();
+            const serviceCode = badge.getAttribute('data-service-code');
+            console.log('Clicked service code:', serviceCode);
+            window.location.href = `./bus-service.html?service=${serviceCode}`;
+            return false;
+        }
+    }, true);
+    
     // Show last updated time
     const now = new Date();
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -110,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (codes.length > 0) {
                 codesHTML = '<div class="bus-codes-container" style="margin: 0.5em 0;">';
                 codes.forEach(code => {
-                    codesHTML += `<div class="bus-service-code"><span class="bus-service-code-text">${code}</span></div>`;
+                    codesHTML += `<div class="bus-service-code" data-service-code="${code}" style="cursor: pointer; pointer-events: auto; user-select: none;"><span class="bus-service-code-text">${code}</span></div>`;
                 });
                 codesHTML += '</div>';
             }

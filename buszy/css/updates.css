@@ -294,6 +294,14 @@ body.dark-mode .notif-dismiss-btn {
     gap: 10px;
     margin-right: 0.5em;
     margin-bottom: 0.5em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.bus-service-code:hover {
+    background-color: #7cb000;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 body.dark-mode .bus-service-code {
@@ -308,6 +316,14 @@ body.dark-mode .bus-service-code {
     gap: 10px;
     margin-right: 0.5em;
     margin-bottom: 0.5em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+body.dark-mode .bus-service-code:hover {
+    background-color: #94d40b;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .bus-service-code-text {

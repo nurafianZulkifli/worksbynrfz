@@ -149,7 +149,7 @@ function updateThemeIcon(theme) {
 // pop-up banner. We show our own prominent banner instead.
 
 // Cleans up a 'notify once' subscription from local tracking after it fires.
-// Works on all pages (not just art.html/alerts.html where push-notify.js is loaded).
+// Works on all pages (not just art.html/ann.html where push-notify.js is loaded).
 function _bzCleanOnceTracked(busStopCode, serviceNo) {
     if (!busStopCode || !serviceNo) return;
     try {
@@ -266,7 +266,7 @@ function showPushBanner(title, body, data) {
 
     // Build the navigation target
     const isAlert = data?.type === 'service-alert';
-    let navUrl = './alerts.html';
+    let navUrl = './ann.html';
     if (!isAlert && data?.busStopCode) {
         navUrl = './art.html?BusStopCode=' + encodeURIComponent(data.busStopCode);
         if (data.serviceNo) navUrl += '&ServiceNo=' + encodeURIComponent(data.serviceNo);

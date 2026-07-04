@@ -1,6 +1,6 @@
 ﻿/**
  * Buszy — Bus Service Alert Push Notifications
- * Handles the opt-in/opt-out toggle button on alerts.html.
+ * Handles the opt-in/opt-out toggle button on ann.html.
  * Auto-subscription for all pages is handled by buszy-subp.js.
  */
 (function () {
