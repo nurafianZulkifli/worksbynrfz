@@ -24,7 +24,7 @@
   "Dhoby Ghaut": "NS24/CC1",
   "City Hall": "NS25/EW13",
   "Raffles Place": "NS26/EW14",
-  "Marina Bay": "NS27/CE2/TE20",
+  "Marina Bay": "NS27/CC 33/TE20",
   "Marina South Pier": "NS28",
   "Pasir Ris": "EW1",
   "Tampines": "EW2",
@@ -110,5 +110,9 @@
   "Fajar": "BP10",
   "Segar": "BP11",
   "Jelapang": "BP12",
-  "Senja": "BP13"
+  "Senja": "BP13",
+  "Bayfront": "CC34/DT16",
+  "Prince Edward Road": "CC32",
+  "Keppel": "CC31",
+  "Cantonment": "CC30"
 }
