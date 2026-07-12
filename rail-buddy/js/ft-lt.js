@@ -332,6 +332,7 @@
             const searchInput = document.getElementById('stationSearch');
             const clearButton = document.getElementById('clearSearch');
             const resultsCount = document.getElementById('resultsCount');
+            const dropdown = document.getElementById('stationDropdown');
 
             // Build all stations list
             buildAllStationsList();
@@ -344,11 +345,23 @@
                 if (query.length > 0) {
                     filterStations(query);
                     updateDropdownFromFiltered();
-                    resultsCount.textContent = `Found ${filteredStations.length} station${filteredStations.length !== 1 ? 's' : ''}`;
+                    resultsCount.textContent = '';
+                    
+                    // Auto-display results if exactly one station is found
+                    if (filteredStations.length === 1) {
+                        displayStationData(filteredStations[0].value);
+                        dropdown.classList.remove('highlight');
+                    } else if (filteredStations.length > 1) {
+                        // Highlight dropdown to prompt selection
+                        dropdown.classList.add('highlight');
+                    }
                 } else {
                     filteredStations = [];
                     populateDropdown();
                     resultsCount.textContent = '';
+                    dropdown.classList.remove('highlight');
+                    // Clear displayed data when search is cleared
+                    document.getElementById('contentSection').classList.remove('active');
                 }
             });
 
@@ -359,6 +372,8 @@
                 filteredStations = [];
                 populateDropdown();
                 resultsCount.textContent = '';
+                dropdown.classList.remove('highlight');
+                document.getElementById('contentSection').classList.remove('active');
                 searchInput.focus();
             });
         }
@@ -383,7 +398,8 @@
         // Update dropdown to show only filtered stations
         function updateDropdownFromFiltered() {
             const dropdown = document.getElementById('stationDropdown');
-            dropdown.innerHTML = '<option value="">Select from results...</option>';
+            const resultsCount = document.getElementById('resultsCount');
+            dropdown.innerHTML = `<option value="">Found ${filteredStations.length} station${filteredStations.length !== 1 ? 's' : ''}...</option>`;
 
             // Group by operator
             const smrtStations = filteredStations.filter(s => s.operator === 'smrt');
