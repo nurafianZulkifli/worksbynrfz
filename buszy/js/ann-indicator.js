@@ -36,7 +36,8 @@ function applyDots(hasUnread) {
  */
 async function computeUnreadFromSource() {
     try {
-        const response = await fetch('./ann.html', { cache: 'default' });
+        // Add cache-busting parameter to force fresh fetch
+        const response = await fetch(`./ann.html?t=${Date.now()}`, { cache: 'no-store' });
         const html = await response.text();
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');
@@ -81,7 +82,9 @@ function updateAnnounceIndicatorDots() {
     const flagValue = localStorage.getItem(ANN_HAS_UNREAD_KEY);
 
     // Apply cached value immediately so there's no delay
-    applyDots(flagValue === null || flagValue === 'true');
+    // Handle both boolean values and string values ("true"/"false")
+    const hasUnread = flagValue === 'true' || flagValue === true;
+    applyDots(hasUnread);
 
     // Always recompute in background to catch new announcements
     computeUnreadFromSource();
