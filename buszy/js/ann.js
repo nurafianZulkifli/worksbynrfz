@@ -35,8 +35,8 @@ function initAnnouncements() {
         const storedData = storedState[id];
         const storedHash = storedData?.hash;
         
-        // Determine if item is NEW: within 7 days AND no previous record (user hasn't seen it yet)
-        const isNew = daysSinceAnnouncement <= NEW_ITEM_DAYS && !storedHash;
+        // Determine if item is NEW: within 7 days AND (no previous record OR hash changed)
+        const isNew = daysSinceAnnouncement <= NEW_ITEM_DAYS && (!storedHash || storedHash !== currentHash);
         
         // Track if any unread items exist
         if (isNew) {
@@ -80,19 +80,23 @@ function initAnnouncements() {
     // Save updated state to localStorage
     localStorage.setItem(STORAGE_KEY, JSON.stringify(newState));
     
-    // Visiting this page marks all as read — clear the unread flag for other pages
-    localStorage.setItem(HAS_UNREAD_KEY, false);
+    // Set the unread flag based on whether we found any new items
+    localStorage.setItem(HAS_UNREAD_KEY, hasUnreadItems);
     
     // Update dots on current page
-    const dots = document.querySelectorAll('.ann-indicator-dot');
+    const dots = document.querySelectorAll('.ann-indicator-dot, .alerts-indicator-dot');
     dots.forEach(dot => {
-        dot.classList.remove('show');
+        if (hasUnreadItems) {
+            dot.classList.add('show');
+        } else {
+            dot.classList.remove('show');
+        }
     });
     
     // Trigger storage event so other pages get notified immediately
     window.dispatchEvent(new StorageEvent('storage', {
         key: HAS_UNREAD_KEY,
-        newValue: 'false',
+        newValue: hasUnreadItems ? 'true' : 'false',
         storageArea: localStorage
     }));
 }

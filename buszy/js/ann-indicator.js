@@ -6,8 +6,21 @@ const NEW_ITEM_DAYS = 7;
 const ANN_STORAGE_KEY = 'buszy_ann_state';
 const ANN_HAS_UNREAD_KEY = 'buszy_has_unread';
 
+/**
+ * Simple hash function for content
+ */
+function hashCode(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+        const char = str.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash; // Convert to 32bit integer
+    }
+    return hash.toString();
+}
+
 function applyDots(hasUnread) {
-    const dots = document.querySelectorAll('.ann-indicator-dot');
+    const dots = document.querySelectorAll('.ann-indicator-dot, .alerts-indicator-dot');
     dots.forEach(dot => {
         if (hasUnread) {
             dot.classList.add('show');
@@ -39,10 +52,20 @@ async function computeUnreadFromSource() {
             const dateStr = item.getAttribute('data-ann-date');
             const annDate = new Date(dateStr);
             const daysSince = (now - annDate) / (1000 * 60 * 60 * 24);
+            
+            // Compute hash for this item
+            const content = (
+                id +
+                dateStr +
+                item.querySelector('.lg-ann')?.textContent +
+                item.querySelector('.mb-1')?.textContent
+            );
+            const itemHash = hashCode(content);
+            const storedHash = storedState[id]?.hash;
 
             // On first visit (no stored state), all items are unread regardless of age.
-            // On subsequent visits, only items within NEW_ITEM_DAYS that haven't been read count.
-            if (isFirstVisit || (daysSince <= NEW_ITEM_DAYS && !storedState[id]?.hash)) {
+            // On subsequent visits, only items within NEW_ITEM_DAYS that haven't been read OR have changed count.
+            if (isFirstVisit || (daysSince <= NEW_ITEM_DAYS && (!storedHash || storedHash !== itemHash))) {
                 hasUnread = true;
             }
         });
