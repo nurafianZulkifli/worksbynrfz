@@ -4700,7 +4700,7 @@
         }
       },
       {
-        "description": "To NS27 CE2 Marina Bay",
+        "description": "To NS27 CC33 Marina Bay",
         "first_train": {
           "monday_to_friday": "06:15",
           "saturday": "06:15",
@@ -4812,7 +4812,7 @@
         }
       },
       {
-        "description": "To NS27 CE2 Marina Bay",
+        "description": "To NS27 CC33 Marina Bay",
         "first_train": {
           "monday_to_friday": "06:12",
           "saturday": "06:12",
@@ -4939,7 +4939,7 @@
         }
       },
       {
-        "description": "To NS27 CE2 Marina Bay",
+        "description": "To NS27 CC33 Marina Bay",
         "first_train": {
           "monday_to_friday": "06:10",
           "saturday": "06:10",
@@ -10115,7 +10115,7 @@
     "station_slug": "keppel",
     "directions": [
       {
-        "description": "To NS27/TE20/CE2 Marina Bay",
+        "description": "To NS27/TE20/CC33 Marina Bay",
         "first_train": {
           "monday_to_friday": "05:49",
           "saturday": "05:49",
@@ -10152,7 +10152,7 @@
     "station_slug": "cantonment",
     "directions": [
       {
-        "description": "To NS27/TE20/CE2 Marina Bay",
+        "description": "To NS27/TE20/CC33 Marina Bay",
         "first_train": {
           "monday_to_friday": "05:59",
           "saturday": "05:59",
@@ -10189,7 +10189,7 @@
     "station_slug": "prince-edward-road",
     "directions": [
       {
-        "description": "To NS27/TE20/CE2 Marina Bay",
+        "description": "To NS27/TE20/CC33 Marina Bay",
         "first_train": {
           "monday_to_friday": "05:54",
           "saturday": "05:54",

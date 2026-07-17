@@ -4700,7 +4700,7 @@
         }
       },
       {
-        "description": "To NS27 CE2 Marina Bay",
+        "description": "To NS27 CC33 Marina Bay",
         "first_train": {
           "monday_to_friday": "06:15",
           "saturday": "08:57",
@@ -4812,7 +4812,7 @@
         }
       },
       {
-        "description": "To NS27 CE2 Marina Bay",
+        "description": "To NS27 CC33 Marina Bay",
         "first_train": {
           "monday_to_friday": "06:12",
           "saturday": "08:54",
@@ -4939,7 +4939,7 @@
         }
       },
       {
-        "description": "To NS27 CE2 Marina Bay",
+        "description": "To NS27 CC33 Marina Bay",
         "first_train": {
           "monday_to_friday": "06:10",
           "saturday": "08:52",
