@@ -257,29 +257,43 @@ function initializeGeolocationSearch() {
         navigator.geolocation.getCurrentPosition((position) => {
             const latitude = position.coords.latitude;
             const longitude = position.coords.longitude;
+            console.log('Location obtained:', latitude, longitude);
             sessionStorage.setItem('userLocation', JSON.stringify({ latitude, longitude }));
             fetchNearbyBusStops(latitude, longitude, showLocationError);
         }, (error) => {
-            console.error('Geolocation error:', error);
-            // Auto-retry with a slight delay
+            const errorMessages = {
+                1: 'Permission denied - please enable location in browser settings',
+                2: 'Position unavailable - geolocation service error',
+                3: 'Request timeout - please check your connection'
+            };
+            console.error('Geolocation error code:', error.code, 'message:', errorMessages[error.code] || error.message);
+            
+            // Auto-retry with lower accuracy and longer timeout
+            console.log('Retrying geolocation with lower accuracy settings...');
             setTimeout(() => {
                 navigator.geolocation.getCurrentPosition((position) => {
                     const latitude = position.coords.latitude;
                     const longitude = position.coords.longitude;
+                    console.log('Location obtained on retry:', latitude, longitude);
                     sessionStorage.setItem('userLocation', JSON.stringify({ latitude, longitude }));
                     fetchNearbyBusStops(latitude, longitude, showLocationError);
                 }, (retryError) => {
-                    console.error('Geolocation retry failed:', retryError);
+                    const retryMessages = {
+                        1: 'Permission denied - please enable location in browser settings',
+                        2: 'Position unavailable - geolocation service error',
+                        3: 'Request timeout - please check your connection'
+                    };
+                    console.error('Geolocation retry failed code:', retryError.code, 'message:', retryMessages[retryError.code] || retryError.message);
                     showLocationError();
                 }, {
                     enableHighAccuracy: false,
-                    timeout: 5000,
-                    maximumAge: 0
+                    timeout: 15000,
+                    maximumAge: 60000
                 });
-            }, 1000);
+            }, 2000);
         }, {
             enableHighAccuracy: true,
-            timeout: 10000,
+            timeout: 15000,
             maximumAge: 0
         });
     }
@@ -342,11 +356,8 @@ async function fetchNearbyBusStops(latitude, longitude, onError) {
         }
     } catch (error) {
         console.error('Error fetching nearby bus stops:', error);
-        if (typeof onError === 'function') {
-            onError();
-        } else {
-            busStopsContainer.innerHTML = '<p class="pin-msg"><i class="fa-regular fa-triangle-exclamation"></i>Failed to fetch nearby bus stops. Please try again later.<br><small style="font-size: 12px; opacity: 0.7;">Error: ' + error.message + '</small></p>';
-        }
+        busStopsContainer.innerHTML = '<p class="pin-msg"><i class="fa-regular fa-triangle-exclamation"></i>Unable to fetch bus stops. Please check your connection and try again.</p>';
+        enableNavigation();
     }
 }
 
