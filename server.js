@@ -609,7 +609,7 @@ for (const [key, watchers] of [...pushWatchers.entries()]) {
         const filtered = [...new Set(matches)].filter(c => { const n = parseInt(c); return n >= 10 && n <= 9999; });
         codes = filtered.slice(0, 5).join(', ');
       }
-      const body = codes ? `Services ${codes} affected` : 'A bus service is affected. Tap for details.';
+      const body = codes ? `Services ${codes} affected` : 'One or more bus service(s) is affected. Tap for details.';
       const payload = JSON.stringify({
         title: 'Bus Service Alert',
         body,

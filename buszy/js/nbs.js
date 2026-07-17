@@ -210,31 +210,8 @@ function initializeGeolocationSearch() {
 
     // Helper to show error only if nothing can be loaded
     function showLocationError() {
-        busStopsContainer.innerHTML = `
-            <p class="pin-msg"><i class="fa-regular fa-triangle-exclamation"></i>Unable to retrieve your location.</p>
-            <button id="retry-location-btn" class="btn btn-rfetch" style="display: block; margin: 15px auto;">
-                <i class="fa-regular fa-rotate"></i> Retry
-            </button>
-            <button id="use-default-location-btn" class="btn btn-rfetch" style="display: block; margin: 15px auto;">
-                <i class="fa-regular fa-location-dot"></i> Use Central Singapore
-            </button>
-        `;
+        busStopsContainer.innerHTML = '<p class="pin-msg"><i class="fa-regular fa-triangle-exclamation"></i>Unable to retrieve your location. Please enable location permissions.</p>';
         enableNavigation();
-        const retryBtn = document.getElementById('retry-location-btn');
-        if (retryBtn) {
-            retryBtn.addEventListener('click', () => {
-                requestLocation(true); // Force location prompt
-            });
-        }
-        const defaultBtn = document.getElementById('use-default-location-btn');
-        if (defaultBtn) {
-            defaultBtn.addEventListener('click', () => {
-                // Use Singapore's city center as fallback
-                const defaultLocation = { latitude: 1.3521, longitude: 103.8198 };
-                sessionStorage.setItem('userLocation', JSON.stringify(defaultLocation));
-                fetchNearbyBusStops(defaultLocation.latitude, defaultLocation.longitude, showLocationError);
-            });
-        }
     }
 
     function requestLocation(force = false) {
@@ -284,7 +261,22 @@ function initializeGeolocationSearch() {
             fetchNearbyBusStops(latitude, longitude, showLocationError);
         }, (error) => {
             console.error('Geolocation error:', error);
-            showLocationError();
+            // Auto-retry with a slight delay
+            setTimeout(() => {
+                navigator.geolocation.getCurrentPosition((position) => {
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+                    sessionStorage.setItem('userLocation', JSON.stringify({ latitude, longitude }));
+                    fetchNearbyBusStops(latitude, longitude, showLocationError);
+                }, (retryError) => {
+                    console.error('Geolocation retry failed:', retryError);
+                    showLocationError();
+                }, {
+                    enableHighAccuracy: false,
+                    timeout: 5000,
+                    maximumAge: 0
+                });
+            }, 1000);
         }, {
             enableHighAccuracy: true,
             timeout: 10000,
