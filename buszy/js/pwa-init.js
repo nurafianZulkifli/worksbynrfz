@@ -44,7 +44,7 @@ window.addEventListener('load', () => {
         _origShow();
         const banner = document.getElementById('buszy-install-banner');
         if (banner) {
-          banner.style.bottom = 'auto';
+          banner.style.bottom = 'unset';
           banner.style.top = '0';
           banner.style.animation = 'slideDown 0.3s ease-out';
         }
@@ -57,7 +57,7 @@ window.addEventListener('load', () => {
         if (_origGuideFinish) _origGuideFinish();
         const banner = document.getElementById('buszy-install-banner');
         if (banner) {
-          banner.style.top = 'auto';
+          banner.style.top = 'unset';
           banner.style.bottom = '0';
           banner.style.animation = 'slideUp 0.3s ease-out';
         }

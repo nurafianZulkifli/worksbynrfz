@@ -82,24 +82,22 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function extractBusServiceCodes(text) {
-        // Extract only the portion mentioning "bus services"
-        // Match "bus services" followed by codes, handling various verb patterns: "have been diverted", "are affected", etc.
-        const busServicesRegex = /bus services?\s*[:\-]?\s*([^,]+?)(?:\s+(?:have|has|are|is)\s+(?:been\s+)?(?:affected|diverted|disrupted|delayed))/i;
+        // Capture the service list between "bus service(s)" and the disruption status.
+        const busServicesRegex = /bus services?\s*[:\-]?\s*([\s\S]*?)(?=\s+(?:have|has|are|is)\s+(?:been\s+)?(?:affected|diverted|disrupted|delayed)\b|\s+(?:were|was)\s+(?:affected|diverted|disrupted|delayed)\b|[.;]|$)/i;
         const match = text.match(busServicesRegex);
 
         if (!match) {
             return [];
         }
 
-        // Get the portion after "bus services"
         const servicesText = match[1];
 
-        // Extract service codes from this portion: numbers (2-4 digits) optionally followed by a letter
-        const codeRegex = /\b(\d{2,4}[a-z]?)\b/gi;
-        const matches = servicesText.match(codeRegex) || [];
+        // Allow one-digit services and letter suffixes such as 2B.
+        const codeRegex = /\b(\d{1,4}[a-z]?)\b/gi;
+        const matches = (servicesText.match(codeRegex) || []).map(code => code.toUpperCase());
         const codes = [...new Set(matches)].filter(code => {
             const num = parseInt(code);
-            return num >= 10 && num <= 9999;
+            return num >= 1 && num <= 9999;
         });
         return codes;
     }

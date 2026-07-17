@@ -215,12 +215,24 @@ function initializeGeolocationSearch() {
             <button id="retry-location-btn" class="btn btn-rfetch" style="display: block; margin: 15px auto;">
                 <i class="fa-regular fa-rotate"></i> Retry
             </button>
+            <button id="use-default-location-btn" class="btn btn-rfetch" style="display: block; margin: 15px auto;">
+                <i class="fa-regular fa-location-dot"></i> Use Central Singapore
+            </button>
         `;
         enableNavigation();
         const retryBtn = document.getElementById('retry-location-btn');
         if (retryBtn) {
             retryBtn.addEventListener('click', () => {
                 requestLocation(true); // Force location prompt
+            });
+        }
+        const defaultBtn = document.getElementById('use-default-location-btn');
+        if (defaultBtn) {
+            defaultBtn.addEventListener('click', () => {
+                // Use Singapore's city center as fallback
+                const defaultLocation = { latitude: 1.3521, longitude: 103.8198 };
+                sessionStorage.setItem('userLocation', JSON.stringify(defaultLocation));
+                fetchNearbyBusStops(defaultLocation.latitude, defaultLocation.longitude, showLocationError);
             });
         }
     }
@@ -301,7 +313,7 @@ async function fetchNearbyBusStops(latitude, longitude, onError) {
     const busStopsContainer = document.getElementById('bus-stops');
     try {
         console.log('Fetching nearby bus stops for:', latitude, longitude);
-        const response = await fetch(`${apiUrl}?latitude=${latitude}&longitude=${longitude}&radius=2`);
+        const response = await fetch(`${apiUrl}?latitude=${latitude}&longitude=${longitude}&radius=5`);
         if (!response.ok) {
             throw new Error(`HTTP ${response.status}: ${response.statusText}`);
         }
@@ -312,7 +324,29 @@ async function fetchNearbyBusStops(latitude, longitude, onError) {
             sessionStorage.setItem('nearbyBusStops', JSON.stringify(busStops));
             displayBusStops(busStops, false);
         } else {
-            busStopsContainer.innerHTML = '<p class="pin-msg"><i class="fa-regular fa-circle-info"></i>No Bus Stops found nearby.</p>';
+            // No stops found in 5km, auto-retry with 10km radius
+            console.log('No stops in 5km radius, auto-retrying with 10km...');
+            busStopsContainer.innerHTML = '<p class="pin-msg"><svg class="spinner" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45"><animateTransform attributeName="transform" type="rotate" values="-90;810" keyTimes="0;1" dur="2s" repeatCount="indefinite" /><animate attributeName="stroke-dashoffset" values="0%;0%;-157.080%" calcMode="spline" keySplines="0.61, 1, 0.88, 1; 0.12, 0, 0.39, 0" keyTimes="0;0.5;1" dur="2s" repeatCount="indefinite" /><animate attributeName="stroke-dasharray" values="0% 314.159%;157.080% 157.080%;0% 314.159%" calcMode="spline" keySplines="0.61, 1, 0.88, 1; 0.12, 0, 0.39, 0" keyTimes="0;0.5;1" dur="2s" repeatCount="indefinite" /></circle></svg>Searching wider area...</p>';
+            try {
+                const expandResponse = await fetch(`${apiUrl}?latitude=${latitude}&longitude=${longitude}&radius=10`);
+                if (expandResponse.ok) {
+                    const expandedStops = await expandResponse.json();
+                    if (expandedStops && expandedStops.length > 0) {
+                        sessionStorage.setItem('nearbyBusStops', JSON.stringify(expandedStops));
+                        displayBusStops(expandedStops, false);
+                    } else {
+                        busStopsContainer.innerHTML = '<p class="pin-msg"><i class="fa-regular fa-circle-info"></i>No Bus Stops found nearby.</p>';
+                        enableNavigation();
+                    }
+                } else {
+                    busStopsContainer.innerHTML = '<p class="pin-msg"><i class="fa-regular fa-circle-info"></i>No Bus Stops found nearby.</p>';
+                    enableNavigation();
+                }
+            } catch (expandError) {
+                console.error('Error during expanded search:', expandError);
+                busStopsContainer.innerHTML = '<p class="pin-msg"><i class="fa-regular fa-circle-info"></i>No Bus Stops found nearby.</p>';
+                enableNavigation();
+            }
         }
     } catch (error) {
         console.error('Error fetching nearby bus stops:', error);
