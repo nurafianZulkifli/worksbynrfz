@@ -628,13 +628,32 @@ document.addEventListener('DOMContentLoaded', async () => {
             sessionStorage.removeItem('absBusSearch');
             sessionStorage.removeItem('absBusPage');
 
+            // Re-enable all category tabs
+            const otherCategoryTabs = document.querySelectorAll('.category-tab:not(.bus-service-tab)');
+            otherCategoryTabs.forEach(tab => {
+                tab.disabled = false;
+                tab.style.opacity = '';
+                tab.style.cursor = '';
+            });
+
+            // Hide bus service tab if visible
+            const busServiceTab = document.getElementById('bus-service-tab');
+            if (busServiceTab) {
+                busServiceTab.style.display = 'none';
+                busServiceTab.classList.remove('active');
+            }
+
             // Trigger input event to update all search filters naturally
             const inputEvent = new Event('input', { bubbles: true });
             searchInput.dispatchEvent(inputEvent);
 
-            // Hide bus service tab if visible
-            const busServiceTab = document.getElementById('bus-service-tab');
-            if (busServiceTab) busServiceTab.style.display = 'none';
+            // Switch back to Nearby tab after a small delay to ensure state is updated
+            setTimeout(() => {
+                const nearbyTab = document.querySelector('.category-tab[data-category="nearby"]');
+                if (nearbyTab) {
+                    nearbyTab.click();
+                }
+            }, 50);
 
             // Reset scroll indicator after layout settles
             setTimeout(() => {

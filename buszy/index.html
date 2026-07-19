@@ -40,6 +40,15 @@
     <link rel="stylesheet" href="./css/style-buszy.css">
     <link rel="stylesheet" href="./css/main-page.css">
 
+    <!-- Bus Service Tab Styling -->
+    <style>
+        .bus-service-tab,
+        .bus-service-tab.active {
+            background-color: #94d40b !important;
+            color: #000 !important;
+        }
+    </style>
+
 </head>
 
 <body>
@@ -167,6 +176,11 @@
 
                         <div class="category-tabs-container">
                             <div class="category-tabs" id="category-tabs">
+                                <button class="bus-service-tab" id="bus-service-tab"
+                                    style="display: none; background-color: #94d40b; color: #000;">
+                                    <i class="fa-kit fa-lta-bus"></i>&nbsp;
+                                    Bus Service
+                                </button>
                                 <button class="category-tab active" data-category="nearby">
                                     <i class="fa-kit fa-lta-location"></i>&nbsp;
                                     Nearby
@@ -178,11 +192,6 @@
                                 <button class="category-tab" data-category="all">
                                     <i class="fa-kit fa-lta-bus-stop"></i>&nbsp;
                                     All
-                                </button>
-                                <button class="category-tab bus-service-tab" id="bus-service-tab"
-                                    style="display: none; background-color: #94d40b; color: #000;">
-                                    <i class="fa-kit fa-lta-bus"></i>&nbsp;
-                                    Bus Service
                                 </button>
                             </div>
                             <button class="scroll-indicator" id="scroll-indicator" aria-label="Scroll tabs">
@@ -464,15 +473,8 @@
                 })
                 .catch(() => { });
 
-            // Restore service number from sessionStorage if it exists (for back navigation)
-            const savedService = sessionStorage.getItem('lastServiceSearch');
-            if (savedService) {
-                searchInput.value = savedService;
-                busServiceTab.style.display = 'inline-flex';
-                sessionStorage.removeItem('lastServiceSearch');
-                // Grey out button if suggestion needed - re-evaluated once JSON loads too
-                updateDidYouMean(savedService);
-            }
+            // Clear any leftover search state from bus service page
+            sessionStorage.removeItem('lastServiceSearch');
 
             // Detect if input looks like a service number
             function isServiceNumber(text) {
@@ -522,13 +524,35 @@
             // Update button and did-you-mean on input change
             searchInput.addEventListener('input', () => {
                 const val = searchInput.value;
+                const otherCategoryTabs = document.querySelectorAll('.category-tab:not(.bus-service-tab)');
+                
                 if (!isServiceNumber(val)) {
                     busServiceTab.style.display = 'none';
                     if (didYouMeanEl) didYouMeanEl.style.display = 'none';
+                    // Re-enable other tabs when not searching for service
+                    otherCategoryTabs.forEach(tab => {
+                        tab.disabled = false;
+                        tab.style.opacity = '';
+                        tab.style.cursor = '';
+                    });
                     return;
                 }
+                
                 busServiceTab.style.display = 'inline-flex';
                 updateDidYouMean(val);
+                
+                // Disable other tabs when searching for service
+                otherCategoryTabs.forEach(tab => {
+                    tab.disabled = true;
+                    tab.style.opacity = '0.4';
+                    tab.style.cursor = 'not-allowed';
+                });
+                
+                // Make Bus Service tab active
+                const tabContents = document.querySelectorAll('.tab-content');
+                otherCategoryTabs.forEach(t => t.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                busServiceTab.classList.add('active');
             });
 
             // Handle Bus Service button click - use exact or suggested casing, never force uppercase
@@ -587,10 +611,17 @@
 
         categoryTabs.forEach(tab => {
             tab.addEventListener('click', () => {
+                // Don't switch tabs if they are disabled
+                if (tab.disabled) {
+                    return;
+                }
+                
                 const category = tab.getAttribute('data-category');
 
                 // Remove active class from all tabs and contents
                 categoryTabs.forEach(t => t.classList.remove('active'));
+                const busServiceTab = document.getElementById('bus-service-tab');
+                if (busServiceTab) busServiceTab.classList.remove('active');
                 tabContents.forEach(content => content.classList.remove('active'));
 
                 // Add active class to clicked tab and corresponding content
