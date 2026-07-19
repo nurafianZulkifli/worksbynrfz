@@ -33,9 +33,9 @@ fetch(versionJsonUrl)
     console.warn('[AppVersion] Could not load versions from ' + versionJsonUrl, error);
     // Fallback to defaults
     window.APP_VERSIONS = {
-      buszy: '4.5.x',
-      railbuddy: '4.5.x',
-      finTrack: '0.1.x',
+      buszy: '5.0.x',
+      railbuddy: '5.0.x',
+      finTrack: '2.0.x',
     };
     window.dispatchEvent(new CustomEvent('versionsLoaded', { detail: window.APP_VERSIONS }));
   });
