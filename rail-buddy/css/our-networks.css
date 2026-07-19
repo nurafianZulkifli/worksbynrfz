@@ -59,7 +59,7 @@
 .single-post-area {
     position: relative;
     z-index: 1;
-    margin-bottom: 10px;
+    margin-bottom: 25px;
     transition-duration: 500ms;
     border-radius: 20px;
 }
