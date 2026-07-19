@@ -73,10 +73,44 @@ function updateAlertsIndicatorDots() {
     }
 }
 
+// Initialize on page load
 document.addEventListener('DOMContentLoaded', function () {
     updateAlertsIndicatorDots();
+    startPeriodicAlertsRefresh();
 });
 
+// Also initialize if page is already loaded (for inline scripts)
 if (document.readyState !== 'loading') {
     updateAlertsIndicatorDots();
+    startPeriodicAlertsRefresh();
 }
+
+// ── Periodic Refresh with Page Visibility Optimization ──
+let alertsRefreshIntervalId = null;
+const ALERTS_REFRESH_INTERVAL = 5 * 60 * 1000; // Refresh every 5 minutes
+
+function startPeriodicAlertsRefresh() {
+    // Clear any existing interval
+    if (alertsRefreshIntervalId !== null) clearInterval(alertsRefreshIntervalId);
+    
+    // Set up periodic refresh every 5 minutes
+    alertsRefreshIntervalId = setInterval(() => {
+        // Skip refresh if page is hidden (battery optimization)
+        if (document.hidden) return;
+        updateAlertsIndicatorDots();
+    }, ALERTS_REFRESH_INTERVAL);
+}
+
+// Pause/resume refresh based on page visibility
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+        // Page is hidden — can stop checking
+        if (alertsRefreshIntervalId !== null) {
+            clearInterval(alertsRefreshIntervalId);
+            alertsRefreshIntervalId = null;
+        }
+    } else {
+        // Page is visible — restart refresh interval
+        startPeriodicAlertsRefresh();
+    }
+});
