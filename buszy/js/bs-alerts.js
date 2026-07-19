@@ -14,11 +14,9 @@ function linkify(text) {
 }
 
 // Cache constants (moved to global scope for periodic refresh)
-const ALERTS_CACHE_KEY = 'buszy_alerts_cache';
+// Note: ALERTS_CACHE_KEY, ALERTS_CACHE_TTL, ALERTS_REFRESH_INTERVAL, and alertsRefreshIntervalId
+// are declared in alerts-indicator.js to avoid duplicate declarations
 const ALERTS_API_DATA_KEY = 'buszy_alerts_api_data';
-const ALERTS_CACHE_TTL = 30 * 60 * 1000; // 30 minutes
-const ALERTS_REFRESH_INTERVAL = 5 * 60 * 1000; // Refresh every 5 minutes
-let alertsRefreshIntervalId = null;
 let alertsFetchInProgress = false; // Debounce flag
 
 function fetchAndUpdateAlerts() {
