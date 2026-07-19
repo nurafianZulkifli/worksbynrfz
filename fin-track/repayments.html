@@ -156,6 +156,9 @@
                             onclick="markFullyRepaid()">
                             <i class="fa-regular fa-check-double"></i>&nbsp;Mark Fully Repaid
                         </button>
+                        <button class="reset-month-btn" style="border-color:#667eea; color:#667eea;" onclick="openShareRepaymentModal(activeLoan())">
+                            <i class="fa-regular fa-share"></i>&nbsp;Share
+                        </button>
                     </div>
                 </div>
 
@@ -330,13 +333,57 @@
         </div>
     </div>
 
+    <!-- Share Modal -->
+    <div class="modal fade" id="shareRepaymentModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
+        data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content ft-modal-content">
+                <div class="modal-body">
+                    <div class="sheet-title">
+                        <i class="fa-regular fa-share"></i>&nbsp;Share Loan Details
+                    </div>
+                    
+                    <div style="margin-top: 16px;">
+                        <div style="font-size: 0.85rem; font-weight: 600; color: #6b7280; margin-bottom: 8px;">Share Link</div>
+                        <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+                            <input type="text" id="shareRepaymentUrl" readonly style="flex: 1; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 0.85rem; background: #f9fafb; color: #374151; word-break: break-all;" />
+                            <button class="sht-btn sht-btn-primary" style="padding: 10px 16px; flex-shrink: 0;" onclick="copyToClipboard('shareRepaymentUrl', 'copyUrlBtn')" id="copyUrlBtn">
+                                <i class="fa-regular fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 16px;">
+                        <div style="font-size: 0.85rem; font-weight: 600; color: #6b7280; margin-bottom: 8px;">Copy Details</div>
+                        <textarea id="shareRepaymentText" readonly style="width: 100%; height: 120px; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 0.85rem; background: #f9fafb; color: #374151; font-family: monospace; resize: none;"></textarea>
+                        <button class="sht-btn sht-btn-secondary" style="width: 100%; margin-top: 8px;" onclick="copyToClipboard('shareRepaymentText', 'copyTextBtn')" id="copyTextBtn">
+                            <i class="fa-regular fa-copy"></i>&nbsp;Copy to Clipboard
+                        </button>
+                    </div>
+
+                    <div class="sheet-actions">
+                        <button class="sht-btn sht-btn-ghost" onclick="closeShareRepaymentModal()">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="js/ft-subp.js"></script>
     <script src="js/mob-navtabs.js"></script>
     <script src="js/mob-navtabs-tooltip.js"></script>
     <script src="js/haptic.js"></script>
     <script src="../js/bootstrap.min.js"></script>
 
+    <script src="js/share.js"></script>
     <script src="js/repayments.js"></script>
+
+    <script>
+        function closeShareRepaymentModal() {
+            const modal = bootstrap.Modal.getInstance(document.getElementById('shareRepaymentModal'));
+            if (modal) modal.hide();
+        }
+    </script>
 
 </body>
 </html>

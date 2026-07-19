@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover, user-scalable=no">
+    <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0f1419" media="(prefers-color-scheme: dark)">
+    <title>Shared Details | FinTrack</title>
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="FinTrack">
+
+    <script src="https://kit.fontawesome.com/965e82ac01.js" crossorigin="anonymous"></script>
+
+    <link rel="icon" href="./assets/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="./assets/icon-512.png">
+
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="css/finTrack.css">
+    <link rel="stylesheet" href="../css/pwa-styles.css">
+    <link rel="stylesheet" href="../css/style-breakpoints.css">
+    <link rel="stylesheet" href="../css/dark-mode.css">
+    <link rel="stylesheet" href="../css/ios-safari.css">
+
+    <link rel="apple-touch-startup-image" href="../img/bg-img/hero-bg-dark.png">
+    <link rel="manifest" href="./manifest.json">
+
+    <style>
+        .share-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .share-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .share-icon {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            color: #42c07e;
+        }
+
+        .share-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #1e1e2e;
+        }
+
+        body.dark-mode .share-title {
+            color: #e0e0f0;
+        }
+
+        .share-description {
+            font-size: 0.95rem;
+            color: #6b7280;
+            margin-bottom: 24px;
+        }
+
+        body.dark-mode .share-description {
+            color: #9ca3af;
+        }
+
+        .share-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(43, 43, 43, 0.08);
+        }
+
+        body.dark-mode .share-card {
+            background: #1c1f2b;
+            border-color: rgba(255, 255, 255, 0.06);
+        }
+
+        .share-card-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #9ca3af;
+            margin-bottom: 8px;
+        }
+
+        .share-card-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1e1e2e;
+            word-break: break-all;
+        }
+
+        body.dark-mode .share-card-value {
+            color: #e0e0f0;
+        }
+
+        .share-items-list {
+            margin-top: 16px;
+        }
+
+        .share-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(43, 43, 43, 0.06);
+            font-size: 0.95rem;
+        }
+
+        .share-item:last-child {
+            border-bottom: none;
+        }
+
+        body.dark-mode .share-item {
+            border-bottom-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .share-item-name {
+            color: #374151;
+            font-weight: 500;
+        }
+
+        body.dark-mode .share-item-name {
+            color: #c9cade;
+        }
+
+        .share-item-amount {
+            color: #1e1e2e;
+            font-weight: 700;
+        }
+
+        body.dark-mode .share-item-amount {
+            color: #e0e0f0;
+        }
+
+        .share-total {
+            background: linear-gradient(135deg, #42c07e 0%, #239690 100%);
+            color: #fff;
+            padding: 16px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .share-total-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            opacity: 0.85;
+        }
+
+        .share-total-amount {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-top: 6px;
+        }
+
+        .share-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+
+        .share-btn {
+            flex: 1;
+            min-width: 140px;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .share-btn-primary {
+            background: linear-gradient(135deg, #42c07e 0%, #239690 100%);
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(35, 150, 144, 0.3);
+        }
+
+        .share-btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(35, 150, 144, 0.4);
+        }
+
+        .share-btn-secondary {
+            background: #f3f4f6;
+            color: #1e1e2e;
+            border: 1px solid rgba(43, 43, 43, 0.1);
+        }
+
+        body.dark-mode .share-btn-secondary {
+            background: #252840;
+            color: #e0e0f0;
+            border-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .share-btn-secondary:hover {
+            background: #e5e7eb;
+        }
+
+        body.dark-mode .share-btn-secondary:hover {
+            background: #2a2f42;
+        }
+
+        .share-error {
+            background: #fee2e2;
+            border: 1px solid #fca5a5;
+            color: #dc2626;
+            padding: 16px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        body.dark-mode .share-error {
+            background: rgba(220, 38, 38, 0.1);
+            border-color: rgba(220, 38, 38, 0.3);
+            color: #f87171;
+        }
+
+        .people-list {
+            display: grid;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .person-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 12px;
+            background: rgba(66, 192, 126, 0.08);
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+
+        .person-name {
+            font-weight: 600;
+            color: #374151;
+        }
+
+        body.dark-mode .person-name {
+            color: #c9cade;
+        }
+
+        .person-share {
+            font-weight: 700;
+            color: #16a34a;
+        }
+
+        body.dark-mode .person-share {
+            color: #4ade80;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #9ca3af;
+        }
+
+        .empty-state i {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+            display: block;
+            opacity: 0.4;
+        }
+    </style>
+
+</head>
+
+<body>
+    <!-- Apply dark mode before render to avoid flash -->
+    <script>
+        (function () {
+            var pref = localStorage.getItem('theme-preference') || 'system';
+            var isDark = pref === 'dark' || (pref === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            if (isDark) document.body.classList.add('dark-mode');
+        })();
+    </script>
+
+    <!-- Desktop Navbar -->
+    <nav class="navbar-container">
+        <div class="navbar">
+            <a href="index.html">
+                <img src="assets/logo.png" alt="logo" class="logo" onerror="this.style.display='none'">
+            </a>
+            <ul class="navbar-nav" id="navbarNav">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">
+                        <i class="fa-regular fa-money-bills-simple"></i>
+                        <span>Transactions</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="repayments.html" class="nav-link">
+                        <i class="fa-regular fa-money-bill-transfer"></i>
+                        <span>Repayments</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="menu.html" class="nav-link">
+                        <i class="fa-regular fa-bars"></i>
+                        <span>Menu</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <section class="ft-main" id="ft-main">
+        <div class="share-container">
+            <div id="shareContent"></div>
+        </div>
+    </section>
+
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="js/share.js"></script>
+    <script src="js/repayments.js"></script>
+    <script src="js/group-split.js"></script>
+
+    <script>
+        // Parse and display shared data
+        function initShareView() {
+            const params = new URLSearchParams(window.location.search);
+            const encodedData = params.get('data');
+
+            if (!encodedData) {
+                showError('No data to display');
+                return;
+            }
+
+            try {
+                const data = decodeShareData(decodeURIComponent(encodedData));
+                if (!data) {
+                    showError('Invalid share data');
+                    return;
+                }
+
+                if (data.type === 'repayment') {
+                    displayRepaymentShare(data);
+                } else if (data.type === 'group-split') {
+                    displayGroupSplitShare(data);
+                } else {
+                    showError('Unknown data type');
+                }
+            } catch (e) {
+                console.error('Share view error:', e);
+                showError('Failed to load shared data');
+            }
+        }
+
+        function displayRepaymentShare(data) {
+            const lent = parseFloat(data.amount) || 0;
+            const repaid = (data.repayments || []).reduce((s, r) => s + (parseFloat(r.amount) || 0), 0);
+            const outstanding = Math.max(0, lent - repaid);
+            const pct = lent > 0 ? Math.min((repaid / lent) * 100, 100) : 0;
+
+            let html = `
+                <div class="share-header">
+                    <div class="share-icon"><i class="fa-regular fa-hand-holding-dollar"></i></div>
+                    <div class="share-title">${escapeHtml(data.name)}</div>
+                    <div class="share-description">Loan Summary</div>
+                </div>
+
+                <div class="share-card">
+                    <div class="share-card-label">Loan Amount</div>
+                    <div class="share-card-value">SGD ${lent.toFixed(2)}</div>
+                </div>
+
+                <div class="share-card">
+                    <div class="share-card-label">Loan Date</div>
+                    <div class="share-card-value">${data.date}</div>
+                </div>
+            `;
+
+            if (data.note) {
+                html += `
+                    <div class="share-card">
+                        <div class="share-card-label">Note</div>
+                        <div class="share-card-value">${escapeHtml(data.note)}</div>
+                    </div>
+                `;
+            }
+
+            html += `
+                <div class="share-card">
+                    <div class="share-card-label">Repayment Status</div>
+                    <div class="share-items-list">
+                        <div class="share-item">
+                            <span class="share-item-name">Repaid</span>
+                            <span class="share-item-amount">SGD ${repaid.toFixed(2)}</span>
+                        </div>
+                        <div class="share-item">
+                            <span class="share-item-name">Outstanding</span>
+                            <span class="share-item-amount" style="color: ${outstanding > 0 ? '#dc2626' : '#16a34a'}">
+                                SGD ${outstanding.toFixed(2)}
+                            </span>
+                        </div>
+                        <div class="share-item">
+                            <span class="share-item-name">Progress</span>
+                            <span class="share-item-amount">${pct.toFixed(0)}%</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            if ((data.repayments || []).length > 0) {
+                html += `
+                    <div class="share-card">
+                        <div class="share-card-label">Repayment History</div>
+                        <div class="share-items-list">
+                `;
+                data.repayments.slice().reverse().forEach(r => {
+                    html += `
+                        <div class="share-item">
+                            <span class="share-item-name">${r.date}</span>
+                            <span class="share-item-amount">SGD ${parseFloat(r.amount).toFixed(2)}</span>
+                        </div>
+                    `;
+                    if (r.note) {
+                        html += `<div style="font-size: 0.85rem; color: #6b7280; padding: 0 0 8px 0; margin-top: -4px;">${escapeHtml(r.note)}</div>`;
+                    }
+                });
+                html += `</div></div>`;
+            }
+
+            html += `
+                <div class="share-actions">
+                    <button class="share-btn share-btn-primary" onclick="shareToOthers()">
+                        <i class="fa-regular fa-share"></i> Share
+                    </button>
+                    <button class="share-btn share-btn-secondary" onclick="goToRepayments()">
+                        <i class="fa-regular fa-arrow-right"></i> Open App
+                    </button>
+                </div>
+            `;
+
+            document.getElementById('shareContent').innerHTML = html;
+        }
+
+        function displayGroupSplitShare(data) {
+            const people = data.people || [];
+            const items = data.items || [];
+
+            let grandTotal = 0;
+            const personTotals = {};
+            people.forEach((p, idx) => {
+                personTotals[idx] = 0;
+            });
+
+            items.forEach(item => {
+                const itemTotal = (parseFloat(item.price) || 0) * (parseInt(item.qty) || 1);
+                grandTotal += itemTotal;
+                const includedCount = item.included.filter(v => v !== false).length;
+                if (includedCount > 0) {
+                    item.included.forEach((included, idx) => {
+                        if (included !== false) {
+                            personTotals[idx] += itemTotal / includedCount;
+                        }
+                    });
+                }
+            });
+
+            let html = `
+                <div class="share-header">
+                    <div class="share-icon"><i class="fa-regular fa-users"></i></div>
+                    <div class="share-title">${escapeHtml(data.name)}</div>
+                    <div class="share-description">Group Split Summary</div>
+                </div>
+
+                <div class="share-total">
+                    <div class="share-total-label">Total Bill</div>
+                    <div class="share-total-amount">SGD ${grandTotal.toFixed(2)}</div>
+                </div>
+            `;
+
+            if (people.length > 0) {
+                html += `
+                    <div class="share-card">
+                        <div class="share-card-label">Who Pays What</div>
+                        <div class="people-list">
+                `;
+                people.forEach((person, idx) => {
+                    const share = personTotals[idx] || 0;
+                    html += `
+                        <div class="person-row">
+                            <span class="person-name">${escapeHtml(person)}</span>
+                            <span class="person-share">SGD ${share.toFixed(2)}</span>
+                        </div>
+                    `;
+                });
+                html += `</div></div>`;
+            }
+
+            if (items.length > 0) {
+                html += `
+                    <div class="share-card">
+                        <div class="share-card-label">Items (${items.length})</div>
+                        <div class="share-items-list">
+                `;
+                items.forEach(item => {
+                    const itemTotal = (parseFloat(item.price) || 0) * (parseInt(item.qty) || 1);
+                    html += `
+                        <div class="share-item">
+                            <span class="share-item-name">${escapeHtml(item.name)}</span>
+                            <span class="share-item-amount">SGD ${itemTotal.toFixed(2)}</span>
+                        </div>
+                    `;
+                });
+                html += `</div></div>`;
+            }
+
+            html += `
+                <div class="share-actions">
+                    <button class="share-btn share-btn-primary" onclick="shareToOthers()">
+                        <i class="fa-regular fa-share"></i> Share
+                    </button>
+                    <button class="share-btn share-btn-secondary" onclick="goToGroupSplit()">
+                        <i class="fa-regular fa-arrow-right"></i> Open App
+                    </button>
+                </div>
+            `;
+
+            document.getElementById('shareContent').innerHTML = html;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function showError(message) {
+            document.getElementById('shareContent').innerHTML = `
+                <div class="empty-state">
+                    <i class="fa-regular fa-exclamation-triangle"></i>
+                    <div style="margin-bottom: 20px;">${message}</div>
+                    <button class="share-btn share-btn-primary" onclick="window.history.back()" style="margin: 0 auto;">
+                        <i class="fa-regular fa-arrow-left"></i> Go Back
+                    </button>
+                </div>
+            `;
+        }
+
+        function shareToOthers() {
+            const url = window.location.href;
+            if (navigator.share) {
+                navigator.share({
+                    title: 'FinTrack Shared Details',
+                    text: 'Check out these shared details',
+                    url: url
+                });
+            } else {
+                navigator.clipboard.writeText(url).then(() => {
+                    alert('Link copied to clipboard!');
+                });
+            }
+        }
+
+        function goToRepayments() {
+            window.location.href = 'repayments.html';
+        }
+
+        function goToGroupSplit() {
+            window.location.href = 'group-split.html';
+        }
+
+        // Initialize on load
+        initShareView();
+    </script>
+
+</body>
+</html>
