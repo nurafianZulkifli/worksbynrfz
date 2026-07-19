@@ -33,6 +33,7 @@ initializeDefaultPreferences();
 let destinationCodesData = null;
 
 let busServiceTerminalData = null;
+let busServiceDirectionStopsCache = null;
 
 async function loadBusServiceTerminals() {
     if (busServiceTerminalData !== null) {
@@ -50,25 +51,62 @@ async function loadBusServiceTerminals() {
 
         const services = await response.json();
         const terminalMap = {};
+        const directionStopsMap = {};
 
         if (Array.isArray(services)) {
             services.forEach((service) => {
                 const serviceNo = service.n || service.ServiceNo;
-                const terminalName = service.te || service.direction_routes?.[1]?.te || service.direction_routes?.['1']?.te;
-                if (serviceNo && terminalName) {
-                    terminalMap[String(serviceNo)] = terminalName;
+                if (serviceNo && service.direction_routes) {
+                    // Store all directions for this service
+                    const directions = {};
+                    const directionStops = {};
+                    Object.keys(service.direction_routes).forEach(dir => {
+                        directions[String(dir)] = service.direction_routes[dir].te;
+                        // Also cache the stops for each direction
+                        directionStops[String(dir)] = service.direction_routes[dir].st || [];
+                    });
+                    terminalMap[String(serviceNo)] = directions;
+                    directionStopsMap[String(serviceNo)] = directionStops;
+                } else if (serviceNo) {
+                    // Fallback to general terminal if no direction_routes
+                    const terminalName = service.te;
+                    if (terminalName) {
+                        terminalMap[String(serviceNo)] = { '1': terminalName, '2': terminalName };
+                    }
                 }
             });
         }
 
         busServiceTerminalData = terminalMap;
+        busServiceDirectionStopsCache = directionStopsMap;
         console.log('Successfully loaded bus service terminals:', Object.keys(busServiceTerminalData).length, 'services');
         return busServiceTerminalData;
     } catch (error) {
         console.warn('Error loading bus service terminals:', error);
         busServiceTerminalData = {};
+        busServiceDirectionStopsCache = {};
         return busServiceTerminalData;
     }
+}
+
+// Determine which direction serves a specific bus stop for a service
+async function determineServiceDirection(serviceNo, busStopCode) {
+    await loadBusServiceTerminals(); // Ensure data is loaded
+    
+    if (!busServiceDirectionStopsCache || !busServiceDirectionStopsCache[String(serviceNo)]) {
+        return '1'; // Default to direction 1 if not found
+    }
+    
+    const directionStops = busServiceDirectionStopsCache[String(serviceNo)];
+    
+    // Check which direction contains this stop
+    for (const [dir, stops] of Object.entries(directionStops)) {
+        if (Array.isArray(stops) && stops.includes(busStopCode)) {
+            return dir;
+        }
+    }
+    
+    return '1'; // Default to direction 1 if stop not found in any direction
 }
 
 async function loadDestinationCodes() {
@@ -733,10 +771,21 @@ async function fetchBusArrivals() {
         }
 
         // Function to get destination name
-        function getDestinationName(serviceNo, destinationCode) {
-            // Prefer the service terminal from bus-service-data.json
+        function getDestinationName(serviceNo, destinationCode, direction = '1') {
+            // First try to find direction-specific terminal from bus-service-data.json
             if (serviceNo && serviceTerminalMap[String(serviceNo)]) {
-                return serviceTerminalMap[String(serviceNo)];
+                const terminalsByDirection = serviceTerminalMap[String(serviceNo)];
+                if (typeof terminalsByDirection === 'object' && terminalsByDirection[String(direction)]) {
+                    return terminalsByDirection[String(direction)];
+                }
+                // Fallback to direction 1 if specific direction not found
+                if (typeof terminalsByDirection === 'object' && terminalsByDirection['1']) {
+                    return terminalsByDirection['1'];
+                }
+                // Old format: simple string (backward compatibility)
+                if (typeof terminalsByDirection === 'string') {
+                    return terminalsByDirection;
+                }
             }
 
             // First try to find in bus stops map
@@ -874,6 +923,12 @@ async function fetchBusArrivals() {
         const tempContainer = document.createElement('div');
         const busStopCode = document.getElementById('bus-stop-search').value.trim();
 
+        // Pre-determine direction for each service based on which direction serves this stop
+        const serviceDirections = {};
+        for (const service of data.Services) {
+            serviceDirections[service.ServiceNo] = await determineServiceDirection(service.ServiceNo, busStopCode);
+        }
+
         data.Services.forEach((service) => {
             const card = document.createElement('div');
             card.classList.add('col-12', 'col-md-4', 'col-xl-3', 'card-bt'); // Add col-sm-6 for 2 cards per row on small screens
@@ -882,6 +937,9 @@ async function fetchBusArrivals() {
             // Safely check if NextBus exists and has required properties
             const hasNextBus = service.NextBus && typeof service.NextBus === 'object' && Object.keys(service.NextBus).length > 0;
             const hasNextBus2 = service.NextBus2 && typeof service.NextBus2 === 'object' && Object.keys(service.NextBus2).length > 0;
+            
+            // Use pre-determined direction
+            const serviceDirection = serviceDirections[service.ServiceNo] || '1';
 
             card.innerHTML = `
                 <div class="card">
@@ -891,7 +949,7 @@ async function fetchBusArrivals() {
                                 <span class="service-no">${service.ServiceNo}</span>
                                 <i class="fa-regular fa-chevron-down" style="transition: transform 0.3s ease; margin-left: 0.5rem;"></i>
                             </button>
-                            ${hasNextBus && service.NextBus.DestinationCode ? `<div class="destination-code"><i class="fa-kit fa-lta-to-right"></i>&nbsp;${getDestinationName(service.ServiceNo, service.NextBus.DestinationCode)}</div>` : ''}
+                            ${hasNextBus && service.NextBus.DestinationCode ? `<div class="destination-code"><i class="fa-kit fa-lta-to-right"></i>&nbsp;${getDestinationName(service.ServiceNo, service.NextBus.DestinationCode, serviceDirection)}</div>` : ''}
                         </div>
                         <div style="display: flex; flex-direction: row; gap: 0.5rem; align-items: center; flex-shrink: 0;">
                             ${service.Operator ? `<img src="assets/${service.Operator.toLowerCase()}.png" alt="${service.Operator}" class="img-fluid" style="width: 50px; margin-left: auto;">` : ''}
