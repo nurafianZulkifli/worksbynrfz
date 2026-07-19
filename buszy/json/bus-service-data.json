@@ -7862,6 +7862,21 @@
       }
     }
   },
+    {
+    "n": "461",
+    "t": "Limited Stop",
+    "op": "TTS",
+    "directions": [1],
+    "ts": "Bet Blks 405/406",
+    "te": "Bef Khatib Stn",
+    "direction_routes": {
+      "1": {
+        "ts": "Bet Blks 405/406",
+        "te": "Bef Khatib Stn",
+        "st":["59591","59811","59779","59041"]
+      }
+    }
+  },
   {
     "n": "506",
     "t": "Express",
