@@ -476,7 +476,7 @@
 
   .pinned {
       /* margin-top: 2em; */
-      margin-top: -14rem;
+      margin-top: calc(-30vh);
       margin-bottom: 2em;
       position: relative;
       z-index: 5;
@@ -1124,7 +1124,7 @@
       }
 
       .pinned {
-          margin-top: -11rem;
+          margin-top: calc(-22vh);
           margin-bottom: 2em;
           position: relative;
           z-index: 10;
@@ -1222,7 +1222,7 @@
 
   @media (max-width: 344px) {
       .pinned {
-          margin-top: -5rem;
+          margin-top: calc(-22vh);
           margin-bottom: 2em;
           position: relative;
           z-index: 10;
