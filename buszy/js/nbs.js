@@ -81,23 +81,30 @@ function formatArrivalTimeStyled(isoString) {
 function renderArrivalSummary(arrivals) {
     if (!arrivals?.length) {
         return `
-            <div class="busNo-card d-flex justify-content-between">
-                <span class="arrival-svc-no">--</span>
-                <span class="bus-time"></span>
-                <span style="display: flex; align-items: center; gap: 0.3rem;">${getLoadIcon('sea', 'SD')}</span>
+            <div style="flex: 1; display: flex; flex-direction: column; gap: 0.3rem;">
+                <div class="busNo-card d-flex justify-content-between">
+                    <span class="arrival-svc-no">--</span>
+                    <span class="bus-time"></span>
+                    <span style="display: flex; align-items: center; gap: 0.3rem;">${getLoadIcon('sea', 'SD')}</span>
+                </div>
             </div>
-            <div class="busNo-card d-flex justify-content-between">
-                <span class="arrival-svc-no">--</span>
-                <span class="bus-time"></span>
-                <span style="display: flex; align-items: center; gap: 0.3rem;">${getLoadIcon('sea', 'SD')}</span>
+            <div style="flex: 1; display: flex; flex-direction: column; gap: 0.3rem;">
+                <div class="busNo-card d-flex justify-content-between">
+                    <span class="arrival-svc-no">--</span>
+                    <span class="bus-time"></span>
+                    <span style="display: flex; align-items: center; gap: 0.3rem;">${getLoadIcon('sea', 'SD')}</span>
+                </div>
             </div>
         `;
     }
     return arrivals.map(a => `
-        <div class="busNo-card d-flex justify-content-between">
-            <span class="arrival-svc-no">${a.serviceNo}</span>
-            <span class="bus-time">${formatArrivalTimeStyled(a.eta)}</span>
-            <span style="display: flex; align-items: center; gap: 0.3rem;">${getLoadIcon(a.load, a.type)}</span>
+        <div style="flex: 1; display: flex; flex-direction: column; gap: 0.3rem;">
+            <div class="busNo-card d-flex justify-content-between">
+                <span class="arrival-svc-no">${a.serviceNo}</span>
+                <span class="bus-time" data-arrival="${a.eta || ''}">${formatArrivalTimeStyled(a.eta)}</span>
+                <span style="display: flex; align-items: center; gap: 0.3rem;">${getLoadIcon(a.load, a.type)}</span>
+            </div>
+            ${a.eta ? `<div class="countdown-bar-container" data-arrival="${a.eta}"><div class="countdown-bar"></div></div>` : ''}
         </div>
     `).join('');
 }
@@ -676,6 +683,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Setup dynamic refresh interval for arrival times in nearby bus stops
     let refreshIntervalId = null;
+    let countdownBarIntervalId = null;
 
     function startRefreshInterval() {
         // Clear existing interval if any
@@ -701,11 +709,28 @@ document.addEventListener('DOMContentLoaded', () => {
                             if (collapseSection.classList.contains('show')) {
                                 collapseSection.style.maxHeight = collapseSection.scrollHeight + 'px';
                             }
+                            // Update countdown bars after rendering
+                            if (window.SharedArrivals && typeof window.SharedArrivals.updateCountdownBars === 'function') {
+                                window.SharedArrivals.updateCountdownBars();
+                            }
                         });
                     }
                 }
             });
         }, refreshMs);
+    }
+
+    function startCountdownBarInterval() {
+        // Clear existing interval if any
+        if (countdownBarIntervalId !== null) {
+            clearInterval(countdownBarIntervalId);
+        }
+        // Update countdown bars every 500ms for smooth animation
+        countdownBarIntervalId = setInterval(() => {
+            if (window.SharedArrivals && typeof window.SharedArrivals.updateCountdownBars === 'function') {
+                window.SharedArrivals.updateCountdownBars();
+            }
+        }, 500);
     }
 
     // Re-fetch when the tab becomes visible again after being backgrounded
@@ -727,8 +752,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Start the refresh interval
+    // Start the refresh interval and countdown bar interval
     startRefreshInterval();
+    startCountdownBarInterval();
 
     // Select the "Search Bus Stop" button - look for links to index or ./
     const searchBusStopButton = document.querySelector('a[href="./"], a[href="index.html"]'); // Select the "Search Bus Stop" button

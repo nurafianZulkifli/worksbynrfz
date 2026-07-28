@@ -99,15 +99,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     function renderArrivalSummary(arrivals, hiddenServices = []) {
         if (!arrivals?.length) {
             return `
-                <div class="busNo-card d-flex justify-content-between">
-                    <span class="arrival-svc-no">--</span>
-                    <span class="bus-time"></span>
-                    <span style="display: flex; align-items: center; gap: 0.3rem;">${getLoadIcon('sea', 'SD')}</span>
+                <div style="flex: 1; display: flex; flex-direction: column; gap: 0.3rem;">
+                    <div class="busNo-card d-flex justify-content-between">
+                        <span class="arrival-svc-no">--</span>
+                        <span class="bus-time"></span>
+                        <span style="display: flex; align-items: center; gap: 0.3rem;">${getLoadIcon('sea', 'SD')}</span>
+                    </div>
                 </div>
-                <div class="busNo-card d-flex justify-content-between">
-                    <span class="arrival-svc-no">--</span>
-                    <span class="bus-time"></span>
-                    <span style="display: flex; align-items: center; gap: 0.3rem;">${getLoadIcon('sea', 'SD')}</span>
+                <div style="flex: 1; display: flex; flex-direction: column; gap: 0.3rem;">
+                    <div class="busNo-card d-flex justify-content-between">
+                        <span class="arrival-svc-no">--</span>
+                        <span class="bus-time"></span>
+                        <span style="display: flex; align-items: center; gap: 0.3rem;">${getLoadIcon('sea', 'SD')}</span>
+                    </div>
                 </div>
             `;
         }
@@ -115,10 +119,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         const hiddenCount = hiddenServices.filter(s => arrivals.some(a => a.serviceNo === s)).length;
         const rows = visible.length
             ? visible.map(a => `
-                <div class="busNo-card d-flex justify-content-between">
-                    <span class="arrival-svc-no arrival-svc-toggle" data-svc="${a.serviceNo}" title="Tap to hide">${a.serviceNo}</span>
-                    <span class="bus-time">${formatArrivalTimeStyled(a.eta)}</span>
-                    <span style="display: flex; align-items: center; gap: 0.3rem;">${getLoadIcon(a.load, a.type)}</span>
+                <div style="flex: 1; display: flex; flex-direction: column; gap: 0.3rem;">
+                    <div class="busNo-card d-flex justify-content-between">
+                        <span class="arrival-svc-no arrival-svc-toggle" data-svc="${a.serviceNo}" title="Tap to hide">${a.serviceNo}</span>
+                        <span class="bus-time" data-arrival="${a.eta || ''}">${formatArrivalTimeStyled(a.eta)}</span>
+                        <span style="display: flex; align-items: center; gap: 0.3rem;">${getLoadIcon(a.load, a.type)}</span>
+                    </div>
+                    ${a.eta ? `<div class="countdown-bar-container" data-arrival="${a.eta}"><div class="countdown-bar"></div></div>` : ''}
                 </div>
             `).join('')
             : `<div class="busNo-card"><span class="arrival-all-hidden">All hidden</span></div>`;
@@ -1075,6 +1082,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Setup dynamic refresh interval for arrival times
     let refreshIntervalId = null;
+    let countdownBarIntervalId = null;
 
     function startRefreshInterval() {
         // Clear existing interval if any
@@ -1098,6 +1106,19 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             });
         }, refreshMs);
+    }
+
+    function startCountdownBarInterval() {
+        // Clear existing interval if any
+        if (countdownBarIntervalId !== null) {
+            clearInterval(countdownBarIntervalId);
+        }
+        // Update countdown bars every 500ms for smooth animation
+        countdownBarIntervalId = setInterval(() => {
+            if (window.SharedArrivals && typeof window.SharedArrivals.updateCountdownBars === 'function') {
+                window.SharedArrivals.updateCountdownBars();
+            }
+        }, 500);
     }
 
     // Re-fetch when the tab becomes visible again after being backgrounded
@@ -1124,5 +1145,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         items = [];
         setupDragListeners();
         startRefreshInterval();
+        startCountdownBarInterval();
     });
 });
