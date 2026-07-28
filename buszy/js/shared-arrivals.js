@@ -147,47 +147,6 @@
         } catch (e) { return {}; }
     }
 
-    function updateCountdownBars() {
-        const now = new Date();
-        const countdownBars = document.querySelectorAll('.countdown-bar-container');
-        
-        countdownBars.forEach(container => {
-            const arrivalTimeStr = container.getAttribute('data-arrival');
-            if (!arrivalTimeStr) {
-                // If no arrival time, stop blinking
-                const barElement = container.querySelector('.countdown-bar');
-                if (barElement) barElement.classList.remove('arrived');
-                return;
-            }
-            
-            const arrivalTime = new Date(arrivalTimeStr);
-            const timeDifference = arrivalTime - now; // milliseconds until arrival
-            const barElement = container.querySelector('.countdown-bar');
-            
-            // If already arrived, set to 100% and add blinking animation
-            if (timeDifference <= 0) {
-                barElement.style.width = '100%';
-                barElement.classList.add('arrived');
-                return;
-            }
-            
-            // Remove blinking animation if bus hasn't arrived yet or has passed
-            barElement.classList.remove('arrived');
-            
-            // Define a window for countdown display
-            // Use 20 minutes as the "full" countdown duration
-            const countdownWindow = 20 * 60 * 1000; // 20 minutes in milliseconds
-            
-            // Calculate percentage: how much time has passed since we were 20 minutes away
-            const timePassed = countdownWindow - timeDifference;
-            
-            // Percentage: 0% when timeDifference >= countdownWindow, 100% when timeDifference <= 0
-            let percentage = Math.max(0, Math.min(100, (timePassed / countdownWindow) * 100));
-            
-            barElement.style.width = percentage + '%';
-        });
-    }
-
     window.SharedArrivals = {
         getBasePath,
         fetchArrivals,
@@ -196,7 +155,6 @@
         formatArrivalTimeOrArr,
         getBusStops,
         loadBusServiceTerminals,
-        getSynchronizedNow,
-        updateCountdownBars
+        getSynchronizedNow
     };
 })(window);
