@@ -402,7 +402,7 @@
 
     @media (max-width: 768px) and (hover: none) and (pointer: coarse) {
       .pinned {
-        margin-top: calc(-25vh);
+        margin-top: -30rem;
         margin-bottom: 2em;
         position: relative;
         z-index: 10;
@@ -487,7 +487,7 @@
     }
 
     .pinned {
-      margin-top: calc(-20vh) !important;
+      margin-top: -7rem !important;
     }
 
     .tsu {
