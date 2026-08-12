@@ -303,86 +303,212 @@ app.get('/train-service-alerts', async (req, res) => {
   }
 });
 
+// ── Train Schedules Cache ───────────────────────────────────────────
+let cachedTrainData = null;
+let trainDataCacheTime = 0;
+const TRAIN_DATA_TTL = 30 * 1000; // 30 seconds (matches LTA cache-control)
+
+// Helper: Parse GTFS Realtime protobuf and extract trip updates
+function parseGTFSRealtimeData(protoBuffer) {
+  if (!GtfsRealtimeBindings) {
+    throw new Error('gtfs-realtime-bindings not available');
+  }
+
+  try {
+    const feed = GtfsRealtimeBindings.transit_realtime.FeedMessage.decode(protoBuffer);
+    
+    console.log(`[GTFS] Decoded feed with ${feed.entity?.length || 0} entities`);
+    
+    // Extract trip updates
+    const trips = [];
+    const alerts = [];
+    
+    if (feed.entity && Array.isArray(feed.entity)) {
+      feed.entity.forEach((entity, idx) => {
+        try {
+          // Handle trip updates
+          if (entity.trip_update) {
+            const tu = entity.trip_update;
+            const tripData = {
+              tripId: tu.trip?.trip_id || `TRIP_${idx}`,
+              routeId: tu.trip?.route_id || 'N/A',
+              startTime: tu.trip?.start_time || null,
+              startDate: tu.trip?.start_date || null,
+              scheduleRelationship: tu.trip?.schedule_relationship || 0,
+              vehicleId: tu.vehicle?.id || 'N/A',
+              vehicleLabel: tu.vehicle?.label || null,
+              timestamp: tu.timestamp || Date.now() / 1000,
+              delay: tu.delay || 0,
+              stopTimeUpdates: []
+            };
+
+            // Parse stop time updates
+            if (tu.stop_time_update && Array.isArray(tu.stop_time_update)) {
+              tripData.stopTimeUpdates = tu.stop_time_update
+                .filter(stu => stu.stop_id) // Only include valid stops
+                .map(stu => ({
+                  stopSequence: stu.stop_sequence || 0,
+                  stopId: stu.stop_id,
+                  arrival: stu.arrival ? {
+                    time: stu.arrival.time ? parseInt(stu.arrival.time) : null,
+                    delay: stu.arrival.delay || 0,
+                    uncertainty: stu.arrival.uncertainty || null
+                  } : null,
+                  departure: stu.departure ? {
+                    time: stu.departure.time ? parseInt(stu.departure.time) : null,
+                    delay: stu.departure.delay || 0,
+                    uncertainty: stu.departure.uncertainty || null
+                  } : null,
+                  scheduleRelationship: stu.schedule_relationship || 0
+                }));
+            }
+
+            trips.push(tripData);
+          }
+
+          // Handle service alerts
+          if (entity.alert) {
+            const alert = entity.alert;
+            alerts.push({
+              id: entity.id || `ALERT_${idx}`,
+              cause: alert.cause || 0,
+              effect: alert.effect || 0,
+              description: alert.description_text?.translation?.[0]?.text || 'No description',
+              header: alert.header_text?.translation?.[0]?.text || 'Service Alert',
+              activeFrom: alert.active_period?.[0]?.start || null,
+              activeTo: alert.active_period?.[0]?.end || null,
+              informedEntities: (alert.informed_entity || []).map(ie => ({
+                routeId: ie.route_id,
+                stopId: ie.stop_id,
+                agencyId: ie.agency_id
+              }))
+            });
+          }
+        } catch (entityErr) {
+          console.warn(`[GTFS] Error parsing entity ${idx}:`, entityErr.message);
+          // Continue processing other entities
+        }
+      });
+    }
+
+    console.log(`[GTFS] Extracted ${trips.length} trip updates and ${alerts.length} alerts`);
+
+    return {
+      success: true,
+      timestamp: Math.floor(feed.header?.timestamp || Date.now() / 1000),
+      dataVersion: feed.header?.gtfs_realtime_version || '2.0',
+      incrementality: feed.header?.incrementality || 'FULL_DATASET',
+      entityCount: feed.entity?.length || 0,
+      tripUpdates: trips,
+      alerts: alerts
+    };
+  } catch (err) {
+    console.error('[GTFS] Protobuf decode error:', err.message);
+    throw new Error(`Failed to parse GTFS Realtime data: ${err.message}`);
+  }
+}
+
 // Define the /train-schedules route (GTFSRealtimeTrainTrip)
 app.get('/train-schedules', async (req, res) => {
   try {
+    // Check cache first
+    const now = Date.now();
+    if (cachedTrainData && (now - trainDataCacheTime) < TRAIN_DATA_TTL) {
+      console.log('[GTFS] Serving from cache');
+      res.set('Cache-Control', 'public, max-age=30');
+      res.set('X-Cache', 'HIT');
+      return res.json(cachedTrainData);
+    }
+
     // Step 1: Fetch metadata containing S3 link
+    console.log('[GTFS] Fetching metadata from LTA...');
     const metadataResponse = await ltaApi.get('/GTFSRealtimeTrainTripUpdates');
     const metadata = metadataResponse.data;
 
     if (!metadata.value || !Array.isArray(metadata.value) || metadata.value.length === 0) {
-      return res.status(404).json({ error: 'No train data available' });
+      console.warn('[GTFS] No metadata available from LTA');
+      return res.status(404).json({ 
+        error: 'No train data available',
+        timestamp: new Date().toISOString()
+      });
     }
 
     const s3Link = metadata.value[0].link;
     if (!s3Link) {
-      return res.status(404).json({ error: 'No download link available' });
+      console.warn('[GTFS] No S3 link in metadata');
+      return res.status(404).json({ 
+        error: 'No download link available',
+        timestamp: new Date().toISOString()
+      });
     }
 
+    console.log(`[GTFS] S3 link: ${s3Link.substring(0, 60)}...`);
+
     // Step 2: Download protobuf file from S3
+    console.log('[GTFS] Downloading protobuf from S3...');
     const protoResponse = await axios.get(s3Link, {
       responseType: 'arraybuffer',
       timeout: 15000
     });
 
-    // Step 3: Parse protobuf if library is available
+    console.log(`[GTFS] Downloaded ${protoResponse.data.length} bytes`);
+
+    // Step 3: Check if parsing library is available
     if (!GtfsRealtimeBindings) {
-      // Fallback: Return the metadata with base64 encoded data
-      return res.json({
+      console.warn('[GTFS] gtfs-realtime-bindings not available');
+      const fallbackData = {
         timestamp: metadata.value[0].timestamp,
         link: s3Link,
         note: 'Install gtfs-realtime-bindings for full parsing. Run: npm install gtfs-realtime-bindings',
         dataFormat: 'protobuf (binary)',
-        dataSize: protoResponse.data.length
-      });
+        dataSize: protoResponse.data.length,
+        success: false
+      };
+      res.set('Cache-Control', 'public, max-age=30');
+      return res.json(fallbackData);
     }
 
-    const feed = GtfsRealtimeBindings.transit_realtime.FeedMessage.decode(protoResponse.data);
-    
-    // Step 4: Convert protobuf to JSON-like format
-    const trips = [];
-    if (feed.entity) {
-      feed.entity.forEach((entity) => {
-        if (entity.trip_update) {
-          const tripUpdate = entity.trip_update;
-          trips.push({
-            tripId: tripUpdate.trip?.trip_id || 'N/A',
-            routeId: tripUpdate.trip?.route_id || 'N/A',
-            startTime: tripUpdate.trip?.start_time || 'N/A',
-            startDate: tripUpdate.trip?.start_date || 'N/A',
-            scheduleRelationship: tripUpdate.trip?.schedule_relationship || 0,
-            delay: tripUpdate.delay || 0,
-            stopTimeUpdates: (tripUpdate.stop_time_update || []).map(stu => ({
-              stopSequence: stu.stop_sequence,
-              stopId: stu.stop_id,
-              arrival: stu.arrival ? {
-                time: stu.arrival.time,
-                delay: stu.arrival.delay,
-                uncertainty: stu.arrival.uncertainty
-              } : null,
-              departure: stu.departure ? {
-                time: stu.departure.time,
-                delay: stu.departure.delay,
-                uncertainty: stu.departure.uncertainty
-              } : null,
-              scheduleRelationship: stu.schedule_relationship
-            }))
-          });
-        }
-      });
-    }
+    // Step 4: Parse protobuf
+    console.log('[GTFS] Parsing protobuf...');
+    const result = parseGTFSRealtimeData(protoResponse.data);
+
+    // Cache the result
+    cachedTrainData = {
+      ...result,
+      fetchedAt: new Date().toISOString()
+    };
+    trainDataCacheTime = now;
+
+    console.log(`[GTFS] Successfully processed train data: ${result.tripUpdates.length} trips`);
 
     res.set('Cache-Control', 'public, max-age=30');
-    res.json({
-      timestamp: metadata.value[0].timestamp,
-      dataVersion: feed.header?.gtfs_realtime_version || '2.0',
-      incrementality: feed.header?.incrementality || 'FULL_DATASET',
-      entityCount: feed.entity?.length || 0,
-      tripUpdates: trips
-    });
+    res.set('X-Cache', 'MISS');
+    res.json(cachedTrainData);
   } catch (error) {
-    console.error('Error fetching train schedules from LTA:', error.message);
-    res.status(500).json({ error: 'Error connecting to LTA DataMall', details: error.message });
+    console.error('[GTFS] Error fetching train schedules:', error.message);
+    console.error('[GTFS] Stack:', error.stack);
+    
+    // Provide better error messages
+    let statusCode = 500;
+    let errorDetails = error.message;
+    
+    if (error.response?.status === 401) {
+      statusCode = 401;
+      errorDetails = 'LTA API Key is invalid or expired. Please set a valid LTA_API_KEY environment variable.';
+    } else if (error.response?.status === 404) {
+      errorDetails = 'LTA endpoint not found. Check server configuration.';
+    } else if (error.code === 'ECONNREFUSED') {
+      errorDetails = 'Could not connect to LTA DataMall. Check internet connection.';
+    } else if (error.code === 'ETIMEDOUT') {
+      errorDetails = 'Request to LTA DataMall timed out. Try again later.';
+    }
+    
+    res.status(statusCode).json({ 
+      error: statusCode === 401 ? 'Authentication Failed' : 'Error connecting to LTA DataMall',
+      details: errorDetails,
+      timestamp: new Date().toISOString(),
+      success: false
+    });
   }
 });
 

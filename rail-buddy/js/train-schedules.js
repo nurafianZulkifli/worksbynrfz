@@ -16,6 +16,12 @@ document.addEventListener('DOMContentLoaded', function() {
   const refreshBtn = document.getElementById('refreshBtn');
   const resultsCount = document.getElementById('resultsCount');
 
+  // Polling state
+  let pollingInterval = 30000; // 30 seconds default
+  let pollingTimer = null;
+  let isPolling = false;
+  let lastUpdateTime = null;
+
   // Parse train alerts into schedule format
   function parseTrainAlerts(alerts) {
     const schedules = [];
@@ -68,16 +74,30 @@ document.addEventListener('DOMContentLoaded', function() {
       const tripId = trip.tripId || `TRIP_${index}`;
       const routeId = trip.routeId || 'Unknown';
       const delay = trip.delay || 0;
+      const vehicleId = trip.vehicleId || 'N/A';
+      const vehicleLabel = trip.vehicleLabel || null;
+      
+      // Determine status based on delay
+      let status = 1; // On time
+      if (delay !== 0 && delay !== null) {
+        status = Math.abs(delay) > 300 ? 3 : 2; // > 5 min = major delay
+      }
       
       // Process stop time updates
       if (trip.stopTimeUpdates && Array.isArray(trip.stopTimeUpdates)) {
         trip.stopTimeUpdates.forEach((stop, stopIndex) => {
           const arrivalTime = stop.arrival?.time 
-            ? new Date(parseInt(stop.arrival.time) * 1000) 
+            ? new Date(stop.arrival.time * 1000) 
             : null;
           const departureTime = stop.departure?.time 
-            ? new Date(parseInt(stop.departure.time) * 1000) 
+            ? new Date(stop.departure.time * 1000) 
             : null;
+          
+          // Determine delay status per stop
+          const arrivalDelay = stop.arrival?.delay || 0;
+          const departureDelay = stop.departure?.delay || 0;
+          const stopDelay = departureDelay || arrivalDelay || delay;
+          const stopStatus = stopDelay === 0 ? 1 : (Math.abs(stopDelay) > 300 ? 3 : 2);
           
           schedules.push({
             tripId: tripId,
@@ -86,10 +106,13 @@ document.addEventListener('DOMContentLoaded', function() {
             stopId: stop.stopId,
             arrivalTime: arrivalTime,
             departureTime: departureTime,
-            arrivalDelay: stop.arrival?.delay || 0,
-            departureDelay: stop.departure?.delay || 0,
-            status: delay === 0 ? 1 : (Math.abs(delay) > 300 ? 3 : 2),
-            description: `Route ${routeId} - Trip ${tripId} - Stop ${stop.stopSequence}`
+            arrivalDelay: arrivalDelay,
+            departureDelay: departureDelay,
+            status: stopStatus,
+            vehicleId: vehicleId,
+            vehicleLabel: vehicleLabel,
+            description: `Route ${routeId} - Trip ${tripId} - Stop ${stop.stopSequence}`,
+            delayText: stopDelay > 0 ? `+${stopDelay}s` : (stopDelay < 0 ? `${stopDelay}s` : 'On time')
           });
         });
       } else {
@@ -103,8 +126,11 @@ document.addEventListener('DOMContentLoaded', function() {
           departureTime: null,
           arrivalDelay: 0,
           departureDelay: delay,
-          status: delay === 0 ? 1 : (Math.abs(delay) > 300 ? 3 : 2),
-          description: `Route ${routeId} - Trip ${tripId}`
+          status: status,
+          vehicleId: vehicleId,
+          vehicleLabel: vehicleLabel,
+          description: `Route ${routeId} - Trip ${tripId}`,
+          delayText: delay > 0 ? `+${delay}s` : (delay < 0 ? `${delay}s` : 'On time')
         });
       }
     });
@@ -122,16 +148,13 @@ document.addEventListener('DOMContentLoaded', function() {
       // Fetch train GTFS Realtime data (parsed)
       const response = await fetch(`${API_SERVER}/train-schedules`);
       if (!response.ok) {
-        throw new Error('Failed to fetch train schedules');
+        throw new Error(`Failed to fetch train schedules (${response.status})`);
       }
 
       const data = await response.json();
       
-      // Check if we got parsed trip data or just metadata
-      if (data.tripUpdates && Array.isArray(data.tripUpdates)) {
-        // Full GTFS Realtime data is available
-        allSchedules = parseGTFSTrips(data.tripUpdates);
-      } else if (data.note) {
+      // Check if parsing was successful
+      if (data.success === false && data.note) {
         // Library not installed - show info message
         loadingSpinner.innerHTML = `
           <div style="padding: 2em; text-align: center;">
@@ -140,10 +163,30 @@ document.addEventListener('DOMContentLoaded', function() {
             <p style="font-size: 0.9em; color: var(--text-secondary, #666);">
               The server has access to live train trip data, but needs an additional library to parse it.
             </p>
+            <p style="font-size: 0.85em; margin-top: 1em; font-family: monospace; color: var(--text-secondary, #666);">
+              Data size: ${(data.dataSize / 1024).toFixed(2)} KB
+            </p>
           </div>
         `;
         return;
+      }
+
+      // Check if we got parsed trip data
+      if (data.tripUpdates && Array.isArray(data.tripUpdates)) {
+        // Full GTFS Realtime data is available
+        allSchedules = parseGTFSTrips(data.tripUpdates);
+        
+        console.log(`Loaded ${allSchedules.length} train schedules from ${data.tripUpdates.length} trip updates`);
+        console.log(`Data version: ${data.dataVersion}, Incrementality: ${data.incrementality}`);
+        
+        if (data.alerts && Array.isArray(data.alerts) && data.alerts.length > 0) {
+          console.log(`${data.alerts.length} service alerts available`);
+          // You could display alerts here if desired
+        }
+      } else if (data.error) {
+        throw new Error(data.details || data.error);
       } else {
+        console.warn('Unexpected response format:', data);
         allSchedules = [];
       }
       
@@ -153,12 +196,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
       filteredSchedules = [...allSchedules];
       displaySchedules();
+      updateLastUpdateDisplay();
     } catch (error) {
       console.error('Error loading train schedules:', error);
+      const errorMsg = error.message || 'Unknown error. Please try again.';
+      const errorDisplay = errorMsg.includes('401') || errorMsg.includes('Authentication') 
+        ? 'API authentication failed. Please contact the site administrator.'
+        : errorMsg;
+      
       loadingSpinner.innerHTML = `
         <p style="color: var(--error-color, #dc3545);">
           <i class="fa-regular fa-exclamation-circle"></i> 
-          Error loading train schedules. Please try again.
+          Error loading train schedules
+        </p>
+        <p style="font-size: 0.85em; color: var(--text-secondary, #666); margin-top: 0.5em;">
+          ${errorDisplay}
         </p>
       `;
     }
@@ -185,6 +237,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     schedulesList.style.display = 'block';
     noResults.style.display = 'none';
+    
+    // Show last update time if available
+    if (allSchedules.length > 0 && allSchedules[0].timestamp) {
+      const lastUpdate = new Date(allSchedules[0].timestamp * 1000 || Date.now());
+      console.log(`Data last updated: ${lastUpdate.toLocaleTimeString('en-SG')}`);
+    }
   }
 
   // Create a schedule card
@@ -224,9 +282,10 @@ document.addEventListener('DOMContentLoaded', function() {
       ? schedule.departureTime.toLocaleTimeString('en-SG', { hour: '2-digit', minute: '2-digit', hour12: false })
       : 'N/A';
 
-    const delayText = schedule.departureDelay 
-      ? `${schedule.departureDelay > 0 ? '+' : ''}${schedule.departureDelay}s`
-      : 'On time';
+    const delayText = schedule.delayText || 'N/A';
+    const vehicleInfo = schedule.vehicleLabel 
+      ? `${schedule.vehicleLabel}` 
+      : (schedule.vehicleId !== 'N/A' ? `Vehicle ${schedule.vehicleId}` : 'Vehicle info unavailable');
 
     card.innerHTML = `
       <div style="display: flex; justify-content: space-between; align-items: start;">
@@ -239,11 +298,14 @@ document.addEventListener('DOMContentLoaded', function() {
               ${statusLabel}
             </span>
           </div>
-          <div style="font-size: 0.85em; color: var(--text-secondary, #666666); margin-bottom: 8px; font-family: monospace;">
+          <div style="font-size: 0.85em; color: var(--text-secondary, #666666); margin-bottom: 4px; font-family: monospace;">
             Trip: ${schedule.tripId}
           </div>
-          <div style="font-size: 0.85em; color: var(--text-secondary, #666666); margin-bottom: 8px;">
-            Stop #{schedule.stopSequence} (${schedule.stopId})
+          <div style="font-size: 0.8em; color: var(--text-secondary, #999999); margin-bottom: 8px;">
+            🚉 Stop #${schedule.stopSequence} (${schedule.stopId})
+          </div>
+          <div style="font-size: 0.8em; color: var(--text-secondary, #999999); margin-bottom: 8px;">
+            🚆 ${vehicleInfo}
           </div>
           <div style="display: flex; gap: 16px; margin-top: 8px; flex-wrap: wrap;">
             <div>
@@ -300,6 +362,74 @@ document.addEventListener('DOMContentLoaded', function() {
     displaySchedules();
   }
 
+  // Polling functions
+  function startPolling() {
+    if (isPolling) return; // Already polling
+    
+    isPolling = true;
+    updateRefreshButtonState();
+    console.log(`[Polling] Started with interval: ${pollingInterval}ms`);
+    
+    // Poll immediately, then set up interval
+    loadTrainSchedules();
+    pollingTimer = setInterval(loadTrainSchedules, pollingInterval);
+  }
+
+  function stopPolling() {
+    if (!isPolling) return; // Not polling
+    
+    isPolling = false;
+    if (pollingTimer) {
+      clearInterval(pollingTimer);
+      pollingTimer = null;
+    }
+    updateRefreshButtonState();
+    console.log('[Polling] Stopped');
+  }
+
+  function setPollingInterval(intervalMs) {
+    pollingInterval = intervalMs;
+    console.log(`[Polling] Interval set to ${intervalMs}ms`);
+    
+    // Restart polling with new interval if currently active
+    if (isPolling) {
+      stopPolling();
+      startPolling();
+    }
+  }
+
+  function updateRefreshButtonState() {
+    if (refreshBtn) {
+      if (isPolling) {
+        refreshBtn.classList.add('polling');
+        refreshBtn.setAttribute('aria-label', `Stop polling (${pollingInterval / 1000}s)`);
+        refreshBtn.title = `Auto-refresh every ${pollingInterval / 1000}s\n\nClick to stop`;
+      } else {
+        refreshBtn.classList.remove('polling');
+        refreshBtn.setAttribute('aria-label', 'Refresh now');
+        refreshBtn.title = 'Click to refresh or start auto-polling';
+      }
+    }
+  }
+
+  function updateLastUpdateDisplay() {
+    lastUpdateTime = new Date();
+    const timeStr = lastUpdateTime.toLocaleTimeString('en-SG', { 
+      hour: '2-digit', 
+      minute: '2-digit', 
+      second: '2-digit',
+      hour12: false 
+    });
+    
+    // Update any last update time display if it exists
+    const lastUpdateElement = document.getElementById('lastUpdateTime');
+    if (lastUpdateElement) {
+      lastUpdateElement.textContent = `Last update: ${timeStr}`;
+    }
+    
+    console.log(`[Data] Updated at ${timeStr}`);
+  }
+
   // Event listeners
   trainSearch.addEventListener('input', (e) => {
     filterSchedules(e.target.value);
@@ -312,9 +442,49 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   refreshBtn.addEventListener('click', () => {
-    loadTrainSchedules();
+    if (isPolling) {
+      stopPolling();
+    } else {
+      // Single refresh on first click, then start polling on second
+      loadTrainSchedules();
+      
+      // Optional: Double-click to start auto-polling
+      // Can implement double-click detection if desired
+    }
+  });
+
+  // Polling interval selector
+  const pollingSelect = document.getElementById('pollingSelect');
+  if (pollingSelect) {
+    pollingSelect.addEventListener('change', (e) => {
+      const intervalMs = parseInt(e.target.value);
+      
+      if (intervalMs === 0) {
+        // Stop polling
+        stopPolling();
+      } else {
+        // Set new interval and start polling
+        setPollingInterval(intervalMs);
+        if (!isPolling) {
+          startPolling();
+        }
+      }
+    });
+  }
+
+  // Keyboard shortcut: Ctrl+R or Cmd+R to toggle polling
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'r') {
+      e.preventDefault();
+      if (isPolling) {
+        stopPolling();
+      } else {
+        startPolling();
+      }
+    }
   });
 
   // Initial load
   loadTrainSchedules();
+  updateRefreshButtonState();
 });

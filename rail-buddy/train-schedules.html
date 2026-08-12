@@ -196,7 +196,15 @@
                     <button class="filter-btn" id="refreshBtn">
                         <i class="fa-regular fa-arrows-rotate"></i> Refresh
                     </button>
+                    <select id="pollingSelect" class="filter-btn" style="padding: 8px 12px; cursor: pointer; border: 1px solid var(--border-color, #ddd); border-radius: 4px; background: var(--card-bg, white); color: var(--text-color, black); font-size: 0.9em;">
+                        <option value="0">No Auto-Refresh</option>
+                        <option value="10000">Every 10s</option>
+                        <option value="30000" selected>Every 30s</option>
+                        <option value="60000">Every 1m</option>
+                        <option value="300000">Every 5m</option>
+                    </select>
                 </div>
+                <div id="lastUpdateTime" style="font-size: 0.8em; color: var(--text-secondary, #999); margin-top: 8px; text-align: center;"></div>
             </div>
 
             <div class="content-section" id="contentSection">

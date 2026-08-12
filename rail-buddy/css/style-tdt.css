@@ -1029,6 +1029,95 @@ body.dark-mode .settings-page-section {
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+/* ===== POLLING CONTROLS ===== */
+
+/* Refresh button polling animation */
+#refreshBtn.polling {
+    background: linear-gradient(90deg, #4CAF50, #45a049) !important;
+    color: white !important;
+}
+
+#refreshBtn.polling i {
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Polling select dropdown styling */
+#pollingSelect {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    padding-right: 28px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+body.dark-mode #pollingSelect {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23fff' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+}
+
+#pollingSelect:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+#pollingSelect:focus {
+    outline: 2px solid #0055b8;
+    outline-offset: 2px;
+}
+
+body.dark-mode #pollingSelect:focus {
+    outline-color: #60a5fa;
+}
+
+/* Last update time display */
+#lastUpdateTime {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Polling status indicator */
+.polling-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8em;
+    color: #4CAF50;
+    padding: 4px 8px;
+    background: #f1f8f6;
+    border-radius: 6px;
+}
+
+body.dark-mode .polling-status {
+    background: #1b3f2e;
+    color: #86efac;
+}
+
+.polling-indicator {
+    width: 8px;
+    height: 8px;
+    background: #4CAF50;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+body.dark-mode .polling-indicator {
+    background: #86efac;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+}
+
 .settings-section-title {
     font-size: 18px;
     font-weight: 700;
