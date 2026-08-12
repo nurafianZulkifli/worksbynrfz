@@ -295,6 +295,19 @@ app.get('/train-service-alerts', async (req, res) => {
   }
 });
 
+// Define the /train-schedules route (GTFSRealtimeTrainTrip)
+app.get('/train-schedules', async (req, res) => {
+  try {
+    const response = await ltaApi.get('GTFSRealtimeTrainTripUpdates');
+
+    res.set('Cache-Control', 'public, max-age=30');
+    res.json(response.data);
+  } catch (error) {
+    console.error('Error fetching train schedules from LTA:', error.message);
+    res.status(500).send('Error connecting to LTA DataMall');
+  }
+});
+
 // Define the /bus-routes route with skip support
 app.get('/bus-routes', async (req, res) => {
   try {
