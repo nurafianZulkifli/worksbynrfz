@@ -1,23 +1,27 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="">
+    <meta name="description" content="Real-time train schedules and trip information for Singapore MRT and LRT networks">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="google-site-verification" content="57TuruPNu5wqSSia_cUehl5t9Gh1AbxrHNPcMiFx-aQ" />
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover, user-scalable=no">
     <meta name="color-scheme" content="light dark">
+    <title>Train Schedules | RailBuddy</title>
+    <meta property="og:image" content="https://i.imgur.com/i8n9KYs.png" />
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="RailBuddy">
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#0f1419" media="(prefers-color-scheme: dark)">
-    <title>Menu | RailBuddy</title>
-    <meta content="" name="description">
-    <meta content="" name="keywords">
-    <meta property="og:image" content="https://i.imgur.com/i8n9KYs.png" />
+
+    <link rel="manifest" href="./manifest.json">
 
     <link rel="icon" href="./assets/logo.png" type="image/png">
     <link rel="apple-touch-icon" href="./assets/icon-512.png">
+    
+    <link rel="apple-touch-startup-image" href="../img/bg-img/hero-railbuddy-dark.png">
 
     <script src="https://kit.fontawesome.com/965e82ac01.js" crossorigin="anonymous"></script>
 
@@ -30,21 +34,30 @@
 
     <!-- Page Specific Stylesheet -->
     <link rel="stylesheet" href="./css/style-tdt.css">
-    <link rel="stylesheet" href="./css/menu.css">
+    <link rel="stylesheet" href="./css/main-page.css">
 
 </head>
 
 <body>
+    <!-- Apply dark mode before splash renders to avoid flash -->
+    <script>
+        (function () {
+            var pref = localStorage.getItem('theme-preference') || 'system';
+            var isDark = pref === 'dark' || (pref === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            if (isDark) document.body.classList.add('dark-mode');
+        })();
+    </script>
+
     <!-- Fixed Breadcrumb at very top (mobile/tablet only) -->
     <div class="breadcrumb-fixed-placeholder">
         <nav aria-label="breadcrumb" style="margin-bottom:0;">
             <ol class="breadcrumb breadcrumb-fixed" id="floating-breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="index.html"><i class="fa-regular fa-house"></i>
+                    <a href="index.html"><i class="fa-regular fa-home"></i>
                     </a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a href="menu.html"><i class="fa-regular fa-bars"></i>
+                    <a href="train-schedules.html"><i class="fa-regular fa-train"></i>
                     </a>
                 </li>
             </ol>
@@ -78,7 +91,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="menu.html" class="nav-link active">
+                    <a href="menu.html" class="nav-link">
                         <i class="fa-regular fa-bars"></i>
                         <span>Menu</span>
                     </a>
@@ -115,7 +128,7 @@
                     <!-- <span class="label">Timings</span> -->
                 </a>
             </li>
-            <li class="active">
+            <li>
                 <a href="menu.html">
                     <span class="icon">
                         <i class="fa-regular fa-bars"></i>
@@ -126,10 +139,7 @@
         </ul>
     </nav>
 
-
-
     <!------------------------------------------------------------------------ Start of Sections ------------------------------------------------------------------------>
-
 
     <!-- Title/Breadcrumbs -->
     <section class="about-me-sum clearfix">
@@ -145,143 +155,69 @@
                                     </a>
                                 </li>
                                 <li class="breadcrumb-item">
-                                    <a href="menu.html"><i class="fa-regular fa-bars"></i>
+                                    <a href="train-schedules.html"><i class="fa-regular fa-train"></i>
                                     </a>
                                 </li>
                             </ol>
                         </nav>
-                        <div class="app-branding-section">
-                            <div class="app-branding-logo">
-                                <img src="assets/icon-512.png" alt="RailBuddy" class="app-branding-icon">
+                        <div class="page-title-wrapper">
+                            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                                <div>
+                                    <h1 class="page-title" id="filter-title">Train Schedules</h1>
+                                </div>
                             </div>
-                            <h1 class="app-branding-title">RailBuddy</h1>
-                            <p class="app-branding-version" id="app-version-display"></p>
                         </div>
                     </div>
                 </div>
+                <hr>
             </div>
-
         </div>
-
     </section>
 
     <!-- Section Contents -->
-    <section class="about-me-summ clearfix" style="padding-bottom: 8em;">
+    <section class="pdf-section">
         <div class="container">
-            <!-- Other Apps Section -->
-            <div style="margin-bottom: 3em; margin-top: 0;">
-                <h3 class="other-apps-heading">Other Apps</h3>
-                <div class="other-apps-grid">
-                    <div class="other-apps-card">
-                        <a href="../buszy/index.html"
-                            style="display: flex; align-items: center; gap: 16px; flex: 1; text-decoration: none; color: inherit;">
-                            <div class="other-apps-icon">
-                                <img src="../buszy/assets/icon-512.png" alt="Buszy" width="48" height="48">
-                            </div>
-                            <h5 class="other-apps-name">Buszy</h5>
-                        </a>
-                        <a href="../index.html" class="other-apps-chevron">
-                            <i class="fa-regular fa-chevron-right"></i>
-                        </a>
+            <div class="header">
+            </div>
+
+            <div class="selector-section">
+                <div class="search-container">
+                    <div class="search-input-wrapper">
+                        <i class="fa-regular fa-search"
+                            style="position: absolute; left: 12px; top: 65%; transform: translateY(-65%); color: #cccccc; z-index: 1;"></i>
+                        <input type="text" id="trainSearch" class="search-input"
+                            placeholder="Enter trip ID or line" autocomplete="on">
+                        <button class="clear-search" id="clearSearch" title="Clear search">&times;</button>
                     </div>
+                    <div class="search-results-count" id="resultsCount"></div>
+                </div>
+
+                <div class="filter-buttons">
+                    <button class="filter-btn" id="refreshBtn">
+                        <i class="fa-regular fa-arrows-rotate"></i> Refresh
+                    </button>
                 </div>
             </div>
 
-            <hr style="margin-top: 1em; margin-bottom: 1em;">
-
-            <!-- Main Menu List -->
-            <div class="list-group">
-                <a href="statistics.html" class="list-group-item list-group-item-action">
-                    <div class="d-flex">
-                        <div>
-                            <h5 class="lg-menu"><i class="fa-regular fa-bar-chart"></i> Statistics</h5>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="ann.html" class="list-group-item list-group-item-action" id="ann-nav-link">
-                    <div class="d-flex" style="justify-content: space-between; align-items: center;">
-                        <div>
-                            <h5 class="lg-menu"><i class="fa-regular fa-bullhorn"></i> Announcements</h5>
-                        </div>
-                        <span class="ann-indicator-dot"></span>
-                    </div>
-                </a>
-
-                <a href="our-networks.html" class="list-group-item list-group-item-action">
-                    <div class="d-flex">
-                        <div>
-                            <h5 class="lg-menu"><i class="fa-kit fa-lta-train"></i> Our Networks</h5>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="system-map.html" class="list-group-item list-group-item-action">
-                    <div class="d-flex">
-                        <div>
-                            <h5 class="lg-menu"><i class="fa-kit fa-lta-map"></i> System Map</h5>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="https://www.lta.gov.sg/content/ltagov/en/map/fare-calculator.html"
-                    class="list-group-item list-group-item-action">
-                    <div class="d-flex">
-                        <div>
-                            <h5 class="lg-menu"><i class="fa-regular fa-external-link"></i> Fare Calculator</h5>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="train-schedules.html" class="list-group-item list-group-item-action">
-                    <div class="d-flex">
-                        <div>
-                            <h5 class="lg-menu"><i class="fa-regular fa-train"></i> Train Schedules</h5>
-                        </div>
-                    </div>
-                </a>
-
-                <hr style="margin-top: 2em; margin-bottom: 1em;">
-
-                <a href="settings.html" class="list-group-item list-group-item-action">
-                    <div class="d-flex">
-                        <div>
-                            <h5 class="lg-menu"><i class="fa-regular fa-gear"></i> Settings</h5>
-                        </div>
-                    </div>
-                </a>
+            <div class="content-section" id="contentSection">
+                <div id="loadingSpinner" style="text-align: center; padding: 2em;">
+                    <i class="fa-solid fa-spinner fa-spin" style="font-size: 2em;"></i>
+                    <p>Loading train schedules...</p>
+                </div>
+                <div id="schedulesList" style="display: none;"></div>
+                <div id="noResults" style="display: none; text-align: center; padding: 2em;">
+                    <p><i class="fa-regular fa-inbox"></i> No train schedules found</p>
+                </div>
             </div>
-
         </div>
     </section>
-
-
-    <script src="../js/app-version.js"></script>
 
     <script type="text/javascript" id="cookiebanner" src="../js/cookies-banner.js" data-position="bottom"
         data-bg="#f2f3e5" data-fg="#000" data-font-family="Onest, sans-serif" data-zindex="12345111111"
         data-message="This website uses cookies to provide necessary site functionality and to improve your experience. By using this website, you agree to our use of cookies.">
-        </script>
+    </script>
 
     <script src="../js/cookies-theme-sync.js"></script>
-
-    <script>
-        function displayVersion() {
-            const versionEl = document.getElementById('app-version-display');
-            if (versionEl && window.APP_VERSIONS && window.APP_VERSIONS.railbuddy) {
-                versionEl.textContent = `Version ${window.APP_VERSIONS.railbuddy}`;
-            }
-        }
-
-        // Listen for version loading event from app-version.js
-        window.addEventListener('versionsLoaded', displayVersion);
-
-        // Also try on DOMContentLoaded in case event already fired
-        document.addEventListener('DOMContentLoaded', displayVersion);
-
-        // Fallback: check after a short delay
-        setTimeout(displayVersion, 500);
-    </script>
 
     <script src="js/mob-navtabs.js"></script>
 
@@ -306,14 +242,13 @@
 
     <script src="../js/utils.js"></script>
 
-    <script src="js/menu.js"></script>
-
+    <script src="js/train-schedules.js"></script>
     <script src="./js/ann-indicator.js"></script>
 
-    <!-- <script src="../js/back-to-top.js"></script> -->
-
+    <script src="./js/pull-to-refresh.js"></script>
+    <script src="../js/ios-pwa-pull-to-refresh-init.js"></script>
+    
     <script src="../js/ios-pwa-warning.js"></script>
-
 </body>
 
 </html>
