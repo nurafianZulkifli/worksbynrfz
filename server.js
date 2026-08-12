@@ -8,6 +8,14 @@ const https = require('https');
 const compression = require('compression');
 const webpush = require('web-push');
 
+// GTFS Realtime parser (optional - only loads if installed)
+let GtfsRealtimeBindings = null;
+try {
+  GtfsRealtimeBindings = require('gtfs-realtime-bindings');
+} catch (e) {
+  console.warn('[GTFS] gtfs-realtime-bindings not installed. Train schedules will show limited data.');
+}
+
 // ── Sync DB (Neon PostgreSQL) ────────────────────────────────────────
 // Set DATABASE_URL env var (Neon connection string) to enable sync endpoints.
 let Pool = null;
@@ -298,13 +306,83 @@ app.get('/train-service-alerts', async (req, res) => {
 // Define the /train-schedules route (GTFSRealtimeTrainTrip)
 app.get('/train-schedules', async (req, res) => {
   try {
-    const response = await ltaApi.get('GTFSRealtimeTrainTripUpdates');
+    // Step 1: Fetch metadata containing S3 link
+    const metadataResponse = await ltaApi.get('/GTFSRealtimeTrainTripUpdates');
+    const metadata = metadataResponse.data;
+
+    if (!metadata.value || !Array.isArray(metadata.value) || metadata.value.length === 0) {
+      return res.status(404).json({ error: 'No train data available' });
+    }
+
+    const s3Link = metadata.value[0].link;
+    if (!s3Link) {
+      return res.status(404).json({ error: 'No download link available' });
+    }
+
+    // Step 2: Download protobuf file from S3
+    const protoResponse = await axios.get(s3Link, {
+      responseType: 'arraybuffer',
+      timeout: 15000
+    });
+
+    // Step 3: Parse protobuf if library is available
+    if (!GtfsRealtimeBindings) {
+      // Fallback: Return the metadata with base64 encoded data
+      return res.json({
+        timestamp: metadata.value[0].timestamp,
+        link: s3Link,
+        note: 'Install gtfs-realtime-bindings for full parsing. Run: npm install gtfs-realtime-bindings',
+        dataFormat: 'protobuf (binary)',
+        dataSize: protoResponse.data.length
+      });
+    }
+
+    const feed = GtfsRealtimeBindings.transit_realtime.FeedMessage.decode(protoResponse.data);
+    
+    // Step 4: Convert protobuf to JSON-like format
+    const trips = [];
+    if (feed.entity) {
+      feed.entity.forEach((entity) => {
+        if (entity.trip_update) {
+          const tripUpdate = entity.trip_update;
+          trips.push({
+            tripId: tripUpdate.trip?.trip_id || 'N/A',
+            routeId: tripUpdate.trip?.route_id || 'N/A',
+            startTime: tripUpdate.trip?.start_time || 'N/A',
+            startDate: tripUpdate.trip?.start_date || 'N/A',
+            scheduleRelationship: tripUpdate.trip?.schedule_relationship || 0,
+            delay: tripUpdate.delay || 0,
+            stopTimeUpdates: (tripUpdate.stop_time_update || []).map(stu => ({
+              stopSequence: stu.stop_sequence,
+              stopId: stu.stop_id,
+              arrival: stu.arrival ? {
+                time: stu.arrival.time,
+                delay: stu.arrival.delay,
+                uncertainty: stu.arrival.uncertainty
+              } : null,
+              departure: stu.departure ? {
+                time: stu.departure.time,
+                delay: stu.departure.delay,
+                uncertainty: stu.departure.uncertainty
+              } : null,
+              scheduleRelationship: stu.schedule_relationship
+            }))
+          });
+        }
+      });
+    }
 
     res.set('Cache-Control', 'public, max-age=30');
-    res.json(response.data);
+    res.json({
+      timestamp: metadata.value[0].timestamp,
+      dataVersion: feed.header?.gtfs_realtime_version || '2.0',
+      incrementality: feed.header?.incrementality || 'FULL_DATASET',
+      entityCount: feed.entity?.length || 0,
+      tripUpdates: trips
+    });
   } catch (error) {
     console.error('Error fetching train schedules from LTA:', error.message);
-    res.status(500).send('Error connecting to LTA DataMall');
+    res.status(500).json({ error: 'Error connecting to LTA DataMall', details: error.message });
   }
 });
 
