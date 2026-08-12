@@ -15,17 +15,6 @@
 
 // Ensure DOM is loaded before running script
 document.addEventListener('DOMContentLoaded', function() {
-  // Detect API server based on current location
-  const API_SERVER = (() => {
-    const currentUrl = new URL(window.location.href);
-    // If on localhost with non-standard port (like 5500), use Express port 3000
-    if (currentUrl.hostname === 'localhost' && currentUrl.port && currentUrl.port !== '3000') {
-      return 'http://localhost:3000';
-    }
-    // Otherwise use current origin (works for production/deployed apps)
-    return currentUrl.origin;
-  })();
-
   const ALERTS_CACHE_KEY = 'railbuddy_tsa_alerts_cache';
   const ALERTS_DATA_KEY = 'railbuddy_tsa_alerts_data';
   const CACHE_TTL = 30 * 60 * 1000; // 30 minutes
@@ -203,7 +192,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Fetch alerts only if cache is stale
     if (!cacheIsFresh) {
-      fetch(`${API_SERVER}/train-service-alerts`)
+      fetch('https://bat-lta-9eb7bbf231a2.herokuapp.com/train-service-alerts')
         .then(r => r.json())
         .then(data => {
           localStorage.setItem(ALERTS_CACHE_KEY, JSON.stringify({ ts: Date.now() }));
