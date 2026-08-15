@@ -22,8 +22,11 @@ document.addEventListener('DOMContentLoaded', function() {
     if (currentUrl.hostname === 'localhost' && currentUrl.port && currentUrl.port !== '3000') {
       return 'http://localhost:3000';
     }
-    // Otherwise use current origin (works for production/deployed apps)
-    return currentUrl.origin;
+    if (currentUrl.hostname === 'localhost') {
+      return currentUrl.origin;
+    }
+    // Production is static hosting (GitHub Pages) with no backend, so always use the Heroku API
+    return 'https://bat-lta-9eb7bbf231a2.herokuapp.com';
   })();
 
   const ALERTS_CACHE_KEY = 'railbuddy_tsa_alerts_cache';

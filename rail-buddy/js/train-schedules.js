@@ -565,9 +565,6 @@ document.addEventListener('DOMContentLoaded', function() {
     stationTitle.innerHTML = titleCodes.length > 0
       ? `${renderCodeCaplet(titleCodes)} ${station.name}`
       : station.name;
-    stationSubtitle.innerHTML = station.source === 'smrt'
-      ? '<img src="assets/stl.png" alt="SMRT" class="operator-logo">'
-      : '<img src="assets/sbstl.png" alt="SBS Transit" class="operator-logo">';
 
     // Live status: real delay/cancellation data takes priority over the estimate
     const liveMatches = getLiveStatusForStation(station);
