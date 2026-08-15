@@ -410,35 +410,60 @@ function parseGTFSRealtimeData(protoBuffer) {
 
 // Helper: Parse stop_times.txt CSV and return structured data
 function parseStopTimes(csvContent) {
-  const lines = csvContent.toString().split('\n');
-  if (lines.length < 2) return [];
+  const text = csvContent.toString();
+  const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+  
+  if (lines.length < 2) {
+    console.warn('[GTFS] stop_times.txt has fewer than 2 lines');
+    return [];
+  }
 
-  // Parse header
-  const header = lines[0].trim().split(',').map(h => h.trim());
-  const stopTimeIndex = header.indexOf('stop_times');
+  // Parse header (handle quoted fields)
+  const headerLine = lines[0];
+  const header = headerLine.split(',').map(h => h.trim().toLowerCase().replace(/^"|"$/g, ''));
+  
   const tripIdIndex = header.indexOf('trip_id');
   const stopIdIndex = header.indexOf('stop_id');
   const arrivalTimeIndex = header.indexOf('arrival_time');
   const departureTimeIndex = header.indexOf('departure_time');
   const stopSequenceIndex = header.indexOf('stop_sequence');
 
-  const stopTimes = [];
-  for (let i = 1; i < lines.length; i++) {
-    const line = lines[i].trim();
-    if (!line) continue;
-
-    const fields = line.split(',').map(f => f.trim());
-    if (fields.length <= Math.max(tripIdIndex, stopIdIndex, arrivalTimeIndex, departureTimeIndex)) continue;
-
-    stopTimes.push({
-      trip_id: tripIdIndex >= 0 ? fields[tripIdIndex] : null,
-      stop_id: stopIdIndex >= 0 ? fields[stopIdIndex] : null,
-      arrival_time: arrivalTimeIndex >= 0 ? fields[arrivalTimeIndex] : null,
-      departure_time: departureTimeIndex >= 0 ? fields[departureTimeIndex] : null,
-      stop_sequence: stopSequenceIndex >= 0 ? parseInt(fields[stopSequenceIndex], 10) : null
-    });
+  if (tripIdIndex < 0 || stopIdIndex < 0 || arrivalTimeIndex < 0 || departureTimeIndex < 0) {
+    console.error('[GTFS] Missing required columns. Found:', header);
+    return [];
   }
 
+  console.log('[GTFS] CSV Headers:', header);
+  console.log('[GTFS] Column indices:', { tripIdIndex, stopIdIndex, arrivalTimeIndex, departureTimeIndex, stopSequenceIndex });
+
+  const stopTimes = [];
+  for (let i = 1; i < lines.length; i++) {
+    const line = lines[i];
+    if (!line) continue;
+
+    try {
+      // Simple CSV parsing (handles basic quoted fields)
+      const fields = line.split(',').map(f => f.trim().replace(/^"|"$/g, ''));
+      
+      if (fields.length <= Math.max(tripIdIndex, stopIdIndex, arrivalTimeIndex, departureTimeIndex)) {
+        console.warn(`[GTFS] Line ${i} has insufficient fields (${fields.length})`);
+        continue;
+      }
+
+      stopTimes.push({
+        trip_id: fields[tripIdIndex] || null,
+        stop_id: fields[stopIdIndex] || null,
+        arrival_time: fields[arrivalTimeIndex] || null,
+        departure_time: fields[departureTimeIndex] || null,
+        stop_sequence: stopSequenceIndex >= 0 ? parseInt(fields[stopSequenceIndex], 10) : null
+      });
+    } catch (e) {
+      console.warn(`[GTFS] Error parsing line ${i}:`, e.message);
+      continue;
+    }
+  }
+
+  console.log(`[GTFS] Successfully parsed ${stopTimes.length} stop time entries`);
   return stopTimes;
 }
 
@@ -463,15 +488,12 @@ app.get('/train-schedules', async (req, res) => {
 
     console.log(`[GTFS] Downloaded ${zipResponse.data.length} bytes`);
 
-    // Extract and parse stop_times.txt from zip
-    let stopTimesContent = null;
-    
     // Try using AdmZip if available, otherwise return raw zip info
     let AdmZip = null;
     try {
       AdmZip = require('adm-zip');
     } catch (e) {
-      console.warn('[GTFS] adm-zip not installed. Install with: npm install adm-zip');
+      console.error('[GTFS] adm-zip not installed. Install with: npm install adm-zip');
       return res.status(503).json({
         error: 'GTFS parsing not available',
         note: 'Install adm-zip: npm install adm-zip',
@@ -481,15 +503,16 @@ app.get('/train-schedules', async (req, res) => {
       });
     }
 
+    // Extract and parse stop_times.txt from zip
     try {
       const zip = new AdmZip(zipResponse.data);
       const entries = zip.getEntries();
-      console.log(`[GTFS] Zip contains ${entries.length} entries`);
+      console.log(`[GTFS] Zip contains ${entries.length} entries:`, entries.map(e => e.entryName).join(', '));
 
       // Find and extract stop_times.txt
       const stopTimesEntry = entries.find(e => e.entryName === 'stop_times.txt');
       if (!stopTimesEntry) {
-        console.warn('[GTFS] stop_times.txt not found in zip');
+        console.error('[GTFS] stop_times.txt not found in zip');
         return res.status(404).json({
           error: 'stop_times.txt not found in GTFS data',
           files: entries.map(e => e.entryName),
@@ -497,12 +520,23 @@ app.get('/train-schedules', async (req, res) => {
         });
       }
 
-      stopTimesContent = stopTimesEntry.getData();
+      const stopTimesContent = stopTimesEntry.getData();
       console.log(`[GTFS] Extracted stop_times.txt: ${stopTimesContent.length} bytes`);
 
       // Parse the CSV content
       const stopTimes = parseStopTimes(stopTimesContent);
-      console.log(`[GTFS] Parsed ${stopTimes.length} stop time entries`);
+      
+      if (stopTimes.length === 0) {
+        console.error('[GTFS] Failed to parse any stop times from CSV');
+        return res.status(500).json({
+          error: 'Failed to parse stop times from GTFS data',
+          dataSize: stopTimesContent.length,
+          timestamp: new Date().toISOString(),
+          success: false
+        });
+      }
+
+      console.log(`[GTFS] Successfully parsed ${stopTimes.length} stop time entries`);
 
       // Cache the result
       cachedTrainData = {
@@ -519,6 +553,7 @@ app.get('/train-schedules', async (req, res) => {
       res.json(cachedTrainData);
     } catch (parseErr) {
       console.error('[GTFS] Error parsing zip file:', parseErr.message);
+      console.error('[GTFS] Stack:', parseErr.stack);
       res.status(500).json({
         error: 'Failed to parse GTFS zip file',
         details: parseErr.message,
