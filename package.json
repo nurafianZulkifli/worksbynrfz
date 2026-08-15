@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/nurafianZulkifli/nrfz-dev#readme",
   "dependencies": {
+    "adm-zip": "^0.6.0",
     "axios": "^1.13.4",
     "cheerio": "^1.2.0",
     "compression": "^1.8.1",

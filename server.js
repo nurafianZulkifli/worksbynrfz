@@ -408,7 +408,41 @@ function parseGTFSRealtimeData(protoBuffer) {
   }
 }
 
-// Define the /train-schedules route (GTFSRealtimeTrainTrip)
+// Helper: Parse stop_times.txt CSV and return structured data
+function parseStopTimes(csvContent) {
+  const lines = csvContent.toString().split('\n');
+  if (lines.length < 2) return [];
+
+  // Parse header
+  const header = lines[0].trim().split(',').map(h => h.trim());
+  const stopTimeIndex = header.indexOf('stop_times');
+  const tripIdIndex = header.indexOf('trip_id');
+  const stopIdIndex = header.indexOf('stop_id');
+  const arrivalTimeIndex = header.indexOf('arrival_time');
+  const departureTimeIndex = header.indexOf('departure_time');
+  const stopSequenceIndex = header.indexOf('stop_sequence');
+
+  const stopTimes = [];
+  for (let i = 1; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (!line) continue;
+
+    const fields = line.split(',').map(f => f.trim());
+    if (fields.length <= Math.max(tripIdIndex, stopIdIndex, arrivalTimeIndex, departureTimeIndex)) continue;
+
+    stopTimes.push({
+      trip_id: tripIdIndex >= 0 ? fields[tripIdIndex] : null,
+      stop_id: stopIdIndex >= 0 ? fields[stopIdIndex] : null,
+      arrival_time: arrivalTimeIndex >= 0 ? fields[arrivalTimeIndex] : null,
+      departure_time: departureTimeIndex >= 0 ? fields[departureTimeIndex] : null,
+      stop_sequence: stopSequenceIndex >= 0 ? parseInt(fields[stopSequenceIndex], 10) : null
+    });
+  }
+
+  return stopTimes;
+}
+
+// Define the /train-schedules route (GTFSScheduleTrain - parses stop_times.txt from zip)
 app.get('/train-schedules', async (req, res) => {
   try {
     // Check cache first
@@ -420,70 +454,78 @@ app.get('/train-schedules', async (req, res) => {
       return res.json(cachedTrainData);
     }
 
-    // Step 1: Fetch metadata containing S3 link
-    console.log('[GTFS] Fetching metadata from LTA...');
-    const metadataResponse = await ltaApi.get('/GTFSRealtimeTrainTripUpdates');
-    const metadata = metadataResponse.data;
-
-    if (!metadata.value || !Array.isArray(metadata.value) || metadata.value.length === 0) {
-      console.warn('[GTFS] No metadata available from LTA');
-      return res.status(404).json({ 
-        error: 'No train data available',
-        timestamp: new Date().toISOString()
-      });
-    }
-
-    const s3Link = metadata.value[0].link;
-    if (!s3Link) {
-      console.warn('[GTFS] No S3 link in metadata');
-      return res.status(404).json({ 
-        error: 'No download link available',
-        timestamp: new Date().toISOString()
-      });
-    }
-
-    console.log(`[GTFS] S3 link: ${s3Link.substring(0, 60)}...`);
-
-    // Step 2: Download protobuf file from S3
-    console.log('[GTFS] Downloading protobuf from S3...');
-    const protoResponse = await axios.get(s3Link, {
+    // Download zip file from GTFSScheduleTrain endpoint
+    console.log('[GTFS] Fetching GTFS Schedule (ZIP) from LTA...');
+    const zipResponse = await ltaApi.get('/GTFSScheduleTrain', {
       responseType: 'arraybuffer',
-      timeout: 15000
+      timeout: 30000
     });
 
-    console.log(`[GTFS] Downloaded ${protoResponse.data.length} bytes`);
+    console.log(`[GTFS] Downloaded ${zipResponse.data.length} bytes`);
 
-    // Step 3: Check if parsing library is available
-    if (!GtfsRealtimeBindings) {
-      console.warn('[GTFS] gtfs-realtime-bindings not available');
-      const fallbackData = {
-        timestamp: metadata.value[0].timestamp,
-        link: s3Link,
-        note: 'Install gtfs-realtime-bindings for full parsing. Run: npm install gtfs-realtime-bindings',
-        dataFormat: 'protobuf (binary)',
-        dataSize: protoResponse.data.length,
-        success: false
-      };
-      res.set('Cache-Control', 'public, max-age=30');
-      return res.json(fallbackData);
+    // Extract and parse stop_times.txt from zip
+    let stopTimesContent = null;
+    
+    // Try using AdmZip if available, otherwise return raw zip info
+    let AdmZip = null;
+    try {
+      AdmZip = require('adm-zip');
+    } catch (e) {
+      console.warn('[GTFS] adm-zip not installed. Install with: npm install adm-zip');
+      return res.status(503).json({
+        error: 'GTFS parsing not available',
+        note: 'Install adm-zip: npm install adm-zip',
+        dataSize: zipResponse.data.length,
+        success: false,
+        timestamp: new Date().toISOString()
+      });
     }
 
-    // Step 4: Parse protobuf
-    console.log('[GTFS] Parsing protobuf...');
-    const result = parseGTFSRealtimeData(protoResponse.data);
+    try {
+      const zip = new AdmZip(zipResponse.data);
+      const entries = zip.getEntries();
+      console.log(`[GTFS] Zip contains ${entries.length} entries`);
 
-    // Cache the result
-    cachedTrainData = {
-      ...result,
-      fetchedAt: new Date().toISOString()
-    };
-    trainDataCacheTime = now;
+      // Find and extract stop_times.txt
+      const stopTimesEntry = entries.find(e => e.entryName === 'stop_times.txt');
+      if (!stopTimesEntry) {
+        console.warn('[GTFS] stop_times.txt not found in zip');
+        return res.status(404).json({
+          error: 'stop_times.txt not found in GTFS data',
+          files: entries.map(e => e.entryName),
+          timestamp: new Date().toISOString()
+        });
+      }
 
-    console.log(`[GTFS] Successfully processed train data: ${result.tripUpdates.length} trips`);
+      stopTimesContent = stopTimesEntry.getData();
+      console.log(`[GTFS] Extracted stop_times.txt: ${stopTimesContent.length} bytes`);
 
-    res.set('Cache-Control', 'public, max-age=30');
-    res.set('X-Cache', 'MISS');
-    res.json(cachedTrainData);
+      // Parse the CSV content
+      const stopTimes = parseStopTimes(stopTimesContent);
+      console.log(`[GTFS] Parsed ${stopTimes.length} stop time entries`);
+
+      // Cache the result
+      cachedTrainData = {
+        success: true,
+        stopTimesCount: stopTimes.length,
+        dataSize: zipResponse.data.length,
+        fetchedAt: new Date().toISOString(),
+        stopTimes: stopTimes
+      };
+      trainDataCacheTime = now;
+
+      res.set('Cache-Control', 'public, max-age=30');
+      res.set('X-Cache', 'MISS');
+      res.json(cachedTrainData);
+    } catch (parseErr) {
+      console.error('[GTFS] Error parsing zip file:', parseErr.message);
+      res.status(500).json({
+        error: 'Failed to parse GTFS zip file',
+        details: parseErr.message,
+        timestamp: new Date().toISOString(),
+        success: false
+      });
+    }
   } catch (error) {
     console.error('[GTFS] Error fetching train schedules:', error.message);
     console.error('[GTFS] Stack:', error.stack);
