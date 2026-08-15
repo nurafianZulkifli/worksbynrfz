@@ -479,10 +479,11 @@ app.get('/train-schedules', async (req, res) => {
       return res.json(cachedTrainData);
     }
 
-    // GTFSScheduleTrain returns JSON with a Link to the actual zip file, not the zip itself
+    // GTFSScheduleTrain returns JSON with a link to the actual zip file, not the zip itself
+    // (LTA's field is lowercase "link", not "Link" like most other DataMall endpoints)
     console.log('[GTFS] Fetching GTFS Schedule download link from LTA...');
     const linkResponse = await ltaApi.get('/GTFSScheduleTrain');
-    const downloadLink = linkResponse.data?.value?.[0]?.Link;
+    const downloadLink = linkResponse.data?.value?.[0]?.link || linkResponse.data?.value?.[0]?.Link;
 
     if (!downloadLink) {
       console.error('[GTFS] No download Link found in LTA response:', JSON.stringify(linkResponse.data));

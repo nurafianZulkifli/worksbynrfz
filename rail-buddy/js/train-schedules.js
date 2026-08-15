@@ -115,6 +115,109 @@ document.addEventListener('DOMContentLoaded', function() {
     `;
   }
 
+  // ── GTFS static schedule (stop_times.txt) — processed dynamically per station/trip when the API returns it ──
+  let gtfsByStation = new Map(); // stop_id -> sorted [{ tripId, stopSequence, arrivalTime, departureTime, arrivalMinutes, departureMinutes }]
+  let gtfsByTrip = new Map();    // trip_id -> sorted [{ stopId, stopSequence, arrivalTime, departureTime }]
+
+  // GTFS times can exceed 24:00 (e.g. "25:10:00") for post-midnight service, so parse as raw minutes
+  function gtfsTimeToMinutes(hhmmss) {
+    if (!hhmmss) return null;
+    const [h, m] = hhmmss.split(':').map(Number);
+    if (Number.isNaN(h) || Number.isNaN(m)) return null;
+    return h * 60 + m;
+  }
+
+  function processGTFSStopTimes(stopTimes) {
+    gtfsByStation = new Map();
+    gtfsByTrip = new Map();
+    if (!Array.isArray(stopTimes)) return;
+
+    stopTimes.forEach(st => {
+      if (!st.stop_id || !st.trip_id) return;
+      const entry = {
+        tripId: st.trip_id,
+        stopId: st.stop_id,
+        stopSequence: st.stop_sequence,
+        arrivalTime: st.arrival_time,
+        departureTime: st.departure_time,
+        arrivalMinutes: gtfsTimeToMinutes(st.arrival_time),
+        departureMinutes: gtfsTimeToMinutes(st.departure_time)
+      };
+      if (!gtfsByStation.has(entry.stopId)) gtfsByStation.set(entry.stopId, []);
+      gtfsByStation.get(entry.stopId).push(entry);
+      if (!gtfsByTrip.has(entry.tripId)) gtfsByTrip.set(entry.tripId, []);
+      gtfsByTrip.get(entry.tripId).push(entry);
+    });
+
+    gtfsByStation.forEach(list => list.sort((a, b) => (a.departureMinutes ?? 0) - (b.departureMinutes ?? 0)));
+    gtfsByTrip.forEach(list => list.sort((a, b) => (a.stopSequence ?? 0) - (b.stopSequence ?? 0)));
+
+    console.log(`[GTFS Static] Processed ${stopTimes.length} stop times into ${gtfsByStation.size} stations, ${gtfsByTrip.size} trips`);
+  }
+
+  // Best-effort match: station codes (e.g. "NS1/EW24") tried directly against GTFS stop_id keys
+  function getStaticDeparturesForStation(station) {
+    if (gtfsByStation.size === 0) return [];
+    const codes = (station.code || '').split(/[\/\s]+/).filter(Boolean);
+    for (const code of codes) {
+      const match = gtfsByStation.get(code) || gtfsByStation.get(code.toUpperCase()) || gtfsByStation.get(code.toLowerCase());
+      if (match && match.length > 0) return match;
+    }
+    return [];
+  }
+
+  // The last stop of a trip (by stop_sequence) is treated as that trip's destination
+  function getTripFinalStopId(tripId) {
+    const stops = gtfsByTrip.get(tripId);
+    return stops && stops.length > 0 ? stops[stops.length - 1].stopId : null;
+  }
+
+  // True only if at least one real GTFS trip departing this station actually terminates
+  // at the direction's destination — station-code text alone (ft-lt.json) isn't proof it still runs.
+  function directionHasGTFSMatch(station, direction) {
+    const stationDepartures = getStaticDeparturesForStation(station);
+    if (stationDepartures.length === 0) return false;
+
+    // Loop directions (Clockwise/Anticlockwise) have no single destination stop_id to verify against
+    if (/^(CLOCKWISE|ANTICLOCKWISE)\b/i.test(direction.description)) return true;
+
+    const destCodes = (direction.description.match(/[A-Za-z]{2}\s*\d+/g) || []).map(c => c.replace(/\s+/g, '').toUpperCase());
+    if (destCodes.length === 0) return false;
+
+    return stationDepartures.some(dep => {
+      const finalStopId = getTripFinalStopId(dep.tripId);
+      return finalStopId && destCodes.includes(finalStopId.toUpperCase());
+    });
+  }
+
+  // Renders the next few scheduled departures pulled from the static GTFS timetable
+  function renderStaticDeparturesCard(departures) {
+    if (!departures || departures.length === 0) return '';
+    const now = new Date();
+    const nowMinutes = now.getHours() * 60 + now.getMinutes();
+    const upcoming = departures.filter(d => d.departureMinutes !== null && d.departureMinutes >= nowMinutes);
+    const rows = (upcoming.length > 0 ? upcoming : departures).slice(0, 6).map(d => {
+      const mins = d.departureMinutes % (24 * 60);
+      const hh = String(Math.floor(mins / 60)).padStart(2, '0');
+      const mm = String(mins % 60).padStart(2, '0');
+      return `
+        <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--border-color, #eee);">
+          <span style="font-family: monospace; font-weight: 600;">${hh}:${mm}</span>
+          <span style="font-size: 0.8em; color: var(--text-secondary, #999);">Trip ${d.tripId}</span>
+        </div>
+      `;
+    }).join('');
+
+    return `
+      <div style="margin-top: 1em; border: 1px solid var(--border-color, #e0e0e0); border-radius: 8px; padding: 10px 14px;">
+        <div style="font-weight: 700; font-size: 0.85em; margin-bottom: 6px;">
+          <i class="fa-solid fa-table-list"></i> Scheduled Departures
+        </div>
+        ${rows}
+      </div>
+    `;
+  }
+
   // ── Station View (first/last train timings + live status per station) ──
   let smrtFtLtData = [];
   let sbsFtLtData = [];
@@ -316,6 +419,16 @@ document.addEventListener('DOMContentLoaded', function() {
     return h * 60 + m;
   }
 
+  // Deterministic offset (in minutes, within one headway) derived from a direction's description —
+  // without this, every direction snaps to the same clock-aligned boundary and shows identical times.
+  function directionPhaseOffset(description, headwayMin) {
+    let hash = 0;
+    for (let i = 0; i < description.length; i++) {
+      hash = (hash * 31 + description.charCodeAt(i)) >>> 0;
+    }
+    return hash % Math.max(1, Math.round(headwayMin));
+  }
+
   // Calculate "Arriving in X mins" label based on estimated arrival time (HH:MM format)
   // and current time. Handles midnight wraparound.
   // Examples: "Arriving in 3 mins", "Arriving in 1 min", "Arriving now"
@@ -395,7 +508,8 @@ document.addEventListener('DOMContentLoaded', function() {
       const line = headwayData.lines[lineKeys[0]];
       if (line) {
         const headwayMin = line[keyMap[period]];
-        const etaMin = nowMin + headwayMin - (nowMin % Math.round(headwayMin));
+        const phaseOffset = directionPhaseOffset(direction.description, headwayMin);
+        const etaMin = nowMin + headwayMin - ((nowMin - phaseOffset) % Math.round(headwayMin));
         const minutesUntilTrain = Math.round(etaMin - nowMin);
         return { status: 'running', label: `Arriving in: ${minutesUntilTrain} mins`, etaMinutes: headwayMin };
       }
@@ -433,8 +547,11 @@ document.addEventListener('DOMContentLoaded', function() {
         // Compute next 3-4 trains
         const upcomingTrainSet = new Set();
         
+        // Offset the clock-aligned boundary per direction, so opposing directions don't show identical synced times
+        const phaseOffset = directionPhaseOffset(direction.description, headwayMin);
+        
         // First, check if a train is due right now (within 2 minutes before to 1 minute after the headway interval boundary)
-        const intervalBoundary = (Math.floor(nowMin / headwayMin)) * headwayMin;
+        const intervalBoundary = (Math.floor((nowMin - phaseOffset) / headwayMin)) * headwayMin + phaseOffset;
         const timeSinceBoundary = nowMin - intervalBoundary;
         
         // If we're close to a train interval (within the grace period), include it
@@ -575,20 +692,23 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
       `;
     } else {
+      const staticDepartures = getStaticDeparturesForStation(station);
       stationLiveStatus.innerHTML = `
         <div class="alert alert-success" role="alert">
           <i class="fa-solid fa-circle-check"></i> <strong>No reported delays</strong>
         </div>
-        ${renderHeadwayEstimates(station.lineKeys)}
+        ${staticDepartures.length > 0 ? renderStaticDeparturesCard(staticDepartures) : renderHeadwayEstimates(station.lineKeys)}
       `;
     }
 
-    const mainDirections = station.directions.filter(d => !isNSVariant(d.description));
-    const variantDirections = station.directions.filter(d => isNSVariant(d.description));
+    // Only render a direction-card when it has real backing in the parsed GTFS stop_times data
+    const gtfsDirections = station.directions.filter(d => directionHasGTFSMatch(station, d));
+    const mainDirections = gtfsDirections.filter(d => !isNSVariant(d.description));
+    const variantDirections = gtfsDirections.filter(d => isNSVariant(d.description));
 
-    stationDirections.innerHTML = station.directions.length > 0
+    stationDirections.innerHTML = gtfsDirections.length > 0
       ? mainDirections.map(d => renderStationDirectionCard(d, station.lineKeys)).join('') + renderServiceVariantsCard(variantDirections)
-      : '<p style="color: var(--text-secondary, #666);">No timing data available.</p>';
+      : '<p style="color: var(--text-secondary, #666);">No GTFS schedule data available for this station right now.</p>';
     
     // Update ETA labels immediately after rendering
     updateETALabels();
@@ -759,8 +879,15 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
       }
 
-      // Check if we got parsed trip data
-      if (data.tripUpdates && Array.isArray(data.tripUpdates)) {
+      // Check which shape the API returned this time
+      if (data.stopTimes && Array.isArray(data.stopTimes)) {
+        // Static GTFS schedule (stop_times.txt) parsed successfully — process it dynamically
+        // into per-station/per-trip lookups rather than a flat delay list.
+        processGTFSStopTimes(data.stopTimes);
+        allSchedules = [];
+        allTrainsOnSchedule = true; // no live delay feed, but real scheduled timings are available per-station
+        console.log(`[GTFS Static] Loaded ${data.stopTimesCount ?? data.stopTimes.length} stop times (fetched ${data.fetchedAt})`);
+      } else if (data.tripUpdates && Array.isArray(data.tripUpdates)) {
         // Full GTFS Realtime data is available
         allSchedules = parseGTFSTrips(data.tripUpdates);
         // LTA only emits entities for delays/cancellations — empty means everything is on schedule
