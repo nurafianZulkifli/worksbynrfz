@@ -479,21 +479,37 @@ app.get('/train-schedules', async (req, res) => {
       return res.json(cachedTrainData);
     }
 
-    // Download zip file from GTFSScheduleTrain endpoint
-    console.log('[GTFS] Fetching GTFS Schedule (ZIP) from LTA...');
-    const zipResponse = await ltaApi.get('/GTFSScheduleTrain', {
+    // GTFSScheduleTrain returns JSON with a Link to the actual zip file, not the zip itself
+    console.log('[GTFS] Fetching GTFS Schedule download link from LTA...');
+    const linkResponse = await ltaApi.get('/GTFSScheduleTrain');
+    const downloadLink = linkResponse.data?.value?.[0]?.Link;
+
+    if (!downloadLink) {
+      console.error('[GTFS] No download Link found in LTA response:', JSON.stringify(linkResponse.data));
+      return res.status(502).json({
+        error: 'LTA did not return a GTFS download link',
+        timestamp: new Date().toISOString(),
+        success: false
+      });
+    }
+
+    console.log(`[GTFS] Downloading GTFS zip from ${downloadLink}`);
+    const zipResponse = await axios.get(downloadLink, {
       responseType: 'arraybuffer',
       timeout: 30000
     });
 
     console.log(`[GTFS] Downloaded ${zipResponse.data.length} bytes`);
 
+    // Extract and parse stop_times.txt from zip
+    let stopTimesContent = null;
+    
     // Try using AdmZip if available, otherwise return raw zip info
     let AdmZip = null;
     try {
       AdmZip = require('adm-zip');
     } catch (e) {
-      console.error('[GTFS] adm-zip not installed. Install with: npm install adm-zip');
+      console.warn('[GTFS] adm-zip not installed. Install with: npm install adm-zip');
       return res.status(503).json({
         error: 'GTFS parsing not available',
         note: 'Install adm-zip: npm install adm-zip',
@@ -503,16 +519,15 @@ app.get('/train-schedules', async (req, res) => {
       });
     }
 
-    // Extract and parse stop_times.txt from zip
     try {
       const zip = new AdmZip(zipResponse.data);
       const entries = zip.getEntries();
-      console.log(`[GTFS] Zip contains ${entries.length} entries:`, entries.map(e => e.entryName).join(', '));
+      console.log(`[GTFS] Zip contains ${entries.length} entries`);
 
       // Find and extract stop_times.txt
       const stopTimesEntry = entries.find(e => e.entryName === 'stop_times.txt');
       if (!stopTimesEntry) {
-        console.error('[GTFS] stop_times.txt not found in zip');
+        console.warn('[GTFS] stop_times.txt not found in zip');
         return res.status(404).json({
           error: 'stop_times.txt not found in GTFS data',
           files: entries.map(e => e.entryName),
@@ -520,23 +535,12 @@ app.get('/train-schedules', async (req, res) => {
         });
       }
 
-      const stopTimesContent = stopTimesEntry.getData();
+      stopTimesContent = stopTimesEntry.getData();
       console.log(`[GTFS] Extracted stop_times.txt: ${stopTimesContent.length} bytes`);
 
       // Parse the CSV content
       const stopTimes = parseStopTimes(stopTimesContent);
-      
-      if (stopTimes.length === 0) {
-        console.error('[GTFS] Failed to parse any stop times from CSV');
-        return res.status(500).json({
-          error: 'Failed to parse stop times from GTFS data',
-          dataSize: stopTimesContent.length,
-          timestamp: new Date().toISOString(),
-          success: false
-        });
-      }
-
-      console.log(`[GTFS] Successfully parsed ${stopTimes.length} stop time entries`);
+      console.log(`[GTFS] Parsed ${stopTimes.length} stop time entries`);
 
       // Cache the result
       cachedTrainData = {
@@ -553,7 +557,6 @@ app.get('/train-schedules', async (req, res) => {
       res.json(cachedTrainData);
     } catch (parseErr) {
       console.error('[GTFS] Error parsing zip file:', parseErr.message);
-      console.error('[GTFS] Stack:', parseErr.stack);
       res.status(500).json({
         error: 'Failed to parse GTFS zip file',
         details: parseErr.message,
