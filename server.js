@@ -306,7 +306,7 @@ app.get('/train-service-alerts', async (req, res) => {
 // ── Train Schedules Cache ───────────────────────────────────────────
 let cachedTrainData = null;
 let trainDataCacheTime = 0;
-const TRAIN_DATA_TTL = 30 * 1000; // 30 seconds (matches LTA cache-control)
+const TRAIN_DATA_TTL = 6 * 60 * 60 * 1000; // 6 hours — GTFSScheduleTrain is a static daily dataset, not live data
 
 // Helper: Parse GTFS Realtime protobuf and extract trip updates
 function parseGTFSRealtimeData(protoBuffer) {
@@ -568,10 +568,15 @@ app.get('/train-schedules', async (req, res) => {
   } catch (error) {
     console.error('[GTFS] Error fetching train schedules:', error.message);
 
-    // LTA does not publish a live train-arrival/GTFS-Realtime feed — GTFSScheduleTrain
-    // consistently 500s from their side. Rather than surface that as a hard failure on
-    // every poll, degrade gracefully to the same "no live delay data" shape the frontend
-    // already renders (falls back to the estimated headway table).
+    // Serve the last known-good static schedule rather than an empty fallback —
+    // LTA rate-limits this heavy dataset endpoint, so transient 500s are expected between refreshes.
+    if (cachedTrainData) {
+      console.warn('[GTFS] Serving stale cache after fetch error');
+      res.set('Cache-Control', 'public, max-age=30');
+      res.set('X-Cache', 'STALE');
+      return res.json(cachedTrainData);
+    }
+
     res.set('Cache-Control', 'public, max-age=30');
     res.json({
       success: true,
