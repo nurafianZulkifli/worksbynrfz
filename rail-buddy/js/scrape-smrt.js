@@ -98,6 +98,11 @@ const testStations = [
           });
 
           if (Object.keys(directionData.first_train).length > 0) {
+            // The SMRT site erroneously repeats the "To CG2 Changi Airport" section on
+            // other EWL station pages — it's only a valid direction from Tanah Merah (EW4).
+            if (/changi airport/i.test(directionData.description) && stationSlug !== 'tanah-merah') {
+              return;
+            }
             directions.push(directionData);
           }
         });

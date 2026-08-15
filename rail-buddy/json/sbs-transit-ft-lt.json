@@ -76,11 +76,11 @@
     ]
   },
   {
-    "station": "DT1 Bukit Panjang",
+    "station": "DT 1 Bukit Panjang",
     "station_slug": "dt1-bukit-panjang",
     "directions": [
       {
-        "description": "To DT35 Expo",
+        "description": "To DT 35 Expo",
         "first_train": {
           "monday_to_friday": "05:30",
           "saturday": "05:50",
@@ -96,7 +96,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To DT1 BP6 Bukit Panjang",
+        "description": "To DT 1 BP6 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "-",
           "saturday": "-",
@@ -114,11 +114,11 @@
     ]
   },
   {
-    "station": "NE1 HarbourFront",
+    "station": "NE 1 HarbourFront",
     "station_slug": "ne1-harbourfront",
     "directions": [
       {
-        "description": "To NE1 CC29 HarbourFront",
+        "description": "To NE 1 CC29 HarbourFront",
         "first_train": {
           "monday_to_friday": "-",
           "saturday": "-",
@@ -134,7 +134,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To NE18 Punggol Coast",
+        "description": "To NE 18 Punggol Coast",
         "first_train": {
           "monday_to_friday": "05:47",
           "saturday": "05:47",
@@ -152,11 +152,11 @@
     ]
   },
   {
-    "station": "DT2 Cashew",
+    "station": "DT 2 Cashew",
     "station_slug": "dt2-cashew",
     "directions": [
       {
-        "description": "To DT35 Expo",
+        "description": "To DT 35 Expo",
         "first_train": {
           "monday_to_friday": "05:32",
           "saturday": "05:52",
@@ -172,7 +172,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To DT1 BP6 Bukit Panjang",
+        "description": "To DT 1 BP6 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "06:14",
           "saturday": "06:35",
@@ -190,11 +190,11 @@
     ]
   },
   {
-    "station": "DT3 Hillview",
+    "station": "DT 3 Hillview",
     "station_slug": "dt3-hillview",
     "directions": [
       {
-        "description": "To DT35 Expo",
+        "description": "To DT 35 Expo",
         "first_train": {
           "monday_to_friday": "05:34",
           "saturday": "05:54",
@@ -210,7 +210,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To DT1 BP6 Bukit Panjang",
+        "description": "To DT 1 BP6 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "06:13",
           "saturday": "06:33",
@@ -228,11 +228,11 @@
     ]
   },
   {
-    "station": "NE3 Outram Park",
+    "station": "NE 3 Outram Park",
     "station_slug": "ne3-outram-park",
     "directions": [
       {
-        "description": "To NE1 CC29 HarbourFront",
+        "description": "To NE 1 CC29 HarbourFront",
         "first_train": {
           "monday_to_friday": "06:12",
           "saturday": "06:12",
@@ -248,7 +248,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To NE18 Punggol Coast",
+        "description": "To NE 18 Punggol Coast",
         "first_train": {
           "monday_to_friday": "05:48",
           "saturday": "05:48",
@@ -266,11 +266,11 @@
     ]
   },
   {
-    "station": "DT4 Hume",
+    "station": "DT 4 Hume",
     "station_slug": "dt4-hume",
     "directions": [
       {
-        "description": "To DT35 Expo",
+        "description": "To DT 35 Expo",
         "first_train": {
           "monday_to_friday": "05:35",
           "saturday": "05:55",
@@ -286,7 +286,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To DT1 BP6 Bukit Panjang",
+        "description": "To DT 1 BP6 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "06:11",
           "saturday": "06:31",
@@ -304,11 +304,11 @@
     ]
   },
   {
-    "station": "NE4 Chinatown",
+    "station": "NE 4 Chinatown",
     "station_slug": "ne4-chinatown",
     "directions": [
       {
-        "description": "To NE1 CC29 HarbourFront",
+        "description": "To NE 1 CC29 HarbourFront",
         "first_train": {
           "monday_to_friday": "06:10",
           "saturday": "06:10",
@@ -324,7 +324,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To NE18 Punggol Coast",
+        "description": "To NE 18 Punggol Coast",
         "first_train": {
           "monday_to_friday": "05:49",
           "saturday": "05:49",
@@ -342,11 +342,11 @@
     ]
   },
   {
-    "station": "DT5 Beauty World",
+    "station": "DT 5 Beauty World",
     "station_slug": "dt5-beauty-world",
     "directions": [
       {
-        "description": "To DT35 Expo",
+        "description": "To DT 35 Expo",
         "first_train": {
           "monday_to_friday": "05:37",
           "saturday": "05:57",
@@ -362,7 +362,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To DT1 BP6 Bukit Panjang",
+        "description": "To DT 1 BP6 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "06:08",
           "saturday": "06:29",
@@ -380,11 +380,11 @@
     ]
   },
   {
-    "station": "NE5 Clarke Quay",
+    "station": "NE 5 Clarke Quay",
     "station_slug": "ne5-clarke-quay",
     "directions": [
       {
-        "description": "To NE1 CC29 HarbourFront",
+        "description": "To NE 1 CC29 HarbourFront",
         "first_train": {
           "monday_to_friday": "06:08",
           "saturday": "06:08",
@@ -400,7 +400,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To NE18 Punggol Coast",
+        "description": "To NE 18 Punggol Coast",
         "first_train": {
           "monday_to_friday": "05:51",
           "saturday": "05:51",
@@ -418,11 +418,11 @@
     ]
   },
   {
-    "station": "DT6 King Albert Park",
+    "station": "DT 6 King Albert Park",
     "station_slug": "dt6-king-albert-park",
     "directions": [
       {
-        "description": "To DT35 Expo",
+        "description": "To DT 35 Expo",
         "first_train": {
           "monday_to_friday": "05:39",
           "saturday": "05:59",
@@ -438,7 +438,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To DT1 BP6 Bukit Panjang",
+        "description": "To DT 1 BP6 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "06:06",
           "saturday": "06:27",
@@ -456,11 +456,11 @@
     ]
   },
   {
-    "station": "NE6 Dhoby Ghaut",
+    "station": "NE 6 Dhoby Ghaut",
     "station_slug": "ne6-dhoby-ghaut",
     "directions": [
       {
-        "description": "To NE1 CC29 HarbourFront",
+        "description": "To NE 1 CC29 HarbourFront",
         "first_train": {
           "monday_to_friday": "06:06",
           "saturday": "06:06",
@@ -476,7 +476,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To NE18 Punggol Coast",
+        "description": "To NE 18 Punggol Coast",
         "first_train": {
           "monday_to_friday": "05:53",
           "saturday": "05:53",
@@ -494,11 +494,11 @@
     ]
   },
   {
-    "station": "DT7 Sixth Avenue",
+    "station": "DT 7 Sixth Avenue",
     "station_slug": "dt7-sixth-avenue",
     "directions": [
       {
-        "description": "To DT35 Expo",
+        "description": "To DT 35 Expo",
         "first_train": {
           "monday_to_friday": "05:42",
           "saturday": "06:02",
@@ -514,7 +514,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To DT1 BP6 Bukit Panjang",
+        "description": "To DT 1 BP6 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "06:04",
           "saturday": "06:24",
@@ -532,11 +532,11 @@
     ]
   },
   {
-    "station": "NE7 Little India",
+    "station": "NE 7 Little India",
     "station_slug": "ne7-little-india",
     "directions": [
       {
-        "description": "To NE1 CC29 HarbourFront",
+        "description": "To NE 1 CC29 HarbourFront",
         "first_train": {
           "monday_to_friday": "06:04",
           "saturday": "06:04",
@@ -552,7 +552,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To NE18 Punggol Coast",
+        "description": "To NE 18 Punggol Coast",
         "first_train": {
           "monday_to_friday": "05:56",
           "saturday": "05:56",
@@ -570,11 +570,11 @@
     ]
   },
   {
-    "station": "DT8 Tan Kah Kee",
+    "station": "DT 8 Tan Kah Kee",
     "station_slug": "dt8-tan-kah-kee",
     "directions": [
       {
-        "description": "To DT35 Expo",
+        "description": "To DT 35 Expo",
         "first_train": {
           "monday_to_friday": "05:44",
           "saturday": "06:04",
@@ -590,7 +590,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To DT1 BP6 Bukit Panjang",
+        "description": "To DT 1 BP6 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "06:02",
           "saturday": "06:23",
@@ -608,11 +608,11 @@
     ]
   },
   {
-    "station": "NE8 Farrer Park",
+    "station": "NE 8 Farrer Park",
     "station_slug": "ne8-farrer-park",
     "directions": [
       {
-        "description": "To NE1 CC29 HarbourFront",
+        "description": "To NE 1 CC29 HarbourFront",
         "first_train": {
           "monday_to_friday": "06:02",
           "saturday": "06:02",
@@ -628,7 +628,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To NE18 Punggol Coast",
+        "description": "To NE 18 Punggol Coast",
         "first_train": {
           "monday_to_friday": "05:57",
           "saturday": "05:57",
@@ -646,11 +646,11 @@
     ]
   },
   {
-    "station": "DT9 Botanic Gardens",
+    "station": "DT 9 Botanic Gardens",
     "station_slug": "dt9-botanic-gardens",
     "directions": [
       {
-        "description": "To DT35 Expo",
+        "description": "To DT 35 Expo",
         "first_train": {
           "monday_to_friday": "05:46",
           "saturday": "06:06",
@@ -666,7 +666,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To DT1 BP6 Bukit Panjang",
+        "description": "To DT 1 BP6 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "06:00",
           "saturday": "06:21",
@@ -684,11 +684,11 @@
     ]
   },
   {
-    "station": "NE9 Boon Keng",
+    "station": "NE 9 Boon Keng",
     "station_slug": "ne9-boon-keng",
     "directions": [
       {
-        "description": "To NE1 CC29 HarbourFront",
+        "description": "To NE 1 CC29 HarbourFront",
         "first_train": {
           "monday_to_friday": "06:00",
           "saturday": "06:00",
@@ -704,7 +704,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To NE18 Punggol Coast",
+        "description": "To NE 18 Punggol Coast",
         "first_train": {
           "monday_to_friday": "05:59",
           "saturday": "05:59",
@@ -722,11 +722,11 @@
     ]
   },
   {
-    "station": "DT10 Stevens",
+    "station": "DT 10 Stevens",
     "station_slug": "dt10-stevens",
     "directions": [
       {
-        "description": "To DT35 Expo",
+        "description": "To DT 35 Expo",
         "first_train": {
           "monday_to_friday": "05:48",
           "saturday": "06:08",
@@ -742,7 +742,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To DT1 BP6 Bukit Panjang",
+        "description": "To DT 1 BP6 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "05:58",
           "saturday": "06:18",
@@ -760,11 +760,11 @@
     ]
   },
   {
-    "station": "NE10 Potong Pasir",
+    "station": "NE 10 Potong Pasir",
     "station_slug": "ne10-potong-pasir",
     "directions": [
       {
-        "description": "To NE1 CC29 HarbourFront",
+        "description": "To NE 1 CC29 HarbourFront",
         "first_train": {
           "monday_to_friday": "05:58",
           "saturday": "05:58",
@@ -780,7 +780,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To NE18 Punggol Coast",
+        "description": "To NE 18 Punggol Coast",
         "first_train": {
           "monday_to_friday": "06:02",
           "saturday": "06:02",
@@ -798,11 +798,11 @@
     ]
   },
   {
-    "station": "DT11 Newton",
-    "station_slug": "dt11-newton",
+    "station": "DT 11 NE wton",
+    "station_slug": "dt11-NE wton",
     "directions": [
       {
-        "description": "To DT35 Expo",
+        "description": "To DT 35 Expo",
         "first_train": {
           "monday_to_friday": "05:51",
           "saturday": "06:11",
@@ -818,7 +818,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To DT1 BP6 Bukit Panjang",
+        "description": "To DT 1 BP6 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "05:56",
           "saturday": "06:16",
@@ -836,11 +836,11 @@
     ]
   },
   {
-    "station": "NE11 Woodleigh",
+    "station": "NE 11 Woodleigh",
     "station_slug": "ne11-woodleigh",
     "directions": [
       {
-        "description": "To NE1 CC29 HarbourFront",
+        "description": "To NE 1 CC29 HarbourFront",
         "first_train": {
           "monday_to_friday": "05:56",
           "saturday": "05:56",
@@ -856,7 +856,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To NE18 Punggol Coast",
+        "description": "To NE 18 Punggol Coast",
         "first_train": {
           "monday_to_friday": "06:04",
           "saturday": "06:04",
@@ -874,11 +874,11 @@
     ]
   },
   {
-    "station": "DT12 Little India",
+    "station": "DT 12 Little India",
     "station_slug": "dt12-little-india",
     "directions": [
       {
-        "description": "To DT35 Expo",
+        "description": "To DT 35 Expo",
         "first_train": {
           "monday_to_friday": "05:53",
           "saturday": "06:13",
@@ -894,7 +894,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To DT1 BP6 Bukit Panjang",
+        "description": "To DT 1 BP6 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "06:06",
           "saturday": "06:30",
@@ -912,11 +912,11 @@
     ]
   },
   {
-    "station": "NE12 Serangoon",
+    "station": "NE 12 Serangoon",
     "station_slug": "ne12-serangoon",
     "directions": [
       {
-        "description": "To NE1 CC29 HarbourFront",
+        "description": "To NE 1 CC29 HarbourFront",
         "first_train": {
           "monday_to_friday": "05:54",
           "saturday": "05:54",
@@ -932,7 +932,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To NE18 Punggol Coast",
+        "description": "To NE 18 Punggol Coast",
         "first_train": {
           "monday_to_friday": "06:06",
           "saturday": "06:06",
@@ -950,11 +950,11 @@
     ]
   },
   {
-    "station": "DT13 Rochor",
+    "station": "DT 13 Rochor",
     "station_slug": "dt13-rochor",
     "directions": [
       {
-        "description": "To DT35 Expo",
+        "description": "To DT 35 Expo",
         "first_train": {
           "monday_to_friday": "05:55",
           "saturday": "06:15",
@@ -970,7 +970,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To DT1 BP6 Bukit Panjang",
+        "description": "To DT 1 BP6 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "06:05",
           "saturday": "06:34",
@@ -988,11 +988,11 @@
     ]
   },
   {
-    "station": "NE13 Kovan",
+    "station": "NE 13 Kovan",
     "station_slug": "ne13-kovan",
     "directions": [
       {
-        "description": "To NE1 CC29 HarbourFront",
+        "description": "To NE 1 CC29 HarbourFront",
         "first_train": {
           "monday_to_friday": "05:51",
           "saturday": "05:51",
@@ -1008,7 +1008,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To NE18 Punggol Coast",
+        "description": "To NE 18 Punggol Coast",
         "first_train": {
           "monday_to_friday": "06:08",
           "saturday": "06:08",
@@ -1026,11 +1026,11 @@
     ]
   },
   {
-    "station": "DT14 Bugis",
+    "station": "DT 14 Bugis",
     "station_slug": "dt14-bugis",
     "directions": [
       {
-        "description": "To DT35 Expo",
+        "description": "To DT 35 Expo",
         "first_train": {
           "monday_to_friday": "05:57",
           "saturday": "06:17",
@@ -1046,7 +1046,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To DT1 BP6 Bukit Panjang",
+        "description": "To DT 1 BP6 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "06:03",
           "saturday": "06:32",
@@ -1064,11 +1064,11 @@
     ]
   },
   {
-    "station": "NE14 Hougang",
+    "station": "NE 14 Hougang",
     "station_slug": "ne14-hougang",
     "directions": [
       {
-        "description": "To NE1 CC29 HarbourFront",
+        "description": "To NE 1 CC29 HarbourFront",
         "first_train": {
           "monday_to_friday": "05:49",
           "saturday": "05:49",
@@ -1084,7 +1084,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To NE18 Punggol Coast",
+        "description": "To NE 18 Punggol Coast",
         "first_train": {
           "monday_to_friday": "06:11",
           "saturday": "06:11",
@@ -1102,11 +1102,11 @@
     ]
   },
   {
-    "station": "DT15 Promenade",
+    "station": "DT 15 Promenade",
     "station_slug": "dt15-promenade",
     "directions": [
       {
-        "description": "To DT35 Expo",
+        "description": "To DT 35 Expo",
         "first_train": {
           "monday_to_friday": "06:00",
           "saturday": "06:20",
@@ -1122,7 +1122,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To DT1 BP6 Bukit Panjang",
+        "description": "To DT 1 BP6 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "06:17",
           "saturday": "06:35",
@@ -1140,11 +1140,11 @@
     ]
   },
   {
-    "station": "NE15 Buangkok",
+    "station": "NE 15 Buangkok",
     "station_slug": "ne15-buangkok",
     "directions": [
       {
-        "description": "To NE1 CC29 HarbourFront",
+        "description": "To NE 1 CC29 HarbourFront",
         "first_train": {
           "monday_to_friday": "05:46",
           "saturday": "05:46",
@@ -1160,7 +1160,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To NE18 Punggol Coast",
+        "description": "To NE 18 Punggol Coast",
         "first_train": {
           "monday_to_friday": "06:13",
           "saturday": "06:13",
@@ -1178,11 +1178,11 @@
     ]
   },
   {
-    "station": "DT16 Bayfront",
+    "station": "DT 16 Bayfront",
     "station_slug": "dt16-bayfront",
     "directions": [
       {
-        "description": "To DT35 Expo",
+        "description": "To DT 35 Expo",
         "first_train": {
           "monday_to_friday": "06:02",
           "saturday": "06:22",
@@ -1198,7 +1198,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To DT1 BP6 Bukit Panjang",
+        "description": "To DT 1 BP6 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "06:15",
           "saturday": "06:33",
@@ -1216,11 +1216,11 @@
     ]
   },
   {
-    "station": "NE16 Sengkang",
+    "station": "NE 16 Sengkang",
     "station_slug": "ne16-sengkang",
     "directions": [
       {
-        "description": "To NE1 CC29 HarbourFront",
+        "description": "To NE 1 CC29 HarbourFront",
         "first_train": {
           "monday_to_friday": "05:44",
           "saturday": "05:44",
@@ -1236,7 +1236,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To NE18 Punggol Coast",
+        "description": "To NE 18 Punggol Coast",
         "first_train": {
           "monday_to_friday": "05:33",
           "saturday": "05:33",
@@ -1254,11 +1254,11 @@
     ]
   },
   {
-    "station": "DT17 Downtown",
+    "station": "DT 17 Downtown",
     "station_slug": "dt17-downtown",
     "directions": [
       {
-        "description": "To DT35 Expo",
+        "description": "To DT 35 Expo",
         "first_train": {
           "monday_to_friday": "06:04",
           "saturday": "06:24",
@@ -1274,7 +1274,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To DT1 BP6 Bukit Panjang",
+        "description": "To DT 1 BP6 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "06:13",
           "saturday": "06:31",
@@ -1292,11 +1292,11 @@
     ]
   },
   {
-    "station": "NE17 Punggol",
+    "station": "NE 17 Punggol",
     "station_slug": "ne17-punggol",
     "directions": [
       {
-        "description": "To NE1 CC29 HarbourFront",
+        "description": "To NE 1 CC29 HarbourFront",
         "first_train": {
           "monday_to_friday": "05:42",
           "saturday": "05:42",
@@ -1312,7 +1312,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To NE18 Punggol Coast",
+        "description": "To NE 18 Punggol Coast",
         "first_train": {
           "monday_to_friday": "05:36",
           "saturday": "05:36",
@@ -1330,11 +1330,11 @@
     ]
   },
   {
-    "station": "DT18 Telok Ayer",
+    "station": "DT 18 Telok Ayer",
     "station_slug": "dt18-telok-ayer",
     "directions": [
       {
-        "description": "To DT35 Expo",
+        "description": "To DT 35 Expo",
         "first_train": {
           "monday_to_friday": "06:06",
           "saturday": "06:26",
@@ -1350,7 +1350,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To DT1 BP6 Bukit Panjang",
+        "description": "To DT 1 BP6 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "06:11",
           "saturday": "06:29",
@@ -1368,11 +1368,11 @@
     ]
   },
   {
-    "station": "NE18 Punggol Coast",
+    "station": "NE 18 Punggol Coast",
     "station_slug": "ne18-punggol-coast",
     "directions": [
       {
-        "description": "To NE1 CC29 HarbourFront",
+        "description": "To NE 1 CC29 HarbourFront",
         "first_train": {
           "monday_to_friday": "05:39",
           "saturday": "05:39",
@@ -1388,7 +1388,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To NE18 Punggol Coast",
+        "description": "To NE 18 Punggol Coast",
         "first_train": {
           "monday_to_friday": "-",
           "saturday": "-",
@@ -1406,11 +1406,11 @@
     ]
   },
   {
-    "station": "DT19 Chinatown",
+    "station": "DT 19 Chinatown",
     "station_slug": "dt19-chinatown",
     "directions": [
       {
-        "description": "To DT35 Expo",
+        "description": "To DT 35 Expo",
         "first_train": {
           "monday_to_friday": "06:08",
           "saturday": "06:28",
@@ -1426,7 +1426,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To DT1 BP6 Bukit Panjang",
+        "description": "To DT 1 BP6 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "06:10",
           "saturday": "06:28",
@@ -1444,11 +1444,11 @@
     ]
   },
   {
-    "station": "DT20 Fort Canning",
+    "station": "DT 20 Fort Canning",
     "station_slug": "dt20-fort-canning",
     "directions": [
       {
-        "description": "To DT35 Expo",
+        "description": "To DT 35 Expo",
         "first_train": {
           "monday_to_friday": "06:10",
           "saturday": "06:30",
@@ -1464,7 +1464,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To DT1 BP6 Bukit Panjang",
+        "description": "To DT 1 BP6 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "06:08",
           "saturday": "06:26",
@@ -1482,11 +1482,11 @@
     ]
   },
   {
-    "station": "DT21 Bencoolen",
+    "station": "DT 21 Bencoolen",
     "station_slug": "dt21-bencoolen",
     "directions": [
       {
-        "description": "To DT35 Expo",
+        "description": "To DT 35 Expo",
         "first_train": {
           "monday_to_friday": "06:12",
           "saturday": "06:31",
@@ -1502,7 +1502,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To DT1 BP6 Bukit Panjang",
+        "description": "To DT 1 BP6 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "06:06",
           "saturday": "06:24",
@@ -1520,11 +1520,11 @@
     ]
   },
   {
-    "station": "DT22 Jalan Besar",
+    "station": "DT 22 Jalan Besar",
     "station_slug": "dt22-jalan-besar",
     "directions": [
       {
-        "description": "To DT35 Expo",
+        "description": "To DT 35 Expo",
         "first_train": {
           "monday_to_friday": "06:13",
           "saturday": "06:33",
@@ -1540,7 +1540,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To DT1 BP6 Bukit Panjang",
+        "description": "To DT 1 BP6 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "06:04",
           "saturday": "06:22",
@@ -1558,11 +1558,11 @@
     ]
   },
   {
-    "station": "DT23 Bendemeer",
+    "station": "DT 23 Bendemeer",
     "station_slug": "dt23-bendemeer",
     "directions": [
       {
-        "description": "To DT35 Expo",
+        "description": "To DT 35 Expo",
         "first_train": {
           "monday_to_friday": "06:15",
           "saturday": "06:35",
@@ -1578,7 +1578,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To DT1 BP6 Bukit Panjang",
+        "description": "To DT 1 BP6 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "06:02",
           "saturday": "06:20",
@@ -1596,11 +1596,11 @@
     ]
   },
   {
-    "station": "DT24 Geylang Bahru",
+    "station": "DT 24 Geylang Bahru",
     "station_slug": "dt24-geylang-bahru",
     "directions": [
       {
-        "description": "To DT35 Expo",
+        "description": "To DT 35 Expo",
         "first_train": {
           "monday_to_friday": "05:59",
           "saturday": "06:19",
@@ -1616,7 +1616,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To DT1 BP6 Bukit Panjang",
+        "description": "To DT 1 BP6 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "06:00",
           "saturday": "06:18",
@@ -1634,11 +1634,11 @@
     ]
   },
   {
-    "station": "DT25 Mattar",
+    "station": "DT 25 Mattar",
     "station_slug": "dt25-mattar",
     "directions": [
       {
-        "description": "To DT35 Expo",
+        "description": "To DT 35 Expo",
         "first_train": {
           "monday_to_friday": "06:01",
           "saturday": "06:21",
@@ -1654,7 +1654,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To DT1 BP6 Bukit Panjang",
+        "description": "To DT 1 BP6 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "05:58",
           "saturday": "06:16",
@@ -1672,11 +1672,11 @@
     ]
   },
   {
-    "station": "DT26 MacPherson",
+    "station": "DT 26 MacPherson",
     "station_slug": "dt26-macpherson",
     "directions": [
       {
-        "description": "To DT35 Expo",
+        "description": "To DT 35 Expo",
         "first_train": {
           "monday_to_friday": "06:03",
           "saturday": "06:23",
@@ -1692,7 +1692,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To DT1 BP6 Bukit Panjang",
+        "description": "To DT 1 BP6 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "05:56",
           "saturday": "06:14",
@@ -1710,11 +1710,11 @@
     ]
   },
   {
-    "station": "DT27 Ubi",
+    "station": "DT 27 Ubi",
     "station_slug": "dt27-ubi",
     "directions": [
       {
-        "description": "To DT35 Expo",
+        "description": "To DT 35 Expo",
         "first_train": {
           "monday_to_friday": "06:05",
           "saturday": "06:25",
@@ -1730,7 +1730,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To DT1 BP6 Bukit Panjang",
+        "description": "To DT 1 BP6 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "05:54",
           "saturday": "06:12",
@@ -1748,11 +1748,11 @@
     ]
   },
   {
-    "station": "DT28 Kaki Bukit",
+    "station": "DT 28 Kaki Bukit",
     "station_slug": "dt28-kaki-bukit",
     "directions": [
       {
-        "description": "To DT35 Expo",
+        "description": "To DT 35 Expo",
         "first_train": {
           "monday_to_friday": "06:07",
           "saturday": "06:27",
@@ -1768,7 +1768,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To DT1 BP6 Bukit Panjang",
+        "description": "To DT 1 BP6 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "05:52",
           "saturday": "06:10",
@@ -1786,11 +1786,11 @@
     ]
   },
   {
-    "station": "DT29 Bedok North",
+    "station": "DT 29 Bedok North",
     "station_slug": "dt29-bedok-north",
     "directions": [
       {
-        "description": "To DT35 Expo",
+        "description": "To DT 35 Expo",
         "first_train": {
           "monday_to_friday": "06:09",
           "saturday": "06:29",
@@ -1806,7 +1806,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To DT1 BP6 Bukit Panjang",
+        "description": "To DT 1 BP6 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "05:50",
           "saturday": "06:08",
@@ -1824,11 +1824,11 @@
     ]
   },
   {
-    "station": "DT30 Bedok Reservoir",
+    "station": "DT 30 Bedok Reservoir",
     "station_slug": "dt30-bedok-reservoir",
     "directions": [
       {
-        "description": "To DT35 Expo",
+        "description": "To DT 35 Expo",
         "first_train": {
           "monday_to_friday": "06:11",
           "saturday": "06:31",
@@ -1844,7 +1844,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To DT1 BP6 Bukit Panjang",
+        "description": "To DT 1 BP6 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "05:48",
           "saturday": "06:06",
@@ -1862,11 +1862,11 @@
     ]
   },
   {
-    "station": "DT31 Tampines West",
+    "station": "DT 31 Tampines West",
     "station_slug": "dt31-tampines-west",
     "directions": [
       {
-        "description": "To DT35 Expo",
+        "description": "To DT 35 Expo",
         "first_train": {
           "monday_to_friday": "06:13",
           "saturday": "06:33",
@@ -1882,7 +1882,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To DT1 BP6 Bukit Panjang",
+        "description": "To DT 1 BP6 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "05:45",
           "saturday": "06:03",
@@ -1900,11 +1900,11 @@
     ]
   },
   {
-    "station": "DT32 Tampines",
+    "station": "DT 32 Tampines",
     "station_slug": "dt32-tampines",
     "directions": [
       {
-        "description": "To DT35 Expo",
+        "description": "To DT 35 Expo",
         "first_train": {
           "monday_to_friday": "06:16",
           "saturday": "06:36",
@@ -1920,7 +1920,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To DT1 BP6 Bukit Panjang",
+        "description": "To DT 1 BP6 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "05:43",
           "saturday": "06:01",
@@ -1938,11 +1938,11 @@
     ]
   },
   {
-    "station": "DT33 Tampines East",
+    "station": "DT 33 Tampines East",
     "station_slug": "dt33-tampines-east",
     "directions": [
       {
-        "description": "To DT35 Expo",
+        "description": "To DT 35 Expo",
         "first_train": {
           "monday_to_friday": "06:18",
           "saturday": "06:38",
@@ -1958,7 +1958,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To DT1 BP6 Bukit Panjang",
+        "description": "To DT 1 BP6 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "05:41",
           "saturday": "05:59",
@@ -1976,11 +1976,11 @@
     ]
   },
   {
-    "station": "DT34 Upper Changi",
+    "station": "DT 34 Upper Changi",
     "station_slug": "dt34-upper-changi",
     "directions": [
       {
-        "description": "To DT35 Expo",
+        "description": "To DT 35 Expo",
         "first_train": {
           "monday_to_friday": "06:21",
           "saturday": "06:41",
@@ -1996,7 +1996,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To DT1 BP6 Bukit Panjang",
+        "description": "To DT 1 BP6 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "05:38",
           "saturday": "05:56",
@@ -2014,11 +2014,11 @@
     ]
   },
   {
-    "station": "DT35 Expo",
+    "station": "DT 35 Expo",
     "station_slug": "dt35-expo",
     "directions": [
       {
-        "description": "To DT35 Expo",
+        "description": "To DT 35 Expo",
         "first_train": {
           "monday_to_friday": "-",
           "saturday": "-",
@@ -2034,7 +2034,7 @@
         "scraped_at": "2026-02-06T14:20:29.768Z"
       },
       {
-        "description": "To DT1 BP6 Bukit Panjang",
+        "description": "To DT 1 BP6 Bukit Panjang",
         "first_train": {
           "monday_to_friday": "05:36",
           "saturday": "05:54",

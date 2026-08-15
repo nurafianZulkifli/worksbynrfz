@@ -194,6 +194,25 @@
                 </a>
             </div>
 
+            <div class="settings-page-section">
+                <div class="settings-section-title">
+                    <i class="fa-solid fa-watch"></i>
+                    Train Schedules
+                </div>
+                <div style="padding: 0.75rem 0;">
+                    <label style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 14px; color: var(--text-primary, #333);">
+                        <span style="font-weight: 600;">Auto-Refresh Interval</span>
+                        <select id="autoRefreshInterval" style="padding: 0.5rem 0.75rem; border: 1px solid #ccc; border-radius: 6px; background: var(--card-bg, white); color: var(--text-primary, #333); font-size: 14px; cursor: pointer;">
+                            <option value="10000">10 seconds</option>
+                            <option value="20000">20 seconds</option>
+                            <option value="30000">30 seconds</option>
+                            <option value="0">Disabled</option>
+                        </select>
+                    </label>
+                    <p style="font-size: 12px; color: #888; margin: 0.5rem 0 0;">Automatically refresh train times on the schedules page.</p>
+                </div>
+            </div>
+
             <!-- <div class="settings-page-section">
                 <div class="settings-section-title">
                     <i class="fa-regular fa-cloud-arrow-up"></i>

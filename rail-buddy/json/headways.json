@@ -1,0 +1,20 @@
+{
+  "_note": "Estimated service intervals (minutes) based on publicly known SMRT/SBS Transit average frequencies. Not sourced from a live LTA feed — LTA's GTFS-Realtime Train Trip Updates only reports delays/cancellations, not routine headways. Used as a fallback approximation only.",
+  "periods": {
+    "weekdayPeakAM": { "start": "06:30", "end": "09:30" },
+    "weekdayPeakPM": { "start": "17:30", "end": "20:30" },
+    "night": { "start": "23:00", "end": "23:59" },
+    "earlyMorning": { "start": "00:00", "end": "05:59" }
+  },
+  "lines": {
+    "NSL": { "name": "North South Line", "peak": 2.5, "offPeak": 5, "night": 8 },
+    "EWL": { "name": "East West Line", "peak": 3, "offPeak": 6, "night": 10 },
+    "CCL": { "name": "Circle Line", "peak": 4, "offPeak": 7, "night": 10 },
+    "DTL": { "name": "Downtown Line", "peak": 3, "offPeak": 6, "night": 9 },
+    "TEL": { "name": "Thomson-East Coast Line", "peak": 4, "offPeak": 7, "night": 10 },
+    "NEL": { "name": "North East Line", "peak": 3, "offPeak": 6, "night": 9 },
+    "BP": { "name": "Bukit Panjang LRT", "peak": 3.5, "offPeak": 6, "night": 9 },
+    "SK": { "name": "Sengkang LRT", "peak": 5, "offPeak": 8, "night": 11 },
+    "PG": { "name": "Punggol LRT", "peak": 5, "offPeak": 8, "night": 11 }
+  }
+}

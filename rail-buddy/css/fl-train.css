@@ -80,6 +80,24 @@
     font-size: 0.9rem;
 }
 
+.station-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.station-header-row .station-title,
+.station-header-row .station-subtitle {
+    margin-bottom: 30px;
+}
+
+.station-subtitle .operator-logo {
+    height: 22px;
+    width: auto;
+    display: block;
+}
+
 .directions-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -319,6 +337,19 @@ body.dark-mode .spinner {
     color: #e74c3c;
 }
 
+.train-time-chip {
+    background: #fff;
+    padding: 7px 10px;
+    border-radius: 15px;
+    text-align: center;
+    font-weight: 600;
+}
+
+body.dark-mode .train-time-chip {
+    background: #1c1f2b;
+    border-radius: 15px;
+}
+
 body.dark-mode .selector-section {
     background: #1c1f2b;
     border: 1px solid #2b2b2b33;
@@ -407,6 +438,24 @@ body.dark-mode .day-label {
 
 body.dark-mode .no-data {
     color: #777;
+}
+
+/* Bootstrap 5.3 derives .alert/.badge colours from these custom properties —
+   swap in Bootstrap's own [data-bs-theme=dark] values since this app toggles
+   dark mode via .dark-mode instead of the data-bs-theme attribute. */
+body.dark-mode {
+    --bs-success-text-emphasis: #75b798;
+    --bs-success-bg-subtle: #051b11;
+    --bs-success-border-subtle: #0f5132;
+    --bs-warning-text-emphasis: #ffda6a;
+    --bs-warning-bg-subtle: #332701;
+    --bs-warning-border-subtle: #997404;
+    --bs-danger-text-emphasis: #ea868f;
+    --bs-danger-bg-subtle: #2c0b0e;
+    --bs-danger-border-subtle: #842029;
+    --bs-secondary-text-emphasis: #a7acb1;
+    --bs-secondary-bg-subtle: #161719;
+    --bs-secondary-border-subtle: #41464b;
 }
 
 body.dark-mode .loading {

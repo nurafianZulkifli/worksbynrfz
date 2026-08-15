@@ -7,6 +7,64 @@
         let allStations = [];
         let loadAttempts = 0;
         const maxRetries = 3;
+
+        // Map a station code prefix (e.g. "NS", "EW") to a line key
+        const LINE_PREFIX_MAP = {
+            NS: 'NSL', EW: 'EWL', CG: 'EWL', CC: 'CCL', CE: 'CCL',
+            DT: 'DTL', TE: 'TEL', NE: 'NEL', BP: 'BP', SE: 'SK', SW: 'SK', PE: 'PG', PW: 'PG'
+        };
+
+        // Official line colours, keyed the same way as LINE_PREFIX_MAP's values
+        const LINE_COLORS = {
+            NSL: '#c41e3a', EWL: '#009645', CCL: '#fa9e0d', DTL: '#005ec8',
+            TEL: '#926437', NEL: '#9d27b5', BP: '#708472', SK: '#708472', PG: '#708472'
+        };
+
+        // Render one or more station codes (e.g. ["NS1", "EW24"]) as a joined caplet,
+        // matching the interchange badge style used on the network map pages.
+        // `labels` optionally overrides the displayed text per code (e.g. show "CCL" while colouring by "CC").
+        function renderCodeCaplet(codes, labels) {
+            if (!codes || codes.length === 0) return '';
+            return `<span style="display: inline-flex; margin-right: 6px; vertical-align: middle;">${codes.map((code, i) => {
+                const prefix = (code.match(/[A-Za-z]+/) || [''])[0].toUpperCase();
+                const lineKey = LINE_PREFIX_MAP[prefix];
+                const bg = LINE_COLORS[lineKey] || '#666666';
+                const color = lineKey === 'CCL' ? '#000' : '#fff';
+                const isFirst = i === 0;
+                const isLast = i === codes.length - 1;
+                const radius = codes.length === 1
+                    ? '13.6px / 19.2px'
+                    : isFirst ? '13.6px 0 0 13.6px / 19.2px 0 0 19.2px'
+                    : isLast ? '0 13.6px 13.6px 0 / 0 19.2px 19.2px 0'
+                    : '0';
+                const borderStyle = codes.length === 1
+                    ? 'border: 2px solid #fff;'
+                    : isFirst ? 'border: 2px solid #fff; border-right: none;'
+                    : isLast ? 'border: 2px solid #fff; border-left: none;'
+                    : 'border-top: 2px solid #fff; border-bottom: 2px solid #fff;';
+                // Always display with a space between the line prefix and number (e.g. "NE 1"),
+                // regardless of whether the source data has "NE1" or "NE 1" — display-only, safe across re-scrapes.
+                const label = (labels && labels[i]) || code.replace(/^([A-Za-z]+)\s*(\d+)$/, '$1 $2');
+                return `<span style="background: ${bg}; color: ${color}; font-weight: bold; border-radius: ${radius}; padding: 4px 7px; font-size: 0.7em; letter-spacing: 0.5px; ${borderStyle}">${label}</span>`;
+            }).join('')}</span>`;
+        }
+
+        // Extracts leading station codes from a direction description (e.g. "To NS1 EW24 Jurong East")
+        // and re-renders them as caplets; Circle Line loop directions use the CCL caplet instead.
+        function formatDirectionDescription(description) {
+            const cwMatch = description.match(/^(CLOCKWISE|ANTICLOCKWISE)\b(.*)$/i);
+            if (cwMatch) {
+                const [, word, rest] = cwMatch;
+                const label = word[0].toUpperCase() + word.slice(1).toLowerCase();
+                return `${renderCodeCaplet(['CC'], ['CCL'])} ${label}${rest}`;
+            }
+
+            const match = description.match(/^(To\s+)((?:[A-Za-z]{2}\s*\d+\s*)+)(.+)$/);
+            if (!match) return description;
+            const [, prefix, codesStr, name] = match;
+            const codes = (codesStr.match(/[A-Za-z]{2}\s*\d+/g) || []).map(c => c.replace(/\s+/g, ''));
+            return `${prefix}${renderCodeCaplet(codes)}${name}`;
+        }
         
         // Load all data on page load
         async function loadData() {
@@ -167,17 +225,26 @@
         // Display SMRT MRT data
         function displaySmrtData(stationData) {
             const code = smrtStationCodes[stationData.station];
-            document.getElementById('stationTitle').textContent = code ? `${code} ${stationData.station}` : stationData.station;
+            const titleCodes = (code || '').split(/[\/\s]+/).filter(c => /^[A-Za-z]{2}\d+$/.test(c));
+            document.getElementById('stationTitle').innerHTML = titleCodes.length > 0
+                ? `${renderCodeCaplet(titleCodes)} ${stationData.station}`
+                : stationData.station;
             document.getElementById('stationSubtitle').textContent = `Last updated: ${new Date(stationData.scraped_at).toLocaleDateString('en-SG')}`;
 
             const directionsContainer = document.getElementById('directionsContainer');
 
-            if (stationData.directions.length === 0) {
+            // "To CG2 Changi Airport" is only a valid direction from Tanah Merah (EW4); the SMRT site
+            // erroneously repeats this section on other EWL station pages, so filter it out elsewhere.
+            const directions = stationData.station_slug === 'tanah-merah'
+                ? stationData.directions
+                : stationData.directions.filter(d => !/changi airport/i.test(d.description));
+
+            if (directions.length === 0) {
                 directionsContainer.innerHTML = '<div class="no-data">No train timing data available for this station.</div>';
                 return;
             }
 
-            stationData.directions.forEach((direction) => {
+            directions.forEach((direction) => {
                 const card = createSmrtDirectionCard(direction);
                 directionsContainer.appendChild(card);
             });
@@ -185,7 +252,11 @@
 
         // Display SBS LRT data
         function displaySbsData(stationData) {
-            document.getElementById('stationTitle').textContent = stationData.station;
+            // SBS station strings look like "DT1 Bukit Panjang", "DT 1 Bukit Panjang" or "East Loop"
+            const codeMatch = stationData.station.match(/^([A-Za-z]{2})\s*(\d+)\s+(.+)$/);
+            document.getElementById('stationTitle').innerHTML = codeMatch
+                ? `${renderCodeCaplet([`${codeMatch[1]}${codeMatch[2]}`])} ${codeMatch[3]}`
+                : stationData.station;
             
             // Get the latest scraped_at timestamp from directions
             const latestTimestamp = stationData.directions.length > 0 
@@ -214,7 +285,7 @@
 
             const header = document.createElement('div');
             header.className = 'direction-header';
-            header.textContent = direction.description;
+            header.innerHTML = formatDirectionDescription(direction.description);
             card.appendChild(header);
 
             const dayKeys = ['monday_to_friday', 'saturday', 'sunday_public_holidays', 'eve_of_public_holidays'];
@@ -284,7 +355,7 @@
 
             const header = document.createElement('div');
             header.className = 'direction-header';
-            header.textContent = direction.description;
+            header.innerHTML = formatDirectionDescription(direction.description);
             card.appendChild(header);
 
             const dayKeys = ['monday_to_friday', 'saturday', 'sunday_public_holidays','eve_of_public_holidays'];

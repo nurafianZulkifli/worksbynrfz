@@ -70,3 +70,26 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+// ****************************
+// :: Train Schedules Settings
+// ****************************
+document.addEventListener('DOMContentLoaded', () => {
+    const autoRefreshSelect = document.getElementById('autoRefreshInterval');
+    
+    if (autoRefreshSelect) {
+        // Load saved preference
+        const saved = localStorage.getItem('trainSchedulesAutoRefresh');
+        if (saved) {
+            autoRefreshSelect.value = saved;
+        } else {
+            autoRefreshSelect.value = '30000'; // Default 30s
+        }
+        
+        // Save preference on change
+        autoRefreshSelect.addEventListener('change', (e) => {
+            localStorage.setItem('trainSchedulesAutoRefresh', e.target.value);
+            console.log('[RailBuddy Settings] Auto-refresh interval set to:', e.target.value);
+        });
+    }
+});
