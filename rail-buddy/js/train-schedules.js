@@ -118,6 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // ── GTFS static schedule (stop_times.txt) — processed dynamically per station/trip when the API returns it ──
   let gtfsByStation = new Map(); // stop_id -> sorted [{ tripId, stopSequence, arrivalTime, departureTime, arrivalMinutes, departureMinutes }]
   let gtfsByTrip = new Map();    // trip_id -> sorted [{ stopId, stopSequence, arrivalTime, departureTime }]
+  let gtfsByStationCode = new Map(); // base station code (e.g. "CC6", stripped of "_A"/"_B" platform suffix) -> merged entries
 
   // GTFS times can exceed 24:00 (e.g. "25:10:00") for post-midnight service, so parse as raw minutes
   function gtfsTimeToMinutes(hhmmss) {
@@ -130,6 +131,7 @@ document.addEventListener('DOMContentLoaded', function() {
   function processGTFSStopTimes(stopTimes) {
     gtfsByStation = new Map();
     gtfsByTrip = new Map();
+    gtfsByStationCode = new Map();
     if (!Array.isArray(stopTimes)) return;
 
     stopTimes.forEach(st => {
@@ -152,15 +154,25 @@ document.addEventListener('DOMContentLoaded', function() {
     gtfsByStation.forEach(list => list.sort((a, b) => (a.departureMinutes ?? 0) - (b.departureMinutes ?? 0)));
     gtfsByTrip.forEach(list => list.sort((a, b) => (a.stopSequence ?? 0) - (b.stopSequence ?? 0)));
 
-    console.log(`[GTFS Static] Processed ${stopTimes.length} stop times into ${gtfsByStation.size} stations, ${gtfsByTrip.size} trips`);
+    // GTFS stop_ids carry a platform suffix (e.g. "CC6_B") that never matches our plain station codes,
+    // so also index everything under the base code with the suffix stripped.
+    gtfsByStation.forEach((entries, stopId) => {
+      const baseCode = stopId.replace(/_[A-Za-z0-9]+$/, '').toUpperCase();
+      if (!gtfsByStationCode.has(baseCode)) gtfsByStationCode.set(baseCode, []);
+      gtfsByStationCode.get(baseCode).push(...entries);
+    });
+    gtfsByStationCode.forEach(list => list.sort((a, b) => (a.departureMinutes ?? 0) - (b.departureMinutes ?? 0)));
+
+    console.log(`[GTFS Static] Processed ${stopTimes.length} stop times into ${gtfsByStation.size} stations (${gtfsByStationCode.size} base codes), ${gtfsByTrip.size} trips`);
   }
 
-  // Best-effort match: station codes (e.g. "NS1/EW24") tried directly against GTFS stop_id keys
+  // Best-effort match: station codes (e.g. "NS1/EW24") tried against GTFS stop_id keys and base codes
   function getStaticDeparturesForStation(station) {
     if (gtfsByStation.size === 0) return [];
     const codes = (station.code || '').split(/[\/\s]+/).filter(Boolean);
     for (const code of codes) {
-      const match = gtfsByStation.get(code) || gtfsByStation.get(code.toUpperCase()) || gtfsByStation.get(code.toLowerCase());
+      const upper = code.toUpperCase();
+      const match = gtfsByStation.get(code) || gtfsByStation.get(upper) || gtfsByStation.get(code.toLowerCase()) || gtfsByStationCode.get(upper);
       if (match && match.length > 0) return match;
     }
     return [];
@@ -186,7 +198,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     return stationDepartures.some(dep => {
       const finalStopId = getTripFinalStopId(dep.tripId);
-      return finalStopId && destCodes.includes(finalStopId.toUpperCase());
+      if (!finalStopId) return false;
+      const finalBaseCode = finalStopId.replace(/_[A-Za-z0-9]+$/, '').toUpperCase();
+      return destCodes.includes(finalBaseCode);
     });
   }
 
