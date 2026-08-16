@@ -210,8 +210,21 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!departures || departures.length === 0) return '';
     const now = new Date();
     const nowMinutes = now.getHours() * 60 + now.getMinutes();
-    const upcoming = departures.filter(d => d.departureMinutes !== null && d.departureMinutes >= nowMinutes);
-    const rows = (upcoming.length > 0 ? upcoming : departures).slice(0, 6).map(d => {
+    const todayType = getTodayServiceType();
+    
+    // Filter departures to only those that match today's day type
+    const relevantDepartures = departures.filter(d => {
+      // Check if trip has day type indicator (WD/WE/PH)
+      const dayTypeMatch = d.tripId.match(/_(WD|WE|PH)_/);
+      if (dayTypeMatch) {
+        const tripDayType = dayTypeMatch[1];
+        return tripDayType === todayType; // Only show if day type matches today
+      }
+      return true; // If no day type in trip ID, include it
+    });
+    
+    const upcoming = relevantDepartures.filter(d => d.departureMinutes !== null && d.departureMinutes >= nowMinutes);
+    const rows = (upcoming.length > 0 ? upcoming : relevantDepartures).slice(0, 6).map(d => {
       const mins = d.departureMinutes % (24 * 60);
       const hh = String(Math.floor(mins / 60)).padStart(2, '0');
       const mm = String(mins % 60).padStart(2, '0');
