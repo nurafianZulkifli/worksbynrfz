@@ -427,6 +427,7 @@ function parseStopTimes(csvContent) {
   const arrivalTimeIndex = header.indexOf('arrival_time');
   const departureTimeIndex = header.indexOf('departure_time');
   const stopSequenceIndex = header.indexOf('stop_sequence');
+  const stopHeadsignIndex = header.indexOf('stop_headsign');
 
   if (tripIdIndex < 0 || stopIdIndex < 0 || arrivalTimeIndex < 0 || departureTimeIndex < 0) {
     console.error('[GTFS] Missing required columns. Found:', header);
@@ -455,7 +456,8 @@ function parseStopTimes(csvContent) {
         stop_id: fields[stopIdIndex] || null,
         arrival_time: fields[arrivalTimeIndex] || null,
         departure_time: fields[departureTimeIndex] || null,
-        stop_sequence: stopSequenceIndex >= 0 ? parseInt(fields[stopSequenceIndex], 10) : null
+        stop_sequence: stopSequenceIndex >= 0 ? parseInt(fields[stopSequenceIndex], 10) : null,
+        stop_headsign: stopHeadsignIndex >= 0 ? (fields[stopHeadsignIndex] || null) : null
       });
     } catch (e) {
       console.warn(`[GTFS] Error parsing line ${i}:`, e.message);
