@@ -167,16 +167,27 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log(`[GTFS Static] Processed ${stopTimes.length} stop times into ${gtfsByStation.size} stations (${gtfsByStationCode.size} base codes), ${gtfsByTrip.size} trips`);
   }
 
-  // Best-effort match: station codes (e.g. "NS1/EW24") tried against GTFS stop_id keys and base codes
+  // Best-effort match: station codes (e.g. "NS1/EW24") tried against GTFS stop_id keys and base codes.
+  // Source data can have a stray space inside a code (e.g. "CC 33"), so extract via regex rather than a naive split.
+  // Interchanges have one code per line (e.g. "NS27/CC33/TE20") — merge every line's departures rather
+  // than stopping at the first code that matches, or the other lines' trains would never show up.
   function getStaticDeparturesForStation(station) {
     if (gtfsByStation.size === 0) return [];
-    const codes = (station.code || '').split(/[\/\s]+/).filter(Boolean);
+    const codes = ((station.code || '').match(/[A-Za-z]{2}\s*\d+/g) || []).map(c => c.replace(/\s+/g, ''));
+    const seen = new Set();
+    const merged = [];
     for (const code of codes) {
       const upper = code.toUpperCase();
       const match = gtfsByStation.get(code) || gtfsByStation.get(upper) || gtfsByStation.get(code.toLowerCase()) || gtfsByStationCode.get(upper);
-      if (match && match.length > 0) return match;
+      (match || []).forEach(dep => {
+        const key = `${dep.tripId}|${dep.stopId}|${dep.stopSequence}`;
+        if (!seen.has(key)) {
+          seen.add(key);
+          merged.push(dep);
+        }
+      });
     }
-    return [];
+    return merged.sort((a, b) => (a.departureMinutes ?? 0) - (b.departureMinutes ?? 0));
   }
 
   // The last stop of a trip (by stop_sequence) is treated as that trip's destination
@@ -205,47 +216,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Renders the next few scheduled departures pulled from the static GTFS timetable
-  function renderStaticDeparturesCard(departures) {
-    if (!departures || departures.length === 0) return '';
-    const now = new Date();
-    const nowMinutes = now.getHours() * 60 + now.getMinutes();
-    const todayType = getTodayServiceType();
-    
-    // Filter departures to only those that match today's day type
-    const relevantDepartures = departures.filter(d => {
-      // Check if trip has day type indicator (WD/WE/PH)
-      const dayTypeMatch = d.tripId.match(/_(WD|WE|PH)_/);
-      if (dayTypeMatch) {
-        const tripDayType = dayTypeMatch[1];
-        return tripDayType === todayType; // Only show if day type matches today
-      }
-      return true; // If no day type in trip ID, include it
-    });
-    
-    const upcoming = relevantDepartures.filter(d => d.departureMinutes !== null && d.departureMinutes >= nowMinutes);
-    const rows = (upcoming.length > 0 ? upcoming : relevantDepartures).slice(0, 6).map(d => {
-      const mins = d.departureMinutes % (24 * 60);
-      const hh = String(Math.floor(mins / 60)).padStart(2, '0');
-      const mm = String(mins % 60).padStart(2, '0');
-      return `
-        <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--border-color, #eee);">
-          <span style="font-family: monospace; font-weight: 600;">${hh}:${mm}</span>
-          <span style="font-size: 0.8em; color: var(--text-secondary, #999);">Trip ${d.tripId}</span>
-        </div>
-      `;
-    }).join('');
-
-    return `
-      <div style="margin-top: 1em; border: 1px solid var(--border-color, #e0e0e0); border-radius: 8px; padding: 10px 14px;">
-        <div style="font-weight: 700; font-size: 0.85em; margin-bottom: 6px;">
-          <i class="fa-solid fa-table-list"></i> Scheduled Departures
-        </div>
-        ${rows}
-      </div>
-    `;
-  }
-
   // ── Station View (first/last train timings + live status per station) ──
   let smrtFtLtData = [];
   let sbsFtLtData = [];
@@ -253,8 +223,6 @@ document.addEventListener('DOMContentLoaded', function() {
   let stationIndex = []; // [{ name, code, source, directions }]
   let filteredStationIndex = [];
   let selectedStation = null;
-  let currentBoardStation = null;
-  let currentGtfsDirections = [];
 
   // Map a station code prefix (e.g. "NS", "EW") to a headway line key
   const LINE_PREFIX_MAP = {
@@ -305,6 +273,23 @@ document.addEventListener('DOMContentLoaded', function() {
       const label = (labels && labels[i]) || code.replace(/^([A-Za-z]+)\s*(\d+)$/, '$1 $2');
       return `<span style="background: ${bg}; color: ${color}; font-weight: bold; border-radius: ${radius}; padding: 4px 7px; font-size: 0.7em; letter-spacing: 0.5px; ${borderStyle}">${label}</span>`;
     }).join('')}</span>`;
+  }
+
+  // Renders a direction description like "To NS1 EW24 Jurong East" with the station codes
+  // swapped for their coloured caplets, e.g. "CLOCKWISE via Promenade" gets the CCL caplet.
+  function formatDirectionDescription(description) {
+    const cwMatch = description.match(/^(CLOCKWISE|ANTICLOCKWISE)\b(.*)$/i);
+    if (cwMatch) {
+      const [, word, rest] = cwMatch;
+      const label = word[0].toUpperCase() + word.slice(1).toLowerCase();
+      return `${renderCodeCaplet(['CC'], ['CCL'])} ${label}${rest}`;
+    }
+
+    const match = description.match(/^(To\s+)((?:[A-Za-z]{2}\s*\d+\s*)+)(.+)$/);
+    if (!match) return description;
+    const [, prefix, codesStr, name] = match;
+    const codes = (codesStr.match(/[A-Za-z]{2}\s*\d+/g) || []).map(c => c.replace(/\s+/g, ''));
+    return `${prefix}${renderCodeCaplet(codes)}${name}`;
   }
 
   async function loadStationData() {
@@ -409,50 +394,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Reduces a direction description down to just the destination name for board display,
-  // e.g. "To NS1 EW24 Jurong East" -> "JURONG EAST", "CLOCKWISE via Promenade - Ends at Dhoby Ghaut" -> "DHOBY GHAUT"
-  function extractDestinationLabel(description) {
-    const endsAtMatch = description.match(/Ends at\s+(.+)$/i);
-    if (endsAtMatch) return endsAtMatch[1].toUpperCase();
-
-    const loopMatch = description.match(/^(CLOCKWISE|ANTICLOCKWISE)\b/i);
-    if (loopMatch) return loopMatch[1].toUpperCase();
-
-    const toMatch = description.match(/^To\s+(?:[A-Za-z]{2}\s*\d+\s*)+(.+)$/i);
-    if (toMatch) return toMatch[1].toUpperCase();
-
-    return description.toUpperCase();
-  }
-
-  // Resolve a rider-facing destination label for one real GTFS departure — prefers the trip's own
-  // stop_headsign (e.g. "Clockwise (via Promenade)"), falling back to the matching direction's
-  // description when the headsign column is blank for that trip (common on non-loop lines).
-  function getDepartureLabel(dep, gtfsDirections, station) {
-    if (dep.headsign) return extractDestinationLabel(dep.headsign);
-
-    const finalStopId = getTripFinalStopId(dep.tripId);
-    if (finalStopId) {
-      const finalBaseCode = finalStopId.replace(/_[A-Za-z0-9]+$/, '').toUpperCase();
-
-      // Trip terminates at the very station being viewed (e.g. a NB run ending at its own terminus)
-      const stationCodes = (station.code || '').split(/[\/\s]+/).map(c => c.toUpperCase());
-      if (stationCodes.includes(finalBaseCode)) return station.name.toUpperCase();
-
-      const match = gtfsDirections.find(d => {
-        const destCodes = (d.description.match(/[A-Za-z]{2}\s*\d+/g) || []).map(c => c.replace(/\s+/g, '').toUpperCase());
-        return destCodes.includes(finalBaseCode);
-      });
-      if (match) return extractDestinationLabel(match.description);
-    }
-
-    // Some loop trip families ship without a stop_headsign, but the trip_id still encodes direction
-    // (e.g. "CCL_Anticlockwise_WD_Peak_81") — underscores are word chars, so avoid \b boundaries here.
-    if (/anticlockwise/i.test(dep.tripId)) return 'ANTICLOCKWISE';
-    if (/clockwise/i.test(dep.tripId)) return 'CLOCKWISE';
-
-    return 'TRAIN';
-  }
-
   // Singapore public holidays in 2026 (MM-DD format)
   const SG_PUBLIC_HOLIDAYS = new Set([
     '01-01', // New Year's Day
@@ -547,53 +488,147 @@ document.addEventListener('DOMContentLoaded', function() {
       return { label: dayLabel };
     }
   }
-  // Renders a retro split-flap departure board (styled after MRTracker's live board) from the
-  // real GTFS static schedule for this station — actual scheduled departure times, not estimates.
-  function renderDepartureBoard(station, gtfsDirections) {
+
+  // Calculate "Arriving in X mins" label based on a scheduled time (HH:MM) vs now. Handles midnight wraparound.
+  function calculateArrivingLabel(arrivalTimeHHMM) {
+    if (!arrivalTimeHHMM || !arrivalTimeHHMM.includes(':')) {
+      return 'No ETA';
+    }
+    try {
+      const now = new Date();
+      const nowSeconds = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
+      const [arrivalHour, arrivalMinute] = arrivalTimeHHMM.split(':').map(Number);
+      if (Number.isNaN(arrivalHour) || Number.isNaN(arrivalMinute)) {
+        return 'No ETA';
+      }
+      const arrivalSeconds = arrivalHour * 3600 + arrivalMinute * 60;
+      let secondsUntil = arrivalSeconds - nowSeconds;
+      // Only wrap forward to the next day if solidly in the past (>12h), not just a same-day miss
+      if (secondsUntil < -43200) secondsUntil += 24 * 3600;
+      if (secondsUntil <= 0) return 'Arriving now';
+      const roundedMinutes = Math.max(1, Math.ceil(secondsUntil / 60));
+      const minLabel = roundedMinutes === 1 ? 'min' : 'mins';
+      return `Arriving in ${roundedMinutes} ${minLabel}`;
+    } catch (e) {
+      console.warn('[ETA] Failed to parse arrival time:', arrivalTimeHHMM, e);
+      return 'No ETA';
+    }
+  }
+
+  function hasTrainTimePassed(trainTimeHHMM) {
+    const now = new Date();
+    const nowSeconds = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
+    const [h, m] = trainTimeHHMM.split(':').map(Number);
+    if (Number.isNaN(h) || Number.isNaN(m)) return false;
+    let secondsUntil = (h * 3600 + m * 60) - nowSeconds;
+    if (secondsUntil < -43200) secondsUntil += 24 * 3600;
+    return secondsUntil <= 0;
+  }
+
+  // Real GTFS departures for one direction at this station — matched by the trip's final stop_id
+  // (or clockwise/anticlockwise trip_id tag for loop lines) and filtered to today's WD/WE/PH service day.
+  function getDirectionDepartures(station, direction) {
     const now = new Date();
     const nowMin = now.getHours() * 60 + now.getMinutes();
+    const todayType = getTodayServiceType();
+    const isLoop = /^(CLOCKWISE|ANTICLOCKWISE)\b/i.test(direction.description);
+    const wantsAnticlockwise = /^ANTICLOCKWISE\b/i.test(direction.description);
+    const destCodes = (direction.description.match(/[A-Za-z]{2}\s*\d+/g) || []).map(c => c.replace(/\s+/g, '').toUpperCase());
 
-    const departures = getStaticDeparturesForStation(station);
-    const entries = departures
-      .filter(dep => dep.departureMinutes !== null)
-      .map(dep => {
-        // Wrap negative diffs (train already departed today) forward to the next day's occurrence
-        let etaMinutes = dep.departureMinutes - nowMin;
-        if (etaMinutes < 0) etaMinutes += 1440;
-        const servicePeriod = parseServicePeriod(dep.tripId);
-        return {
-          label: getDepartureLabel(dep, gtfsDirections, station),
-          etaMinutes,
-          servicePeriod: servicePeriod ? servicePeriod.label : null
-        };
+    const matches = getStaticDeparturesForStation(station).filter(dep => {
+      const dayMatch = dep.tripId.match(/_(WD|WE|PH)_/);
+      if (dayMatch && dayMatch[1] !== todayType) return false;
+
+      if (isLoop) {
+        return wantsAnticlockwise ? /anticlockwise/i.test(dep.tripId) : (/clockwise/i.test(dep.tripId) && !/anticlockwise/i.test(dep.tripId));
+      }
+
+      const finalStopId = getTripFinalStopId(dep.tripId);
+      if (!finalStopId) return false;
+      const finalBaseCode = finalStopId.replace(/_[A-Za-z0-9]+$/, '').toUpperCase();
+      return destCodes.includes(finalBaseCode);
+    });
+
+    return matches
+      .filter(d => d.departureMinutes !== null)
+      .map(d => {
+        let etaMinutes = d.departureMinutes - nowMin;
+        if (etaMinutes < -720) etaMinutes += 1440; // wrap forward only if solidly in the past (>12h)
+        return { ...d, etaMinutes };
       })
-      .sort((a, b) => a.etaMinutes - b.etaMinutes)
-      .slice(0, 8);
+      .filter(d => d.etaMinutes >= -1)
+      .sort((a, b) => a.etaMinutes - b.etaMinutes);
+  }
 
-    const rowsHtml = entries.length > 0
-      ? entries.map((e, i) => `
-          <div class="board-row">
-            <span class="board-num">${i + 1}</span>
-            <span class="board-dest">${e.label}</span>
-            <span class="board-eta">${e.etaMinutes <= 0 ? 'ARR' : '~' + e.etaMinutes + ' MIN'}</span>
-            ${e.servicePeriod ? `<span class="board-period">${e.servicePeriod}</span>` : ''}
-          </div>
-        `).join('')
-      : '<div class="board-row board-empty"><span class="board-dest">NO UPCOMING DEPARTURES</span></div>';
+  // Renders one direction as a card: destination header, an "Estimated arrival" chip showing
+  // the next real GTFS scheduled time, and pill chips for the next few upcoming departures.
+  function renderStationDirectionCard(direction, station) {
+    const departures = getDirectionDepartures(station, direction).slice(0, 4);
+    const servicePeriod = departures.length > 0 ? parseServicePeriod(departures[0].tripId) : null;
+
+    const upcomingTrains = departures.map(d => {
+      const mins = ((d.departureMinutes % 1440) + 1440) % 1440;
+      return `${String(Math.floor(mins / 60)).padStart(2, '0')}:${String(mins % 60).padStart(2, '0')}`;
+    });
+
+    const chipColor = upcomingTrains.length > 0 ? '#4CAF50' : '#999999';
+    const nextTrainLabel = upcomingTrains.length > 0 ? calculateArrivingLabel(upcomingTrains[0]) : 'No schedule data for today';
+    const periodBadge = servicePeriod
+      ? `<span style="font-size: 0.7em; font-weight: 600; color: var(--text-secondary, #999); margin-left: 6px;">${servicePeriod.label}</span>`
+      : '';
+
+    const upcomingTrainsHtml = upcomingTrains.length > 0
+      ? `<div class="upcoming-trains-list" style="display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap;">${upcomingTrains.map(time => `<div class="train-time-chip" data-time="${time}">${time}</div>`).join('')}</div>`
+      : '';
+
+    const nextTrainChip = `
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <span style="font-size: 0.8em; color: var(--text-secondary, #999);">Estimated arrival</span>
+        <span class="eta-label" data-train-time="${upcomingTrains.length > 0 ? upcomingTrains[0] : ''}" style="font-size: 0.85em; font-weight: 700; color: ${chipColor}; background: ${chipColor}20; padding: 3px 10px; border-radius: 12px;">
+          ${nextTrainLabel}
+        </span>
+      </div>
+      ${upcomingTrainsHtml}
+    `;
 
     return `
-      <div class="departure-board">
-        <div class="board-rows">${rowsHtml}</div>
-        <div class="board-clock" id="boardClock"></div>
+      <div class="direction-card" data-upcoming-trains='${JSON.stringify(upcomingTrains)}'>
+        <div style="font-weight: 700; margin-bottom: 8px;"><i class="fa-kit fa-lta-to-right"></i> ${formatDirectionDescription(direction.description)}${periodBadge}</div>
+        ${nextTrainChip}
       </div>
-      <div class="board-legend">
-        <span class="legend-dest">destination</span> &middot; <span class="legend-eta">~ schedule-estimated</span> &middot; <span class="legend-period">service period</span> &middot; refreshes automatically
+    `;
+  }
+
+  // Schedule data includes short-turn/variant destinations (e.g. NS19, NS16, NS7 or a loop line's
+  // "Ends at X" short services) — only the full-line termini (or a loop's "Full Loop" entry) render
+  // as primary direction cards, the rest collapse into "Service Variants".
+  const NS_MAIN_TERMINI = new Set(['To NS1 EW24 Jurong East', 'To NS28 Marina South Pier']);
+  function isVariantDirection(description) {
+    if (/^To NS\d+/.test(description)) return !NS_MAIN_TERMINI.has(description);
+    if (/^(CLOCKWISE|ANTICLOCKWISE)\b/i.test(description)) return /Ends at/i.test(description);
+    return false;
+  }
+
+  function renderServiceVariantsCard(variants) {
+    if (!variants || variants.length === 0) return '';
+    const rows = variants.map(d => `
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border-color, #eee);">
+        <span>${formatDirectionDescription(d.description)}</span>
+      </div>
+    `).join('');
+    return `
+      <div style="border: 1px dashed var(--border-color, #e0e0e0); border-radius: 8px; padding: 12px 16px; margin-bottom: 12px; background: var(--card-bg-alt, #f9f9f9);">
+        <div style="font-weight: 700; margin-bottom: 4px; font-size: 0.9em; color: var(--text-secondary, #666);"><i class="fa-solid fa-code-branch"></i> Service Variants</div>
+        <div style="font-size: 0.75em; color: var(--text-secondary, #999); margin-bottom: 8px;">
+          Short trips that only run during specific periods (e.g. late nights) — refer to station display.
+        </div>
+        ${rows}
       </div>
     `;
   }
 
   function renderStationPanel(station) {
-    const titleCodes = (station.code || '').split(/[\/\s]+/).filter(c => /^[A-Za-z]{2}\d+$/.test(c));
+    const titleCodes = ((station.code || '').match(/[A-Za-z]{2}\s*\d+/g) || []).map(c => c.replace(/\s+/g, ''));
     stationTitle.innerHTML = titleCodes.length > 0
       ? `${renderCodeCaplet(titleCodes)} ${station.name}`
       : station.name;
@@ -612,20 +647,20 @@ document.addEventListener('DOMContentLoaded', function() {
         <div class="alert alert-success" role="alert">
           <i class="fa-solid fa-circle-check"></i> <strong>No reported delays</strong>
         </div>
-        ${staticDepartures.length > 0 ? renderStaticDeparturesCard(staticDepartures) : renderHeadwayEstimates(station.lineKeys)}
+        ${staticDepartures.length > 0 ? '' : renderHeadwayEstimates(station.lineKeys)}
       `;
     }
 
-    // Only include a direction in the board when it has real backing in the parsed GTFS stop_times data
+    // Only include a direction when it has real backing in the parsed GTFS stop_times data
     const gtfsDirections = station.directions.filter(d => directionHasGTFSMatch(station, d));
-    currentBoardStation = station;
-    currentGtfsDirections = gtfsDirections;
+    const mainDirections = gtfsDirections.filter(d => !isVariantDirection(d.description));
+    const variantDirections = gtfsDirections.filter(d => isVariantDirection(d.description));
 
     stationDirections.innerHTML = gtfsDirections.length > 0
-      ? renderDepartureBoard(station, gtfsDirections)
+      ? mainDirections.map(d => renderStationDirectionCard(d, station)).join('') + renderServiceVariantsCard(variantDirections)
       : '<p style="color: var(--text-secondary, #666);">No GTFS schedule data available for this station right now.</p>';
-    
-    // Update the board's clock immediately after rendering
+
+    // Update ETA labels immediately after rendering
     updateETALabels();
   }
 
@@ -997,23 +1032,40 @@ document.addEventListener('DOMContentLoaded', function() {
     displaySchedules();
   }
 
-  // Real-time updater — runs every second. Ticks the departure board's clock, and
-  // re-renders the board once a minute so the "~N MIN" countdowns stay accurate.
-  let lastBoardMinute = null;
+  // Real-time ETA updater — runs every second. Removes train times that have passed and
+  // advances each card's "Estimated arrival" chip to the next remaining upcoming train.
   function updateETALabels() {
-    const clockEl = document.getElementById('boardClock');
-    if (!clockEl) return;
+    const cards = document.querySelectorAll('.direction-card');
+    if (cards.length === 0) return;
 
-    const now = new Date();
-    clockEl.textContent = now.toLocaleTimeString('en-SG', {
-      timeZone: 'Asia/Singapore', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
-    }) + ' SGT';
+    cards.forEach(card => {
+      const etaLabel = card.querySelector('.eta-label');
+      let upcomingTrains = [];
+      try {
+        upcomingTrains = JSON.parse(card.getAttribute('data-upcoming-trains') || '[]');
+      } catch (e) {
+        upcomingTrains = [];
+      }
 
-    const currentMinute = now.getHours() * 60 + now.getMinutes();
-    if (currentMinute !== lastBoardMinute && currentBoardStation && currentGtfsDirections.length > 0) {
-      lastBoardMinute = currentMinute;
-      stationDirections.innerHTML = renderDepartureBoard(currentBoardStation, currentGtfsDirections);
-    }
+      // Drop any times that have passed, removing their chip from the DOM too
+      const remaining = upcomingTrains.filter(time => !hasTrainTimePassed(time));
+      if (remaining.length !== upcomingTrains.length) {
+        const removed = upcomingTrains.filter(time => !remaining.includes(time));
+        removed.forEach(time => {
+          const chip = card.querySelector(`.train-time-chip[data-time="${time}"]`);
+          if (chip) chip.remove();
+        });
+        card.setAttribute('data-upcoming-trains', JSON.stringify(remaining));
+      }
+
+      if (etaLabel) {
+        const nextTime = remaining.length > 0 ? remaining[0] : '';
+        if (etaLabel.getAttribute('data-train-time') !== nextTime) {
+          etaLabel.setAttribute('data-train-time', nextTime);
+        }
+        etaLabel.textContent = nextTime ? calculateArrivingLabel(nextTime) : 'No ETA';
+      }
+    });
   }
 
   // Polling functions
