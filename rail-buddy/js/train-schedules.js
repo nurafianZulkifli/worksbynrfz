@@ -445,9 +445,8 @@ document.addEventListener('DOMContentLoaded', function() {
   // 1. CCL style: "CCL_Anticlockwise_WD_Peak_81" → { label: "Weekday Peak" }
   // 2. NS/EW style: "NSL_NB_WE_136" → { label: "Weekend" }
   function parseServicePeriod(tripId) {
-    // Try format 1: _([A-Z]{2})_(Peak|OffPeak)_  (e.g., CCL line with peak info)
-    // This catches WD_Peak, WE_OffPeak, etc.
-    let match = tripId.match(/_([WPE]{2}|PH)_(Peak|OffPeak)_/);
+    // Try format 1: _(WD|WE|PH)_(Peak|OffPeak)_ (e.g., CCL line with peak info)
+    let match = tripId.match(/_(WD|WE|PH)_(Peak|OffPeak)_/);
     if (match) {
       const dayType = match[1]; // WD, WE, PH
       const peakType = match[2]; // Peak, OffPeak
@@ -456,7 +455,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Try format 2: _(WD|WE|PH)_ (e.g., NS/EW line without peak info)
-    // This catches _WE_, _WD_, _PH_ but not _NB_, _SB_, etc.
     match = tripId.match(/_(WD|WE|PH)_/);
     if (match) {
       const dayType = match[1]; // WD, WE, PH
