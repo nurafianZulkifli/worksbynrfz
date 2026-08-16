@@ -471,12 +471,37 @@ document.addEventListener('DOMContentLoaded', function() {
     return 'WD'; // Monday-Friday
   }
 
-  // Extract service period info from trip_id, only return if it matches today
+  // Determine current time period (Peak/OffPeak) based on GTFS definitions
+  // Peak hours: Weekday 06:30-09:30 and 17:30-20:30; Weekend/Holiday: no peak hours
+  function getCurrentTimePeriod() {
+    const now = new Date();
+    const todayType = getTodayServiceType();
+    const minutesNow = now.getHours() * 60 + now.getMinutes();
+
+    // Only weekdays have peak hours
+    if (todayType !== 'WD') return 'OffPeak';
+
+    // Weekday peak hours
+    const MORNING_PEAK_START = 6 * 60 + 30;   // 06:30
+    const MORNING_PEAK_END = 9 * 60 + 30;     // 09:30
+    const EVENING_PEAK_START = 17 * 60 + 30;  // 17:30
+    const EVENING_PEAK_END = 20 * 60 + 30;    // 20:30
+
+    if ((minutesNow >= MORNING_PEAK_START && minutesNow <= MORNING_PEAK_END) ||
+        (minutesNow >= EVENING_PEAK_START && minutesNow <= EVENING_PEAK_END)) {
+      return 'Peak';
+    }
+
+    return 'OffPeak';
+  }
+
+  // Extract service period info from trip_id, only return if it matches today's time
   // Supports two GTFS formats:
-  // 1. CCL style: "CCL_Anticlockwise_WD_Peak_81" → { label: "Weekday Peak" } (if today is weekday)
-  // 2. NS/EW style: "NSL_NB_WE_136" → { label: "Weekend" } (if today is weekend)
+  // 1. CCL style: "CCL_Anticlockwise_WD_Peak_81" → check if current time is within peak hours
+  // 2. NS/EW style: "NSL_NB_WE_136" → always show for today's day type
   function parseServicePeriod(tripId) {
     const todayType = getTodayServiceType();
+    const currentTimePeriod = getCurrentTimePeriod();
 
     // Try format 1: _(WD|WE|PH)_(Peak|OffPeak)_
     let match = tripId.match(/_(WD|WE|PH)_(Peak|OffPeak)_/);
@@ -484,8 +509,14 @@ document.addEventListener('DOMContentLoaded', function() {
       const dayType = match[1]; // WD, WE, PH
       const peakType = match[2]; // Peak, OffPeak
 
-      // Only show label if it matches today's day type
+      // Only show label if day type matches today
       if (dayType !== todayType) return null;
+
+      // For weekday trips: check if peak type matches current time
+      if (dayType === 'WD' && peakType !== currentTimePeriod) return null;
+
+      // For weekend/holiday trips: don't filter by peak type (no time-based peak definition)
+      // Always show the label as-is from the trip ID
 
       const dayLabel = { WD: 'Weekday', WE: 'Weekend', PH: 'Holiday' }[dayType] || dayType;
       return { label: `${dayLabel} ${peakType}` };
