@@ -143,7 +143,8 @@ document.addEventListener('DOMContentLoaded', function() {
         arrivalTime: st.arrival_time,
         departureTime: st.departure_time,
         arrivalMinutes: gtfsTimeToMinutes(st.arrival_time),
-        departureMinutes: gtfsTimeToMinutes(st.departure_time)
+        departureMinutes: gtfsTimeToMinutes(st.departure_time),
+        headsign: st.stop_headsign || null
       };
       if (!gtfsByStation.has(entry.stopId)) gtfsByStation.set(entry.stopId, []);
       gtfsByStation.get(entry.stopId).push(entry);
@@ -239,6 +240,8 @@ document.addEventListener('DOMContentLoaded', function() {
   let stationIndex = []; // [{ name, code, source, directions }]
   let filteredStationIndex = [];
   let selectedStation = null;
+  let currentBoardStation = null;
+  let currentGtfsDirections = [];
 
   // Map a station code prefix (e.g. "NS", "EW") to a headway line key
   const LINE_PREFIX_MAP = {
@@ -289,24 +292,6 @@ document.addEventListener('DOMContentLoaded', function() {
       const label = (labels && labels[i]) || code.replace(/^([A-Za-z]+)\s*(\d+)$/, '$1 $2');
       return `<span style="background: ${bg}; color: ${color}; font-weight: bold; border-radius: ${radius}; padding: 4px 7px; font-size: 0.7em; letter-spacing: 0.5px; ${borderStyle}">${label}</span>`;
     }).join('')}</span>`;
-  }
-
-  // Extracts leading station codes from a direction description (e.g. "To NS1 EW24 Jurong East")
-  // and re-renders them as caplets, e.g. "To [NS1][EW24] Jurong East"
-  function formatDirectionDescription(description) {
-    // Circle Line loop directions have no station codes — use the CCL line caplet instead
-    const cwMatch = description.match(/^(CLOCKWISE|ANTICLOCKWISE)\b(.*)$/i);
-    if (cwMatch) {
-      const [, word, rest] = cwMatch;
-      const label = word[0].toUpperCase() + word.slice(1).toLowerCase();
-      return `${renderCodeCaplet(['CC'], ['CCL'])} ${label}${rest}`;
-    }
-
-    const match = description.match(/^(To\s+)((?:[A-Za-z]{2}\s*\d+\s*)+)(.+)$/);
-    if (!match) return description;
-    const [, prefix, codesStr, name] = match;
-    const codes = (codesStr.match(/[A-Za-z]{2}\s*\d+/g) || []).map(c => c.replace(/\s+/g, ''));
-    return `${prefix}${renderCodeCaplet(codes)}${name}`;
   }
 
   async function loadStationData() {
@@ -411,282 +396,85 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  const DAY_LABELS = {
-    monday_to_friday: 'Mon - Fri',
-    saturday: 'Saturday',
-    sunday_public_holidays: 'Sun / Holidays',
-    eve_of_public_holidays: 'Eve of Holidays'
-  };
+  // Reduces a direction description down to just the destination name for board display,
+  // e.g. "To NS1 EW24 Jurong East" -> "JURONG EAST", "CLOCKWISE via Promenade - Ends at Dhoby Ghaut" -> "DHOBY GHAUT"
+  function extractDestinationLabel(description) {
+    const endsAtMatch = description.match(/Ends at\s+(.+)$/i);
+    if (endsAtMatch) return endsAtMatch[1].toUpperCase();
 
-  // Map JS Date.getDay() to the matching first/last-train day key
-  function getTodayDayKey() {
-    const day = new Date().getDay(); // 0 = Sun ... 6 = Sat
-    if (day === 0) return 'sunday_public_holidays';
-    if (day === 6) return 'saturday';
-    return 'monday_to_friday';
+    const loopMatch = description.match(/^(CLOCKWISE|ANTICLOCKWISE)\b/i);
+    if (loopMatch) return loopMatch[1].toUpperCase();
+
+    const toMatch = description.match(/^To\s+(?:[A-Za-z]{2}\s*\d+\s*)+(.+)$/i);
+    if (toMatch) return toMatch[1].toUpperCase();
+
+    return description.toUpperCase();
   }
 
-  function parseHHMMToMinutes(hhmm) {
-    if (!hhmm || hhmm === '--') return null;
-    const [h, m] = hhmm.split(':').map(Number);
-    if (Number.isNaN(h) || Number.isNaN(m)) return null;
-    return h * 60 + m;
-  }
+  // Resolve a rider-facing destination label for one real GTFS departure — prefers the trip's own
+  // stop_headsign (e.g. "Clockwise (via Promenade)"), falling back to the matching direction's
+  // description when the headsign column is blank for that trip (common on non-loop lines).
+  function getDepartureLabel(dep, gtfsDirections, station) {
+    if (dep.headsign) return extractDestinationLabel(dep.headsign);
 
-  // Deterministic offset (in minutes, within one headway) derived from a direction's description —
-  // without this, every direction snaps to the same clock-aligned boundary and shows identical times.
-  function directionPhaseOffset(description, headwayMin) {
-    let hash = 0;
-    for (let i = 0; i < description.length; i++) {
-      hash = (hash * 31 + description.charCodeAt(i)) >>> 0;
-    }
-    return hash % Math.max(1, Math.round(headwayMin));
-  }
+    const finalStopId = getTripFinalStopId(dep.tripId);
+    if (finalStopId) {
+      const finalBaseCode = finalStopId.replace(/_[A-Za-z0-9]+$/, '').toUpperCase();
 
-  // Calculate "Arriving in X mins" label based on estimated arrival time (HH:MM format)
-  // and current time. Handles midnight wraparound.
-  // Examples: "Arriving in 3 mins", "Arriving in 1 min", "Arriving now"
-  function calculateArrivingLabel(arrivalTimeHHMM) {
-    if (!arrivalTimeHHMM || !arrivalTimeHHMM.includes(':')) {
-      return 'No ETA';
+      // Trip terminates at the very station being viewed (e.g. a NB run ending at its own terminus)
+      const stationCodes = (station.code || '').split(/[\/\s]+/).map(c => c.toUpperCase());
+      if (stationCodes.includes(finalBaseCode)) return station.name.toUpperCase();
+
+      const match = gtfsDirections.find(d => {
+        const destCodes = (d.description.match(/[A-Za-z]{2}\s*\d+/g) || []).map(c => c.replace(/\s+/g, '').toUpperCase());
+        return destCodes.includes(finalBaseCode);
+      });
+      if (match) return extractDestinationLabel(match.description);
     }
 
-    try {
-      const now = new Date();
-      const nowSeconds = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
-      
-      const [arrivalHour, arrivalMinute] = arrivalTimeHHMM.split(':').map(Number);
-      if (Number.isNaN(arrivalHour) || Number.isNaN(arrivalMinute)) {
-        return 'No ETA';
-      }
+    // Some loop trip families ship without a stop_headsign, but the trip_id still encodes direction
+    // (e.g. "CCL_Anticlockwise_WD_Peak_81") — underscores are word chars, so avoid \b boundaries here.
+    if (/anticlockwise/i.test(dep.tripId)) return 'ANTICLOCKWISE';
+    if (/clockwise/i.test(dep.tripId)) return 'CLOCKWISE';
 
-      const arrivalSeconds = arrivalHour * 3600 + arrivalMinute * 60;
-      let secondsUntil = arrivalSeconds - nowSeconds;
-
-      // Handle midnight wraparound: only wrap if significantly negative (more than 12 hours)
-      // This avoids wrapping when the train time is just in the past (same day)
-      if (secondsUntil < -43200) { // -12 hours = -43200 seconds
-        secondsUntil += 24 * 3600;
-      }
-
-      // Train has reached the platform — updateETALabels() drops it and jumps to the
-      // next upcoming train on the very next tick, so this is only ever shown momentarily.
-      if (secondsUntil <= 0) {
-        return 'Arriving now';
-      }
-      // Train is upcoming — always round up to at least 1 min (never shows "Arriving now" early)
-      const roundedMinutes = Math.max(1, Math.ceil(secondsUntil / 60));
-      const minLabel = roundedMinutes === 1 ? 'min' : 'mins';
-      return `Arriving in ${roundedMinutes} ${minLabel}`;
-    } catch (e) {
-      console.warn('[ETA] Failed to parse arrival time:', arrivalTimeHHMM, e);
-      return 'No ETA';
-    }
+    return 'TRAIN';
   }
 
-  // Compare "now" against a direction's first/last train times for today,
-  // and estimate the next train using the line's headway table.
-  function computeNextTrainEstimate(direction, lineKeys) {
-    const dayKey = getTodayDayKey();
-    const firstMin = parseHHMMToMinutes(direction.first_train?.[dayKey]);
-    let lastMin = parseHHMMToMinutes(direction.last_train?.[dayKey]);
-
+  // Renders a retro split-flap departure board (styled after MRTracker's live board) from the
+  // real GTFS static schedule for this station — actual scheduled departure times, not estimates.
+  function renderDepartureBoard(station, gtfsDirections) {
     const now = new Date();
     const nowMin = now.getHours() * 60 + now.getMinutes();
 
-    if (firstMin === null && lastMin === null) {
-      return { status: 'unknown', label: 'No schedule data for today' };
-    }
+    const departures = getStaticDeparturesForStation(station);
+    const entries = departures
+      .filter(dep => dep.departureMinutes !== null)
+      .map(dep => {
+        // Wrap negative diffs (train already departed today) forward to the next day's occurrence
+        let etaMinutes = dep.departureMinutes - nowMin;
+        if (etaMinutes < 0) etaMinutes += 1440;
+        return { label: getDepartureLabel(dep, gtfsDirections, station), etaMinutes };
+      })
+      .sort((a, b) => a.etaMinutes - b.etaMinutes)
+      .slice(0, 8);
 
-    // Last train times past midnight (e.g. 00:50) belong to the next day
-    if (lastMin !== null && firstMin !== null && lastMin < firstMin) {
-      lastMin += 24 * 60;
-    }
-
-    const nowAdjusted = nowMin < firstMin ? nowMin + 24 * 60 : nowMin;
-    const isRunning = firstMin !== null && lastMin !== null
-      ? nowAdjusted >= firstMin && nowAdjusted <= lastMin
-      : true;
-
-    if (firstMin !== null && nowMin < firstMin && !isRunning) {
-      return { status: 'before', label: `First train at ${direction.first_train[dayKey]}` };
-    }
-    if (lastMin !== null && !isRunning) {
-      return { status: 'after', label: `Service ended — last train at ${direction.last_train[dayKey]}` };
-    }
-
-    // Running now — estimate next train using the headway table
-    if (headwayData && lineKeys && lineKeys.length > 0) {
-      const period = getCurrentHeadwayPeriod(headwayData.periods);
-      const keyMap = { peak: 'peak', offPeak: 'offPeak', night: 'night' };
-      const line = headwayData.lines[lineKeys[0]];
-      if (line) {
-        const headwayMin = line[keyMap[period]];
-        const phaseOffset = directionPhaseOffset(direction.description, headwayMin);
-        const etaMin = nowMin + headwayMin - ((nowMin - phaseOffset) % Math.round(headwayMin));
-        const minutesUntilTrain = Math.round(etaMin - nowMin);
-        return { status: 'running', label: `Arriving in: ${minutesUntilTrain} mins`, etaMinutes: headwayMin };
-      }
-    }
-
-    return { status: 'running', label: 'Running now' };
-  }
-
-  function renderStationDirectionCard(direction, lineKeys) {
-    const estimate = computeNextTrainEstimate(direction, lineKeys);
-    const chipColor = { running: '#4CAF50', before: '#FF9800', after: '#999999', unknown: '#999999' }[estimate.status];
-    
-    // For "running" status, show next 3-4 trains as time cards
-    let upcomingTrains = []; // Initialize before the if block
-    let upcomingTrainsHtml = '';
-    let nextTrainLabel = estimate.label; // Default to computed estimate
-    
-    if (estimate.status === 'running' && headwayData && lineKeys && lineKeys.length > 0) {
-      const period = getCurrentHeadwayPeriod(headwayData.periods);
-      const keyMap = { peak: 'peak', offPeak: 'offPeak', night: 'night' };
-      const line = headwayData.lines[lineKeys[0]];
-      if (line) {
-        const headwayMin = line[keyMap[period]];
-        const now = new Date();
-        const nowMin = now.getHours() * 60 + now.getMinutes();
-        const nowSeconds = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
-        
-        // Get first/last train times for filtering
-        const dayKey = getTodayDayKey();
-        const firstTrainStr = direction.first_train?.[dayKey];
-        const lastTrainStr = direction.last_train?.[dayKey];
-        const firstTrainMin = firstTrainStr && firstTrainStr !== '--' ? parseHHMMToMinutes(firstTrainStr) : null;
-        const lastTrainMin = lastTrainStr && lastTrainStr !== '--' ? parseHHMMToMinutes(lastTrainStr) : null;
-        
-        // Compute next 3-4 trains
-        const upcomingTrainSet = new Set();
-        
-        // Offset the clock-aligned boundary per direction, so opposing directions don't show identical synced times
-        const phaseOffset = directionPhaseOffset(direction.description, headwayMin);
-        
-        // First, check if a train is due right now (within 2 minutes before to 1 minute after the headway interval boundary)
-        const intervalBoundary = (Math.floor((nowMin - phaseOffset) / headwayMin)) * headwayMin + phaseOffset;
-        const timeSinceBoundary = nowMin - intervalBoundary;
-        
-        // If we're close to a train interval (within the grace period), include it
-        let startIndex = 0;
-        if (timeSinceBoundary >= -2 && timeSinceBoundary <= 1) {
-          // Include the train at the current interval boundary
-          startIndex = 0;
-        } else if (timeSinceBoundary < -2) {
-          // Train is coming soon
-          startIndex = 0;
-        } else {
-          // Move to next interval
-          startIndex = 1;
-        }
-        
-        for (let i = startIndex; i < startIndex + 4; i++) {
-          let etaMin = intervalBoundary + i * headwayMin;
-          
-          // Ensure we don't go backwards
-          if (etaMin <= nowMin) {
-            etaMin += headwayMin;
-          }
-          
-          // Handle day wraparound
-          let etaHour = Math.floor(etaMin / 60);
-          let etaMinute = etaMin % 60;
-          let isNextDay = false;
-          
-          if (etaHour >= 24) {
-            etaHour = etaHour % 24;
-            isNextDay = true;
-          }
-          
-          const etaStr = `${String(etaHour).padStart(2, '0')}:${String(Math.round(etaMinute)).padStart(2, '0')}`;
-          const etaMinForComparison = etaHour * 60 + etaMinute;
-          
-          // Filter: only show if within operating hours
-          let isWithinHours = true;
-          
-          if (isNextDay) {
-            // Train is after midnight - check against first train only (next day's start)
-            if (firstTrainMin !== null && etaMinForComparison < firstTrainMin) isWithinHours = false;
-          } else {
-            // Train is today - check first train (if after service ends, it won't show)
-            if (firstTrainMin !== null && etaMinForComparison < firstTrainMin) isWithinHours = false;
-            
-            // Check against last train - but if last train is early morning (< 5:00), it's tomorrow's
-            if (lastTrainMin !== null) {
-              if (lastTrainMin < 300) {  // 5:00 AM = 300 minutes - early morning time is next day
-                // Last train is tomorrow, so today's trains up to 23:59 are OK
-                isWithinHours = true;
-              } else {
-                // Last train is today, check if this train time is before it
-                if (etaMinForComparison > lastTrainMin) isWithinHours = false;
-              }
-            }
-          }
-          
-          if (isWithinHours) {
-            upcomingTrainSet.add(etaStr);
-          }
-        }
-        
-        upcomingTrains = Array.from(upcomingTrainSet);
-        
-        // Debug logging
-        if (upcomingTrains.length === 0) {
-          console.warn(`[Train Calc] No trains found for ${direction.description}. headway=${headwayMin}min, now=${nowMin}min, boundary=${intervalBoundary}, interval=${headwayMin}`);
-        } else {
-          console.log(`[Train Calc] Trains ${direction.description}: ${upcomingTrains.join(', ')} (headway=${headwayMin}, now=${nowMin})`);
-        }
-        
-        // Calculate "Arriving in" based on first upcoming train
-        if (upcomingTrains.length > 0) {
-          const firstTrain = upcomingTrains[0];
-          nextTrainLabel = calculateArrivingLabel(firstTrain);
-        }
-        
-        upcomingTrainsHtml = `<div class="upcoming-trains-list" style="display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap;">${upcomingTrains.map(time => `<div class="train-time-chip" data-time="${time}">${time}</div>`).join('')}</div>`;
-      }
-    }
-
-    const nextTrainChip = `
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-        <span style="font-size: 0.8em; color: var(--text-secondary, #999);">Estimated arrival</span>
-        <span class="eta-label" data-train-time="${upcomingTrains.length > 0 ? upcomingTrains[0] : ''}" style="font-size: 0.85em; font-weight: 700; color: ${chipColor}; background: ${chipColor}20; padding: 3px 10px; border-radius: 12px;">
-          ${nextTrainLabel}
-        </span>
-      </div>
-      ${upcomingTrainsHtml}
-    `;
+    const rowsHtml = entries.length > 0
+      ? entries.map((e, i) => `
+          <div class="board-row">
+            <span class="board-num">${i + 1}</span>
+            <span class="board-dest">${e.label}</span>
+            <span class="board-eta">${e.etaMinutes <= 0 ? 'ARR' : '~' + e.etaMinutes + ' MIN'}</span>
+          </div>
+        `).join('')
+      : '<div class="board-row board-empty"><span class="board-dest">NO UPCOMING DEPARTURES</span></div>';
 
     return `
-      <div class="direction-card" data-upcoming-trains='${JSON.stringify(upcomingTrains)}'">
-        <div style="font-weight: 700; margin-bottom: 8px;"><i class="fa-kit fa-lta-to-right"></i> ${formatDirectionDescription(direction.description)}</div>
-        ${nextTrainChip}
+      <div class="departure-board">
+        <div class="board-rows">${rowsHtml}</div>
+        <div class="board-clock" id="boardClock"></div>
       </div>
-    `;
-  }
-
-  // North South Line schedule data includes short-turn/variant destinations (e.g. NS19, NS16, NS7) —
-  // only the two full-line termini render as primary direction cards, the rest as "Service Variants".
-  const NS_MAIN_TERMINI = new Set(['To NS1 EW24 Jurong East', 'To NS28 Marina South Pier']);
-  function isNSVariant(description) {
-    return /^To NS\d+/.test(description) && !NS_MAIN_TERMINI.has(description);
-  }
-
-  function renderServiceVariantsCard(variants) {
-    if (!variants || variants.length === 0) return '';
-    const rows = variants.map(d => `
-      <div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border-color, #eee);">
-        <span>${formatDirectionDescription(d.description)}</span>
-      </div>
-    `).join('');
-    return `
-      <div style="border: 1px dashed var(--border-color, #e0e0e0); border-radius: 8px; padding: 12px 16px; margin-bottom: 12px; background: var(--card-bg-alt, #f9f9f9);">
-        <div style="font-weight: 700; margin-bottom: 4px; font-size: 0.9em; color: var(--text-secondary, #666);"><i class="fa-solid fa-code-branch"></i> Service Variants</div>
-        <div style="font-size: 0.75em; color: var(--text-secondary, #999); margin-bottom: 8px;">
-          Short trips that only run during specific periods (e.g. late nights) — Refer to station display.
-        </div>
-        ${rows}
+      <div class="board-legend">
+        <span class="legend-dest">destination</span> &middot; <span class="legend-eta">~ schedule-estimated</span> &middot; refreshes automatically
       </div>
     `;
   }
@@ -715,16 +503,16 @@ document.addEventListener('DOMContentLoaded', function() {
       `;
     }
 
-    // Only render a direction-card when it has real backing in the parsed GTFS stop_times data
+    // Only include a direction in the board when it has real backing in the parsed GTFS stop_times data
     const gtfsDirections = station.directions.filter(d => directionHasGTFSMatch(station, d));
-    const mainDirections = gtfsDirections.filter(d => !isNSVariant(d.description));
-    const variantDirections = gtfsDirections.filter(d => isNSVariant(d.description));
+    currentBoardStation = station;
+    currentGtfsDirections = gtfsDirections;
 
     stationDirections.innerHTML = gtfsDirections.length > 0
-      ? mainDirections.map(d => renderStationDirectionCard(d, station.lineKeys)).join('') + renderServiceVariantsCard(variantDirections)
+      ? renderDepartureBoard(station, gtfsDirections)
       : '<p style="color: var(--text-secondary, #666);">No GTFS schedule data available for this station right now.</p>';
     
-    // Update ETA labels immediately after rendering
+    // Update the board's clock immediately after rendering
     updateETALabels();
   }
 
@@ -1096,56 +884,23 @@ document.addEventListener('DOMContentLoaded', function() {
     displaySchedules();
   }
 
-  // A train time is considered passed — and safe to drop — the instant it reaches
-  // 0 seconds, so the ETA label jumps straight to the next upcoming train.
-  function hasTrainTimePassed(trainTimeHHMM) {
-    const now = new Date();
-    const nowSeconds = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
-    const [h, m] = trainTimeHHMM.split(':').map(Number);
-    if (Number.isNaN(h) || Number.isNaN(m)) return false;
-    let secondsUntil = (h * 3600 + m * 60) - nowSeconds;
-    if (secondsUntil < -43200) secondsUntil += 24 * 3600; // midnight wraparound
-    return secondsUntil <= 0;
-  }
-
-  // Real-time ETA updater - runs every second. Removes train times that have
-  // passed (and been in "Arrived" state for a minute) and advances the ETA
-  // label to the next remaining upcoming train.
+  // Real-time updater — runs every second. Ticks the departure board's clock, and
+  // re-renders the board once a minute so the "~N MIN" countdowns stay accurate.
+  let lastBoardMinute = null;
   function updateETALabels() {
-    const cards = document.querySelectorAll('.direction-card');
-    if (cards.length === 0) {
-      console.log('[ETA Update] No direction-card elements found');
-      return;
+    const clockEl = document.getElementById('boardClock');
+    if (!clockEl) return;
+
+    const now = new Date();
+    clockEl.textContent = now.toLocaleTimeString('en-SG', {
+      timeZone: 'Asia/Singapore', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+    }) + ' SGT';
+
+    const currentMinute = now.getHours() * 60 + now.getMinutes();
+    if (currentMinute !== lastBoardMinute && currentBoardStation && currentGtfsDirections.length > 0) {
+      lastBoardMinute = currentMinute;
+      stationDirections.innerHTML = renderDepartureBoard(currentBoardStation, currentGtfsDirections);
     }
-
-    cards.forEach(card => {
-      const etaLabel = card.querySelector('.eta-label');
-      let upcomingTrains = [];
-      try {
-        upcomingTrains = JSON.parse(card.getAttribute('data-upcoming-trains') || '[]');
-      } catch (e) {
-        upcomingTrains = [];
-      }
-
-      // Drop any times that have passed, removing their chip from the DOM too
-      const remaining = upcomingTrains.filter(time => !hasTrainTimePassed(time));
-      if (remaining.length !== upcomingTrains.length) {
-        const removed = upcomingTrains.filter(time => !remaining.includes(time));
-        removed.forEach(time => {
-          const chip = card.querySelector(`.train-time-chip[data-time="${time}"]`);
-          if (chip) chip.remove();
-        });
-        card.setAttribute('data-upcoming-trains', JSON.stringify(remaining));
-      }
-
-      if (etaLabel) {
-        const nextTime = remaining.length > 0 ? remaining[0] : '';
-        if (etaLabel.getAttribute('data-train-time') !== nextTime) {
-          etaLabel.setAttribute('data-train-time', nextTime);
-        }
-        etaLabel.textContent = nextTime ? calculateArrivingLabel(nextTime) : 'No ETA';
-      }
-    });
   }
 
   // Polling functions

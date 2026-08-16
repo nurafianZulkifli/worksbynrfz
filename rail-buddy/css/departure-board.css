@@ -1,0 +1,87 @@
+/* Retro split-flap departure board — styled after old-school platform indicator displays */
+
+.departure-board {
+  background: #0d0d0d;
+  border: 1px solid #2a2a2a;
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin-top: 1em;
+  box-shadow: inset 0 0 24px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+}
+
+.board-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.board-row {
+  display: grid;
+  grid-template-columns: 1.6em 1fr auto;
+  align-items: baseline;
+  gap: 10px;
+  padding: 6px 4px;
+  font-family: 'Courier New', 'Consolas', monospace;
+  font-weight: 700;
+  letter-spacing: 1px;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
+}
+
+.board-row:last-child {
+  border-bottom: none;
+}
+
+.board-num {
+  color: #666;
+  font-size: 0.95em;
+}
+
+.board-dest {
+  color: #ffb100;
+  text-shadow: 0 0 6px rgba(255, 177, 0, 0.5);
+  font-size: 1em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.board-eta {
+  color: #3ddc4a;
+  text-shadow: 0 0 6px rgba(61, 220, 74, 0.5);
+  font-size: 0.95em;
+  text-align: right;
+}
+
+.board-row.board-empty .board-dest {
+  color: #777;
+  text-shadow: none;
+}
+
+.board-clock {
+  margin-top: 10px;
+  text-align: right;
+  font-family: 'Courier New', 'Consolas', monospace;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #3ddc4a;
+  text-shadow: 0 0 6px rgba(61, 220, 74, 0.5);
+  font-size: 0.9em;
+}
+
+.board-legend {
+  margin-top: 8px;
+  font-size: 0.72em;
+  color: var(--text-secondary, #999);
+  text-align: right;
+}
+
+.board-legend .legend-dest {
+  color: #ffb100;
+  font-weight: 700;
+}
+
+.board-legend .legend-eta {
+  color: #3ddc4a;
+  font-weight: 700;
+}
