@@ -440,29 +440,68 @@ document.addEventListener('DOMContentLoaded', function() {
     return 'TRAIN';
   }
 
-  // Extract service period info (day type ± peak type) from trip_id for display
+  // Singapore public holidays in 2026 (MM-DD format)
+  const SG_PUBLIC_HOLIDAYS = new Set([
+    '01-01', // New Year's Day
+    '02-09', // Chinese New Year
+    '02-10', // Chinese New Year (2nd day)
+    '04-10', // Good Friday
+    '05-01', // Labour Day (optional, may not be observed)
+    '05-24', // Vesak Day
+    '06-10', // Hari Raya Haji
+    '08-09', // National Day
+    '10-31', // Deepavali
+    '12-25'  // Christmas Day
+  ]);
+
+  // Check if a date is a Singapore public holiday
+  function isSgPublicHoliday(date) {
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return SG_PUBLIC_HOLIDAYS.has(`${month}-${day}`);
+  }
+
+  // Determine today's service period type (WD/WE/PH)
+  function getTodayServiceType() {
+    const today = new Date();
+    const dayOfWeek = today.getDay(); // 0=Sun, 6=Sat
+
+    if (isSgPublicHoliday(today)) return 'PH';
+    if (dayOfWeek === 0 || dayOfWeek === 6) return 'WE'; // Sunday or Saturday
+    return 'WD'; // Monday-Friday
+  }
+
+  // Extract service period info from trip_id, only return if it matches today
   // Supports two GTFS formats:
-  // 1. CCL style: "CCL_Anticlockwise_WD_Peak_81" → { label: "Weekday Peak" }
-  // 2. NS/EW style: "NSL_NB_WE_136" → { label: "Weekend" }
+  // 1. CCL style: "CCL_Anticlockwise_WD_Peak_81" → { label: "Weekday Peak" } (if today is weekday)
+  // 2. NS/EW style: "NSL_NB_WE_136" → { label: "Weekend" } (if today is weekend)
   function parseServicePeriod(tripId) {
-    // Try format 1: _(WD|WE|PH)_(Peak|OffPeak)_ (e.g., CCL line with peak info)
+    const todayType = getTodayServiceType();
+
+    // Try format 1: _(WD|WE|PH)_(Peak|OffPeak)_
     let match = tripId.match(/_(WD|WE|PH)_(Peak|OffPeak)_/);
     if (match) {
       const dayType = match[1]; // WD, WE, PH
       const peakType = match[2]; // Peak, OffPeak
+
+      // Only show label if it matches today's day type
+      if (dayType !== todayType) return null;
+
       const dayLabel = { WD: 'Weekday', WE: 'Weekend', PH: 'Holiday' }[dayType] || dayType;
       return { label: `${dayLabel} ${peakType}` };
     }
 
-    // Try format 2: _(WD|WE|PH)_ (e.g., NS/EW line without peak info)
+    // Try format 2: _(WD|WE|PH)_
     match = tripId.match(/_(WD|WE|PH)_/);
     if (match) {
       const dayType = match[1]; // WD, WE, PH
+
+      // Only show label if it matches today's day type
+      if (dayType !== todayType) return null;
+
       const dayLabel = { WD: 'Weekday', WE: 'Weekend', PH: 'Holiday' }[dayType] || dayType;
       return { label: dayLabel };
     }
-
-    return null;
   }
   // Renders a retro split-flap departure board (styled after MRTracker's live board) from the
   // real GTFS static schedule for this station — actual scheduled departure times, not estimates.
