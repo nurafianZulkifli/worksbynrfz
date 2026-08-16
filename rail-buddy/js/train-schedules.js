@@ -440,6 +440,32 @@ document.addEventListener('DOMContentLoaded', function() {
     return 'TRAIN';
   }
 
+  // Extract service period info (day type ± peak type) from trip_id for display
+  // Supports two GTFS formats:
+  // 1. CCL style: "CCL_Anticlockwise_WD_Peak_81" → { label: "Weekday Peak" }
+  // 2. NS/EW style: "NSL_NB_WE_136" → { label: "Weekend" }
+  function parseServicePeriod(tripId) {
+    // Try format 1: _([A-Z]{2})_(Peak|OffPeak)_  (e.g., CCL line with peak info)
+    // This catches WD_Peak, WE_OffPeak, etc.
+    let match = tripId.match(/_([WPE]{2}|PH)_(Peak|OffPeak)_/);
+    if (match) {
+      const dayType = match[1]; // WD, WE, PH
+      const peakType = match[2]; // Peak, OffPeak
+      const dayLabel = { WD: 'Weekday', WE: 'Weekend', PH: 'Holiday' }[dayType] || dayType;
+      return { label: `${dayLabel} ${peakType}` };
+    }
+
+    // Try format 2: _(WD|WE|PH)_ (e.g., NS/EW line without peak info)
+    // This catches _WE_, _WD_, _PH_ but not _NB_, _SB_, etc.
+    match = tripId.match(/_(WD|WE|PH)_/);
+    if (match) {
+      const dayType = match[1]; // WD, WE, PH
+      const dayLabel = { WD: 'Weekday', WE: 'Weekend', PH: 'Holiday' }[dayType] || dayType;
+      return { label: dayLabel };
+    }
+
+    return null;
+  }
   // Renders a retro split-flap departure board (styled after MRTracker's live board) from the
   // real GTFS static schedule for this station — actual scheduled departure times, not estimates.
   function renderDepartureBoard(station, gtfsDirections) {
@@ -453,7 +479,12 @@ document.addEventListener('DOMContentLoaded', function() {
         // Wrap negative diffs (train already departed today) forward to the next day's occurrence
         let etaMinutes = dep.departureMinutes - nowMin;
         if (etaMinutes < 0) etaMinutes += 1440;
-        return { label: getDepartureLabel(dep, gtfsDirections, station), etaMinutes };
+        const servicePeriod = parseServicePeriod(dep.tripId);
+        return {
+          label: getDepartureLabel(dep, gtfsDirections, station),
+          etaMinutes,
+          servicePeriod: servicePeriod ? servicePeriod.label : null
+        };
       })
       .sort((a, b) => a.etaMinutes - b.etaMinutes)
       .slice(0, 8);
@@ -464,6 +495,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <span class="board-num">${i + 1}</span>
             <span class="board-dest">${e.label}</span>
             <span class="board-eta">${e.etaMinutes <= 0 ? 'ARR' : '~' + e.etaMinutes + ' MIN'}</span>
+            ${e.servicePeriod ? `<span class="board-period">${e.servicePeriod}</span>` : ''}
           </div>
         `).join('')
       : '<div class="board-row board-empty"><span class="board-dest">NO UPCOMING DEPARTURES</span></div>';
@@ -474,7 +506,7 @@ document.addEventListener('DOMContentLoaded', function() {
         <div class="board-clock" id="boardClock"></div>
       </div>
       <div class="board-legend">
-        <span class="legend-dest">destination</span> &middot; <span class="legend-eta">~ schedule-estimated</span> &middot; refreshes automatically
+        <span class="legend-dest">destination</span> &middot; <span class="legend-eta">~ schedule-estimated</span> &middot; <span class="legend-period">service period</span> &middot; refreshes automatically
       </div>
     `;
   }
