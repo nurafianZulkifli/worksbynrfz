@@ -815,6 +815,7 @@
     editingResetId = null;
     document.querySelector('#resetModal .sheet-title').innerHTML = '<i class="fa-regular fa-rotate-right"></i>&nbsp;New Month Reset';
     document.querySelector('#resetModal .sht-btn-primary').innerHTML = '<i class="fa-regular fa-rotate-right"></i>&nbsp;Reset';
+    document.getElementById('deleteResetBtn').style.display = 'none';
     const today = new Date().toISOString().slice(0, 10);
     document.getElementById('resetDate').value = today;
     _getResetModal().show();
@@ -826,12 +827,27 @@
     editingResetId = id;
     document.querySelector('#resetModal .sheet-title').innerHTML = '<i class="fa-regular fa-rotate-right"></i>&nbsp;Edit Month Reset';
     document.querySelector('#resetModal .sht-btn-primary').innerHTML = '<i class="fa-regular fa-check"></i>&nbsp;Save';
+    document.getElementById('deleteResetBtn').style.display = '';
     document.getElementById('resetDate').value = reset.date;
     _getResetModal().show();
   }
 
   function closeResetModal() {
     _getResetModal().hide();
+  }
+
+  function deleteReset() {
+    if (!editingResetId || !confirm('Delete this month reset?')) return;
+    const acct = activeAccount();
+    const resetIndex = acct.transactions.findIndex(t => t.id === editingResetId && t.type === 'reset');
+    if (resetIndex < 0) return;
+    snapshot();
+    acct.transactions.splice(resetIndex, 1);
+    save();
+    closeResetModal();
+    editingResetId = null;
+    renderAll();
+    showToast('Month reset deleted.', true);
   }
 
   function confirmReset() {
