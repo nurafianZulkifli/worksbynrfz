@@ -517,8 +517,7 @@ body.dark-mode .txn-item:hover {
 
 .txn-item-reset {
     background: linear-gradient(90deg, rgba(66, 192, 126, 0.07) 0%, rgba(35, 150, 144, 0.07) 100%);
-    cursor: default;
-    pointer-events: none;
+    cursor: pointer;
 }
 
 .txn-item-reset .txn-name {

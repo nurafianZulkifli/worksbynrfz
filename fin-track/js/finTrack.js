@@ -3,6 +3,7 @@
   const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
   let state = load();
   let _lastState = null;
+  let editingResetId = null;
   function snapshot() { _lastState = JSON.parse(JSON.stringify(state)); }
 
   function defaultState() {
@@ -189,7 +190,7 @@
         <div class="txn-date-label">${fmtDate(date)}</div>
         <div class="txn-group-card">
           ${items.map(t => t.type === 'reset' ? `
-            <div class="txn-item txn-item-reset">
+            <div class="txn-item txn-item-reset" onclick="openEditReset('${t.id}')">
               <div class="txn-icon income"><i class="fa-regular fa-rotate-right"></i></div>
               <div class="txn-info">
                 <div class="txn-name">New Month Reset</div>
@@ -811,8 +812,21 @@
   }
 
   function resetMonth() {
+    editingResetId = null;
+    document.querySelector('#resetModal .sheet-title').innerHTML = '<i class="fa-regular fa-rotate-right"></i>&nbsp;New Month Reset';
+    document.querySelector('#resetModal .sht-btn-primary').innerHTML = '<i class="fa-regular fa-rotate-right"></i>&nbsp;Reset';
     const today = new Date().toISOString().slice(0, 10);
     document.getElementById('resetDate').value = today;
+    _getResetModal().show();
+  }
+
+  function openEditReset(id) {
+    const reset = activeAccount().transactions.find(t => t.id === id && t.type === 'reset');
+    if (!reset) return;
+    editingResetId = id;
+    document.querySelector('#resetModal .sheet-title').innerHTML = '<i class="fa-regular fa-rotate-right"></i>&nbsp;Edit Month Reset';
+    document.querySelector('#resetModal .sht-btn-primary').innerHTML = '<i class="fa-regular fa-check"></i>&nbsp;Save';
+    document.getElementById('resetDate').value = reset.date;
     _getResetModal().show();
   }
 
@@ -825,15 +839,23 @@
     if (!dateVal) { showToast('Please select a date'); return; }
     snapshot();
     const acct = activeAccount();
-    acct.transactions.push({ id: uid(), date: dateVal, type: 'reset', name: 'New Month Reset', amount: 0, cat: '' });
+    const isEditingReset = Boolean(editingResetId);
+    if (editingResetId) {
+      const reset = acct.transactions.find(t => t.id === editingResetId && t.type === 'reset');
+      if (!reset) { editingResetId = null; return; }
+      reset.date = dateVal;
+    } else {
+      acct.transactions.push({ id: uid(), date: dateVal, type: 'reset', name: 'New Month Reset', amount: 0, cat: '' });
+    }
     // Switch active month to the reset date so it's reflected in Transaction History
     const resetDt = new Date(dateVal + 'T00:00:00');
     state.activeMonth = resetDt.getMonth();
     state.activeYear = resetDt.getFullYear();
     save();
     closeResetModal();
+    editingResetId = null;
     renderAll();
-    showToast('Balance reset! History preserved.', true);
+    showToast(isEditingReset ? 'Reset date updated.' : 'Balance reset! History preserved.', true);
   }
 
   function deleteAccount(id) {
