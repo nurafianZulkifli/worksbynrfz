@@ -165,7 +165,9 @@ function getBasePath() {
 let busStopsPromise = null;
 let currentLocationMarker = null; // Track the current location marker across button clicks
 let currentLocationCircle = null; // Track the current location accuracy circle
+let busStopMarker = null; // Track the marker for the currently selected bus stop
 let activeMapServiceNo = null; // Track which service is currently shown on the map
+let keepStopMapCentered = false; // Keep the initial map view centered on the requested stop
 let scrollToServiceNo = new URLSearchParams(window.location.search).get('ServiceNo') || null; // Scroll to this service on first render
 let busMarkers = []; // [{marker, lat, lng, estimatedArrival, busLabel}] for live position updates
 let mapRefreshIntervalId = null; // Dedicated fast interval for map position updates
@@ -458,6 +460,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             const busStop = Array.isArray(busStops) ? busStops.find(stop => stop.BusStopCode === busStopCode) : null;
 
             if (busStop) {
+                focusMapOnBusStop(busStop);
+
                 // Update title with styled bus stop code and name
                 // Build correct image path for GitHub Pages and Heroku
                 const basePath = (window.PWAConfig ? window.PWAConfig.basePath : '/');
@@ -955,24 +959,6 @@ async function fetchBusArrivals() {
                             ${service.Operator ? `<img src="assets/${service.Operator.toLowerCase()}.png" alt="${service.Operator}" class="img-fluid" style="width: 50px; margin-left: auto;">` : ''}
                         </div>
                     </div>
-                    <div class="service-options-collapse" data-service="${service.ServiceNo}" style="display: none; max-height: 0; overflow: hidden; transition: max-height 0.3s ease;">
-                        <div style="display: flex; gap: 1rem; padding: 0.5rem 0; margin-top: 0.5rem; padding-top: 0.5rem; flex-wrap: wrap; justify-content: center;">
-                            <button class="btn btn-busloc btn-sm view-location-btn-consolidated" data-service="${service.ServiceNo}" title="View bus location on map"
-                                ${!((service.NextBus?.Latitude !== "0.0" && service.NextBus?.Longitude !== "0.0") || (hasNextBus2 && service.NextBus2?.Latitude !== "0.0" && service.NextBus2?.Longitude !== "0.0")) ? 'disabled' : ''}>
-                                <i class="fa-kit fa-lta-location"></i>
-                            </button>
-                            <a href="${getBasePath() + 'buszy/first-last.html?BusStopCode=' + busStopCode + '&service=' + service.ServiceNo}" class="btn btn-busloc btn-sm" title="View first and last bus timings">
-                                <i class="fa-regular fa-clock"></i>
-                            </a>
-                            <button class="btn btn-busloc btn-sm view-route-btn" data-service="${service.ServiceNo}" title="View bus route details"
-                                ${!serviceExists(service.ServiceNo) ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : ''}>
-                                <i class="fa-kit fa-lta-bus-stop"></i>
-                            </button>
-                            <button class="btn btn-busloc btn-sm notif-toggle-btn" data-service="${service.ServiceNo}" data-stop="${busStopCode}" title="Notify me when this bus is arriving">
-                                <i class="fa-regular fa-bell"></i>&nbsp;<span class="notif-label"></span>
-                            </button>
-                        </div>
-                    </div>
                     <div class="card-body">
                         <div class="card-content-art">
                             ${hasNextBus ? `
@@ -991,6 +977,21 @@ async function fetchBusArrivals() {
                                 </span>
                             </div>
                             ` : ''}
+                        </div>
+                    </div>
+                    <div class="service-options-collapse" data-service="${service.ServiceNo}" style="display: none; max-height: 0; overflow: hidden; transition: max-height 0.3s ease;">
+                        <div style="display: flex; gap: 1rem; padding: 0.5rem 0; margin-top: 0.5rem; padding-top: 0.5rem; flex-wrap: wrap; justify-content: center;">
+                            <button class="btn btn-busloc btn-sm view-location-btn-consolidated" data-service="${service.ServiceNo}" title="View bus location on map"
+                                ${!((service.NextBus?.Latitude !== "0.0" && service.NextBus?.Longitude !== "0.0") || (hasNextBus2 && service.NextBus2?.Latitude !== "0.0" && service.NextBus2?.Longitude !== "0.0")) ? 'disabled' : ''}>
+                                <i class="fa-kit fa-lta-location"></i>
+                            </button>
+                            <a href="${getBasePath() + 'buszy/first-last.html?BusStopCode=' + busStopCode + '&service=' + service.ServiceNo}" class="btn btn-busloc btn-sm" title="View first and last bus timings">
+                                <i class="fa-regular fa-clock"></i>
+                            </a>
+                            <button class="btn btn-busloc btn-sm view-route-btn" data-service="${service.ServiceNo}" title="View bus route details"
+                                ${!serviceExists(service.ServiceNo) ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : ''}>
+                                <i class="fa-kit fa-lta-bus-stop"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -1137,6 +1138,8 @@ async function fetchBusArrivals() {
                         alert('Bus location not available.');
                         return;
                     }
+
+                    keepStopMapCentered = false;
 
                     // Get current time for timing calculations
                     const now = new Date();
@@ -1296,7 +1299,7 @@ async function fetchBusArrivals() {
                                 bounds.push([lat, lng]);
 
                                 // Recalculate bounds to include current location
-                                if (bounds.length > 0) {
+                                if (bounds.length > 0 && !keepStopMapCentered) {
                                     const latLngs = bounds.map(b => L.latLng(b[0], b[1]));
                                     map.fitBounds(L.latLngBounds(latLngs), {
                                         padding: [50, 50],
@@ -1307,7 +1310,7 @@ async function fetchBusArrivals() {
                             }, (error) => {
                                 console.warn('Could not get current location:', error);
                                 // Still fit bounds for bus locations if geolocation fails
-                                if (bounds.length > 0) {
+                                if (bounds.length > 0 && !keepStopMapCentered) {
                                     const latLngs = bounds.map(b => L.latLng(b[0], b[1]));
                                     map.fitBounds(L.latLngBounds(latLngs), {
                                         padding: [50, 50],
@@ -1318,7 +1321,7 @@ async function fetchBusArrivals() {
                             });
                         } else {
                             // Geolocation not available, just fit bus locations
-                            if (bounds.length > 0) {
+                            if (bounds.length > 0 && !keepStopMapCentered) {
                                 const latLngs = bounds.map(b => L.latLng(b[0], b[1]));
                                 map.fitBounds(L.latLngBounds(latLngs), {
                                     padding: [50, 50],
@@ -1628,6 +1631,42 @@ try {
     }
 } catch (error) {
     console.error('Error initializing map:', error);
+}
+
+function focusMapOnBusStop(busStop) {
+    if (!map || !busStop) return;
+
+    const latitude = parseFloat(busStop.Latitude);
+    const longitude = parseFloat(busStop.Longitude);
+    if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) return;
+
+    const mapSection = document.querySelector('.bus-location-section');
+    if (localStorage.getItem('showMap') === 'disabled') return;
+    if (mapSection) mapSection.style.display = 'block';
+
+    if (busStopMarker) {
+        map.removeLayer(busStopMarker);
+    }
+
+    const stopIcon = L.divIcon({
+        html: `<div style="display:flex;flex-direction:column;align-items:center;width:42px;height:52px;">
+            <div style="display:flex;align-items:center;justify-content:center;width:36px;height:36px;background:#1e90ff;border:3px solid #fff;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,0.45);color:#fff;font-size:17px;">
+                <i class="fa-kit fa-lta-bus-stop"></i>
+            </div>
+            <div style="width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-top:14px solid #1e90ff;margin-top:-2px;"></div>
+        </div>`,
+        iconSize: [42, 52],
+        iconAnchor: [21, 52],
+        className: 'bus-stop-map-marker'
+    });
+
+    busStopMarker = L.marker([latitude, longitude], { icon: stopIcon, zIndexOffset: 1000 })
+        .addTo(map)
+        .bindPopup(`<b>Bus Stop ${busStop.BusStopCode || ''}</b><br>${busStop.Description || ''}`);
+
+    keepStopMapCentered = true;
+    map.setView([latitude, longitude], 18, { animate: false });
+    setTimeout(() => map.invalidateSize(), 100);
 }
 
 // Add bus marker to the map

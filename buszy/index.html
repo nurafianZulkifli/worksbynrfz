@@ -166,7 +166,7 @@
                                 <div class="search-input-wrapper">
                                     <i class="fa-regular fa-magnifying-glass search-icon"></i>
                                     <input type="text" class="search-box" id="bus-stop-search"
-                                        placeholder="Search bus stops by name or code">
+                                        placeholder="Search bus stops by name or code" onclick="navigateToSearch()">
                                     <button class="search-clear" id="search-clear" aria-label="Clear search">
                                         <i class="fa-regular fa-xmark"></i>
                                     </button>
@@ -271,12 +271,12 @@
                     <div class="guide-step-label">Step 1 of 5</div>
                     <div class="guide-step-title">Pin a Bus Stop</div>
                     <div class="guide-step-body">
-                        Use the <strong>search bar</strong> to find any bus stop by name or code, then tap the
+                        Click the <strong>search bar</strong> to find any bus stop by name, code, or service number, then tap the
                         <strong>pin icon</strong> on a result to save it here for quick access.
                         <div class="guide-tip">
                             <i class="fa-regular fa-lightbulb"></i>
                             Switch to the <strong>Nearby</strong> tab to discover stops around your current location
-                            without typing anything.
+                            without searching.
                         </div>
                     </div>
                 </div>
@@ -451,6 +451,14 @@
 
     <script src="./js/ann-indicator.js"></script>
     <script src="./js/alerts-indicator.js"></script>
+
+    <script>
+        // Navigate to dedicated search page
+        function navigateToSearch() {
+            const basePath = (window.PWAConfig && window.PWAConfig.basePath) ? window.PWAConfig.basePath : '/';
+            window.location.href = `${basePath}buszy/search-buszy.html`;
+        }
+    </script>
 
     <script>
         // Bus Service Search Detection and Button Toggle

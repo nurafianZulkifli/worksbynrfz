@@ -1,0 +1,692 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Search bus stops by name, code, or service number">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="57TuruPNu5wqSSia_cUehl5t9Gh1AbxrHNPcMiFx-aQ" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover, user-scalable=no">
+    <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0f1419" media="(prefers-color-scheme: dark)">
+    <title>Search Bus Stops | Buszy</title>
+    <meta property="og:image" content="https://i.imgur.com/i8n9KYs.png" />
+
+    <link rel="icon" href="./assets/logo.png" />
+    <link rel="apple-touch-icon" href="./assets/icon-512.png">
+
+    <script src="https://kit.fontawesome.com/965e82ac01.js" crossorigin="anonymous"></script>
+
+    <!-- Core Stylesheet -->
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/style-breakpoints.css">
+    <link rel="stylesheet" href="../css/pwa-styles.css">
+    <link rel="stylesheet" href="../css/dark-mode.css">
+    <link rel="stylesheet" href="../css/ios-safari.css">
+
+    <!-- Page Specific Stylesheet -->
+    <link rel="stylesheet" href="./css/style-buszy.css">
+    <link rel="stylesheet" href="./css/main-page.css">
+    <link rel="stylesheet" href="./css/search-buszy.css">
+
+
+</head>
+
+<body>
+    <!-- Apply dark mode before splash renders to avoid flash -->
+    <script>
+        (function () {
+            var pref = localStorage.getItem('theme-preference') || 'system';
+            var isDark = pref === 'dark' || (pref === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            if (isDark) document.body.classList.add('dark-mode');
+        })();
+    </script>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar-container">
+        <div class="navbar">
+            <!-- Logo -->
+            <a href="./"><img src="./assets/logo.png" alt="logo" class="logo" /></a>
+
+            <!-- Navigation Links -->
+            <ul class="navbar-nav" id="navbarNav">
+                <li class="nav-item">
+                    <a href="./index.html" class="nav-link">
+                        <i class="fa-sharp fa-regular fa-house"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="./first-last.html" class="nav-link">
+                        <i class="fa-regular fa-clock"></i>
+                        <span>Timings</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="./ann.html" class="nav-link" id="ann-nav-desktop">
+                        <i class="fa-regular fa-arrows-rotate"></i>
+                        <span>Updates</span>
+                        <span class="alerts-indicator-dot"></span>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a href="./menu.html" class="nav-link">
+                        <i class="fa-regular fa-bars"></i>
+                        <span>Menu</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Mobile Bottom Navigation Bar -->
+    <nav class="mobile-bottom-nav">
+        <ul>
+            <li>
+                <a href="./index.html">
+                    <span class="icon">
+                        <i class="fa-sharp fa-regular fa-house"></i>
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a href="./first-last.html">
+                    <span class="icon">
+                        <i class="fa-regular fa-clock"></i>
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a href="./ann.html" id="ann-nav-mobile">
+                    <span class="icon">
+                        <i class="fa-regular fa-arrows-rotate"></i>
+                        <span class="alerts-indicator-dot"></span>
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a href="./menu.html">
+                    <span class="icon">
+                        <i class="fa-regular fa-bars"></i>
+                    </span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Search Header - Same as index.html -->
+    <section class="breadcrumb-area-eicw-cover bg-img bg-overlay" id="cv-bat">
+        <div class="container">
+            <div class="row h-100 align-items-center justify-content-center">
+                <div class="col-12" style="padding-left: 0em; padding-right: 0em;">
+                    <div class="cover-search-wrapper">
+                        <h2><i class="fa-regular fa-magnifying-glass"></i>&nbsp;Search</h2>
+
+                        <div class="search-container">
+                            <div class="search-wrapper">
+                                <div class="search-input-wrapper">
+                                    <i class="fa-regular fa-magnifying-glass search-icon"></i>
+                                    <input type="text" class="search-box" id="search-input"
+                                        placeholder="Search by name, code, or service" autofocus>
+                                    <button class="search-clear" id="search-clear" aria-label="Clear search">
+                                        <i class="fa-regular fa-xmark"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="category-tabs-container">
+                            <div class="category-tabs" id="search-filters">
+                                <button class="category-tab active" data-filter="all">
+                                    <i class="fa-kit fa-lta-bus-stop"></i>&nbsp;
+                                    All
+                                </button>
+                                <button class="category-tab" data-filter="stops">
+                                    <i class="fa-kit fa-lta-location"></i>&nbsp;
+                                    Bus Stops
+                                </button>
+                                <button class="category-tab" data-filter="services">
+                                    <i class="fa-kit fa-lta-bus"></i>&nbsp;
+                                    Services
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="pinned" id="search-results-section">
+        <div class="container">
+            <div class="recent-searches-panel" id="recent-searches-panel">
+                <div class="recent-searches-header">
+                    <h3>Recently searched</h3>
+                    <button class="clear-recent-searches-btn" id="clear-recent-searches" type="button">Clear recents</button>
+                </div>
+                <div class="recent-searches-list" id="recent-searches-list"></div>
+            </div>
+
+            <section class="about-me-summ clearfix" style="padding-bottom: 9em;">
+                <div id="results-container"></div>
+            </section>
+        </div>
+    </section>
+
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/pw.bundle.js"></script>
+    <script src="../js/pwa-config.js"></script>
+    <script src="./js/shared-arrivals.js"></script>
+    <script src="../js/utils.js"></script>
+
+    <script>
+        if (window.PWAConfig) {
+            const basePath = window.PWAConfig.basePath;
+            const bgElement = document.getElementById('cv-bat');
+
+            const themePreference = localStorage.getItem('theme-preference') || 'system';
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const isDarkMode = themePreference === 'dark' || (themePreference === 'system' && prefersDark);
+            const imageName = isDarkMode ? 'hero-buszy-dark.png' : 'hero-buszy.png';
+            const imageUrl = `url('${basePath}img/bg-img/${imageName}')`;
+
+            if (bgElement) {
+                bgElement.style.setProperty('--search-hero-image', imageUrl);
+            }
+        }
+    </script>
+
+    <script>
+        let allBusStops = [];
+        let serviceNumbers = [];
+        let currentFilter = 'all';
+        let busStopsCache = null;
+
+        const RECENT_SEARCHES_KEY = 'buszy-recent-searches';
+        const MAX_RECENT_SEARCHES = 8;
+
+        const searchInput = document.getElementById('search-input');
+        const searchClear = document.getElementById('search-clear');
+        const resultsContainer = document.getElementById('results-container');
+        const recentSearchesList = document.getElementById('recent-searches-list');
+        const clearRecentSearchesBtn = document.getElementById('clear-recent-searches');
+
+        // Get base path
+        function getBasePath() {
+            if (window.PWAConfig && window.PWAConfig.basePath) {
+                return window.PWAConfig.basePath;
+            }
+            const pathname = window.location.pathname;
+            const parts = pathname.split('/').filter(p => p);
+            if (parts.length >= 2 && parts[1] === 'buszy') {
+                return '/' + parts[0] + '/';
+            }
+            return '/';
+        }
+
+        // Load all bus stops
+        async function loadAllBusStops() {
+            try {
+                const cached = localStorage.getItem('allBusStops');
+                if (cached) {
+                    const parsed = JSON.parse(cached);
+                    const stops = Array.isArray(parsed) ? parsed : (parsed.value || []);
+                    if (Array.isArray(stops) && stops.length > 0) {
+                        return stops;
+                    }
+                }
+            } catch (e) {
+                console.warn('Failed to read cached bus stops:', e);
+            }
+
+            let busStops = [];
+            let skip = 0;
+            let hasMoreData = true;
+
+            while (hasMoreData) {
+                const response = await fetch(`https://bat-lta-9eb7bbf231a2.herokuapp.com/bus-stops?$skip=${skip}`);
+                if (!response.ok) throw new Error(`Failed to fetch bus stops: ${response.status}`);
+                const data = await response.json();
+
+                if (!data.value || data.value.length === 0) {
+                    hasMoreData = false;
+                } else {
+                    busStops = busStops.concat(data.value);
+                    skip += 500;
+                }
+            }
+
+            if (busStops.length > 0) {
+                localStorage.setItem('allBusStops', JSON.stringify(busStops));
+            }
+            return busStops;
+        }
+
+        // Load service numbers
+        async function loadServiceNumbers() {
+            try {
+                const basePath = getBasePath();
+                const response = await fetch(basePath + 'buszy/json/bus-service-data.json');
+                if (response.ok) {
+                    return await response.json();
+                }
+            } catch (e) {
+                console.warn('Failed to load bus services:', e);
+            }
+            return [];
+        }
+
+        function escapeHtml(value) {
+            return String(value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/\"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function getRecentSearches() {
+            try {
+                const saved = localStorage.getItem(RECENT_SEARCHES_KEY);
+                const parsed = saved ? JSON.parse(saved) : [];
+                return Array.isArray(parsed) ? parsed : [];
+            } catch (error) {
+                console.warn('Failed to parse recent searches:', error);
+                return [];
+            }
+        }
+
+        function saveRecentSearches(recentSearches) {
+            localStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(recentSearches));
+        }
+
+        function recordRecentSearch(search) {
+            const searchValue = typeof search === 'string' ? search : (search && (search.query || search.code));
+            const normalized = String(searchValue || '').trim();
+            if (!normalized || normalized.length < 2) {
+                return;
+            }
+
+            const cleaned = normalized.replace(/\s+/g, ' ');
+            const recents = getRecentSearches();
+            const filtered = recents.filter(item => {
+                const itemQuery = typeof item === 'string' ? item : item && (item.query || item.code);
+                return String(itemQuery || '').toLowerCase() !== cleaned.toLowerCase();
+            });
+            const recentEntry = typeof search === 'string'
+                ? { query: cleaned }
+                : { ...search, query: cleaned, code: search.code || cleaned };
+            const updated = [recentEntry, ...filtered].slice(0, MAX_RECENT_SEARCHES);
+            saveRecentSearches(updated);
+            renderRecentSearches();
+        }
+
+        function applyRecentSearch(query) {
+            if (!query) return;
+            searchInput.value = query;
+            performSearch();
+            searchInput.focus();
+        }
+
+        function renderRecentSearches() {
+            const recents = getRecentSearches();
+
+            if (!recents.length) {
+                recentSearchesList.innerHTML = '<div class="recent-search-empty">No recent searches yet</div>';
+                return;
+            }
+
+            const basePath = getBasePath();
+            const busIconPath = basePath + 'buszy/assets/bus-icon.png';
+
+            recentSearchesList.innerHTML = recents.map(item => {
+                const query = typeof item === 'string' ? item : (item.query || item.code || '');
+                const isService = (typeof item !== 'string' && item.type === 'service')
+                    || (typeof item !== 'string' && !item.type && /^\d{1,4}[a-zA-Z]?$/.test(String(query)));
+                const searchValue = escapeHtml(query);
+                const displayValue = query.length > 14 ? query.slice(0, 14) + '…' : query;
+
+                return `
+                    <button class="recent-search-item" type="button" data-query="${searchValue}" aria-label="Search for ${searchValue}">
+                        <div class="recent-search-main">
+                            <span class="recent-search-chip${isService ? ' service-recent-chip' : ''}">
+                                ${isService ? '' : `<img src="${busIconPath}" alt="Bus icon">`}
+                                <span class="bus-stop-code-text">${escapeHtml(displayValue)}</span>
+                            </span>
+                        </div>
+                    </button>
+                `;
+            }).join('');
+
+            recentSearchesList.querySelectorAll('.recent-search-item').forEach(button => {
+                button.addEventListener('click', () => {
+                    applyRecentSearch(button.dataset.query);
+                });
+            });
+        }
+
+        function clearRecentSearches() {
+            localStorage.removeItem(RECENT_SEARCHES_KEY);
+            renderRecentSearches();
+        }
+
+        // Perform search
+        function performSearch() {
+            const query = searchInput.value.trim().toLowerCase();
+
+            // Show/hide clear button
+            if (query) {
+                searchClear.classList.add('show');
+            } else {
+                searchClear.classList.remove('show');
+            }
+
+            if (!query) {
+                resultsContainer.classList.remove('services-results');
+                resultsContainer.innerHTML = '';
+                renderRecentSearches();
+                return;
+            }
+
+            let results = [];
+
+            // Search in bus stops
+            if (currentFilter === 'all' || currentFilter === 'stops') {
+                results = results.concat(allBusStops.filter(stop => {
+                    const code = (stop.BusStopCode || '').toLowerCase();
+                    const desc = (stop.Description || '').toLowerCase();
+                    return code.includes(query) || desc.includes(query);
+                }).map(stop => ({
+                    type: 'stop',
+                    code: stop.BusStopCode,
+                    description: stop.Description
+                })));
+            }
+
+            // Search in services
+            if (currentFilter === 'all' || currentFilter === 'services') {
+                results = results.concat(serviceNumbers.filter(service => {
+                    const serviceNumber = (service.n || '').toLowerCase();
+                    const serviceType = (service.t || '').toLowerCase();
+                    const startTerminal = (service.ts || '').toLowerCase();
+                    const endTerminal = (service.te || '').toLowerCase();
+                    const remarks = (service.r || '').toLowerCase();
+                    return serviceNumber.includes(query) ||
+                        serviceType.includes(query) ||
+                        startTerminal.includes(query) ||
+                        endTerminal.includes(query) ||
+                        remarks.includes(query);
+                }).map(service => ({
+                    type: 'service',
+                    code: service.n,
+                    description: `${service.ts || 'N/A'} → ${service.te || 'N/A'}${service.lp ? ` / Loop: ${service.lp}` : ''}`,
+                    serviceType: service.t || 'Regular',
+                    operator: service.op || 'Transit'
+                })));
+            }
+
+            displayResults(results);
+        }
+
+        // Display results
+        function displayResults(results) {
+            resultsContainer.classList.toggle('services-results', results.length > 0 && results.every(result => result.type === 'service'));
+
+            if (results.length === 0) {
+                resultsContainer.innerHTML = `
+                    <div class="no-results">
+                        <div class="no-results-icon">
+                            <i class="fa-regular fa-magnifying-glass"></i>
+                        </div>
+                        <p>No results found</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const basePath = getBasePath();
+            resultsContainer.innerHTML = results.map(result => {
+                const isPinned = isStopBookmarked(result.code);
+                const pinBtnClass = getPinButtonClass(isPinned);
+                const pinBtnIcon = getPinButtonContent(isPinned);
+
+                if (result.type === 'stop') {
+                    const safeDescription = escapeHtml(result.description);
+                    const busIconPath = basePath + 'buszy/assets/bus-icon.png';
+                    return `
+                        <div class="result-item result-stop-item">
+                            <div class="result-main-row">
+                                <a class="result-link" href="javascript:void(0)" data-type="stop" data-code="${escapeHtml(result.code)}" data-description="${escapeHtml(result.description)}" aria-label="Open stop ${escapeHtml(result.code)}">
+                                    <div class="result-info">
+                                        <div class="result-code">
+                                            <img src="${busIconPath}" alt="Bus icon">
+                                            <span class="bus-stop-code-text">${escapeHtml(result.code)}</span>
+                                        </div>
+                                        <div class="result-description">${safeDescription}</div>
+                                    </div>
+                                </a>
+                                <div class="result-actions">
+                                    <button class="result-pin-btn ${pinBtnClass}" type="button" data-pin-code="${escapeHtml(result.code)}" data-pin-description="${escapeHtml(result.description)}" title="${isPinned ? 'Unpin this stop' : 'Pin this stop'}" aria-label="${isPinned ? 'Unpin' : 'Pin'} stop ${escapeHtml(result.code)}">
+                                        ${pinBtnIcon}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    const operator = result.operator || 'Transit';
+                    const operatorClass = {
+                        GAS: 'service-type-gas',
+                        SBST: 'service-type-sbst',
+                        TTS: 'service-type-tts',
+                        SMRT: 'service-type-smrt'
+                    }[operator.toUpperCase()] || '';
+
+                    return `
+                        <div class="result-item service-result-item">
+                            <div class="result-main-row">
+                                <a class="result-link" href="javascript:void(0)" data-type="service" data-code="${escapeHtml(result.code)}" data-description="${escapeHtml(result.description)}" aria-label="Open service ${escapeHtml(result.code)}">
+                                    <div class="result-info">
+                                        <div class="service-header">
+                                            <div class="service-number">${escapeHtml(result.code)}</div>
+                                            <div class="service-type">${escapeHtml(result.serviceType)}</div>
+                                            ${operator !== 'Transit' ? `<div class="service-type ${operatorClass}">${escapeHtml(operator)}</div>` : ''}
+                                        </div>
+                                        <div class="service-routes">
+                                            ${escapeHtml(result.description)}
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                }
+            }).join('');
+
+            resultsContainer.querySelectorAll('.result-link').forEach(link => {
+                link.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    const type = link.dataset.type;
+                    const code = link.dataset.code;
+                    if (!code) return;
+
+                    if (type === 'service') {
+                        navigateToService(code);
+                    } else {
+                        navigateToStop(code, link.dataset.description || code);
+                    }
+                });
+
+                link.addEventListener('keydown', (event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        link.click();
+                    }
+                });
+            });
+
+            resultsContainer.querySelectorAll('.result-pin-btn').forEach(pinButton => {
+                pinButton.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    event.stopImmediatePropagation();
+                    const code = pinButton.dataset.pinCode;
+                    const description = pinButton.dataset.pinDescription || code;
+                    togglePin(code, pinButton, description);
+                });
+            });
+        }
+
+        function recordSearchFromNavigation(type, code, description) {
+            const normalizedCode = String(code || '').trim();
+            if (!normalizedCode) {
+                return;
+            }
+
+            recordRecentSearch({
+                type,
+                code: normalizedCode,
+                description: description || normalizedCode,
+                query: normalizedCode
+            });
+        }
+
+        // Navigate to bus stop arrivals
+        function navigateToStop(code, description = '') {
+            recordSearchFromNavigation('stop', code, description || searchInput.value.trim() || code);
+            const basePath = getBasePath();
+            window.location.href = `${basePath}buszy/art.html?BusStopCode=${encodeURIComponent(code)}`;
+        }
+
+        // Navigate to service
+        function navigateToService(serviceNo) {
+            recordSearchFromNavigation('service', serviceNo, `Bus Service ${serviceNo}`);
+            const basePath = getBasePath();
+            window.location.href = `${basePath}buszy/bus-service.html?service=${encodeURIComponent(serviceNo)}`;
+        }
+
+        function isStopBookmarked(code) {
+            try {
+                const bookmarks = getBookmarkedStops();
+                const normalizedCode = String(code || '').trim();
+                return bookmarks.some(item => item && String(item.BusStopCode || '').trim() === normalizedCode);
+            } catch (error) {
+                return false;
+            }
+        }
+
+        function getBookmarkedStops() {
+            try {
+                const saved = JSON.parse(localStorage.getItem('bookmarkedBusStops') || '[]');
+                return Array.isArray(saved) ? saved : [];
+            } catch (error) {
+                return [];
+            }
+        }
+
+        function getPinButtonClass(isPinned) {
+            return isPinned ? 'result-pin-btn result-pinned btn btn-unpin btn-2' : 'result-pin-btn btn btn-toPin btn-2';
+        }
+
+        function getPinButtonContent(isPinned) {
+            return isPinned
+                ? '<i class="fa-regular fa-thumbtack-angle-slash"></i>'
+                : '<i class="fa-sharp fa-regular fa-thumbtack-angle"></i>';
+                        btn.innerHTML = '<i class="fa-regular fa-thumbtack-angle-slash"></i>';
+        }
+
+        function updatePinButton(button, isPinned, code) {
+            button.className = getPinButtonClass(isPinned);
+            button.title = isPinned ? 'Unpin this stop' : 'Pin this stop';
+            button.setAttribute('aria-label', `${isPinned ? 'Unpin' : 'Pin'} stop ${code}`);
+            button.innerHTML = getPinButtonContent(isPinned);
+        }
+
+        function togglePin(code, btn, description) {
+            try {
+                const bookmarks = getBookmarkedStops();
+                const normalizedCode = String(code || '').trim();
+                const existingIndex = bookmarks.findIndex(item => item && String(item.BusStopCode || '').trim() === normalizedCode);
+
+                if (existingIndex >= 0) {
+                    const confirmUnpin = confirm('Are you sure you want to unpin this bus stop?');
+                    if (!confirmUnpin) return;
+
+                    bookmarks.splice(existingIndex, 1);
+                    localStorage.setItem('bookmarkedBusStops', JSON.stringify(bookmarks));
+                    updatePinButton(btn, false, code);
+                    return;
+                }
+
+                bookmarks.push({
+                    BusStopCode: code,
+                    Description: description || code
+                });
+
+                localStorage.setItem('bookmarkedBusStops', JSON.stringify(bookmarks));
+                updatePinButton(btn, true, code);
+            } catch (error) {
+                console.warn('Failed to toggle bookmark for search result:', error);
+            }
+        }
+
+        // Event listeners
+        searchInput.addEventListener('input', performSearch);
+
+        searchInput.addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        searchClear.addEventListener('click', () => {
+            searchInput.value = '';
+            searchClear.classList.remove('show');
+            resultsContainer.innerHTML = '';
+            renderRecentSearches();
+            searchInput.focus();
+        });
+
+        clearRecentSearchesBtn.addEventListener('click', clearRecentSearches);
+
+
+        const filterButtons = document.querySelectorAll('#search-filters .category-tab');
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.filter;
+                performSearch();
+            });
+        });
+
+        // Initialize
+        async function init() {
+            allBusStops = await loadAllBusStops();
+            serviceNumbers = await loadServiceNumbers();
+            renderRecentSearches();
+
+            // Focus search input and perform search if query in URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const query = urlParams.get('q');
+            if (query) {
+                searchInput.value = decodeURIComponent(query);
+                performSearch();
+            }
+            searchInput.focus();
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+
+    <script src="../js/pwa-helper.js"></script>
+    <script src="../js/pwa-migration.js"></script>
+    <script src="./js/pwa-init.js"></script>
+    <script src="./js/ann-indicator.js"></script>
+    <script src="./js/alerts-indicator.js"></script>
+</body>
+
+</html>

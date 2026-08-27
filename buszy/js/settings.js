@@ -18,6 +18,10 @@ function initializeDefaultPreferences() {
         localStorage.setItem('showFleetLegend', 'enabled');
     }
 
+    if (!localStorage.getItem('showMap')) {
+        localStorage.setItem('showMap', 'enabled');
+    }
+
     // Set default show incoming buses preference if not already set
     if (!localStorage.getItem('showIncomingBuses')) {
         localStorage.setItem('showIncomingBuses', 'enabled');
@@ -85,6 +89,19 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('showFleetLegend', isChecked ? 'enabled' : 'disabled');
             // Dispatch custom event to notify other pages
             window.dispatchEvent(new CustomEvent('showFleetLegendChanged', { detail: { showFleetLegend: isChecked } }));
+        });
+    }
+
+    // Handle map visibility checkbox
+    const showMapCheckbox = document.getElementById('show-map');
+    if (showMapCheckbox) {
+        const showMap = localStorage.getItem('showMap') === 'enabled';
+        showMapCheckbox.checked = showMap;
+
+        showMapCheckbox.addEventListener('change', (event) => {
+            const isChecked = event.target.checked;
+            localStorage.setItem('showMap', isChecked ? 'enabled' : 'disabled');
+            window.dispatchEvent(new CustomEvent('showMapChanged', { detail: { showMap: isChecked } }));
         });
     }
 
@@ -236,6 +253,7 @@ const EXPORT_KEYS = [
     'dark-mode',           // Theme preference
     'timeFormat',          // Time display format
     'showFleetLegend',     // Fleet legend visibility
+    'showMap',             // Map visibility
     'showIncomingBuses',   // Incoming buses visibility
     'bookmarkedBusStops',  // Saved bus stops
     'allBusStops',         // Bus stop data cache

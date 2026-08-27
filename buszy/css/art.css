@@ -123,6 +123,26 @@
     opacity: 1;
 }
 
+.card .service-options-collapse > div {
+    margin: 0.75rem 0 0;
+    padding: 0.55rem 0.65rem !important;
+    border-radius: 12px;
+    background: rgba(18, 22, 34, 0.801);
+}
+
+.card .service-options-collapse .btn-busloc {
+    min-width: 42px;
+    height: 42px;
+    padding: 0.45rem 0.7rem;
+    border-color: rgba(255, 255, 255, 0.28);
+    box-shadow: none;
+}
+
+body:not(.dark-mode) .card .service-options-collapse > div {
+    border-color: rgba(31, 132, 162, 0.18);
+    background: rgba(31, 132, 162, 0.07);
+}
+
 body.dark-mode a.ib-svc:hover {
     transform: translateY(-3px) !important;
     color: #fff !important;
