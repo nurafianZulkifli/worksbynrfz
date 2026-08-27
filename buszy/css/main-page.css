@@ -1,11 +1,10 @@
   #cv-bat {
       background-size: cover;
       background-position: center;
-      height: 70vh;
+      height: fit-content !important;
+      min-height: 0 !important;
       position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+            display: block !important;
       overflow: hidden;
   }
 
@@ -58,6 +57,20 @@
       position: relative;
       z-index: 2;
       width: 100%;
+  }
+
+  #cv-bat .row.h-100 {
+      height: auto !important;
+      min-height: 0 !important;
+      display: block;
+  }
+
+  #cv-bat .col-12 {
+      height: auto;
+  }
+
+  #cv-bat .cover-search-wrapper {
+      justify-content: flex-start;
   }
 
   .alerts-btn {
@@ -475,11 +488,13 @@
   }
 
   .pinned {
-      /* margin-top: 2em; */
-      margin-top: calc(-28vh);
+      margin: 0 !important;
       margin-bottom: 2em;
-      position: relative;
-      z-index: 5;
+      padding-top: 0 !important;
+      position: static !important;
+      z-index: auto;
+      clear: both;
+      transform: none;
       pointer-events: none;
   }
 
@@ -492,7 +507,7 @@
 
   .pinned .about-me-summ {
       padding-top: 0rem;
-      margin-top: 1em;
+      margin-top: 0;
   }
 
   .no-results {
@@ -1033,7 +1048,8 @@
 
   @media (max-width: 768px) {
       #cv-bat {
-          height: 50vh;
+          height: auto;
+          min-height: 0;
       }
 
       .cover-search-wrapper {
@@ -1123,13 +1139,6 @@
           font-size: 0.9rem;
       }
 
-      .pinned {
-          margin-top: calc(-22vh);
-          margin-bottom: 2em;
-          position: relative;
-          z-index: 10;
-      }
-
       .container {
           padding: 0 15px;
 
@@ -1139,7 +1148,8 @@
 
   @media (max-width: 545px) {
       #cv-bat {
-          height: 45vh;
+          height: auto;
+          min-height: 0;
       }
 
       .cover-search-wrapper {
@@ -1217,20 +1227,5 @@
       .bus-stop-code-text,
       body.dark-mode .bus-stop-code-text {
           font-size: 14px;
-      }
-  }
-
-  @media (max-width: 344px) {
-      .pinned {
-          margin-top: calc(-22vh);
-          margin-bottom: 2em;
-          position: relative;
-          z-index: 10;
-      }
-  }
-
-  @media (display-mode: standalone) and (max-width: 545px) {
-      .pinned {
-          margin-top: calc(-22vh - 31px);
       }
   }
