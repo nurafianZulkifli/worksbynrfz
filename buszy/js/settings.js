@@ -19,7 +19,7 @@ function initializeDefaultPreferences() {
     }
 
     if (!localStorage.getItem('showMap')) {
-        localStorage.setItem('showMap', 'enabled');
+        localStorage.setItem('showMap', 'disabled');
     }
 
     // Set default show incoming buses preference if not already set

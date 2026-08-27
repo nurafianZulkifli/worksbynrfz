@@ -476,7 +476,7 @@
 
   .pinned {
       /* margin-top: 2em; */
-      margin-top: calc(-30vh);
+      margin-top: calc(-28vh);
       margin-bottom: 2em;
       position: relative;
       z-index: 5;
@@ -1124,7 +1124,7 @@
       }
 
       .pinned {
-          margin-top: calc(-22vh);
+          margin-top: calc(-20vh);
           margin-bottom: 2em;
           position: relative;
           z-index: 10;
