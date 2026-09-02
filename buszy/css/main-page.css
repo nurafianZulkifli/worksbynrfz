@@ -1053,7 +1053,10 @@
       }
 
       .cover-search-wrapper {
-          padding: 0;
+          padding-top: max(110px, calc(110px + env(safe-area-inset-top, 0px)));
+          padding-right: 0;
+          padding-bottom: 0;
+          padding-left: 0;
       }
 
       .search-container {
@@ -1153,7 +1156,10 @@
       }
 
       .cover-search-wrapper {
-          padding: 0;
+          padding-top: max(110px, calc(110px + env(safe-area-inset-top, 0px)));
+          padding-right: 0;
+          padding-bottom: 0;
+          padding-left: 0;
       }
 
       .search-container {
