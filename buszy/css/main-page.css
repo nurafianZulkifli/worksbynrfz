@@ -1,8 +1,8 @@
   #cv-bat {
-      background-size: cover;
-      background-position: center;
-      height: fit-content !important;
-      min-height: 0 !important;
+      background-size: 100% 100%;
+      background-position: top center;
+    height: fit-content !important;
+    min-height: 0 !important;
       position: relative;
             display: block !important;
       overflow: hidden;
@@ -223,7 +223,7 @@
   .cover-search-wrapper {
       background: transparent;
       padding: 0;
-      padding-top: max(40px, calc(40px + env(safe-area-inset-top, 0px)));
+      padding-top: max(110px, calc(110px + env(safe-area-inset-top, 0px)));
       max-width: 100%;
       margin: 0 auto;
       text-align: center;
