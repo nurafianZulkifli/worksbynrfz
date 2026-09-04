@@ -26,6 +26,20 @@ if (process.env.DATABASE_URL) {
 const app = express();
 const PORT = process.env.PORT || 3000;
 const LTA_API_KEY = process.env.LTA_API_KEY;
+const FISH_AUDIO_API_KEY = process.env.FISH_AUDIO_API_KEY;
+const FISH_AUDIO_REFERENCE_ID = '4f708527bbc9453e99bc4cd27963f342';
+const fishAudioRequests = new Map();
+const FISH_AUDIO_WINDOW_MS = 60 * 1000;
+const FISH_AUDIO_MAX_REQUESTS = 10;
+
+function canGenerateFishAudio(clientAddress) {
+  const now = Date.now();
+  const requestTimes = (fishAudioRequests.get(clientAddress) || []).filter(time => now - time < FISH_AUDIO_WINDOW_MS);
+  if (requestTimes.length >= FISH_AUDIO_MAX_REQUESTS) return false;
+  requestTimes.push(now);
+  fishAudioRequests.set(clientAddress, requestTimes);
+  return true;
+}
 
 // ── Web Push (VAPID) Setup ───────────────────────────────────────────
 // Generate keys once with: npx web-push generate-vapid-keys
@@ -189,6 +203,31 @@ app.use(cors({
 }));
 
 // Define all API routes BEFORE static file serving
+app.post('/bus-stop-announcement', express.json(), async (req, res) => {
+  const stopName = typeof req.body?.stopName === 'string' ? req.body.stopName.trim() : '';
+  if (!stopName || stopName.length > 100) return res.status(400).json({ error: 'A valid bus stop name is required.' });
+  if (!FISH_AUDIO_API_KEY) return res.status(503).json({ error: 'Audio announcements are not configured.' });
+  if (!canGenerateFishAudio(req.ip)) return res.status(429).json({ error: 'Please wait before requesting another announcement.' });
+
+  try {
+    const response = await axios.post('https://api.fish.audio/v1/tts', {
+      text: `Next stop, ${stopName}.`,
+      reference_id: FISH_AUDIO_REFERENCE_ID,
+      format: 'mp3'
+    }, {
+      headers: { Authorization: `Bearer ${FISH_AUDIO_API_KEY}` },
+      responseType: 'arraybuffer',
+      timeout: 30000
+    });
+    res.set('Content-Type', response.headers['content-type'] || 'audio/mpeg');
+    res.set('Cache-Control', 'private, max-age=86400');
+    res.send(Buffer.from(response.data));
+  } catch (error) {
+    console.error('[Fish Audio] Bus stop announcement failed:', error.response?.status || error.message);
+    res.status(502).json({ error: 'Unable to generate the bus stop announcement.' });
+  }
+});
+
 // Define the /bus-arrivals route
 app.get('/bus-arrivals', async (req, res) => {
   try {
@@ -306,7 +345,7 @@ app.get('/train-service-alerts', async (req, res) => {
 // ── Train Schedules Cache ───────────────────────────────────────────
 let cachedTrainData = null;
 let trainDataCacheTime = 0;
-const TRAIN_DATA_TTL = 6 * 60 * 60 * 1000; // 6 hours — GTFSScheduleTrain is a static daily dataset, not live data
+const TRAIN_DATA_TTL = 30 * 1000; // 30 seconds (matches LTA cache-control)
 
 // Helper: Parse GTFS Realtime protobuf and extract trip updates
 function parseGTFSRealtimeData(protoBuffer) {
@@ -427,7 +466,6 @@ function parseStopTimes(csvContent) {
   const arrivalTimeIndex = header.indexOf('arrival_time');
   const departureTimeIndex = header.indexOf('departure_time');
   const stopSequenceIndex = header.indexOf('stop_sequence');
-  const stopHeadsignIndex = header.indexOf('stop_headsign');
 
   if (tripIdIndex < 0 || stopIdIndex < 0 || arrivalTimeIndex < 0 || departureTimeIndex < 0) {
     console.error('[GTFS] Missing required columns. Found:', header);
@@ -456,8 +494,7 @@ function parseStopTimes(csvContent) {
         stop_id: fields[stopIdIndex] || null,
         arrival_time: fields[arrivalTimeIndex] || null,
         departure_time: fields[departureTimeIndex] || null,
-        stop_sequence: stopSequenceIndex >= 0 ? parseInt(fields[stopSequenceIndex], 10) : null,
-        stop_headsign: stopHeadsignIndex >= 0 ? (fields[stopHeadsignIndex] || null) : null
+        stop_sequence: stopSequenceIndex >= 0 ? parseInt(fields[stopSequenceIndex], 10) : null
       });
     } catch (e) {
       console.warn(`[GTFS] Error parsing line ${i}:`, e.message);
@@ -481,11 +518,10 @@ app.get('/train-schedules', async (req, res) => {
       return res.json(cachedTrainData);
     }
 
-    // GTFSScheduleTrain returns JSON with a link to the actual zip file, not the zip itself
-    // (LTA's field is lowercase "link", not "Link" like most other DataMall endpoints)
+    // GTFSScheduleTrain returns JSON with a Link to the actual zip file, not the zip itself
     console.log('[GTFS] Fetching GTFS Schedule download link from LTA...');
     const linkResponse = await ltaApi.get('/GTFSScheduleTrain');
-    const downloadLink = linkResponse.data?.value?.[0]?.link || linkResponse.data?.value?.[0]?.Link;
+    const downloadLink = linkResponse.data?.value?.[0]?.Link;
 
     if (!downloadLink) {
       console.error('[GTFS] No download Link found in LTA response:', JSON.stringify(linkResponse.data));
@@ -570,15 +606,10 @@ app.get('/train-schedules', async (req, res) => {
   } catch (error) {
     console.error('[GTFS] Error fetching train schedules:', error.message);
 
-    // Serve the last known-good static schedule rather than an empty fallback —
-    // LTA rate-limits this heavy dataset endpoint, so transient 500s are expected between refreshes.
-    if (cachedTrainData) {
-      console.warn('[GTFS] Serving stale cache after fetch error');
-      res.set('Cache-Control', 'public, max-age=30');
-      res.set('X-Cache', 'STALE');
-      return res.json(cachedTrainData);
-    }
-
+    // LTA does not publish a live train-arrival/GTFS-Realtime feed — GTFSScheduleTrain
+    // consistently 500s from their side. Rather than surface that as a hard failure on
+    // every poll, degrade gracefully to the same "no live delay data" shape the frontend
+    // already renders (falls back to the estimated headway table).
     res.set('Cache-Control', 'public, max-age=30');
     res.json({
       success: true,
