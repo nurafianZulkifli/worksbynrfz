@@ -189,6 +189,22 @@ app.use(cors({
 }));
 
 const stationLocationCache = new Map();
+const wait = milliseconds => new Promise(resolve => setTimeout(resolve, milliseconds));
+
+async function searchStationLocation(searchVal) {
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    try {
+      return await axios.get('https://www.onemap.gov.sg/api/common/elastic/search', {
+        params: { searchVal, returnGeom: 'Y', getAddrDetails: 'N', pageNum: 1 },
+        timeout: 10000
+      });
+    } catch (error) {
+      const status = error.response?.status;
+      if (![429, 500, 502, 503, 504].includes(status) || attempt === 2) throw error;
+      await wait(300 * (attempt + 1));
+    }
+  }
+}
 
 app.get('/station-location', async (req, res) => {
   const stationName = String(req.query.name || '').trim();
@@ -201,10 +217,7 @@ app.get('/station-location', async (req, res) => {
     const searchTerms = [`${stationName} MRT`, `${stationName} LRT`, stationName];
     let results = [];
     for (const searchVal of searchTerms) {
-      const response = await axios.get('https://www.onemap.gov.sg/api/common/elastic/search', {
-        params: { searchVal, returnGeom: 'Y', getAddrDetails: 'N', pageNum: 1 },
-        timeout: 10000
-      });
+      const response = await searchStationLocation(searchVal);
       results = response.data?.results || [];
       if (results.length) break;
     }
