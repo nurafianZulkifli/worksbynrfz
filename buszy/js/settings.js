@@ -32,6 +32,11 @@ function initializeDefaultPreferences() {
         localStorage.setItem('sortByArrival', 'enabled');
     }
 
+    // Set default new look preference if not already set
+    if (!localStorage.getItem('useNewLook')) {
+        localStorage.setItem('useNewLook', 'disabled');
+    }
+
     // Set default refresh interval if not already set (in seconds)
     if (!localStorage.getItem('refreshInterval')) {
         localStorage.setItem('refreshInterval', '2');
@@ -131,6 +136,23 @@ document.addEventListener('DOMContentLoaded', () => {
             const isChecked = event.target.checked;
             localStorage.setItem('sortByArrival', isChecked ? 'enabled' : 'disabled');
             window.dispatchEvent(new CustomEvent('sortByArrivalChanged', { detail: { sortByArrival: isChecked } }));
+        });
+    }
+
+    // Handle the temporary new look toggle
+    const useNewLookCheckbox = document.getElementById('use-new-look');
+    if (useNewLookCheckbox) {
+        useNewLookCheckbox.checked = localStorage.getItem('useNewLook') === 'enabled';
+
+        useNewLookCheckbox.addEventListener('change', (event) => {
+            const useNewLook = event.target.checked;
+            localStorage.setItem('useNewLook', useNewLook ? 'enabled' : 'disabled');
+
+            if (useNewLook) {
+                window.location.href = 'https://nurafianzulkifli.github.io/nrfz-dev/buszy/';
+            } else {
+                window.location.href = 'https://worksbynrfz.com/buszy/';
+            }
         });
     }
 
