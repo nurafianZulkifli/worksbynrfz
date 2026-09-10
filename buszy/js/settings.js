@@ -139,16 +139,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Handle the temporary new look toggle
-    const useNewLookCheckbox = document.getElementById('use-new-look');
-    if (useNewLookCheckbox) {
-        useNewLookCheckbox.checked = localStorage.getItem('useNewLook') === 'enabled';
+    // Handle the temporary new look button
+    const useNewLookBtn = document.getElementById('use-new-look');
+    if (useNewLookBtn) {
+        const isNewLook = localStorage.getItem('useNewLook') === 'enabled';
+        const btnText = useNewLookBtn.querySelector('span') || useNewLookBtn;
+        if (isNewLook) {
+            btnText.textContent = 'Switch to Old Look';
+        } else {
+            btnText.textContent = 'Try New Look';
+        }
 
-        useNewLookCheckbox.addEventListener('change', (event) => {
-            const useNewLook = event.target.checked;
-            localStorage.setItem('useNewLook', useNewLook ? 'enabled' : 'disabled');
+        useNewLookBtn.addEventListener('click', () => {
+            const currentNewLook = localStorage.getItem('useNewLook') === 'enabled';
+            const nextNewLook = !currentNewLook;
+            localStorage.setItem('useNewLook', nextNewLook ? 'enabled' : 'disabled');
 
-            if (useNewLook) {
+            if (nextNewLook) {
                 window.location.href = 'https://nurafianzulkifli.github.io/nrfz-dev/buszy/';
             } else {
                 window.location.href = 'https://worksbynrfz.com/buszy/';
