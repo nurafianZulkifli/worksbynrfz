@@ -142,24 +142,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Handle the temporary new look button
     const useNewLookBtn = document.getElementById('use-new-look');
     if (useNewLookBtn) {
-        const isNewLook = localStorage.getItem('useNewLook') === 'enabled';
-        const btnText = useNewLookBtn.querySelector('span') || useNewLookBtn;
-        if (isNewLook) {
-            btnText.textContent = 'Switch to Old Look';
-        } else {
-            btnText.textContent = 'Try New Look';
-        }
-
         useNewLookBtn.addEventListener('click', () => {
-            const currentNewLook = localStorage.getItem('useNewLook') === 'enabled';
-            const nextNewLook = !currentNewLook;
-            localStorage.setItem('useNewLook', nextNewLook ? 'enabled' : 'disabled');
-
-            if (nextNewLook) {
-                window.location.href = 'https://nurafianzulkifli.github.io/nrfz-dev/buszy/';
-            } else {
-                window.location.href = 'https://worksbynrfz.com/buszy/';
-            }
+            localStorage.setItem('useNewLook', 'enabled');
+            window.location.href = 'https://nurafianzulkifli.github.io/nrfz-dev/buszy/';
         });
     }
 
