@@ -101,7 +101,9 @@ body.dark-mode #breadcrumb-service h2 {
 }
 
 .service-variants-indicator {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
     padding: 0.35rem 0.65rem;
     border: 2px solid currentColor;
     color: inherit;
@@ -1279,6 +1281,11 @@ body.dark-mode .info-item {
         flex-direction: column;
         text-align: center;
         gap: 1rem;
+    }
+
+    .service-header .service-toggle {
+        /* override the desktop margin-left: auto so it centers instead of hugging the right edge */
+        margin-left: 0;
     }
 
     .service-number-badge {
