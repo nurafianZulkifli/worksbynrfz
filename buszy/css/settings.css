@@ -23,5 +23,54 @@
  body.dark-mode #sync-code-input {
      background: #252840;
      color: #e0e0f0;
-     border-color: #3a3f58 !important;
+     border-color: #4b5b64 !important;
+     background-color: #1e2529;
+     border: 2px solid;
+     color: #e0e0e0;
+ }
+
+ .theme-selector {
+     display: grid;
+     grid-template-columns: repeat(3, minmax(0, 1fr));
+     gap: 6px;
+     margin-top: 1rem;
+     padding: 6px;
+     border-radius: 24px;
+     background: #e5e8edff;
+ }
+
+ .theme-selector-option {
+     min-height: 44px;
+     padding: .65rem .5rem;
+     border: 0;
+     border-radius: 22px;
+     background: transparent;
+     color: #667085;
+     font: inherit;
+     font-weight: 700;
+     cursor: pointer;
+ }
+
+ .theme-selector-option[aria-pressed="true"] {
+     background: #00658c33;
+     color: #1d313b;
+     box-shadow: 0 1px 3px rgba(0, 0, 0, .14);
+ }
+
+ .theme-selector-option:focus-visible {
+     outline: 2px solid #1f84a2;
+     outline-offset: 2px;
+ }
+
+ body.dark-mode .theme-selector {
+     background: #374955ff;
+ }
+
+ body.dark-mode .theme-selector-option {
+     color: #b8c4cc;
+ }
+
+ body.dark-mode .theme-selector-option[aria-pressed="true"] {
+     background: #ffffff33;
+     color: #fff;
  }

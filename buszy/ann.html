@@ -162,7 +162,7 @@
                                             Alerts
                                         </button>
                                         <button class="tab-button" data-tab="announcements">
-                                            <i class="fa-regular fa-bell"></i>&nbsp;
+                                            <i class="fa-regular fa-bullhorn"></i>&nbsp;
                                             Announcements
                                         </button>
                                     </div>
@@ -189,101 +189,13 @@
         <div class="container">
             <!-- Announcements Tab Content -->
             <div id="announcements-content" class="tab-content-section">
-                <div class="list-group">
-                    <a href="settings.html#refetch-stops" data-ann-id="bus-stop-description-2026-07"
-                        data-ann-date="2026-07-12"
-                        class="list-group-item list-group-item-action flex-column align-items-start">
-                        <div class="d-flex">
-                            <div>
-                                <h5 class="lg-ann"><i class="fa-regular fa-thumbtack"></i> Bus Stop Description Changes
-                                    -
-                                    July 2026<span class="ann-badge-container"></span></h5>
-                            </div>
-                        </div>
-                        <p class="mb-1" style="cursor: pointer;">
-                            A few Bus Stop Descriptions (Names) have been updated in July 2026. Do head over to
-                            Settings
-                            and re-fetch
-                            your bus stop data to get the most up to date information.</p>
-                    </a>
-                    <hr>
-                    <a href="https://landtransportguru.net/dtl-eclo-jul-sep-2026/"
-                        data-ann-id="dtl-service-adjustment-2026-04" data-ann-date="2026-04-28"
-                        class="list-group-item list-group-item-action flex-column align-items-start">
-                        <div class="d-flex">
-                            <div>
-                                <h5 class="lg-ann"><i class="fa-kit fa-lta-train"></i> Service Adjustments - DTL<span
-                                        class="ann-badge-container"></span></h5>
-                                <small class="lg-date">28 Apr 2026</small>
-                            </div>
-                        </div>
-                        <p class="mb-1" style="cursor: pointer;">
-                            Early Closures & Late Openings (ECLO) along the entire Downtown Line (DTL), between Bukit
-                            Panjang and Expo, will take place across nine consecutive Fridays & Saturdays between 10
-                            July
-                            2026 and 4 September 2026.</p>
-                    </a>
-                    <a href="https://landtransportguru.net/sklrt-west-single-loop-ops-apr-oct-2026/"
-                        data-ann-id="sklrt-closure-2026-04" data-ann-date="2026-02-20"
-                        class="list-group-item list-group-item-action flex-column align-items-start">
-                        <div class="d-flex">
-                            <div>
-                                <h5 class="lg-ann"><i class="fa-kit fa-lta-lrt"></i> Service Adjustments - SKLRT<span
-                                        class="ann-badge-container"></span></h5>
-                                <small class="lg-date">20 Feb 2026</small>
-                            </div>
-                        </div>
-                        <p class="mb-1" style="cursor: pointer;">
-                            The West Inner Loop of the Sengkang LRT Line will be closed from 19 April 2026 to 18 October
-                            2026. This is to facilitate the track works needed to integrate the existing LRT line with
-                            the
-                            expanded Sengkang LRT Depot.</p>
-                    </a>
-                    <a href="https://www.ptc.gov.sg/newsroom/news-releases/newsroom-view/fare-review-exercise-2025"
-                        data-ann-id="fare-review-2025-10" data-ann-date="2025-10-14"
-                        class="list-group-item list-group-item-action flex-column align-items-start">
-                        <div class="d-flex">
-                            <div>
-                                <h5 class="lg-ann"><i class="fa-kit fa-lta-map"></i> Fare Review Exercise<span
-                                        class="ann-badge-container"></span></h5>
-                                <small class="lg-date">14 Oct 2025</small>
-                            </div>
-                        </div>
-                        <p class="mb-1" style="cursor: pointer;">
-                            PTC grants overall fare adjustment of 5.0% - below the maximum allowable quantum of 14.4%;
-                            deferment of remaining quantum (9.4%) supported by additional Government subsidies...</p>
-                    </a>
+                <div class="list-group announcements-list">
+                    <div class="fetch">Loading announcements...</div>
                 </div>
             </div>
 
             <!-- Alerts Tab Content -->
             <div id="alerts-content-section" class="tab-content-section active">
-
-                <!-- <div id="notif-blocked-banner">
-                    <i class="fa-regular fa-bell" style="font-size:1.3rem; flex-shrink:0;"></i>
-                    <span class="notif-banner-text">
-                        <strong>Notifications disabled</strong>
-                        Enable notifications in your browser settings to receive alerts.
-                    </span>
-                    <div class="notif-banner-actions">
-                        <button class="btn btn-sm notif-dismiss-btn"
-                            onclick="this.parentElement.parentElement.style.display='none'">Dismiss</button>
-                    </div>
-                </div> -->
-
-                <!-- <div id="notif-prompt-banner">
-                    <i class="fa-regular fa-bell" style="font-size:1.3rem; flex-shrink:0;"></i>
-                    <span class="notif-banner-text">
-                        <strong>Get bus service alerts!</strong><br>
-                        Enable notifications to be notified of a bus service delay.
-                    </span>
-                    <div class="notif-banner-actions">
-                        <button class="btn btn-busloc btn-sm"
-                            onclick="BuszyPushNotify.enableFromBanner()">Enable</button>
-                        <button class="btn btn-sm notif-dismiss-btn" onclick="BuszyPushNotify.dismissPromptBanner()">Not
-                            now</button>
-                    </div>
-                </div> -->
 
                 <div class="list-group" id="alerts-content">
                     <div class="alerts-loading"
@@ -341,226 +253,18 @@
 
     <script src="../js/utils.js"></script>
 
+    <script src="../js/announcements.js"></script>
+
     <script src="js/ann.js"></script>
 
     <script src="js/ann-indicator.js"></script>
 
     <script src="js/alerts-indicator.js"></script>
 
-    <script src="js/push-notify.js"></script>
-
     <script src="js/bs-alerts.js"></script>
 
     <script src="../js/ios-pwa-warning.js"></script>
 
-
-    <!-- Tab switching functionality -->
-    <script>
-        // Helper: convert URLs in text to clickable links
-        function linkify(text) {
-            const urlRegex = /(https?:\/\/[\w\-._~:/?#[\]@!$&'()*+,;=%]+)|(www\.[\w\-._~:/?#[\]@!$&'()*+,;=%]+)|(go\.gov\.sg\/[\w\-._~:/?#[\]@!$&'()*+,;=%]+)/gi;
-            let linked = text.replace(urlRegex, function (url) {
-                let href = url;
-                if (url.match(/^go\.gov\.sg\//i)) {
-                    href = 'https://' + url;
-                } else if (!href.match(/^https?:\/\//i)) {
-                    href = 'http://' + href;
-                }
-                return `<a href="${href}" target="_blank" rel="noopener noreferrer">${url}</a>`;
-            });
-            return linked.replace(/\n/g, '<br>');
-        }
-
-        function extractBusServiceCodes(text) {
-            // Capture the service list between "bus service(s)" and the disruption status.
-            const busServicesRegex = /bus services?\s*[:\-]?\s*([\s\S]*?)(?=\s+(?:have|has|are|is)\s+(?:been\s+)?(?:affected|diverted|disrupted|delayed)\b|\s+(?:were|was)\s+(?:affected|diverted|disrupted|delayed)\b|[.;]|$)/i;
-            const match = text.match(busServicesRegex);
-
-            if (!match) {
-                return [];
-            }
-
-            const servicesText = match[1];
-
-            // Allow one-digit services and letter suffixes such as 2B.
-            const codeRegex = /\b(\d{1,4}[a-z]?)\b/gi;
-            const matches = (servicesText.match(codeRegex) || []).map(code => code.toUpperCase());
-            const codes = [...new Set(matches)].filter(code => {
-                const num = parseInt(code);
-                return num >= 1 && num <= 9999;
-            });
-            return codes;
-        }
-
-        function displayAlerts(alerts) {
-            const content = document.getElementById('alerts-content');
-            content.innerHTML = '';
-
-            alerts.forEach((alert, index) => {
-                const linkedContent = linkify(alert.content);
-                const alertDate = new Date(alert.createdDate);
-
-                // Format time as HH:MM
-                let hours = alertDate.getHours();
-                const mins = alertDate.getMinutes().toString().padStart(2, '0');
-                hours = hours.toString().padStart(2, '0');
-                const timeStr = `${hours}:${mins}`;
-
-                const codes = extractBusServiceCodes(alert.content);
-                let codesHTML = '';
-                if (codes.length > 0) {
-                    codesHTML = '<div class="bus-codes-container" style="margin: 0.5em 0;">';
-                    codes.forEach(code => {
-                        codesHTML += `<div class="bus-service-code" data-service-code="${code}" style="cursor: pointer; pointer-events: auto; user-select: none;"><span class="bus-service-code-text">${code}</span></div>`;
-                    });
-                    codesHTML += '</div>';
-                }
-
-                const alertDiv = document.createElement('div');
-                alertDiv.className = 'list-group-item list-group-item-action flex-column align-items-start';
-                alertDiv.innerHTML = `
-                    <div style="width: 100%; margin-bottom: 0.5em;">
-                        <small class="lg-date">Bus Services Affected:</small>
-                    </div>
-                    ${codesHTML}
-                    <p class="mb-1 alert-item-content">${linkedContent}</p>
-                `;
-                content.appendChild(alertDiv);
-            });
-        }
-
-        function showNoAlerts() {
-            const content = document.getElementById('alerts-content');
-            content.innerHTML = '<div class="no-alerts"><i class="fa-regular fa-check-circle"></i>&nbsp;No alerts at the moment.</div>';
-        }
-
-        function showErrorMessage(message) {
-            const content = document.getElementById('alerts-content');
-            content.innerHTML = `<div class="error-message"><i class="fa-regular fa-exclamation-circle"></i> ${message}</div>`;
-        }
-
-        // Function to fetch and populate alerts
-        function loadAlerts() {
-            const alertsContent = document.getElementById('alerts-content');
-            if (!alertsContent) return;
-
-            const CACHE_KEY = 'buszy_ann_alerts_cache';
-            const DATA_KEY = 'buszy_ann_alerts_data';
-            const CACHE_TTL = 30 * 60 * 1000; // 30 minutes
-
-            function processAlerts(data) {
-                if (!data || !data.value) {
-                    showNoAlerts();
-                    updateAlertsLastUpdated();
-                    return;
-                }
-
-                // Support both array and object for value
-                let alerts = [];
-                if (Array.isArray(data.value)) {
-                    alerts = data.value;
-                } else if (typeof data.value === 'object') {
-                    alerts = [data.value];
-                }
-
-                // Filter for bus service alerts only
-                let busAlerts = [];
-                alerts.forEach(alert => {
-                    if (alert.Message && Array.isArray(alert.Message)) {
-                        alert.Message.forEach(messageObj => {
-                            const msg = messageObj.Content || '';
-                            const msgLower = msg.toLowerCase();
-                            if (msgLower.includes('bus service') && (msgLower.includes('affected') || msgLower.includes('diverted') || msgLower.includes('delayed'))) {
-                                busAlerts.push({
-                                    content: msg,
-                                    status: alert.Status,
-                                    createdDate: messageObj.CreatedDate
-                                });
-                            }
-                        });
-                    }
-                });
-
-                if (busAlerts.length === 0) {
-                    showNoAlerts();
-                } else {
-                    displayAlerts(busAlerts);
-                }
-            }
-
-            // Check cache
-            const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
-            const cacheIsFresh = cached !== null && (Date.now() - cached.ts < CACHE_TTL);
-
-            // Show cached data if available
-            if (cacheIsFresh) {
-                const cachedData = JSON.parse(localStorage.getItem(DATA_KEY) || 'null');
-                if (cachedData) {
-                    processAlerts(cachedData);
-                    return; // Don't fetch again if cache is fresh
-                }
-            }
-
-            // Fetch only if cache is stale
-            fetch('https://bat-lta-9eb7bbf231a2.herokuapp.com/train-service-alerts')
-                .then(r => r.json())
-                .then(data => {
-                    localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now() }));
-                    localStorage.setItem(DATA_KEY, JSON.stringify(data));
-                    processAlerts(data);
-                })
-                .catch(err => {
-                    console.error('Error fetching alerts:', err);
-                    // Show error only if we have no cached fallback
-                    if (!cacheIsFresh && !JSON.parse(localStorage.getItem(DATA_KEY) || 'null')) {
-                        showErrorMessage('Failed to load alerts. Please try again later.');
-                    }
-                });
-        }
-
-        document.addEventListener('DOMContentLoaded', function () {
-            const tabButtons = document.querySelectorAll('.tab-button');
-            const contentSections = document.querySelectorAll('.tab-content-section');
-            const pageTitle = document.getElementById('filter-title');
-            const markAsReadBtn = document.getElementById('mark-as-read-btn');
-            const alertsLastUpdatedTop = document.getElementById('alerts-last-updated-top');
-
-            tabButtons.forEach(button => {
-                button.addEventListener('click', function () {
-                    const tabName = this.getAttribute('data-tab');
-
-                    // Remove active class from all buttons
-                    tabButtons.forEach(btn => btn.classList.remove('active'));
-
-                    // Hide all content sections
-                    contentSections.forEach(section => section.classList.remove('active'));
-
-                    // Add active class to clicked button
-                    this.classList.add('active');
-
-                    // Update page title and mark-as-read button visibility
-                    if (tabName === 'announcements') {
-                        document.getElementById('announcements-content').classList.add('active');
-                        if (pageTitle) pageTitle.textContent = 'Announcements';
-                        document.title = 'Announcements | Buszy';
-                        if (markAsReadBtn) markAsReadBtn.style.display = 'block';
-                        if (alertsLastUpdatedTop) alertsLastUpdatedTop.style.display = 'none';
-                    } else if (tabName === 'alerts') {
-                        document.getElementById('alerts-content-section').classList.add('active');
-                        if (pageTitle) pageTitle.textContent = 'Bus Service Alerts';
-                        document.title = 'Bus Service Alerts | Buszy';
-                        if (markAsReadBtn) markAsReadBtn.style.display = 'none';
-                        if (alertsLastUpdatedTop) alertsLastUpdatedTop.style.display = 'block';
-                        // Load alerts when tab is clicked
-                        loadAlerts();
-                    }
-                });
-            });
-
-            // Load alerts on page load if needed
-            loadAlerts();
-        });
-    </script>
 </body>
 
 </html>

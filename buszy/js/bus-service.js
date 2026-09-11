@@ -766,6 +766,16 @@ async function populateServiceData(serviceNumber, service) {
         document.getElementById('route-variant-section').style.display = 'block';
         populateRouteVariant(service.rv);
     }
+
+    const hasRelatedServices = Boolean(
+        (service.sb && service.sb.length > 0) ||
+        (service.pb && service.pb.length > 0) ||
+        (service.ev && service.ev.length > 0) ||
+        (service.rv && service.rv.length > 0)
+    );
+    if (hasRelatedServices) {
+        document.getElementById('service-details').classList.add('has-variants');
+    }
 }
 
 // Display frequency details by time period (collapsible)
@@ -931,6 +941,7 @@ function renderFilteredStops(stops) {
 
     const basePath = getBasePath();
     const busIconPath = basePath + 'buszy/assets/bus-icon.png';
+    const currentServiceNo = getServiceNumberFromURL();
 
     let highlightedElement = null;
 
@@ -940,10 +951,20 @@ function renderFilteredStops(stops) {
         stopElement.style.animationDelay = `${index * 0.05}s`;
 
         // Only highlight the first occurrence of the highlighted stop
-        if (currentHighlightStopForSearch && stop[0] === currentHighlightStopForSearch && !highlightedElement) {
+        const isHighlighted = currentHighlightStopForSearch && stop[0] === currentHighlightStopForSearch && !highlightedElement;
+        if (isHighlighted) {
             stopElement.classList.add('highlight-stop');
             highlightedElement = stopElement;
         }
+
+        const whereAmIHtml = isHighlighted ? `
+            <a href="${basePath}buszy/where-am-i.html?service=${encodeURIComponent(currentServiceNo)}&stop=${encodeURIComponent(stop[0])}" 
+               class="highlight-where-am-i-btn" 
+               title="Track on Where Am I" 
+               aria-label="Track on Where Am I">
+                <i class="fa-regular fa-location-crosshairs"></i>
+            </a>
+        ` : '';
 
         stopElement.innerHTML = `
             <div class="bus-stop-info">
@@ -956,12 +977,23 @@ function renderFilteredStops(stops) {
                     <span class="bus-stop-description">${stop[2]}</span>
                 </div>
             </div>
+            ${whereAmIHtml}
         `;
 
         stopElement.style.cursor = 'pointer';
-        stopElement.addEventListener('click', () => {
+        stopElement.addEventListener('click', (e) => {
+            if (e.target.closest('.highlight-where-am-i-btn')) {
+                return;
+            }
             window.location.href = getBasePath() + 'buszy/art.html?BusStopCode=' + stop[0];
         });
+
+        const whereAmIBtn = stopElement.querySelector('.highlight-where-am-i-btn');
+        if (whereAmIBtn) {
+            whereAmIBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+        }
 
         container.appendChild(stopElement);
     });
@@ -1136,6 +1168,49 @@ async function initializePage() {
 // Run on page load
 document.addEventListener('DOMContentLoaded', () => {
     initializePage();
+
+    const serviceDetails = document.getElementById('service-details');
+    const serviceHeader = serviceDetails?.querySelector(':scope > .service-header');
+    if (serviceDetails && serviceHeader) {
+        const toggleServiceVariants = () => {
+            if (!serviceDetails.classList.contains('has-variants')) return;
+            if (serviceDetails.classList.contains('animating')) return;
+
+            const isExpanded = serviceDetails.classList.toggle('expanded');
+            serviceHeader.setAttribute('aria-expanded', String(isExpanded));
+            const variantsContent = serviceDetails.querySelector('.service-variants-content');
+            if (!variantsContent) return;
+
+            serviceDetails.classList.add('animating');
+            const animationDuration = 400;
+
+            if (isExpanded) {
+                variantsContent.style.height = '0px';
+                requestAnimationFrame(() => {
+                    variantsContent.style.height = `${variantsContent.scrollHeight}px`;
+                });
+            } else {
+                variantsContent.style.height = `${variantsContent.scrollHeight}px`;
+                variantsContent.offsetHeight;
+                requestAnimationFrame(() => {
+                    variantsContent.style.height = '0px';
+                });
+            }
+
+            setTimeout(() => {
+                variantsContent.style.height = isExpanded ? 'auto' : '0px';
+                serviceDetails.classList.remove('animating');
+            }, animationDuration);
+        };
+
+        serviceHeader.addEventListener('click', toggleServiceVariants);
+        serviceHeader.addEventListener('keydown', event => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                toggleServiceVariants();
+            }
+        });
+    }
 
     // Add scroll detection for frequency details scrollbar
     const frequencyDetails = document.querySelector('.frequency-details');

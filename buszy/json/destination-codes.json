@@ -2,5 +2,9 @@
   "02099": {
     "description": "Marina Ctr Ter",
     "road": "Raffles Blvd"
+  },
+    "02051": {
+    "description": "The Float @ Marina Bay",
+    "road": "Raffles Ave"
   }
 }

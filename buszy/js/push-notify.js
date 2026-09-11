@@ -168,13 +168,6 @@
 
     addTracked(stopCode, serviceNo);
 
-    // Auto-subscribe to service alerts immediately (default on) now that permission is granted.
-    // buszy-subp.js may have already run _bzAutoSubAlerts at DOMContentLoaded with
-    // permission === 'default', so we call it again now that it's 'granted'.
-    if (typeof window._bzAutoSubAlerts === 'function') {
-      window._bzAutoSubAlerts().catch(() => {});
-    }
-
     return true;
   }
 

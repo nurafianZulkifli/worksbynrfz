@@ -20,7 +20,7 @@ function hashCode(str) {
 }
 
 function applyDots(hasUnread) {
-    const dots = document.querySelectorAll('.ann-indicator-dot, .alerts-indicator-dot');
+    const dots = document.querySelectorAll('.ann-indicator-dot');
     dots.forEach(dot => {
         if (hasUnread) {
             dot.classList.add('show');

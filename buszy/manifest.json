@@ -5,11 +5,11 @@
   "description": "Real-time bus arrival timings, details, and pinned bus stops for Singapore buses",
   "start_url": "./",
   "scope": "./",
-  "display_override": ["window-controls-overlay", "standalone"],
+  "display_override": ["standalone"],
   "display": "standalone",
   "orientation": "portrait-primary",
-  "background_color": "#ebebe8",
-  "theme_color": "#ebebe8",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
   "categories": ["transportation", "utilities"],
   "icons": [
     {

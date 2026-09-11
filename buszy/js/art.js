@@ -338,7 +338,6 @@ if ('serviceWorker' in navigator) {
 
 document.addEventListener('DOMContentLoaded', async () => {
     // Re-register active push subscriptions with the server (restores after server restart/dyno wake)
-    if (window.BuszyPushNotify) BuszyPushNotify.reRegisterAll();
 
     // Check for a pending notification navigation stored by the service worker.
     // Needed when the browser navigated to this page without query params (e.g. after
@@ -1351,20 +1350,6 @@ async function fetchBusArrivals() {
                     window.location.href = url;
                 });
             });
-
-            // Add event listeners to "Notify" buttons
-            if (window.BuszyPushNotify) {
-                const notifButtons = document.querySelectorAll('.notif-toggle-btn');
-                notifButtons.forEach((btn) => {
-                    btn.addEventListener('click', () => {
-                        const stopCode = btn.getAttribute('data-stop');
-                        const serviceNo = btn.getAttribute('data-service');
-                        BuszyPushNotify.toggle(stopCode, serviceNo, btn);
-                    });
-                });
-
-                BuszyPushNotify.restoreButtonStates();
-            }
 
         }
 

@@ -162,13 +162,13 @@ function updateHrefForDarkMode() {
     if (isDarkMode) {
         /* Banners */
         const imageName = 'hero-buszy-dark.png';
-        const imageUrl = (window.PWAConfig ? window.PWAConfig.basePath : '/') + 'img/bg-img/' + imageName;
+        const imageUrl = new URL('../img/bg-img/' + imageName, window.location.href).href;
         aboutPage.style.backgroundImage = `url('${imageUrl}')`;
 
     } else {
         /* Banners */
         const imageName = 'hero-buszy.png';
-        const imageUrl = (window.PWAConfig ? window.PWAConfig.basePath : '/') + 'img/bg-img/' + imageName;
+        const imageUrl = new URL('../img/bg-img/' + imageName, window.location.href).href;
         aboutPage.style.backgroundImage = `url('${imageUrl}')`;
     }
 

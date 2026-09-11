@@ -1,0 +1,46 @@
+[
+  {
+    "id": "bus-stop-description-2026-07",
+    "keywords": ["bus", "bus stop", "bus service"],
+    "audiences": ["buszy"],
+    "date": "2026-07-12",
+    "dateLabel": "12 Jul 2026",
+    "href": "../buszy/settings.html#refetch-stops",
+    "icon": "fa-regular fa-thumbtack",
+    "title": "Bus Stop Description Changes - July 2026",
+    "body": "A few Bus Stop Descriptions (Names) have been updated in July 2026. Do head over to Settings and re-fetch your bus stop data to get the most up to date information."
+  },
+  {
+    "id": "dtl-service-adjustment-2026-04",
+    "keywords": ["rail", "mrt", "downtown line", "dtl"],
+    "audiences": ["rail-buddy"],
+    "date": "2026-04-28",
+    "dateLabel": "28 Apr 2026",
+    "href": "https://landtransportguru.net/dtl-eclo-jul-sep-2026/",
+    "icon": "fa-kit fa-lta-train",
+    "title": "Service Adjustments - DTL",
+    "body": "Early Closures & Late Openings (ECLO) along the entire Downtown Line (DTL), between Bukit Panjang and Expo, will take place across nine consecutive Fridays & Saturdays between 10 July 2026 and 4 September 2026."
+  },
+  {
+    "id": "sklrt-closure-2026-04",
+    "keywords": ["rail", "lrt", "sengkang lrt", "sklrt"],
+    "audiences": ["rail-buddy"],
+    "date": "2026-02-20",
+    "dateLabel": "20 Feb 2026",
+    "href": "https://landtransportguru.net/sklrt-west-single-loop-ops-apr-oct-2026/",
+    "icon": "fa-kit fa-lta-lrt",
+    "title": "Service Adjustments - SKLRT",
+    "body": "The West Inner Loop of the Sengkang LRT Line will be closed from 19 April 2026 to 18 October 2026. This is to facilitate the track works needed to integrate the existing LRT line with the expanded Sengkang LRT Depot."
+  },
+  {
+    "id": "fare-review-2025-10",
+    "keywords": ["fare", "public transport"],
+    "audiences": ["buszy", "rail-buddy"],
+    "date": "2025-10-14",
+    "dateLabel": "14 Oct 2025",
+    "href": "https://www.ptc.gov.sg/newsroom/news-releases/newsroom-view/fare-review-exercise-2025",
+    "icon": "fa-kit fa-lta-map",
+    "title": "Fare Review Exercise",
+    "body": "PTC grants overall fare adjustment of 5.0% - below the maximum allowable quantum of 14.4%; deferment of remaining quantum (9.4%) supported by additional Government subsidies..."
+  }
+]

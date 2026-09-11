@@ -22,6 +22,7 @@
     <link rel="icon" href="./assets/logo.png" type="image/png">
 
     <link rel="apple-touch-icon" href="./assets/icon-512.png">
+    <link rel="preload" href="./assets/icon-512.png" as="image" type="image/png" fetchpriority="high">
 
     <!-- iOS PWA Startup Image -->
     <link rel="apple-touch-startup-image" href="../img/bg-img/hero-buszy-dark.png">
@@ -154,59 +155,96 @@
     <!------------------------------------------------------------------------ Start of Sections ------------------------------------------------------------------------>
 
     <!-- Cover Header -->
-    <section class="breadcrumb-area-eicw-cover bg-img bg-overlay" id="cv-bat">
+    <section class="breadcrumb-area-eicw-cover bg-img" id="cv-bat">
         <div class="container">
             <div class="row h-100 align-items-center justify-content-center">
                 <div class="col-12" style="padding-left: 0em; padding-right: 0em;">
                     <div class="cover-search-wrapper">
-                        <h2><i class="fa-regular fa-location-pin"></i>&nbsp;Bus Stops</h2>
+                        <div class="hero-intro">
+                            <h1 id="day-greeting">Hello World!</h1>
+                        </div>
 
                         <div class="search-container">
+                            <span class="search-label">Search bus stop, road, or code</span>
                             <div class="search-wrapper">
                                 <div class="search-input-wrapper">
                                     <i class="fa-regular fa-magnifying-glass search-icon"></i>
                                     <input type="text" class="search-box" id="bus-stop-search"
-                                        placeholder="Search bus stops by name or code" onclick="navigateToSearch()">
+                                        placeholder="Where do you want to go?" onclick="navigateToSearch()">
                                     <button class="search-clear" id="search-clear" aria-label="Clear search">
                                         <i class="fa-regular fa-xmark"></i>
                                     </button>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="category-tabs-container">
-                            <div class="category-tabs" id="category-tabs">
-                                <button class="bus-service-tab" id="bus-service-tab"
-                                    style="display: none; background-color: #94d40b; color: #000;">
-                                    <i class="fa-kit fa-lta-bus"></i>&nbsp;
-                                    Bus Service
-                                </button>
-                                <button class="category-tab active" data-category="nearby">
-                                    <i class="fa-kit fa-lta-location"></i>&nbsp;
-                                    Nearby
-                                </button>
-                                <button class="category-tab" data-category="pinned">
-                                    <i class="fa-sharp fa-regular fa-thumbtack-angle"></i>&nbsp;
-                                    Pinned
-                                </button>
-                                <button class="category-tab" data-category="all">
-                                    <i class="fa-kit fa-lta-bus-stop"></i>&nbsp;
-                                    All
+                            <div class="category-tabs-container">
+                                <div class="category-tabs" id="category-tabs">
+                                    <button class="bus-service-tab" id="bus-service-tab"
+                                        style="display: none; background-color: #94d40b; color: #000;">
+                                        <i class="fa-kit fa-lta-bus"></i>&nbsp;
+                                        Bus Service
+                                    </button>
+                                    <button class="category-tab active" data-category="nearby">
+                                        <i class="fa-kit fa-lta-location"></i>&nbsp;
+                                        
+                                    </button>
+                                    <button class="category-tab" data-category="pinned">
+                                        <i class="fa-sharp fa-regular fa-thumbtack-angle"></i>&nbsp;
+                                        
+                                    </button>
+                                    <button class="category-tab" data-category="all">
+                                        <i class="fa-kit fa-lta-bus-stop"></i>&nbsp;
+                                        
+                                    </button>
+                                </div>
+                                <button class="scroll-indicator" id="scroll-indicator" aria-label="Scroll tabs">
+                                    <i class="fa-solid fa-chevron-right"></i>
                                 </button>
                             </div>
-                            <button class="scroll-indicator" id="scroll-indicator" aria-label="Scroll tabs">
-                                <i class="fa-solid fa-chevron-right"></i>
-                            </button>
+                            <div id="did-you-mean" style="display:none;"></div>
                         </div>
-                        <div id="did-you-mean" style="display:none;"></div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
+    <section class="inline-search-view" id="inline-search-view" aria-hidden="true">
+        <div class="container">
+            <button class="inline-search-exit" type="button" aria-label="Exit search" title="Exit search" onclick="closeInlineSearch()">
+                <i class="fa-regular fa-xmark"></i>
+            </button>
+            <div class="inline-search-header">
+                <div>
+                    <span class="search-label">Search bus stop, road, or code</span>
+                    <h2>Find your next stop</h2>
+                </div>
+                <button class="inline-search-close" type="button" aria-label="Close search" onclick="closeInlineSearch()">
+                    <i class="fa-regular fa-xmark"></i>
+                </button>
+            </div>
+            <div class="inline-search-input-wrap search-input-wrapper">
+                <i class="fa-regular fa-magnifying-glass search-icon"></i>
+                <input type="search" id="inline-search-input" placeholder="Where do you want to go?" autocomplete="off">
+                <button class="search-clear" id="inline-search-clear" type="button" aria-label="Clear search">
+                    <i class="fa-regular fa-xmark"></i>
+                </button>
+            </div>
+            <div class="inline-search-filters" id="inline-search-filters">
+                <button class="category-tab active" type="button" data-filter="all">All</button>
+                <button class="category-tab" type="button" data-filter="stops">Bus Stops</button>
+                <button class="category-tab" type="button" data-filter="services">Bus Services</button>
+            </div>
+            <div class="inline-search-recents" id="inline-search-recents"></div>
+            <div class="inline-search-results" id="inline-search-results"></div>
+        </div>
+    </section>
+
     <section class="pinned" id="pinned">
         <div class="container">
+            <h2 class="list-section-heading" id="list-section-heading">
+                <i class="fa-kit fa-lta-location" aria-hidden="true"></i>
+                <span>Nearby</span>
+            </h2>
             <!-- All Tab (Search all bus stops) -->
             <div id="all-content" class="tab-content">
                 <section class="about-me-summ clearfix" style="padding-bottom: 9em;">
@@ -430,12 +468,15 @@
                 isDarkMode = _prefersDark;
             }
 
-            const imageName = isDarkMode ? 'hero-buszy-dark.png' : 'hero-buszy.png';
-            const imageUrl = basePath + 'img/bg-img/' + imageName;
-
-            if (bgElement) {
-                bgElement.style.backgroundImage = `url('${imageUrl}')`;
+            function updateHeroTheme() {
+                const imageName = document.body.classList.contains('dark-mode') ? 'hero-buszy-dark.png' : 'hero-buszy.png';
+                const imageUrl = new URL('../img/bg-img/' + imageName, window.location.href).href;
+                if (bgElement) bgElement.style.backgroundImage = `url('${imageUrl}')`;
             }
+
+            updateHeroTheme();
+            window.addEventListener('buszythemechange', updateHeroTheme);
+            new MutationObserver(updateHeroTheme).observe(document.body, { attributes: true, attributeFilter: ['class'] });
         }
     </script>
 
@@ -448,15 +489,37 @@
     <script src="./js/bus-stops-preloader.js"></script>
 
     <script src="./js/buszy-main.js"></script>
+    <script src="./js/index-search.js"></script>
+    <script src="./js/search-placeholder.js"></script>
 
     <script src="./js/ann-indicator.js"></script>
     <script src="./js/alerts-indicator.js"></script>
 
     <script>
-        // Navigate to dedicated search page
         function navigateToSearch() {
-            const basePath = (window.PWAConfig && window.PWAConfig.basePath) ? window.PWAConfig.basePath : '/';
-            window.location.href = `${basePath}buszy/search-buszy.html`;
+            const searchView = document.getElementById('inline-search-view');
+            const searchInput = document.getElementById('inline-search-input');
+            if (!searchView || !searchInput) return;
+            window.scrollTo(0, 0);
+            searchView.classList.remove('closing');
+            searchView.classList.add('open');
+            searchView.setAttribute('aria-hidden', 'false');
+            document.documentElement.classList.add('search-overlay-open');
+            document.body.classList.add('search-overlay-open');
+            document.body.style.top = '0px';
+            searchInput.focus();
+        }
+
+        function closeInlineSearch() {
+            const searchView = document.getElementById('inline-search-view');
+            if (!searchView) return;
+            searchView.classList.remove('open');
+            searchView.classList.add('closing');
+            searchView.setAttribute('aria-hidden', 'true');
+            document.documentElement.classList.remove('search-overlay-open');
+            document.body.classList.remove('search-overlay-open');
+            document.body.style.top = '';
+            window.scrollTo(0, 0);
         }
     </script>
 
@@ -625,6 +688,7 @@
                 }
                 
                 const category = tab.getAttribute('data-category');
+                const sectionHeading = document.getElementById('list-section-heading');
 
                 // Remove active class from all tabs and contents
                 categoryTabs.forEach(t => t.classList.remove('active'));
@@ -639,9 +703,34 @@
                     contentElement.classList.add('active');
                 }
 
+                if (sectionHeading) {
+                    const headingIcon = sectionHeading.querySelector('i');
+                    const headingText = sectionHeading.querySelector('span');
+                    const tabDetails = {
+                        nearby: { label: 'Nearby', icon: 'fa-kit fa-lta-location' },
+                        pinned: { label: 'Pinned', icon: 'fa-sharp fa-regular fa-thumbtack-angle' },
+                        all: { label: 'All', icon: 'fa-kit fa-lta-bus-stop' }
+                    }[category];
+
+                    if (tabDetails && headingIcon && headingText) {
+                        headingIcon.className = tabDetails.icon;
+                        headingText.textContent = tabDetails.label;
+                    }
+                }
+
+                const paginationButtons = document.querySelector('.pagination-buttons');
+                if (paginationButtons) {
+                    paginationButtons.style.display = category === 'all' ? 'flex' : 'none';
+                }
+
                 // Auto-refresh nearby bus stops when nearby tab is clicked
                 if (category === 'nearby' && typeof refreshNearbyBusStops === 'function') {
                     refreshNearbyBusStops();
+                }
+
+                const listSection = document.getElementById('pinned');
+                if (listSection) {
+                    listSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             });
         });

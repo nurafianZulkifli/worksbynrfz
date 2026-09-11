@@ -6,7 +6,8 @@
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="57TuruPNu5wqSSia_cUehl5t9Gh1AbxrHNPcMiFx-aQ" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover, user-scalable=no">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover, user-scalable=no">
     <meta name="color-scheme" content="light dark">
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#0f1419" media="(prefers-color-scheme: dark)">
@@ -42,11 +43,6 @@
     <div class="breadcrumb-fixed-placeholder">
         <nav aria-label="breadcrumb" style="margin-bottom:0;">
             <ol class="breadcrumb breadcrumb-fixed" id="floating-breadcrumb">
-                <li class="breadcrumb-item">
-                    <a href="index.html">
-                        <i class="fa-regular fa-house"></i>
-                    </a>
-                </li>
                 <li class="breadcrumb-item">
                     <a href="menu.html"><i class="fa-regular fa-bars"></i>
                     </a>
@@ -149,11 +145,6 @@
                         <nav aria-label="breadcrumb" class="breadcrumb-desktop" style="display:none;">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item">
-                                    <a href="index.html">
-                                        <i class="fa-regular fa-house"></i>
-                                    </a>
-                                </li>
-                                <li class="breadcrumb-item">
                                     <a href="menu.html"><i class="fa-regular fa-bars"></i>
                                     </a>
                                 </li>
@@ -189,19 +180,14 @@
                     <i class="fa-regular fa-clock"></i>
                     Time Formats
                 </div>
-                <label for="time-format-12" class="label-set">
-                    <input class="form-check-input" type="radio" id="time-format-12" name="time-format" value="12-hour"
-                        checked>
-                    12-Hour Format (02:30 PM)
-                </label>
-                <label for="time-format-24" class="label-set">
-                    <input class="form-check-input" type="radio" id="time-format-24" name="time-format" value="24-hour">
-                    24-Hour Format (14:30)
-                </label>
-                <label for="time-format-mins" class="label-set">
-                    <input class="form-check-input" type="radio" id="time-format-mins" name="time-format" value="mins">
-                    Mins (5 mins)
-                </label>
+                <div class="theme-selector time-format-selector" role="group" aria-label="Time format">
+                    <button type="button" class="theme-selector-option" data-time-format="12-hour"
+                        aria-pressed="false">12 Hour</button>
+                    <button type="button" class="theme-selector-option" data-time-format="24-hour"
+                        aria-pressed="false">24 Hour</button>
+                    <button type="button" class="theme-selector-option" data-time-format="mins"
+                        aria-pressed="false">Mins</button>
+                </div>
             </div>
 
             <div class="settings-page-section">
@@ -226,7 +212,8 @@
                         <span class="toggle-slider"></span>
                     </label>
                 </div>
-                <p class="settings-switch-desc">Shows the bus location map automatically on the Arrival Timings page.</p>
+                <p class="settings-switch-desc">Shows the bus location map automatically on the Arrival Timings page.
+                </p>
                 <hr>
                 <div class="settings-switch-row">
                     <label class="settings-switch-label" for="show-incoming-buses">Show Incoming Buses</label>
@@ -246,22 +233,30 @@
                 </div>
                 <p class="settings-switch-desc">Displays bus stops sorted by their arrival times.</p>
                 <hr>
-                <div class="settings-switch-row">
-                    <label class="settings-switch-label" for="use-new-look">Use New Look</label>
-                    <button type="button" id="use-new-look" class="import-export-btn" style="padding: 6px 14px; font-size: 0.85rem; white-space: nowrap;">
-                        <span>Switch to New Look</span>
-                    </button>
+                <div class="settings-section-title theme-selector-title">
+                    <i class="fa-regular fa-circle-half-stroke"></i>
+                    Theme
                 </div>
-                <p class="settings-switch-desc">Try the new Buszy Interface.</p>
-                <hr>
-                <a href="" class="settings-switch-row" id="theme-toggle-desktop"
-                    style="text-decoration: none; color: inherit;">
-                    <span class="settings-switch-label">
-                        <i class="fa-regular fa-sun-bright" id="theme-icon-desktop"></i>&nbsp;<span
-                            id="theme-text-desktop">Theme: Light</span>
-                    </span>
-                    <i class="fa-regular fa-chevron-right" style="color: #9ca3af;"></i>
-                </a>
+                <div class="theme-selector" role="group" aria-label="Theme">
+                    <button type="button" class="theme-selector-option" data-theme-preference="system"
+                        aria-pressed="false">System</button>
+                    <button type="button" class="theme-selector-option" data-theme-preference="light"
+                        aria-pressed="false">Light</button>
+                    <button type="button" class="theme-selector-option" data-theme-preference="dark"
+                        aria-pressed="false">Dark</button>
+                </div>
+            </div>
+
+            <div class="settings-page-section">
+                <div class="settings-section-title">
+                    <i class="fa-regular fa-sparkles"></i>
+                    New Look
+                </div>
+                <button id="use-new-look" class="import-export-btn" style="width: 100%;" type="button">
+                    <i class="fa-regular fa-arrows-rotate"></i>
+                    <span id="use-new-look-label">Switch to New Look</span>
+                </button>
+                <p class="settings-switch-desc">Try the new Buszy Interface, or switch back to the old experience.</p>
             </div>
 
             <div class="settings-page-section">
@@ -297,7 +292,7 @@
                     <span id="refresh-interval-value"
                         style="font-weight: 600; min-width: 60px; font-size: 15px; cursor: default;">2 sec</span>
                 </div>
-                <p class="settings-switch-desc">Adjust how often the Arrival Timings page refreshes (1â€“10 seconds).
+                <p class="settings-switch-desc">Adjust how often the Arrival Timings page refreshes (Max: 10 seconds).
                 </p>
             </div>
 
@@ -353,40 +348,6 @@
                         <span>Disconnect</span>
                     </button>
                 </div>
-            </div>
-
-            <div class="settings-page-section">
-                <div class="settings-section-title">
-                    <i class="fa-regular fa-bell"></i>
-                    Notifications
-                </div>
-                <p class="settings-notify-desc">Notify When</p>
-                <label for="notif-when-arriving" class="label-set">
-                    <input class="form-check-input" type="checkbox" id="notif-when-arriving" name="notif-when-arriving">
-                    Bus is Arriving
-                </label>
-                <label for="notif-when-arrived" class="label-set">
-                    <input class="form-check-input" type="checkbox" id="notif-when-arrived" name="notif-when-arrived">
-                    Bus has Arrived
-                </label>
-                <p class="settings-switch-desc">Choose when to receive a notification for your tracked bus services.</p>
-                <hr>
-                <p class="settings-notify-desc">Notify Mode</p>
-                <label for="notif-mode-once" class="label-set">
-                    <input class="form-check-input" type="radio" id="notif-mode-once" name="notif-mode" value="once"
-                        checked>
-                    Once &mdash; notify once, then stop
-                </label>
-                <label for="notif-mode-day" class="label-set">
-                    <input class="form-check-input" type="radio" id="notif-mode-day" name="notif-mode" value="day">
-                    1 Day &mdash; keep notifying for 24 hours
-                </label>
-                <label for="notif-mode-always" class="label-set">
-                    <input class="form-check-input" type="radio" id="notif-mode-always" name="notif-mode"
-                        value="always">
-                    Always &mdash; notify until manually turned off
-                </label>
-                <p class="settings-switch-desc">Controls how long Buszy watches for your selected bus services.</p>
             </div>
 
         </div>

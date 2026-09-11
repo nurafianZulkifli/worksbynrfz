@@ -84,7 +84,7 @@ function initAnnouncements() {
     localStorage.setItem(HAS_UNREAD_KEY, hasUnreadItems);
     
     // Update dots on current page
-    const dots = document.querySelectorAll('.ann-indicator-dot, .alerts-indicator-dot');
+    const dots = document.querySelectorAll('.ann-indicator-dot');
     dots.forEach(dot => {
         if (hasUnreadItems) {
             dot.classList.add('show');
@@ -200,6 +200,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+document.addEventListener('sharedAnnouncementsLoaded', initAnnouncements);
+
 // Also call if DOM is already loaded (in case this script loads after DOMContentLoaded)
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function() {
@@ -214,3 +216,209 @@ if (document.readyState === 'loading') {
         window.annInitialized = true;
     }
 }
+
+    // Tab switching functionality
+        // Helper: convert URLs in text to clickable links
+        function linkify(text) {
+            const urlRegex = /(https?:\/\/[\w\-._~:/?#[\]@!$&'()*+,;=%]+)|(www\.[\w\-._~:/?#[\]@!$&'()*+,;=%]+)|(go\.gov\.sg\/[\w\-._~:/?#[\]@!$&'()*+,;=%]+)/gi;
+            let linked = text.replace(urlRegex, function (url) {
+                let href = url;
+                if (url.match(/^go\.gov\.sg\//i)) {
+                    href = 'https://' + url;
+                } else if (!href.match(/^https?:\/\//i)) {
+                    href = 'http://' + href;
+                }
+                return `<a href="${href}" target="_blank" rel="noopener noreferrer">${url}</a>`;
+            });
+            return linked.replace(/\n/g, '<br>');
+        }
+
+        function extractBusServiceCodes(text) {
+            // Capture the service list between "bus service(s)" and the disruption status.
+            const busServicesRegex = /bus services?\s*[:\-]?\s*([\s\S]*?)(?=\s+(?:have|has|are|is)\s+(?:(?:been|expected\s+to\s+be)\s+)?(?:affected|diverted|disrupted|delayed)\b|\s+(?:were|was)\s+(?:affected|diverted|disrupted|delayed)\b|[.;]|$)/i;
+            const match = text.match(busServicesRegex);
+
+            if (!match) {
+                return [];
+            }
+
+            const servicesText = match[1];
+
+            // Allow one-digit services and letter suffixes such as 2B.
+            const codeRegex = /\b(\d{1,4}[a-z]?)\b/gi;
+            const matches = (servicesText.match(codeRegex) || []).map(code => code.toUpperCase());
+            const codes = [...new Set(matches)].filter(code => {
+                const num = parseInt(code);
+                return num >= 1 && num <= 9999;
+            });
+            return codes;
+        }
+
+        function displayAlerts(alerts) {
+            const content = document.getElementById('alerts-content');
+            content.innerHTML = '';
+
+            alerts.forEach((alert, index) => {
+                const linkedContent = linkify(alert.content);
+                const alertDate = new Date(alert.createdDate);
+
+                // Format time as HH:MM
+                let hours = alertDate.getHours();
+                const mins = alertDate.getMinutes().toString().padStart(2, '0');
+                hours = hours.toString().padStart(2, '0');
+                const timeStr = `${hours}:${mins}`;
+
+                const codes = extractBusServiceCodes(alert.content);
+                let codesHTML = '';
+                if (codes.length > 0) {
+                    codesHTML = '<div class="bus-codes-container" style="margin: 0.5em 0;">';
+                    codes.forEach(code => {
+                        codesHTML += `<div class="bus-service-code" data-service-code="${code}" style="cursor: pointer; pointer-events: auto; user-select: none;">${code}</div>`;
+                    });
+                    codesHTML += '</div>';
+                }
+
+                const alertDiv = document.createElement('div');
+                alertDiv.className = 'list-group-item list-group-item-action flex-column align-items-start';
+                alertDiv.innerHTML = `
+                    <div style="width: 100%; margin-bottom: 0.5em;">
+                        <small class="lg-date">Bus Services Affected:</small>
+                    </div>
+                    ${codesHTML}
+                    <p class="mb-1 alert-item-content">${linkedContent}</p>
+                `;
+                content.appendChild(alertDiv);
+            });
+        }
+
+        function showNoAlerts() {
+            const content = document.getElementById('alerts-content');
+            content.innerHTML = '<div class="no-alerts"><i class="fa-regular fa-check-circle"></i>&nbsp;No alerts at the moment.</div>';
+        }
+
+        function showErrorMessage(message) {
+            const content = document.getElementById('alerts-content');
+            content.innerHTML = `<div class="error-message"><i class="fa-regular fa-exclamation-circle"></i> ${message}</div>`;
+        }
+
+        // Function to fetch and populate alerts
+        function loadAlerts() {
+            const alertsContent = document.getElementById('alerts-content');
+            if (!alertsContent) return;
+
+            const CACHE_KEY = 'buszy_ann_alerts_cache';
+            const DATA_KEY = 'buszy_ann_alerts_data';
+            const CACHE_TTL = 30 * 60 * 1000; // 30 minutes
+
+            function processAlerts(data) {
+                if (!data || !data.value) {
+                    showNoAlerts();
+                    updateAlertsLastUpdated();
+                    return;
+                }
+
+                // Support both array and object for value
+                let alerts = [];
+                if (Array.isArray(data.value)) {
+                    alerts = data.value;
+                } else if (typeof data.value === 'object') {
+                    alerts = [data.value];
+                }
+
+                // Filter for bus service alerts only
+                let busAlerts = [];
+                alerts.forEach(alert => {
+                    if (alert.Message && Array.isArray(alert.Message)) {
+                        alert.Message.forEach(messageObj => {
+                            const msg = messageObj.Content || '';
+                            const msgLower = msg.toLowerCase();
+                            if (msgLower.includes('bus service') && (msgLower.includes('affected') || msgLower.includes('diverted') || msgLower.includes('delayed'))) {
+                                busAlerts.push({
+                                    content: msg,
+                                    status: alert.Status,
+                                    createdDate: messageObj.CreatedDate
+                                });
+                            }
+                        });
+                    }
+                });
+
+                if (busAlerts.length === 0) {
+                    showNoAlerts();
+                } else {
+                    displayAlerts(busAlerts);
+                }
+            }
+
+            // Check cache
+            const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
+            const cacheIsFresh = cached !== null && (Date.now() - cached.ts < CACHE_TTL);
+
+            // Show cached data if available
+            if (cacheIsFresh) {
+                const cachedData = JSON.parse(localStorage.getItem(DATA_KEY) || 'null');
+                if (cachedData) {
+                    processAlerts(cachedData);
+                    return; // Don't fetch again if cache is fresh
+                }
+            }
+
+            // Fetch only if cache is stale
+            fetch('https://bat-lta-9eb7bbf231a2.herokuapp.com/train-service-alerts')
+                .then(r => r.json())
+                .then(data => {
+                    localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now() }));
+                    localStorage.setItem(DATA_KEY, JSON.stringify(data));
+                    processAlerts(data);
+                })
+                .catch(err => {
+                    console.error('Error fetching alerts:', err);
+                    // Show error only if we have no cached fallback
+                    if (!cacheIsFresh && !JSON.parse(localStorage.getItem(DATA_KEY) || 'null')) {
+                        showErrorMessage('Failed to load alerts. Please try again later.');
+                    }
+                });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const contentSections = document.querySelectorAll('.tab-content-section');
+            const pageTitle = document.getElementById('filter-title');
+            const markAsReadBtn = document.getElementById('mark-as-read-btn');
+            const alertsLastUpdatedTop = document.getElementById('alerts-last-updated-top');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const tabName = this.getAttribute('data-tab');
+
+                    // Remove active class from all buttons
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+
+                    // Hide all content sections
+                    contentSections.forEach(section => section.classList.remove('active'));
+
+                    // Add active class to clicked button
+                    this.classList.add('active');
+
+                    // Update page title and mark-as-read button visibility
+                    if (tabName === 'announcements') {
+                        document.getElementById('announcements-content').classList.add('active');
+                        if (pageTitle) pageTitle.textContent = 'Announcements';
+                        document.title = 'Announcements | Buszy';
+                        if (markAsReadBtn) markAsReadBtn.style.display = 'block';
+                        if (alertsLastUpdatedTop) alertsLastUpdatedTop.style.display = 'none';
+                    } else if (tabName === 'alerts') {
+                        document.getElementById('alerts-content-section').classList.add('active');
+                        if (pageTitle) pageTitle.textContent = 'Bus Service Alerts';
+                        document.title = 'Bus Service Alerts | Buszy';
+                        if (markAsReadBtn) markAsReadBtn.style.display = 'none';
+                        if (alertsLastUpdatedTop) alertsLastUpdatedTop.style.display = 'block';
+                        // Load alerts when tab is clicked
+                        loadAlerts();
+                    }
+                });
+            });
+
+            // Load alerts on page load if needed
+            loadAlerts();
+        });

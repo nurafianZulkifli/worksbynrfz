@@ -32,28 +32,15 @@ function initializeDefaultPreferences() {
         localStorage.setItem('sortByArrival', 'enabled');
     }
 
-    // Set default new look preference if not already set
-    if (!localStorage.getItem('useNewLook')) {
-        localStorage.setItem('useNewLook', 'disabled');
-    }
-
     // Set default refresh interval if not already set (in seconds)
     if (!localStorage.getItem('refreshInterval')) {
         localStorage.setItem('refreshInterval', '2');
     }
 
-    // Set default notification mode if not already set
-    if (!localStorage.getItem('buszy_notif_mode')) {
-        localStorage.setItem('buszy_notif_mode', 'once');
+    if (!localStorage.getItem('buszyNewLook')) {
+        localStorage.setItem('buszyNewLook', 'enabled');
     }
 
-    // Set default notify-when preferences if not already set
-    if (!localStorage.getItem('buszy_notif_when_arriving')) {
-        localStorage.setItem('buszy_notif_when_arriving', 'true');
-    }
-    if (!localStorage.getItem('buszy_notif_when_arrived')) {
-        localStorage.setItem('buszy_notif_when_arrived', 'true');
-    }
 }
 
 // Initialize defaults on page load
@@ -64,22 +51,22 @@ initializeDefaultPreferences();
 // ****************************
 // Function to handle time format change
 document.addEventListener('DOMContentLoaded', () => {
-    const timeFormatRadios = document.querySelectorAll('input[name="time-format"]');
+    const timeFormatButtons = document.querySelectorAll('[data-time-format]');
 
-    // Load the saved time format from localStorage
-    const savedFormat = localStorage.getItem('timeFormat');
-    if (savedFormat) {
-        document.querySelector(`input[value="${savedFormat}"]`).checked = true;
+    function updateTimeFormatSelector() {
+        const selectedFormat = localStorage.getItem('timeFormat') || '24-hour';
+        timeFormatButtons.forEach(button => {
+            button.setAttribute('aria-pressed', String(button.dataset.timeFormat === selectedFormat));
+        });
     }
 
-    // Add event listeners to update the time format
-    timeFormatRadios.forEach(radio => {
-        radio.addEventListener('change', (event) => {
-            const selectedFormat = event.target.value;
-            localStorage.setItem('timeFormat', selectedFormat);
-            alert(`Time format updated to ${selectedFormat}.`);
+    timeFormatButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            localStorage.setItem('timeFormat', button.dataset.timeFormat);
+            updateTimeFormatSelector();
         });
     });
+    updateTimeFormatSelector();
 
     // Handle fleet legend checkbox
     const showFleetLegendCheckbox = document.getElementById('show-fleet-legend');
@@ -139,12 +126,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Handle the temporary new look button
-    const useNewLookBtn = document.getElementById('use-new-look');
-    if (useNewLookBtn) {
-        useNewLookBtn.addEventListener('click', () => {
-            localStorage.setItem('useNewLook', 'enabled');
-            window.location.href = 'https://nurafianzulkifli.github.io/nrfz-dev/buszy/';
+    // Handle the "New Look" button — reflects and switches between the old (worksbynrfz.com) and new (GitHub Pages) sites
+    const newLookButton = document.getElementById('use-new-look');
+    const newLookLabel = document.getElementById('use-new-look-label');
+    if (newLookButton && newLookLabel) {
+        const isOldSite = window.location.hostname === 'worksbynrfz.com';
+        newLookLabel.textContent = isOldSite ? 'Switch to New Look' : 'Switch to Old Look';
+
+        newLookButton.addEventListener('click', () => {
+            localStorage.setItem('buszyNewLook', isOldSite ? 'enabled' : 'disabled');
+            window.location.href = isOldSite ? './index.html' : 'https://worksbynrfz.com/buszy';
         });
     }
 
@@ -167,35 +158,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Handle notification mode radio buttons
-    const notifModeRadios = document.querySelectorAll('input[name="notif-mode"]');
-    if (notifModeRadios.length) {
-        const savedMode = localStorage.getItem('buszy_notif_mode') || 'once';
-        const activeRadio = document.querySelector(`input[name="notif-mode"][value="${savedMode}"]`);
-        if (activeRadio) activeRadio.checked = true;
-        notifModeRadios.forEach(radio => {
-            radio.addEventListener('change', (event) => {
-                localStorage.setItem('buszy_notif_mode', event.target.value);
-            });
-        });
-    }
-
-    // Handle notify-when checkboxes
-    const notifWhenArriving = document.getElementById('notif-when-arriving');
-    if (notifWhenArriving) {
-        notifWhenArriving.checked = localStorage.getItem('buszy_notif_when_arriving') !== 'false';
-        notifWhenArriving.addEventListener('change', (event) => {
-            localStorage.setItem('buszy_notif_when_arriving', event.target.checked ? 'true' : 'false');
-        });
-    }
-
-    const notifWhenArrived = document.getElementById('notif-when-arrived');
-    if (notifWhenArrived) {
-        notifWhenArrived.checked = localStorage.getItem('buszy_notif_when_arrived') !== 'false';
-        notifWhenArrived.addEventListener('change', (event) => {
-            localStorage.setItem('buszy_notif_when_arrived', event.target.checked ? 'true' : 'false');
-        });
-    }
 });
 
 
@@ -269,10 +231,9 @@ const EXPORT_KEYS = [
     'showFleetLegend',     // Fleet legend visibility
     'showMap',             // Map visibility
     'showIncomingBuses',   // Incoming buses visibility
+    'buszyNewLook',         // Temporary Pinned Bus Stops experience
     'bookmarkedBusStops',  // Saved bus stops
     'allBusStops',         // Bus stop data cache
-    'notif_monitoredServices',  // Monitored bus services (NotificationManager)
-    'notif_notifiedServices'     // Notification history (NotificationManager)
 ];
 
 // Additional keys to export that follow patterns (dynamically found)

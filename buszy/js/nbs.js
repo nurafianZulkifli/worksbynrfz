@@ -78,7 +78,16 @@ function formatArrivalTimeStyled(isoString) {
     return timeString;
 }
 
-function renderArrivalSummary(arrivals) {
+function getHiddenServicesForStop(busStopCode) {
+    try {
+        const hiddenServices = JSON.parse(localStorage.getItem(`nearbyHiddenServices_${busStopCode}`) || '[]');
+        return Array.isArray(hiddenServices) ? hiddenServices.map(String) : [];
+    } catch (error) {
+        return [];
+    }
+}
+
+function renderArrivalSummary(arrivals, hiddenServices = []) {
     if (!arrivals?.length) {
         return `
             <div class="busNo-card d-flex justify-content-between">
@@ -93,13 +102,46 @@ function renderArrivalSummary(arrivals) {
             </div>
         `;
     }
-    return arrivals.map(a => `
+    const visibleArrivals = arrivals.filter(arrival => !hiddenServices.includes(String(arrival.serviceNo)));
+    if (!visibleArrivals.length) return '<div class="busNo-card"><span class="arrival-all-hidden">All hidden</span></div>';
+    return visibleArrivals.map(a => `
         <div class="busNo-card d-flex justify-content-between">
-            <span class="arrival-svc-no">${a.serviceNo}</span>
+            <span class="arrival-svc-no arrival-svc-toggle" data-svc="${a.serviceNo}" title="Tap to hide">${a.serviceNo}</span>
             <span class="bus-time">${formatArrivalTimeStyled(a.eta)}</span>
             <span style="display: flex; align-items: center; gap: 0.3rem;">${getLoadIcon(a.load, a.type)}</span>
         </div>
     `).join('');
+}
+
+function applyNearbyArrivalFilter(summaryEl, arrivals, busStopCode, resetSlot) {
+    const hiddenKey = `nearbyHiddenServices_${busStopCode}`;
+    const hiddenServices = getHiddenServicesForStop(busStopCode);
+    const hiddenCount = hiddenServices.filter(service => arrivals.some(arrival => String(arrival.serviceNo) === service)).length;
+    summaryEl.innerHTML = renderArrivalSummary(arrivals, hiddenServices);
+    resetSlot.innerHTML = hiddenCount
+        ? `<button class="arrival-filter-reset" type="button" title="Show hidden services">${hiddenCount} hidden <span aria-hidden="true">&middot;</span> Show all</button>`
+        : '';
+
+    summaryEl.querySelectorAll('.arrival-svc-toggle').forEach(badge => {
+        badge.addEventListener('click', event => {
+            event.stopPropagation();
+            const service = badge.dataset.svc;
+            if (!confirm(`Hide service ${service} from this stop?`)) return;
+            const updatedHidden = getHiddenServicesForStop(busStopCode);
+            if (!updatedHidden.includes(String(service))) updatedHidden.push(String(service));
+            localStorage.setItem(hiddenKey, JSON.stringify(updatedHidden));
+            applyNearbyArrivalFilter(summaryEl, arrivals, busStopCode, resetSlot);
+        });
+    });
+
+    const resetButton = resetSlot.querySelector('.arrival-filter-reset');
+    if (resetButton) {
+        resetButton.addEventListener('click', event => {
+            event.stopPropagation();
+            localStorage.removeItem(hiddenKey);
+            applyNearbyArrivalFilter(summaryEl, arrivals, busStopCode, resetSlot);
+        });
+    }
 }
 
 async function getArrivalSummaryForStop(busStopCode) {
@@ -466,6 +508,7 @@ function displayBusStops(busStops, isCached = true) {
                     <div class="bus-stop-arrivals-summary card-content-art">
                         ${renderArrivalSummary([])}
                     </div>
+                    <div class="arrival-filter-reset-slot"></div>
                     <a href="${basePath}buszy/art.html?BusStopCode=${encodeURIComponent(busStop.BusStopCode)}" class="btn btn-busloc btn-sm open-art-btn" title="Open arrival timings page">
                         <i class="fa-solid fa-arrow-right"></i>
                     </a>
@@ -555,6 +598,7 @@ function displayBusStops(busStops, isCached = true) {
         const collapseButton = busStopElement.querySelector('.bus-stop-collapsible-btn');
         const collapseSection = busStopElement.querySelector('.bus-stop-options-collapse');
         const summaryEl = busStopElement.querySelector('.bus-stop-arrivals-summary');
+        const resetSlot = busStopElement.querySelector('.arrival-filter-reset-slot');
         collapseButton.addEventListener('click', (event) => {
             event.preventDefault();
             event.stopPropagation();
@@ -571,10 +615,12 @@ function displayBusStops(busStops, isCached = true) {
                 collapseSection.style.opacity = '1';
                 collapseSection.classList.add('show');
                 collapseButton.classList.add('active');
+                busStopElement.classList.add('arrivals-pending');
 
                 summaryEl.innerHTML = '<div class="busNo-card d-flex justify-content-between"><span class="bus-time">--</span><span style="display: flex; align-items: center; gap: 0.3rem;">' + getLoadIcon('sea', 'SD') + '</span></div>';
                 getArrivalSummaryForStop(busStop.BusStopCode).then((summary) => {
-                    summaryEl.innerHTML = renderArrivalSummary(summary);
+                    applyNearbyArrivalFilter(summaryEl, summary, busStop.BusStopCode, resetSlot);
+                    busStopElement.classList.remove('arrivals-pending');
                     if (collapseSection.classList.contains('show')) {
                         collapseSection.style.maxHeight = collapseSection.scrollHeight + 'px';
                     }
@@ -586,6 +632,12 @@ function displayBusStops(busStops, isCached = true) {
             anchor.addEventListener('click', (event) => {
                 event.stopPropagation();
             });
+        });
+
+        // Stop any click inside the expanded content (including a confirm()-dialog "ghost click" on mobile)
+        // from bubbling up to the card's tap-anywhere-to-toggle listener.
+        collapseSection.addEventListener('click', (event) => {
+            event.stopPropagation();
         });
 
         busStopsContainer.appendChild(busStopElement);
@@ -627,6 +679,7 @@ function refreshNearbyBusStops() {
     console.log('Clearing cached data');
     sessionStorage.removeItem('nearbyBusStops');
     sessionStorage.removeItem('userLocation');
+    arrivalsSummaryCache.clear();
     
     // Disable navigation and show loading
     if (navbarContainer) navbarContainer.classList.add('nav-disabled');
@@ -696,8 +749,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     const collapseSection = busStopElement.querySelector('.bus-stop-options-collapse');
                     const busStopCode = busStopElement.querySelector('.bus-stop-code-text')?.textContent;
                     if (busStopCode && collapseSection && collapseSection.classList.contains('show')) {
+                        busStopElement.classList.add('arrivals-pending');
                         getArrivalSummaryForStop(busStopCode).then((arrivals) => {
-                            summaryEl.innerHTML = renderArrivalSummary(arrivals);
+                            const resetSlot = busStopElement.querySelector('.arrival-filter-reset-slot');
+                            applyNearbyArrivalFilter(summaryEl, arrivals, busStopCode, resetSlot);
+                            busStopElement.classList.remove('arrivals-pending');
                             if (collapseSection.classList.contains('show')) {
                                 collapseSection.style.maxHeight = collapseSection.scrollHeight + 'px';
                             }

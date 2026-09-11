@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0f1419" media="(prefers-color-scheme: dark)">
+    <title>Where Am I | Buszy</title>
+    <link rel="icon" href="./assets/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="./assets/icon-512.png">
+    <script src="https://kit.fontawesome.com/965e82ac01.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/style-breakpoints.css">
+    <link rel="stylesheet" href="../css/dark-mode.css">
+    <link rel="stylesheet" href="./css/style-buszy.css">
+    <link rel="stylesheet" href="./css/where-am-i.css">
+    <link crossorigin href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet">
+    <script crossorigin src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+
+<body>
+    <script src="buszy-subp.js"></script>
+    <div class="breadcrumb-fixed-placeholder">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb breadcrumb-fixed" id="floating-breadcrumb">
+                <li class="breadcrumb-item"><a href="menu.html"><i class="fa-regular fa-bars"></i></a></li>
+                <li class="breadcrumb-item"><a href="#"><i class="fa-regular fa-location-crosshairs"></i></a></li>
+            </ol>
+        </nav>
+    </div>
+
+    <nav class="navbar-container">
+        <div class="navbar">
+            <a href="index.html"><img src="assets/logo.png" alt="Buszy" class="logo"></a>
+            <ul class="navbar-nav">
+                <li class="nav-item"><a href="index.html" class="nav-link"><i
+                            class="fa-sharp fa-regular fa-house"></i><span>Home</span></a></li>
+                <li class="nav-item"><a href="first-last.html" class="nav-link"><i
+                            class="fa-regular fa-clock"></i><span>Timings</span></a></li>
+                <li class="nav-item"><a href="ann.html" class="nav-link"><i
+                            class="fa-regular fa-arrows-rotate"></i><span>Updates</span><span
+                            class="alerts-indicator-dot"></span></a></li>
+                <li class="nav-item"><a href="menu.html" class="nav-link active"><i
+                            class="fa-regular fa-bars"></i><span>Menu</span></a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="about-me-sum clearfix">
+        <div class="wbnrfz_eicw">
+            <div class="page-header-section">
+                <div class="container container-xxl container-mobile container-mobile-header">
+                    <div class="breadcrumb-wrapper">
+                        <nav aria-label="breadcrumb" class="breadcrumb-desktop" style="display:none;">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="menu.html"><i class="fa-regular fa-bars"></i></a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="#"><i
+                                            class="fa-regular fa-location-crosshairs"></i></a></li>
+                            </ol>
+                        </nav>
+                        <div class="page-title-wrapper">
+                            <h1 class="page-title">Where Am I</h1>
+                            <p id="location-status" class="where-status" aria-live="polite">Find your nearest bus stop
+                                and keep tracking while you travel.</p>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            </div>
+        </div>
+    </section>
+
+    <main class="about-me-summ clearfix where-am-i-page">
+        <div class="container">
+            <section id="live-map-section" class="live-map-section" aria-label="Live location map">
+                <div class="live-map-controls">
+                    <button class="btn btn-busloc btn-sm" id="collapse-map-btn" type="button" title="Collapse map"
+                        aria-label="Collapse map"><i class="fa-regular fa-close"></i></button>
+                    <button class="btn btn-busloc btn-sm" id="current-location-btn" type="button"
+                        title="Go to current location" aria-label="Go to current location"><i
+                            class="fa-kit fa-lta-location"></i></button>
+                    <button class="btn btn-busloc btn-sm" id="recenter-map-btn" type="button" title="Recenter map"
+                        aria-label="Recenter map"><i class="fa-solid fa-crosshairs"></i></button>
+                </div>
+                <div id="live-map" aria-label="Map showing your live location"></div>
+            </section>
+
+            <section class="where-intro">
+                <div>
+                    <p class="where-eyebrow">LIVE JOURNEY</p>
+                    <h2>Your location</h2>
+                </div>
+                <button id="locate-button" class="location-button btn btn-busloc btn-sm" type="button"
+                    title="Refresh my location" aria-label="Refresh my location"><i
+                        class="fa-regular fa-refresh"></i></button>
+            </section>
+
+            <section class="location-strip" aria-label="Current location">
+                <i class="fa-solid fa-location-dot"></i>
+                <div><strong>Your current location</strong><span id="coordinates">Waiting for location permission</span>
+                </div>
+                <span id="location-accuracy" class="accuracy-label"></span>
+            </section>
+
+            <section class="tracking-panel" aria-labelledby="tracking-heading">
+                <div class="panel-heading">
+                    <div>
+                        <p class="section-kicker">ONBOARD TRACKING</p>
+                        <h2 id="tracking-heading">Which stop am I at?</h2>
+                    </div><button id="clear-service" class="clear-button" type="button" hidden>Clear</button>
+                </div>
+                <div id="current-stop-control" class="current-stop-control" aria-live="polite"></div>
+                <p id="tracking-copy" class="tracking-copy">Tap a nearby service to follow its next nearby stop.</p>
+                <div id="service-picker" class="service-picker" aria-live="polite"></div>
+                <div id="next-stops" class="next-stops" aria-live="polite"></div>
+            </section>
+        </div>
+    </main>
+
+    <nav class="mobile-bottom-nav">
+        <ul>
+            <li><a href="index.html"><span class="icon"><i class="fa-sharp fa-regular fa-house"></i></span></a></li>
+            <li><a href="first-last.html"><span class="icon"><i class="fa-regular fa-clock"></i></span></a></li>
+            <li><a href="ann.html"><span class="icon"><i class="fa-regular fa-arrows-rotate"></i><span
+                            class="alerts-indicator-dot"></span></span></a></li>
+            <li class="active"><a href="menu.html"><span class="icon"><i class="fa-regular fa-bars"></i></span></a></li>
+        </ul>
+    </nav>
+
+    <script src="js/mob-navtabs.js"></script>
+    <script src="js/where-am-i.js"></script>
+    <script src="js/ann-indicator.js"></script>
+    <script src="js/alerts-indicator.js"></script>
+</body>
+
+</html>

@@ -15,7 +15,7 @@ const BASE_PATH = (() => {
 })();
 
 // Default cache version (fallback if version.json is unavailable)
-let CACHE_VERSION = 'v4.6.0';
+let CACHE_VERSION = 'v6.0.1';
 let CACHE_NAME = `buszy-cache-${CACHE_VERSION}`;
 
 // Fetch version from version.json
@@ -45,10 +45,11 @@ const STATIC_ASSETS = [
   // Buszy entry
   buildPath('buszy/'),
   buildPath('buszy/index.html'),
-  buildPath('buszy/manifest.json'),
+  buildPath('buszy/where-am-i.html'),
   
   // Buszy styles
   buildPath('buszy/css/style-buszy.css'),
+  buildPath('buszy/css/where-am-i.css'),
   
   // Buszy scripts
   buildPath('buszy/js/buszy-main.js'),
@@ -61,6 +62,7 @@ const STATIC_ASSETS = [
   buildPath('buszy/js/fl-bus.js'),
   buildPath('buszy/js/mob-navtabs.js'),
   buildPath('buszy/js/nbs.js'),
+  buildPath('buszy/js/where-am-i.js'),
   buildPath('buszy/js/pinned.js'),
   buildPath('buszy/js/scrape-bus-timings.js'),
   buildPath('buszy/js/tsa.js'),
@@ -135,6 +137,11 @@ self.addEventListener('fetch', event => {
   if (request.method !== 'GET' || !url.pathname.startsWith(buszyScope)) {
     return;
   }
+
+  if (url.pathname === buildPath('buszy/manifest.json')) {
+    event.respondWith(fetch(request));
+    return;
+  }
   
   // Cache first strategy
   event.respondWith(
@@ -203,6 +210,7 @@ self.addEventListener('push', event => {
 
   const isArrived = data.data?.type === 'arrived';
   const isAlert   = data.data?.type === 'service-alert';
+  if (isAlert) return;
   const scope = self.registration.scope;
   const options = {
     body: data.body,
@@ -270,13 +278,6 @@ self.addEventListener('pushsubscriptionchange', event => {
         applicationServerKey: urlBase64ToUint8Array(vapidKey)
       });
 
-      // Always re-register for service alerts (safe to call multiple times)
-      await fetch(PUSH_SERVER + '/push/subscribe-alerts', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ subscription: newSub.toJSON() })
-      });
-
       // Tell open pages to re-register their bus timing subscriptions with the new endpoint
       const windowClients = await clients.matchAll({ type: 'window', includeUncontrolled: true });
       windowClients.forEach(c =>
@@ -305,9 +306,7 @@ self.addEventListener('notificationclick', event => {
   const { busStopCode, serviceNo, type } = event.notification.data || {};
   const scope = self.registration.scope; // e.g. "/buszy/" or "/nrfz-dev/buszy/"
   let targetUrl = scope;
-  if (type === 'service-alert') {
-    targetUrl = scope + 'ann.html';
-  } else if (busStopCode) {
+  if (busStopCode) {
     targetUrl = scope + 'art.html?BusStopCode=' + encodeURIComponent(busStopCode);
     if (serviceNo) targetUrl += '&ServiceNo=' + encodeURIComponent(serviceNo);
   }
