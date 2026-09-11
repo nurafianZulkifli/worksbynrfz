@@ -126,19 +126,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Handle the "New Look" button — reflects and switches between the old (worksbynrfz.com) and new (GitHub Pages) sites
-    const newLookButton = document.getElementById('use-new-look');
-    const newLookLabel = document.getElementById('use-new-look-label');
-    if (newLookButton && newLookLabel) {
-        const isOldSite = window.location.hostname === 'worksbynrfz.com';
-        newLookLabel.textContent = isOldSite ? 'Switch to New Look' : 'Switch to Old Look';
-
-        newLookButton.addEventListener('click', () => {
-            localStorage.setItem('buszyNewLook', isOldSite ? 'enabled' : 'disabled');
-            window.location.href = isOldSite ? './index.html' : 'https://worksbynrfz.com/buszy';
-        });
-    }
-
     // Handle refresh interval slider
     const refreshIntervalSlider = document.getElementById('refresh-interval');
     const refreshIntervalValue = document.getElementById('refresh-interval-value');
