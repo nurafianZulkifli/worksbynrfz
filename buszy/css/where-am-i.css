@@ -583,8 +583,8 @@ body.dark-mode .service-chip {
 }
 
 body.dark-mode .service-chip.selected {
-    background: #52718d;
-    border-color: #52718d;
+    background: #1b5e72;
+    border-color: #2b8fad;
     color: #fff;
 }
 

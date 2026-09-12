@@ -16,6 +16,33 @@ function shouldBeDark() {
     return window._prefersDark; // Default to system preference
 }
 
+function syncColorScheme() {
+    const selectedDark = shouldBeDark();
+    const selectedMode = selectedDark ? 'dark' : 'light';
+    document.documentElement.style.colorScheme = selectedMode;
+    document.body.style.colorScheme = selectedMode;
+
+    const colorMeta = document.querySelector('meta[name="color-scheme"]');
+    if (colorMeta) colorMeta.setAttribute('content', selectedMode);
+}
+
+function syncPwaMetaTheme() {
+    const selectedDark = shouldBeDark();
+    const selectedColor = selectedDark ? '#0f1419' : '#ffffff';
+
+    document.querySelectorAll('meta[name="theme-color"]').forEach((meta) => {
+        meta.removeAttribute('media');
+        meta.setAttribute('content', selectedColor);
+    });
+
+    const statusMeta = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
+    if (statusMeta) {
+        statusMeta.setAttribute('content', selectedDark ? 'black-translucent' : 'default');
+    }
+
+    document.documentElement.style.colorScheme = selectedDark ? 'dark' : 'light';
+}
+
 // Apply theme on page load
 if (shouldBeDark()) {
     document.body.classList.add('dark-mode');
@@ -23,6 +50,8 @@ if (shouldBeDark()) {
 } else {
     updateThemeIcon('light');
 }
+syncColorScheme();
+syncPwaMetaTheme();
 
 // Listen to theme toggle clicks
 document.addEventListener('DOMContentLoaded', function() {
@@ -45,6 +74,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 updateThemeIcon('light');
             }
         }
+        syncColorScheme();
+        syncPwaMetaTheme();
         updateThemeSelector();
         window.dispatchEvent(new CustomEvent('buszythemechange'));
     }
@@ -58,16 +89,13 @@ document.addEventListener('DOMContentLoaded', function() {
 // Follow system theme changes when set to 'system' preference
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
     window._prefersDark = e.matches;
-    if (localStorage.getItem('theme-preference') === 'system' || localStorage.getItem('theme-preference') === null) {
-        if (e.matches) {
-            document.body.classList.add('dark-mode');
-            updateThemeIcon('dark');
-        } else {
-            document.body.classList.remove('dark-mode');
-            updateThemeIcon('light');
-        }
-        window.dispatchEvent(new CustomEvent('buszythemechange'));
-    }
+    const selectedDark = shouldBeDark();
+    document.documentElement.classList.toggle('dark-mode', selectedDark);
+    document.body.classList.toggle('dark-mode', selectedDark);
+    updateThemeIcon(selectedDark ? 'dark' : 'light');
+    syncColorScheme();
+    syncPwaMetaTheme();
+    window.dispatchEvent(new CustomEvent('buszythemechange'));
 });
 
 // Get both toggle buttons (for backward compatibility with mobile views)

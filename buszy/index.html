@@ -7,18 +7,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="57TuruPNu5wqSSia_cUehl5t9Gh1AbxrHNPcMiFx-aQ" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover, user-scalable=no">
-    <meta name="color-scheme" content="light dark">
+    <meta name="color-scheme" content="light">
     <title>Pinned Bus Stops | Buszy</title>
     <meta property="og:image" content="https://i.imgur.com/i8n9KYs.png" />
     <meta name="description" content="Real-time bus timings, alerts, and pinned bus stops for Singapore buses">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Buszy">
-    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#0f1419" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#ffffff">
 
-    <link rel="manifest" href="./manifest.json">
+    <link rel="manifest" href="./manifest.json?v=20260912-1">
     <link rel="icon" href="./assets/logo.png" type="image/png">
 
     <link rel="apple-touch-icon" href="./assets/icon-512.png">
@@ -58,6 +57,11 @@
         (function () {
             var pref = localStorage.getItem('theme-preference') || 'system';
             var isDark = pref === 'dark' || (pref === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            var mode = isDark ? 'dark' : 'light';
+            document.documentElement.style.colorScheme = mode;
+            document.body.style.colorScheme = mode;
+            var colorMeta = document.querySelector('meta[name="color-scheme"]');
+            if (colorMeta) colorMeta.setAttribute('content', mode);
             if (isDark) document.body.classList.add('dark-mode');
         })();
     </script>

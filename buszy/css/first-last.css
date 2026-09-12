@@ -76,6 +76,13 @@
 .empty-state-placeholder p {
     margin: 0;
     font-size: .95rem;
+    text-align: center !important;
+    color: #8a97a3;
+}
+
+body.dark-mode .empty-state-placeholder p {
+    color: #8a97a3;
+    opacity: .75;
 }
 
 .content-section.active ~ .empty-state-placeholder {
