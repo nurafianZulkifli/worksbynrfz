@@ -13,3 +13,49 @@ body.dark-mode #sync-copy-btn {
     border-color: #555;
     color: #fff;
 }
+
+.theme-selector {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+    margin-top: 1rem;
+    padding: 6px;
+    border-radius: 24px;
+    background: #e5e7eb;
+}
+
+.theme-selector-option {
+    min-height: 44px;
+    padding: .65rem .5rem;
+    border: 0;
+    border-radius: 24px;
+    background: transparent;
+    color: #667085;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.theme-selector-option[aria-pressed="true"] {
+    background: #fff;
+    color: #1d313b;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .14);
+}
+
+.theme-selector-option:focus-visible {
+    outline: 2px solid #1f84a2;
+    outline-offset: 2px;
+}
+
+body.dark-mode .theme-selector {
+    background: #6e5a53;
+}
+
+body.dark-mode .theme-selector-option {
+    color: #fad8b6;
+}
+
+body.dark-mode .theme-selector-option[aria-pressed="true"] {
+    background: #e0bca4;
+    color: #000;
+}

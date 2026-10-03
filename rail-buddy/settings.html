@@ -6,15 +6,14 @@
     <meta name="description" content="Real-time train line status, delays, and schedules for Singapore MRT and LRT networks">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover, user-scalable=no">
-    <meta name="color-scheme" content="light dark">
+    <meta name="color-scheme" content="light">
     <title>Settings | RailBuddy</title>
     <meta property="og:image" content="https://i.imgur.com/i8n9KYs.png" />
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="RailBuddy">
-    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#0f1419" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#ffffff">
 
     <link rel="manifest" href="./manifest.json">
 
@@ -39,14 +38,24 @@
 </head>
 
 <body>
+    <!-- Apply the saved theme before the settings page renders. -->
+    <script>
+        (function () {
+            var pref = localStorage.getItem('theme-preference') || 'system';
+            var isDark = pref === 'dark' || (pref === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            var mode = isDark ? 'dark' : 'light';
+            document.documentElement.style.colorScheme = mode;
+            document.body.style.colorScheme = mode;
+            document.documentElement.classList.toggle('dark-mode', isDark);
+            document.body.classList.toggle('dark-mode', isDark);
+            var colorMeta = document.querySelector('meta[name="color-scheme"]');
+            if (colorMeta) colorMeta.setAttribute('content', mode);
+        })();
+    </script>
     <!-- Fixed Breadcrumb at very top (mobile/tablet only) -->
     <div class="breadcrumb-fixed-placeholder">
         <nav aria-label="breadcrumb" style="margin-bottom:0;">
             <ol class="breadcrumb breadcrumb-fixed" id="floating-breadcrumb">
-                <li class="breadcrumb-item">
-                    <a href="index.html">
-                        <i class="fa-regular fa-house"></i>
-                    </a>
                 </li>
                 <li class="breadcrumb-item">
                     <a href="menu.html"><i class="fa-regular fa-bars"></i>
@@ -148,10 +157,6 @@
                         <nav aria-label="breadcrumb" class="breadcrumb-desktop" style="display:none;">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item">
-                                    <a href="index.html"><i class="fa-regular fa-house"></i>
-                                    </a>
-                                </li>
-                                <li class="breadcrumb-item">
                                     <a href="menu.html"><i class="fa-regular fa-bars"></i>
                                     </a>
                                 </li>
@@ -183,84 +188,15 @@
 
             <div class="settings-page-section">
                 <div class="settings-section-title">
-                    <i class="fa-regular fa-display"></i>
-                    Display Options
+                    <i class="fa-regular fa-circle-half-stroke"></i>
+                    Theme
                 </div>
-                <a href="" class="settings-switch-row" id="theme-toggle-desktop" style="text-decoration: none; color: inherit;">
-                    <span class="settings-switch-label">
-                        <i class="fa-regular fa-sun-bright" id="theme-icon-desktop"></i>&nbsp;<span id="theme-text-desktop">Theme: Light</span>
-                    </span>
-                    <i class="fa-regular fa-chevron-right" style="color: #9ca3af;"></i>
-                </a>
+                <div class="theme-selector" role="group" aria-label="Theme">
+                    <button type="button" class="theme-selector-option" data-theme-preference="system" aria-pressed="false">System</button>
+                    <button type="button" class="theme-selector-option" data-theme-preference="light" aria-pressed="false">Light</button>
+                    <button type="button" class="theme-selector-option" data-theme-preference="dark" aria-pressed="false">Dark</button>
+                </div>
             </div>
-
-            <!-- <div class="settings-page-section">
-                <div class="settings-section-title">
-                    <i class="fa-solid fa-watch"></i>
-                    Train Schedules
-                </div>
-                <div style="padding: 0.75rem 0;">
-                    <label style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 14px; color: var(--text-primary, #333);">
-                        <span style="font-weight: 600;">Auto-Refresh Interval</span>
-                        <select id="autoRefreshInterval" style="padding: 0.5rem 0.75rem; border: 1px solid #ccc; border-radius: 6px; background: var(--card-bg, white); color: var(--text-primary, #333); font-size: 14px; cursor: pointer;">
-                            <option value="10000">10 seconds</option>
-                            <option value="20000">20 seconds</option>
-                            <option value="30000">30 seconds</option>
-                            <option value="0">Disabled</option>
-                        </select>
-                    </label>
-                    <p style="font-size: 12px; color: #888; margin: 0.5rem 0 0;">Automatically refresh train times on the schedules page.</p>
-                </div>
-            </div> -->
-
-            <!-- <div class="settings-page-section">
-                <div class="settings-section-title">
-                    <i class="fa-regular fa-cloud-arrow-up"></i>
-                    Cloud Sync
-                </div>
-                <div class="settings-info-box">
-                    <i class="fa-regular fa-circle-info"></i>&nbsp;Sync your preferences across devices using a sync code. No account required.
-                </div>
-                <div id="sync-no-code">
-                    <div style="display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 12px;">
-                        <button class="import-export-btn" id="sync-generate-btn">
-                            <i class="fa-regular fa-cloud-plus"></i>
-                            <span>Generate Sync Code</span>
-                        </button>
-                    </div>
-                    <p style="margin: 0.75rem 0 0.5rem; font-size: 13px; color: #888; text-align: center;">- or enter an existing code -</p>
-                    <div style="display: flex; gap: 0.5rem;">
-                        <input type="text" id="sync-code-input" placeholder="e.g. abc12-def34" autocomplete="off"
-                               style="flex: 1; padding: 0.55rem 0.75rem; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; font-family: monospace; letter-spacing: 1px;">
-                        <button class="import-export-btn" id="sync-connect-btn" style="min-width: unset; padding: 0 1rem; flex-shrink: 0;">Connect</button>
-                    </div>
-                </div>
-                <div id="sync-has-code" style="display: none;">
-                    <p style="font-size: 14px; font-weight: 600; margin-bottom: 0.5rem;">Your sync code</p>
-                    <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem;">
-                        <code id="sync-code-display" style="flex: 1; text-align: center; font-size: 1.1em; letter-spacing: 3px; padding: 0.45rem 0.75rem; border: 1px solid #ccc; border-radius: 8px; display: block;"></code>
-                        <button id="sync-copy-btn" style="background: none; border: 1px solid #ccc; border-radius: 8px; padding: 0.45rem 0.65rem; cursor: pointer; font-size: 14px; flex-shrink: 0;">
-                            <i class="fa-regular fa-copy"></i>
-                        </button>
-                    </div>
-                    <p id="sync-last-synced" style="font-size: 13px; color: #888; margin-bottom: 0.75rem;"></p>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 0.75rem;">
-                        <button id="sync-push-btn" class="import-export-btn">
-                            <i class="fa-regular fa-cloud-arrow-up"></i>
-                            <span>Push to Cloud</span>
-                        </button>
-                        <button id="sync-pull-btn" class="import-export-btn">
-                            <i class="fa-regular fa-cloud-arrow-down"></i>
-                            <span>Pull from Cloud</span>
-                        </button>
-                    </div>
-                    <button id="sync-disconnect-btn" class="import-export-btn" style="width: 100%; color: #dc2626;">
-                        <i class="fa-regular fa-link-slash"></i>
-                        <span>Disconnect</span>
-                    </button>
-                </div>
-            </div> -->
-
         </div>
     </section>
 

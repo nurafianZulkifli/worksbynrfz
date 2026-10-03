@@ -203,6 +203,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+document.addEventListener('sharedAnnouncementsLoaded', initAnnouncements);
+
 // Also call if DOM is already loaded (in case this script loads after DOMContentLoaded)
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function() {

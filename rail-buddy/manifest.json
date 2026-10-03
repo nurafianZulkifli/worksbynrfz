@@ -1,5 +1,5 @@
 {
-  "id": "railbuddy",
+  "id": "railbuddy-v20260912",
   "name": "RailBuddy",
   "short_name": "RailBuddy",
   "description": "Real-time train line status, delays, and schedules for Singapore MRT and LRT networks",
@@ -7,8 +7,8 @@
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "background_color": "#ebebe8",
-  "theme_color": "#ebebe8",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
   "categories": ["transportation", "utilities"],
   "icons": [
     {
@@ -30,6 +30,18 @@
       "short_name": "Status",
       "description": "Check train line status",
       "url": "./",
+      "icons": [
+        {
+          "src": "./assets/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Where Am I",
+      "short_name": "Nearest Station",
+      "description": "Find the MRT or LRT station nearest to you",
+      "url": "./where-am-i.html",
       "icons": [
         {
           "src": "./assets/icon-192.png",

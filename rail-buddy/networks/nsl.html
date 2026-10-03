@@ -7,9 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport"
         content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover, user-scalable=no">
-    <meta name="color-scheme" content="light dark">
-    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#0f1419" media="(prefers-color-scheme: dark)">
+    <meta name="color-scheme" content="light">
+    <meta name="theme-color" content="#ffffff">
     <title>North-South Line | RailBuddy</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
@@ -39,10 +38,6 @@
     <div class="breadcrumb-fixed-placeholder">
         <nav aria-label="breadcrumb" style="margin-bottom:0;">
             <ol class="breadcrumb breadcrumb-fixed" id="floating-breadcrumb">
-                <li class="breadcrumb-item">
-                    <a href="../index.html"><i class="fa-regular fa-house"></i>
-                    </a>
-                </li>
                 <li class="breadcrumb-item">
                     <a href="../menu.html"><i class="fa-regular fa-bars"></i>
                     </a>
@@ -141,10 +136,6 @@
                     <div class="breadcrumb-wrapper">
                         <nav aria-label="breadcrumb" class="breadcrumb-desktop" style="display:none;">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item">
-                                    <a href="../index.html"><i class="fa-regular fa-house"></i>
-                                    </a>
-                                </li>
                                 <li class="breadcrumb-item">
                                     <a href="../menu.html"><i class="fa-regular fa-bars"></i>
                                     </a>
@@ -289,14 +280,19 @@
     <script src="../../js/default-assets/active.js"></script>
 
     <script>
+        // Stations whose interchange sits in a separate, connected station box rather than a co-located platform.
+        // Add a station name here to give it the connector caplet style.
+        const CONNECTOR_STATIONS = new Set(['Newton']);
+
         function renderStation(station) {
             const interchangesHTML = station.interchanges
                 .map(i => `<span class="interchange-badge ${i.lineClass}">${i.code}</span>`)
                 .join('');
+            const codesClass = CONNECTOR_STATIONS.has(station.name) ? 'station-codes station-connector' : 'station-codes';
             return `<div class="station">
                         <div class="station-dot"></div>
                         <div class="station-content">
-                            <div class="station-codes">
+                            <div class="${codesClass}">
                                 <span class="station-code">${station.code}</span>
                                 ${interchangesHTML}
                             </div>

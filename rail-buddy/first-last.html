@@ -6,15 +6,14 @@
     <meta name="description" content="Real-time train line status, delays, and schedules for Singapore MRT and LRT networks">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover, user-scalable=no">
-    <meta name="color-scheme" content="light dark">
+    <meta name="color-scheme" content="light">
     <title>First & Last Trains | RailBuddy</title>
     <meta property="og:image" content="https://i.imgur.com/i8n9KYs.png" />
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="RailBuddy">
-    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#0f1419" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#ffffff">
 
     <link rel="manifest" href="./manifest.json">
 
@@ -199,6 +198,11 @@
                 <div class="station-title" id="stationTitle">--</div>
                 <div class="station-subtitle" id="stationSubtitle">Select a station to begin</div>
                 <div id="directionsContainer"></div>
+            </div>
+
+            <div class="empty-state-placeholder" id="emptyStatePlaceholder">
+                <i class="fa-kit fa-lta-train" aria-hidden="true"></i>
+                <p>Search or select a station above to see its first and last train timings.</p>
             </div>
         </div>
     </section>

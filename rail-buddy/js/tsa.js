@@ -28,13 +28,24 @@ document.addEventListener('DOMContentLoaded', function() {
     // Production is static hosting (GitHub Pages) with no backend, so always use the Heroku API
     return 'https://bat-lta-9eb7bbf231a2.herokuapp.com';
   })();
+  const FALLBACK_API_SERVER = 'https://bat-lta-9eb7bbf231a2.herokuapp.com';
 
   const ALERTS_CACHE_KEY = 'railbuddy_tsa_alerts_cache';
   const ALERTS_DATA_KEY = 'railbuddy_tsa_alerts_data';
   const CACHE_TTL = 30 * 60 * 1000; // 30 minutes
 
+  function getAlerts(data) {
+    if (Array.isArray(data)) return data;
+    if (Array.isArray(data?.value)) return data.value;
+    if (Array.isArray(data?.data)) return data.data;
+    if (data?.value && typeof data.value === 'object') return [data.value];
+    if (data?.data && typeof data.data === 'object') return [data.data];
+    return [];
+  }
+
   function processAlerts(data, timings) {
-    if (!data || !data.value) return;
+    const alerts = getAlerts(data);
+    if (!alerts.length) return false;
     // Map line names to codes used in your HTML
     const lineMap = {
       'North-South Line': 'NSL',
@@ -47,13 +58,6 @@ document.addEventListener('DOMContentLoaded', function() {
       'Sengkang LRT': 'SK',
       'Punggol LRT': 'PG'
     };
-    // Support both array and object for value
-    let alerts = [];
-    if (Array.isArray(data.value)) {
-      alerts = data.value;
-    } else if (typeof data.value === 'object') {
-      alerts = [data.value];
-    }
     // Show current date/time for 'Last updated' line
     const now = new Date();
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -111,11 +115,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Then, process alerts (which can override grey status if trains are operating)
     alerts.forEach(alert => {
-      if (alert.Status === 1 || alert.Status === 2) {
-        if (alert.Message && Array.isArray(alert.Message) && alert.Message.length > 0) {
+      if (Number(alert.Status) === 1 || Number(alert.Status) === 2) {
+        const messages = Array.isArray(alert.Message) ? alert.Message : alert.Message ? [alert.Message] : [];
+        if (messages.length > 0) {
           // Process each message separately
-          alert.Message.forEach(messageObj => {
-            const msg = messageObj.Content || '';
+          messages.forEach(messageObj => {
+            const msg = typeof messageObj === 'string' ? messageObj : messageObj.Content || '';
             const foundMsg = linkify(msg);
             let foundLine = null;
             
@@ -188,32 +193,46 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     `;
     document.head.appendChild(style);
+    return true;
   }
 
   // Load train timings
   fetch('json/ft-lt.json').then(r => r.json()).then(timings => {
     // Check alerts cache
-    const cached = JSON.parse(localStorage.getItem(ALERTS_CACHE_KEY) || 'null');
+    let cached = null;
+    try { cached = JSON.parse(localStorage.getItem(ALERTS_CACHE_KEY) || 'null'); } catch (error) { cached = null; }
     const cacheIsFresh = cached !== null && (Date.now() - cached.ts < CACHE_TTL);
 
     // Show cached alerts if available
+    let hasUsableCachedAlerts = false;
     if (cacheIsFresh) {
-      const cachedData = JSON.parse(localStorage.getItem(ALERTS_DATA_KEY) || 'null');
-      if (cachedData) {
-        processAlerts(cachedData, timings);
-      }
+      let cachedData = null;
+      try { cachedData = JSON.parse(localStorage.getItem(ALERTS_DATA_KEY) || 'null'); } catch (error) { cachedData = null; }
+      hasUsableCachedAlerts = Boolean(cachedData && processAlerts(cachedData, timings));
     }
 
-    // Fetch alerts only if cache is stale
-    if (!cacheIsFresh) {
-      fetch(`${API_SERVER}/train-service-alerts`)
-        .then(r => r.json())
-        .then(data => {
-          localStorage.setItem(ALERTS_CACHE_KEY, JSON.stringify({ ts: Date.now() }));
-          localStorage.setItem(ALERTS_DATA_KEY, JSON.stringify(data));
-          processAlerts(data, timings);
+    // Fetch alerts when the cache is stale, missing, or unusable.
+    if (!hasUsableCachedAlerts) {
+      const fetchAlerts = (server, allowFallback = true) => fetch(`${server}/train-service-alerts`)
+        .then(response => {
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          return response.json();
         })
-        .catch(err => {});
+        .catch(error => {
+          if (allowFallback && server !== FALLBACK_API_SERVER) {
+            return fetchAlerts(FALLBACK_API_SERVER, false);
+          }
+          throw error;
+        });
+
+      fetchAlerts(API_SERVER)
+        .then(data => {
+          if (processAlerts(data, timings)) {
+            localStorage.setItem(ALERTS_CACHE_KEY, JSON.stringify({ ts: Date.now() }));
+            localStorage.setItem(ALERTS_DATA_KEY, JSON.stringify(data));
+          }
+        })
+        .catch(err => console.warn('[RailBuddy] Train service alerts unavailable:', err));
     }
   }).catch(err => {});
 });

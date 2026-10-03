@@ -33,7 +33,6 @@
 
 .list-group-item {
     transition-duration: 800ms;
-    border-radius: 20px;
     margin-top: 1em;
     font-size: 20px;
     border: 1px solid #2b2b2b33;

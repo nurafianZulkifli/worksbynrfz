@@ -45,13 +45,16 @@ const STATIC_ASSETS = [
   // RailBuddy entry
   buildPath('rail-buddy/'),
   buildPath('rail-buddy/index.html'),
+  buildPath('rail-buddy/where-am-i.html'),
   buildPath('rail-buddy/manifest.json'),
   
   // RailBuddy styles
   buildPath('rail-buddy/css/style-tdt.css'),
+  buildPath('rail-buddy/css/where-am-i.css'),
   
   // RailBuddy scripts
   buildPath('rail-buddy/js/tsa.js'),
+  buildPath('rail-buddy/js/where-am-i.js'),
   buildPath('rail-buddy/js/menu.js'),
   buildPath('rail-buddy/js/settings.js'),
   buildPath('rail-buddy/js/delays-bar-chart.js'),

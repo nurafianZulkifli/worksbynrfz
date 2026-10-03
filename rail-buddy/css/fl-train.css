@@ -1,9 +1,10 @@
 .selector-section {
     background: #fff;
-    border-radius: 12px;
+    border-radius: 34px;
     padding: 20px;
     margin-bottom: 30px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
 }
 
 .selector-section label {
@@ -12,6 +13,10 @@
     margin-top: 3em;
     margin-bottom: 10px;
     color: #000;
+}
+
+.selector-section:hover {
+    transform: translateY(-2px);
 }
 
 #stationDropdown {
@@ -47,9 +52,12 @@
 }
 
 @keyframes subtle-pulse {
-    0%, 100% {
+
+    0%,
+    100% {
         box-shadow: 0 0 0 3px rgba(96, 125, 150, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 12px rgba(0, 0, 0, 0.1);
     }
+
     50% {
         box-shadow: 0 0 0 5px rgba(96, 125, 150, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 12px rgba(0, 0, 0, 0.15);
     }
@@ -57,7 +65,7 @@
 
 .content-section {
     background: #fff;
-    border-radius: 12px;
+    border-radius: 34px;
     padding: 30px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     min-height: 400px;
@@ -66,6 +74,37 @@
 
 .content-section.active {
     display: block;
+}
+
+.empty-state-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    padding: 60px 24px;
+    color: #8a97a3;
+    text-align: center;
+}
+
+.empty-state-placeholder i {
+    font-size: 3rem;
+    opacity: .5;
+}
+
+.empty-state-placeholder p {
+    margin: 0;
+    font-size: .95rem;
+    text-align: center !important;
+    color: #8a97a3;
+}
+
+body.dark-mode .empty-state-placeholder p {
+    color: #f0d1a9;
+    opacity: .75;
+}
+
+.content-section.active~.empty-state-placeholder {
+    display: none;
 }
 
 .station-title {
@@ -351,7 +390,7 @@ body.dark-mode .train-time-chip {
 }
 
 body.dark-mode .selector-section {
-    background: #1c1f2b;
+    background: #3F3835;
     border: 1px solid #2b2b2b33;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
 }
@@ -366,7 +405,7 @@ body.dark-mode #stationDropdown {
     padding: 0.775rem 2.5rem 0.775rem 1.75rem;
     color: #fff;
     appearance: none;
-    background-color: #393e53;
+    background-color: #726661;
     background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%2391a5be" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"%3E%3Cpolyline points="6 9 12 15 18 9"%3E%3C/polyline%3E%3C/svg%3E');
     background-position: right 0.75rem center;
     background-repeat: no-repeat;
@@ -379,31 +418,35 @@ body.dark-mode #stationDropdown {
 }
 
 body.dark-mode #stationDropdown:hover {
-    border-color: #91a5be;
+    border-color: #f0d1a9;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
 
 body.dark-mode #stationDropdown.highlight {
-    border-color: #91a5be;
+    border-color: #f0d1a9;
     box-shadow: 0 0 0 3px rgba(145, 165, 190, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
     animation: subtle-pulse-dark 2s ease-in-out infinite;
 }
 
 @keyframes subtle-pulse-dark {
-    0%, 100% {
+
+    0%,
+    100% {
         box-shadow: 0 0 0 3px rgba(145, 165, 190, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
     }
+
     50% {
         box-shadow: 0 0 0 5px rgba(145, 165, 190, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.15);
     }
 }
 
 body.dark-mode #stationDropdown:focus {
-    border-color: #91a5be;
+    border-color: #f0d1a9;
     box-shadow: 0 0 0 3px rgba(136, 153, 255, 0.1);
 }
 
 body.dark-mode .content-section {
-    background: #1c1f2b;
+    background: #574c47;
     border: 1px solid #2b2b2b33;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
 }
@@ -416,20 +459,25 @@ body.dark-mode .station-subtitle {
     color: #bbb;
 }
 
+body.dark-mode .empty-state-placeholder {
+    color: #f0d1a9;
+    opacity: .75;
+}
+
 body.dark-mode .direction-card {
-    background: #292d3d;
+    background: #3F3835;
     border: 1px solid #2b2b2b33;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 body.dark-mode .direction-card:hover {
-    border-color: #91a5be;
+    border-color: #f0d1a9;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 body.dark-mode .direction-header {
-    color: #91a5be;
-    border-bottom-color: #91a5be;
+    color: #f0d1a9;
+    border-bottom-color: #f0d1a9;
 }
 
 body.dark-mode .day-label {
@@ -440,9 +488,7 @@ body.dark-mode .no-data {
     color: #777;
 }
 
-/* Bootstrap 5.3 derives .alert/.badge colours from these custom properties —
-   swap in Bootstrap's own [data-bs-theme=dark] values since this app toggles
-   dark mode via .dark-mode instead of the data-bs-theme attribute. */
+
 body.dark-mode {
     --bs-success-text-emphasis: #75b798;
     --bs-success-bg-subtle: #051b11;
@@ -459,7 +505,7 @@ body.dark-mode {
 }
 
 body.dark-mode .loading {
-    color: #91a5be;
+    color: #f0d1a9;
 }
 
 body.dark-mode .search-input {
@@ -467,11 +513,11 @@ body.dark-mode .search-input {
     width: 100%;
     color: #fff;
     appearance: none;
-    background: #1c1f2b;
+    background: #1d1712;
     background-clip: padding-box;
     border-radius: 25px;
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-    border: 2px solid #393e53;
+    border: 2px solid #726661;
     /* box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1); */
 }
 
@@ -480,7 +526,7 @@ body.dark-mode .search-input::placeholder {
 }
 
 body.dark-mode .search-input:focus {
-    border-color: #91a5be;
+    border-color: #f0d1a9;
     box-shadow: 0 0 0 3px rgba(136, 153, 255, 0.1);
 }
 
@@ -489,7 +535,7 @@ body.dark-mode .clear-search {
 }
 
 body.dark-mode .clear-search:hover {
-    color: #91a5be;
+    color: #f0d1a9;
 }
 
 body.dark-mode .search-results-count {
@@ -503,13 +549,13 @@ body.dark-mode .station-card {
 }
 
 body.dark-mode .station-card:hover {
-    border-color: #91a5be;
+    border-color: #f0d1a9;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 body.dark-mode .station-name {
     color: #fff;
-    border-bottom-color: #91a5be;
+    border-bottom-color: #f0d1a9;
 }
 
 body.dark-mode .time-label {
@@ -532,7 +578,7 @@ body.dark-mode .time-display.last {
 
 
 body.dark-mode .time-value {
-    background: #1c1f2b;
+    background: #1d1712;
     border-radius: 15px;
 }
 
@@ -559,5 +605,3 @@ body.dark-mode .time-value {
         font-size: 0.75rem;
     }
 }
-
-

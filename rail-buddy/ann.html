@@ -8,15 +8,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport"
         content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover, user-scalable=no">
-    <meta name="color-scheme" content="light dark">
+    <meta name="color-scheme" content="light">
     <title>Announcements | RailBuddy</title>
     <meta property="og:image" content="https://i.imgur.com/i8n9KYs.png" />
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="RailBuddy">
-    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#0f1419" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#ffffff">
 
     <link rel="manifest" href="./manifest.json">
 
@@ -46,10 +45,6 @@
     <div class="breadcrumb-fixed-placeholder">
         <nav aria-label="breadcrumb" style="margin-bottom:0;">
             <ol class="breadcrumb breadcrumb-fixed" id="floating-breadcrumb">
-                <li class="breadcrumb-item">
-                    <a href="index.html"><i class="fa-regular fa-home"></i>
-                    </a>
-                </li>
                 <li class="breadcrumb-item">
                     <a href="menu.html"><i class="fa-regular fa-bars"></i>
                     </a>
@@ -150,10 +145,6 @@
                         <nav aria-label="breadcrumb" class="breadcrumb-desktop" style="display:none;">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item">
-                                    <a href="index.html"><i class="fa-regular fa-house"></i>
-                                    </a>
-                                </li>
-                                <li class="breadcrumb-item">
                                     <a href="menu.html"><i class="fa-regular fa-bars"></i>
                                     </a>
                                 </li>
@@ -185,51 +176,8 @@
     <!-- Section Contents -->
     <section class="about-me-summ clearfix" style="padding-bottom: 8em;">
         <div class="container">
-            <div class="list-group">
-                <a href="https://landtransportguru.net/dtl-eclo-jul-sep-2026/"
-                    data-ann-id="dtl-service-adjustment-2026-04" data-ann-date="2026-04-28"
-                    class="list-group-item list-group-item-action flex-column align-items-start">
-                    <div class="d-flex">
-                        <div>
-                            <h5 class="lg-ann"><i class="fa-kit fa-lta-train"></i> Service Adjustments - DTL<span
-                                    class="ann-badge-container"></span></h5>
-                            <small class="lg-date">28 Apr 2026</small>
-                        </div>
-                    </div>
-                    <p class="mb-1" style="cursor: pointer;">
-                        Early Closures & Late Openings (ECLO) along the entire Downtown Line (DTL), between Bukit
-                        Panjang and Expo, will take place across nine consecutive Fridays & Saturdays between 10 July
-                        2026 and 4 September 2026.</p>
-                </a>
-                <a href="https://landtransportguru.net/sklrt-west-single-loop-ops-apr-oct-2026/"
-                    data-ann-id="sklrt-closure-2026-04" data-ann-date="2026-02-20"
-                    class="list-group-item list-group-item-action flex-column align-items-start">
-                    <div class="d-flex">
-                        <div>
-                            <h5 class="lg-ann"><i class="fa-kit fa-lta-lrt"></i> Service Adjustments - SKLRT<span
-                                    class="ann-badge-container"></span></h5>
-                            <small class="lg-date">20 Feb 2026</small>
-                        </div>
-                    </div>
-                    <p class="mb-1" style="cursor: pointer;">
-                        The West Inner Loop of the Sengkang LRT Line will be closed from 19 April 2026 to 18 October
-                        2026. This is to facilitate the track works needed to integrate the existing LRT line with the
-                        expanded Sengkang LRT Depot.</p>
-                </a>
-                <a href="https://www.ptc.gov.sg/newsroom/news-releases/newsroom-view/fare-review-exercise-2025"
-                    data-ann-id="fare-review-2025-10" data-ann-date="2025-10-14"
-                    class="list-group-item list-group-item-action flex-column align-items-start">
-                    <div class="d-flex">
-                        <div>
-                            <h5 class="lg-ann"><i class="fa-kit fa-lta-map"></i> Fare Review Exercise<span
-                                    class="ann-badge-container"></span></h5>
-                            <small class="lg-date">14 Oct 2025</small>
-                        </div>
-                    </div>
-                    <p class="mb-1" style="cursor: pointer;">
-                        PTC grants overall fare adjustment of 5.0% - below the maximum allowable quantum of 14.4%;
-                        deferment of remaining quantum (9.4%) supported by additional Government subsidies...</p>
-                </a>
+            <div class="list-group announcements-list">
+                <div class="fetch">Loading announcements...</div>
             </div>
 
         </div>
@@ -264,6 +212,8 @@
     <script src="../js/dstabs.js"></script>
 
     <script src="../js/utils.js"></script>
+
+    <script src="../js/announcements.js"></script>
 
     <script src="js/ann.js"></script>
 

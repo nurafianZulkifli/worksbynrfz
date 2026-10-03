@@ -14,7 +14,7 @@
 }
 
 body.dark-mode #pwa-splash {
-    background-color: #121521;
+    background-color: #201a18;
 }
 
 #pwa-splash.hide {
@@ -54,21 +54,23 @@ body.dark-mode #pwa-splash .splash-name {
     right: 0;
     height: 50%;
     background: url('../../img/bg-img/hero-railbuddy.png') center bottom / cover no-repeat;
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.5) 30%, black 100%);
-    mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.5) 30%, black 100%);
 }
 
 body.dark-mode #pwa-splash .splash-hero {
-    background-image: url('../../img/bg-img/hero-railbuddy-dark.png');
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.25) 50%, rgba(0, 0, 0, 0) 100%), url('../../img/bg-img/hero-railbuddy-dark.png') center bottom / cover no-repeat;
 }
 
 body.dark-mode {
-    background: #121521 !important;
+    background: #201a18 !important;
     --card-bg: #1a1f35;
     --card-bg-alt: #232a45;
     --border-color: #333b5c;
     --text-primary: #e8eaf2;
     --text-secondary: #a0a8c0;
+}
+
+html.dark-mode {
+    background: #201a18 !important;
 }
 
 body.dark-mode #stationLiveStatus,
@@ -78,11 +80,11 @@ body.dark-mode #schedulesList {
 }
 
 body.dark-mode .navbar {
-    background: #1a1f35be !important;
+    background: #3731305b !important;
 }
 
 body.dark-mode .page-header-section {
-    background: #121521 !important;
+    background: #201a18 !important;
 }
 
 .nav-link.active {
@@ -129,7 +131,7 @@ body.dark-mode li.breadcrumb-item a {
 .list-group-item:first-child,
 .list-group-item:last-child {
     transition-duration: 800ms;
-    border-radius: 20px;
+    border-radius: 34px;
     margin-top: 1em;
     font-size: 20px;
 }
@@ -137,14 +139,14 @@ body.dark-mode li.breadcrumb-item a {
 .list-group-item:first-child,
 .list-group-item:last-child {
     transition-duration: 800ms;
-    border-radius: 20px;
+    border-radius: 34px;
     margin-top: 1em;
     font-size: 20px;
 }
 
 .list-group-item {
     transition-duration: 800ms;
-    border-radius: 20px;
+    border-radius: 34px;
     margin-top: 1em;
     font-size: 20px;
     border: 1px solid #2b2b2b33;
@@ -266,12 +268,12 @@ body.dark-mode li.breadcrumb-item a {
 }
 
 body.dark-mode .about-me-summ {
-    background-color: #121521 !important;
+    background-color: #201a18 !important;
     transition: all 0.5s ease;
 }
 
 body.dark-mode .list-group-item {
-    background-color: #1c1f2b;
+    background-color: #3F3835;
     color: #fff !important;
     border: 1px solid #2b2b2b33;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -282,6 +284,13 @@ body.dark-mode .list-group-item {
 body.dark-mode .list-group-item:hover {
     background-color: #334250;
     transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+body.dark-mode .nav-link:hover {
+    color: #fff;
+    transform: translateY(-2px);
+    background-color: #643F00;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
@@ -556,7 +565,7 @@ body.dark-mode .ann-header-btn {
     }
 
     body.dark-mode .breadcrumb.breadcrumb-fixed {
-        background: #1f243bc9;
+        background: #3731305b;
         backdrop-filter: blur(25px);
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
         position: fixed;
@@ -620,7 +629,7 @@ body.dark-mode .ann-header-btn {
     }
 
     body.dark-mode .mobile-bottom-nav::before {
-        background: linear-gradient(to top, rgba(31, 36, 59, 0.7) 0%, rgba(31, 36, 59, 0) 100%);
+        background: linear-gradient(to top, #0f0b01 0%, #0f0b01 100%);
     }
 
     .mobile-bottom-nav ul {
@@ -645,7 +654,7 @@ body.dark-mode .ann-header-btn {
     }
 
     body.dark-mode .mobile-bottom-nav ul {
-        background: #1f243bc9;
+        background: #3731305b;
         backdrop-filter: blur(25px);
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
     }
@@ -1003,7 +1012,7 @@ body.dark-mode .guide-skip-btn {
 }
 
 .sht-btn-primary {
-    background: linear-gradient(90deg, #1a6fa8 0%, #0d4d8a 100%);
+    background: linear-gradient(90deg, #1d160f 0%, #1d160f 100%);
     color: #fff;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
@@ -1027,14 +1036,14 @@ body.dark-mode .sht-btn-ghost {
 
 .settings-page-section {
     background: #fff;
-    border-radius: 18px;
+    border-radius: 34px;
     padding: 20px;
     margin-bottom: 20px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 body.dark-mode .settings-page-section {
-    background-color: #1c1f2b;
+    background-color: #3F3835;
     color: #fff !important;
     border: 1px solid #2b2b2b33;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -1252,6 +1261,20 @@ body.dark-mode .form-check-input:checked {
 body.dark-mode .form-check-input {
     background-color: #313544;
     border-color: #ffffff3b;
+}
+
+body.dark-mode .port-summary:hover {
+    background-color: #643F00;
+    transform: translateY(-2px);
+}
+
+body.dark-mode li.breadcrumb-item a:hover {
+    padding: 10px;
+    border-radius: 25px;
+    color: #fff;
+    transform: translateY(-2px);
+    background-color: #643F00;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.082);
 }
 
 /* ===== Icon Rounding ===== */

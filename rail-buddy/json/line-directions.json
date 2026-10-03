@@ -1,0 +1,84 @@
+{
+  "lines": [
+    {
+      "code": "NSL",
+      "stationDataFile": "nsl.json",
+      "platforms": {
+        "a": { "destination": "Jurong East" },
+        "b": { "destination": "Marina South Pier" }
+      }
+    },
+    {
+      "code": "EWL",
+      "stationDataFile": "ewl.json",
+      "platforms": {
+        "a": { "destination": "Pasir Ris" },
+        "b": { "destination": "Tuas Link" }
+      }
+    },
+    {
+      "code": "NEL",
+      "stationDataFile": "nel.json",
+      "platforms": {
+        "a": { "destination": "HarbourFront" },
+        "b": { "destination": "Punggol Coast" }
+      }
+    },
+    {
+      "code": "CCL",
+      "stationDataFile": "ccl.json",
+      "platforms": {
+          "a": { "direction": "Clockwise" },
+          "b": { "direction": "Anticlockwise" }
+        },
+        "stations": {
+          "Promenade": {
+            "platforms": {
+              "a": { "direction": "Anticlockwise" },
+              "b": { "direction": "Clockwise", "destination": "Dhoby Ghaut" }
+            }
+          }
+      }
+    },
+    {
+      "code": "DTL",
+      "stationDataFile": "dtl.json",
+      "platforms": {
+        "a": { "destination": "Bukit Panjang" },
+        "b": { "destination": "Expo" }
+      }
+    },
+    {
+      "code": "TEL",
+      "stationDataFile": "tel.json",
+      "platforms": {
+        "a": { "destination": "Woodlands North" },
+        "b": { "destination": "Bayshore" }
+      }
+    },
+    {
+      "code": "BPLRT",
+      "stationDataFile": "bp.json",
+      "platforms": {
+        "a": { "destination": "Service A via Senja" },
+        "b": { "destination": "Service B via Petir" }
+      }
+    },
+    {
+      "code": "SKLRT",
+      "stationDataFile": "sk.json",
+      "platforms": {
+        "a": { "destination": "West Loop via Cheng Lim" },
+        "b": { "destination": "East Loop via Compassvale" }
+      }
+    },
+    {
+      "code": "PGLRT",
+      "stationDataFile": "pg.json",
+      "platforms": {
+        "a": { "destination": "West Loop via Sam Kee" },
+        "b": { "destination": "East Loop via Cove" }
+      }
+    }
+  ]
+}

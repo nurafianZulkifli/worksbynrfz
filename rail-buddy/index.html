@@ -6,20 +6,20 @@
     <meta name="description" content="Real-time train line status, delays, and schedules for Singapore MRT and LRT networks">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover, user-scalable=no">
-    <meta name="color-scheme" content="light dark">
+    <meta name="color-scheme" content="light">
     <title>Line Status | RailBuddy</title>
     <meta property="og:image" content="https://i.imgur.com/i8n9KYs.png" />
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="RailBuddy">
-    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#0f1419" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#ffffff">
 
-    <link rel="manifest" href="./manifest.json">
+    <link rel="manifest" href="./manifest.json?v=20260912-1">
 
     <link rel="icon" href="./assets/logo.png" type="image/png">
     <link rel="apple-touch-icon" href="./assets/icon-512.png">
+    <link rel="preload" href="./assets/icon-512.png" as="image" type="image/png" fetchpriority="high">
     
     <link rel="apple-touch-startup-image" href="../img/bg-img/hero-railbuddy-dark.png">
 
@@ -44,7 +44,13 @@
         (function () {
             var pref = localStorage.getItem('theme-preference') || 'system';
             var isDark = pref === 'dark' || (pref === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-            if (isDark) document.body.classList.add('dark-mode');
+            var mode = isDark ? 'dark' : 'light';
+            document.documentElement.style.colorScheme = mode;
+            document.body.style.colorScheme = mode;
+            document.documentElement.classList.toggle('dark-mode', isDark);
+            document.body.classList.toggle('dark-mode', isDark);
+            var colorMeta = document.querySelector('meta[name="color-scheme"]');
+            if (colorMeta) colorMeta.setAttribute('content', mode);
         })();
     </script>
 
@@ -142,10 +148,10 @@
     <!------------------------------------------------------------------------ Start of Sections ------------------------------------------------------------------------>
 
     <section class="tsu clearfix" style="padding-bottom: 5em;">
-        <div class="container">
+        <div class="container tsa-container">
 
             <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h2 style="margin: 0;">Line Status</h2>
+                <h2 class="ls">Line Status</h2>
                 <a href="./ann.html" class="ann-header-btn" style="position: relative; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: none; border: none; font-size: 1.3rem; text-decoration: none;" title="Announcements">
                     <i class="fa-regular fa-bullhorn"></i>
                     <span class="ann-indicator-dot"></span>
@@ -153,59 +159,68 @@
             </div>
             <div class='alert-last-updated' style='margin-top:12px;font-size:0.98em;color:#888;'></div>
 
-            <a href="./networks/nsl.html" class="custom-list-item">
+            <div class="network-tabs" role="tablist" aria-label="Transit network">
+                <button class="network-tab active" id="mrt-tab" type="button" role="tab" aria-controls="mrt-panel" aria-selected="true" data-network-tab="mrt"><i class="fa-kit fa-lta-train"></i> MRT</button>
+                <button class="network-tab" id="lrt-tab" type="button" role="tab" aria-controls="lrt-panel" aria-selected="false" data-network-tab="lrt"><i class="fa-kit fa-lta-lrt"></i> LRT</button>
+            </div>
+
+            <div class="network-panel active" id="mrt-panel" role="tabpanel" aria-labelledby="mrt-tab" data-network-panel="mrt">
+                <a href="./networks/nsl.html" class="custom-list-item">
                 <img src="./assets/caplets/NSLCap.png" alt="NSL">
                 <span class="line-name">North-South Line</span>
                 <span class="status-icon pulse"><i class="fa-regular fa-check"></i></span>
-            </a>
-            <hr>
-            <a href="./networks/ewl.html" class="custom-list-item">
+                </a>
+                <hr>
+                <a href="./networks/ewl.html" class="custom-list-item">
                 <img src="./assets/caplets/EWLCap.png" alt="EWL">
                 <span class="line-name">East-West Line</span>
                 <span class="status-icon pulse"><i class="fa-regular fa-check"></i></span>
-            </a>
-            <hr>
-            <a href="./networks/nel.html" class="custom-list-item">
+                </a>
+                <hr>
+                <a href="./networks/nel.html" class="custom-list-item">
                 <img src="./assets/caplets/NELCap.png" alt="NEL">
                 <span class="line-name">North East Line</span>
                 <span class="status-icon pulse"><i class="fa-regular fa-check"></i></span>
-            </a>
-            <hr>
-            <a href="./networks/ccl.html" class="custom-list-item">
+                </a>
+                <hr>
+                <a href="./networks/ccl.html" class="custom-list-item">
                 <img src="./assets/caplets/CCLCap.png" alt="CCL">
                 <span class="line-name">Circle Line</span>
                 <span class="status-icon pulse"><i class="fa-regular fa-check"></i></span>
-            </a>
-            <hr>
-            <a href="./networks/dtl.html" class="custom-list-item">
+                </a>
+                <hr>
+                <a href="./networks/dtl.html" class="custom-list-item">
                 <img src="./assets/caplets/DTLCap.png" alt="DTL">
                 <span class="line-name">Downtown Line</span>
                 <span class="status-icon pulse"><i class="fa-regular fa-check"></i></span>
-            </a>
-            <hr>
-            <a href="./networks/tel.html" class="custom-list-item">
+                </a>
+                <hr>
+                <a href="./networks/tel.html" class="custom-list-item">
                 <img src="./assets/caplets/TELCap.png" alt="TEL">
                 <span class="line-name">Thomson-East Coast Line</span>
                 <span class="status-icon pulse"><i class="fa-regular fa-check"></i></span>
-            </a>
-            <hr>
-            <a href="./networks/bp.html" class="custom-list-item">
+                </a>
+            </div>
+
+            <div class="network-panel" id="lrt-panel" role="tabpanel" aria-labelledby="lrt-tab" data-network-panel="lrt" hidden>
+                <a href="./networks/bp.html" class="custom-list-item">
                 <img src="./assets/caplets/BPCap.png" alt="BP">
                 <span class="line-name">Bukit Panjang LRT</span>
                 <span class="status-icon pulse"><i class="fa-regular fa-check"></i></span>
-            </a>
-            <hr>
-            <a href="./networks/sk.html" class="custom-list-item">
+                </a>
+                <hr>
+                <a href="./networks/sk.html" class="custom-list-item">
                 <img src="./assets/caplets/SKCap.png" alt="SK">
                 <span class="line-name">Sengkang LRT</span>
                 <span class="status-icon pulse"><i class="fa-regular fa-check"></i></span>
-            </a>
-            <hr>
-            <a href="./networks/pg.html" class="custom-list-item">
+                </a>
+                <hr>
+                <a href="./networks/pg.html" class="custom-list-item">
                 <img src="./assets/caplets/PGCap.png" alt="PG">
                 <span class="line-name">Punggol LRT</span>
                 <span class="status-icon pulse"><i class="fa-regular fa-check"></i></span>
-            </a>
+                </a>
+            </div>
         </div>
     </section>
 
@@ -341,6 +356,7 @@
 
     <script src="./js/tsa.js"></script>
     <script src="./js/ann-indicator.js"></script>
+    <script src="./js/network-tabs.js"></script>
 
     <script>
         // Dismiss PWA splash screen after page load

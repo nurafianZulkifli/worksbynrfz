@@ -146,7 +146,11 @@ body.dark-mode .custom-list-item:hover {
     margin: 20px 0;
     box-shadow: 0 2px 8px #0002;
     position: relative;
-    transition-duration: 800ms;
+    transition: all 0.3s ease-in-out;
+}
+
+.disruption-card:hover {
+    transform: translateY(-5px);
 }
 
 .card-header {
@@ -382,7 +386,7 @@ body.dark-mode .alert-message-content a {
 }
 
 body.dark-mode .disruption-card {
-    background: #1c1f2b;
+    background: #3F3835;
     color: #fff;
     border-radius: 25px;
     padding: 20px;
@@ -424,7 +428,7 @@ body.dark-mode .status.ongoing {
 }
 
 body.dark-mode p.no-incidents-reported {
-    background-color: #1c1f2b;
+    background-color: #3F3835;
     color: #fff;
     border: 1px solid #2b2b2b33;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);

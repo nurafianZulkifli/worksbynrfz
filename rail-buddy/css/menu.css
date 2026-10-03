@@ -3,6 +3,12 @@
     padding-bottom: 5em;
 }
 
+.menu-page .wbnrfz_eicw,
+.menu-page .page-header-section,
+.menu-page .app-branding-section {
+    box-shadow: none !important;
+}
+
 /* .about-me-summ .container {
         max-width: 100%;
         padding-left: 2rem;
@@ -53,7 +59,6 @@ body.dark-mode .page-title {
     height: 120px;
     border-radius: 50%;
     object-fit: cover;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .app-branding-title {
@@ -144,13 +149,13 @@ body.dark-mode .app-branding-version {
 }
 
 body.dark-mode .list-group-item {
-    background: #1c1f2b;
+    background: #3F3835;
     border: 1px solid #2b2b2b33;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 body.dark-mode .list-group-item:hover {
-    background: #334250;
+    background: #643F00;
     border-color: rgba(255, 255, 255, 0.15);
     border: 1px solid #2b2b2b33;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -189,7 +194,7 @@ body.dark-mode .list-group>div {
 }
 
 body.dark-mode .other-apps-heading {
-    color: #666d88;
+    color: #726661;
 }
 
 .other-apps-grid {
@@ -281,12 +286,12 @@ body.dark-mode .other-apps-chevron:hover i {
 }
 
 body.dark-mode .other-apps-card {
-    background: rgba(28, 31, 43, 0.5);
-    border: 2px solid #393e53;
+    background: #3F3835;
+    border: 2px solid #726661;
 }
 
 body.dark-mode .other-apps-card:hover {
-    background: #334250;
+    background: #643F00;
     border-color: rgba(255, 255, 255, 0.15);
 }
 

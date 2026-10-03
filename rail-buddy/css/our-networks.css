@@ -53,7 +53,15 @@
 
 .single-post-area .post-thumbnail img {
     width: 100%;
-    transition-duration: 800ms;
+    transition: all 0.3s ease;
+}
+
+.network-container {
+    transition: all 0.3s ease;
+}
+
+.network-container:hover {
+        transform: translateY(-2px);
 }
 
 .single-post-area {
