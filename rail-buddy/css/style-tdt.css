@@ -181,90 +181,90 @@ body.dark-mode li.breadcrumb-item a {
 
 /* Install Banner Styles */
 .pwa-install-banner {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: linear-gradient(58deg, rgba(172, 55, 42, 0.85) 0%, rgba(163, 110, 17, 0.85) 100%);
-  color: white;
-  padding: 16px;
-  z-index: 9999;
-  box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.2);
-  animation: slideUp 0.3s ease-out;
-  border-radius: 24px;
-  margin: 1em;
-  backdrop-filter: blur(25px);
-  transition: bottom 0.3s ease;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(58deg, rgba(172, 55, 42, 0.85) 0%, rgba(163, 110, 17, 0.85) 100%);
+    color: white;
+    padding: 16px;
+    z-index: 9999;
+    box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.2);
+    animation: slideUp 0.3s ease-out;
+    border-radius: 24px;
+    margin: 1em;
+    backdrop-filter: blur(25px);
+    transition: bottom 0.3s ease;
 }
 
 .pwa-banner-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  max-width: 600px;
-  margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    max-width: 600px;
+    margin: 0 auto;
 }
 
 .pwa-banner-text h3 {
-  margin: 0 0 4px 0;
-  font-size: 18px;
-  font-weight: 600;
-  line-height: 1.2;
-  color: #fff;
+    margin: 0 0 4px 0;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.2;
+    color: #fff;
 }
 
 .pwa-banner-text p {
-  margin: 0;
-  font-size: 14px;
-  opacity: 0.95;
-  line-height: 1.4;
-  color: #fff;
+    margin: 0;
+    font-size: 14px;
+    opacity: 0.95;
+    line-height: 1.4;
+    color: #fff;
 }
 
 .pwa-banner-buttons {
-  display: flex;
-  gap: 8px;
-  flex-shrink: 0;
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
 }
 
 .pwa-banner-buttons button {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 24px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 24px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
 }
 
 .pwa-install-btn {
-  background: white;
-  color: #8f2d22;
+    background: white;
+    color: #8f2d22;
 }
 
 .pwa-install-btn:hover {
-  background: #f0f0f0;
-  transform: translateY(-2px);
+    background: #f0f0f0;
+    transform: translateY(-2px);
 }
 
 .pwa-install-btn:active {
-  transform: translateY(0);
+    transform: translateY(0);
 }
 
 .pwa-cancel-btn {
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
 }
 
 .pwa-cancel-btn:hover {
-  background: rgba(255, 255, 255, 0.3);
-  transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
 }
 
 .pwa-cancel-btn:active {
-  transform: translateY(0);
+    transform: translateY(0);
 }
 
 body.dark-mode .about-me-summ {
@@ -810,7 +810,9 @@ body.dark-mode .ann-header-btn {
 }
 
 body.dark-mode .guide-sheet {
-    background: #1c1f2b;
+    background: #3F3835;
+    border: 1px solid #2b2b2b33;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .guide-steps-wrap {
@@ -832,8 +834,15 @@ body.dark-mode .guide-sheet {
 }
 
 @keyframes guideFadeIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .guide-icon-wrap {
@@ -962,11 +971,11 @@ body.dark-mode .guide-tip {
 }
 
 body.dark-mode .guide-dot {
-    background: #374151;
+    background: #7c6f69;
 }
 
 body.dark-mode .guide-dot.active {
-    background: #60a5fa;
+    background: #beaaa2;
 }
 
 .guide-actions {
@@ -983,7 +992,7 @@ body.dark-mode .guide-dot.active {
 
 body.dark-mode .guide-skip-btn {
     color: #fff !important;
-    border-color: #3a3f58 !important;
+    border-color: #8b7a71 !important;
 }
 
 /* Guide buttons */
@@ -1012,7 +1021,7 @@ body.dark-mode .guide-skip-btn {
 }
 
 .sht-btn-primary {
-    background: linear-gradient(90deg, #1d160f 0%, #1d160f 100%);
+    background: #292320;
     color: #fff;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
@@ -1024,9 +1033,9 @@ body.dark-mode .guide-skip-btn {
 }
 
 body.dark-mode .sht-btn-ghost {
-    background: #252840;
+    background: #3f3835;
     color: #e0e0f0;
-    border-color: #3a3f58;
+    border-color: #1b1716;
 }
 
 /* ===== Settings Page ===== */
@@ -1062,8 +1071,13 @@ body.dark-mode .settings-page-section {
 }
 
 @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* Polling select dropdown styling */
@@ -1100,8 +1114,13 @@ body.dark-mode #pollingSelect:focus {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 /* Polling status indicator */
@@ -1134,8 +1153,17 @@ body.dark-mode .polling-indicator {
 }
 
 @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(0.8); }
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.5;
+        transform: scale(0.8);
+    }
 }
 
 .settings-section-title {

@@ -329,7 +329,7 @@
     }
 
     body.dark-mode::before {
-      background: linear-gradient(to bottom, rgba(31, 36, 59, 0.8) 0%, rgba(31, 36, 59, 0.4) 50%, rgba(31, 36, 59, 0) 100%);
+      background: #201a18;
     }
 
     /* Fix iOS status bar overlay */
