@@ -1687,7 +1687,7 @@ body.dark-mode .alerts-indicator-dot {
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: 14px 0 14px;
+        padding: 6px 0 6px;
         width: 100%;
         text-decoration: none;
     }
@@ -2415,4 +2415,99 @@ link[rel="shortcut icon"],
 img[src*="icon"],
 img[src*="favicon"] {
     border-radius: 50%;
+}
+
+/* ===== Nav scroll behaviour (matches nurafianzulkifli.com) ===== */
+
+/* Desktop navbar: collapse labels on scroll down */
+.navbar-container .navbar-nav .nav-link {
+    transition:
+        padding 0.55s cubic-bezier(0.65, 0, 0.35, 1),
+        gap 0.55s cubic-bezier(0.65, 0, 0.35, 1),
+        color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        background-color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.navbar-container .navbar-nav .nav-link span {
+    display: inline-block;
+    max-width: 44px;
+    overflow: hidden;
+    opacity: 1;
+    transform: translateX(0);
+    filter: blur(0);
+    transition:
+        max-width 0.55s cubic-bezier(0.65, 0, 0.35, 1),
+        opacity 0.4s ease calc(0.18s + var(--nav-stagger, 0s)),
+        transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) calc(0.18s + var(--nav-stagger, 0s)),
+        filter 0.4s ease calc(0.18s + var(--nav-stagger, 0s)),
+        color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: max-width, opacity, transform, filter;
+}
+
+.navbar-container .navbar-nav .nav-item:nth-child(2) {
+    --nav-stagger: 0.05s;
+}
+
+.navbar-container .navbar-nav .nav-item:nth-child(3) {
+    --nav-stagger: 0.1s;
+}
+
+.navbar-container .navbar-nav .nav-item:nth-child(4) {
+    --nav-stagger: 0.15s;
+}
+
+.navbar-container.scrolled .nav-link {
+    gap: 0;
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+.navbar-container.scrolled .navbar-nav .nav-link span {
+    max-width: 0;
+    opacity: 0;
+    transform: translateX(-8px);
+    filter: blur(2px);
+    transition:
+        max-width 0.55s cubic-bezier(0.65, 0, 0.35, 1),
+        opacity 0.2s ease,
+        transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        filter 0.2s ease,
+        color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Mobile bottom nav: shrink the pill on scroll down, restore on scroll up */
+@media (max-width: 994px) {
+    nav.mobile-bottom-nav ul {
+        transition: max-width 0.3s cubic-bezier(.4, 0, .2, 1), margin 0.3s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    nav.mobile-bottom-nav .label {
+        max-height: 16px;
+        overflow: hidden;
+        transition: opacity 0.2s ease, max-height 0.3s cubic-bezier(.4, 0, .2, 1), color 0.2s, font-weight 0.2s;
+    }
+
+    nav.mobile-bottom-nav li a {
+        transition: padding 0.3s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    .mobile-bottom-nav.labels-hidden ul {
+        max-width: 275px;
+        margin: 12px 20px;
+    }
+
+    .mobile-bottom-nav.labels-hidden .label {
+        opacity: 0;
+        max-height: 0;
+    }
+
+    .mobile-bottom-nav.labels-hidden .icon {
+        margin-bottom: 0;
+    }
+
+    .mobile-bottom-nav.labels-hidden li a {
+        padding: 12px 0;
+    }
 }

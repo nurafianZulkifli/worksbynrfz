@@ -1,52 +1,67 @@
-      // Mobile bottom nav always visible - no hide/show on scroll
-        
-        // Mobile bottom nav shrink on scroll
-        (function () {
-            var lastScrollY = window.scrollY;
-            var nav = document.querySelector('.mobile-bottom-nav');
-            if (!nav) return;
-            var ticking = false;
-            var isShrunken = false;
-            var scrollThreshold = 8;
+// Collapse desktop navbar labels on scroll down, restore on scroll up
+(function () {
+    var navbar = document.querySelector('.navbar-container');
+    if (!navbar) return;
+    var lastScrollY = window.scrollY;
 
-            function onScroll() {
-                var currentScrollY = window.scrollY;
-                if (currentScrollY > lastScrollY + scrollThreshold) {
-                    // Scrolling down — shrink nav
-                    if (!isShrunken) {
-                        nav.classList.add('shrunk');
-                        isShrunken = true;
-                    }
-                } else if (currentScrollY < lastScrollY - scrollThreshold) {
-                    // Scrolling up — expand nav
-                    if (isShrunken) {
-                        nav.classList.remove('shrunk');
-                        isShrunken = false;
-                    }
-                }
-                lastScrollY = currentScrollY;
-            }
-
-            window.addEventListener('scroll', function () {
-                if (!ticking) {
-                    window.requestAnimationFrame(function () {
-                        onScroll();
-                        ticking = false;
-                    });
-                    ticking = true;
-                }
-            });
-        })();
-
-        // Toggle .at-top class based on scroll position
-        function updateBreadcrumbAtTop() {
-            var bc = document.getElementById('floating-breadcrumb');
-            if (!bc) return;
-            if (window.scrollY <= 0) {
-                bc.classList.add('at-top');
-            } else {
-                bc.classList.remove('at-top');
-            }
+    function updateNavbar() {
+        var currentScrollY = window.scrollY;
+        if (currentScrollY <= 50 || currentScrollY < lastScrollY - 4) {
+            navbar.classList.remove('scrolled');
+        } else if (currentScrollY > lastScrollY + 4) {
+            navbar.classList.add('scrolled');
         }
-        window.addEventListener('scroll', updateBreadcrumbAtTop);
-        window.addEventListener('DOMContentLoaded', updateBreadcrumbAtTop);
+        lastScrollY = currentScrollY;
+    }
+
+    updateNavbar();
+    window.addEventListener('scroll', updateNavbar, { passive: true });
+})();
+
+// Collapse mobile bottom nav (labels and pill width) based on scroll direction
+(function () {
+    var lastScrollY = window.scrollY;
+    var nav = document.querySelector('.mobile-bottom-nav');
+    var ticking = false;
+
+    function onScroll() {
+        var currentScrollY = window.scrollY;
+        if (!nav) return;
+        if (window.innerWidth > 994) return;
+        if (currentScrollY > lastScrollY + 4) {
+            nav.classList.add('labels-hidden');
+        } else if (currentScrollY < lastScrollY - 4) {
+            nav.classList.remove('labels-hidden');
+        }
+        lastScrollY = currentScrollY;
+    }
+
+    window.addEventListener('scroll', function () {
+        if (!ticking) {
+            window.requestAnimationFrame(function () {
+                onScroll();
+                ticking = false;
+            });
+            ticking = true;
+        }
+    });
+
+    window.addEventListener('resize', function () {
+        if (window.innerWidth > 994 && nav) {
+            nav.classList.remove('labels-hidden');
+        }
+    });
+})();
+
+// Toggle .at-top class on the floating breadcrumb based on scroll position
+function updateBreadcrumbAtTop() {
+    var bc = document.getElementById('floating-breadcrumb');
+    if (!bc) return;
+    if (window.scrollY <= 0) {
+        bc.classList.add('at-top');
+    } else {
+        bc.classList.remove('at-top');
+    }
+}
+window.addEventListener('scroll', updateBreadcrumbAtTop);
+window.addEventListener('DOMContentLoaded', updateBreadcrumbAtTop);
