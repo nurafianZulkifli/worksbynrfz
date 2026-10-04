@@ -2548,7 +2548,7 @@ img[src*="favicon"] {
 
 .navbar-container .navbar-nav .nav-link span {
     display: inline-block;
-    max-width: 44px;
+    max-width: 85px;
     overflow: hidden;
     opacity: 1;
     transform: translateX(0);
