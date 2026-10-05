@@ -1,6 +1,6 @@
 const fs = require('fs');
-const filePath = 'd:\\GitHub\\nrfz-dev\\buszy\\json\\StopCode.txt';
-const jsonPath = 'd:\\GitHub\\nrfz-dev\\buszy\\json\\stop-codes.json';
+const filePath = 'd:\\GitHub\\worksbynrfz\\buszy\\json\\StopCode.txt';
+const jsonPath = 'd:\\GitHub\\worksbynrfz\\buszy\\json\\stop-codes.json';
 
 const content = fs.readFileSync(filePath, 'utf8');
 const codes = content.match(/\b\d{5}\b/g) || [];
