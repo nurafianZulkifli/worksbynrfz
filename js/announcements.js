@@ -16,7 +16,12 @@
             if (!res.ok) throw new Error('HTTP ' + res.status);
             const items = (await res.json())
                 .filter((a) => !a.audiences || a.audiences.includes(audience))
-                .sort((a, b) => new Date(b.date) - new Date(a.date));
+                .sort((a, b) => {
+                    const aPinned = a.icon === 'fa-regular fa-thumbtack';
+                    const bPinned = b.icon === 'fa-regular fa-thumbtack';
+                    if (aPinned !== bPinned) return aPinned ? -1 : 1;
+                    return new Date(b.date) - new Date(a.date);
+                });
 
             const html = items.length ? items.map((a) => `
                 <a href="${escapeHtml(a.href)}" data-ann-id="${escapeHtml(a.id)}" data-ann-date="${escapeHtml(a.date)}"
