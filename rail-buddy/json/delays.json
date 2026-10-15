@@ -1,5 +1,19 @@
 [
-        {
+    {
+        "type": "Delay",
+        "title": "DTL Minor Delay - Fort Canning to Bencoolen (Towards Bukit Panjang)",
+        "line": "DTL",
+        "from": "Fort Canning",
+        "to": "Bencoolen",
+        "oneWay": true,
+        "start": "2026-09-30",
+        "end": "2026-09-30",
+        "status": "Resolved",
+        "tags": [
+            "Delay"
+        ]
+    },
+    {
         "type": "Delay",
         "title": "CCL Minor Delay - Lorong Chuan - Bishan",
         "line": "CCL",

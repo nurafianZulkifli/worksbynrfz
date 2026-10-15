@@ -6,8 +6,6 @@ const mkbfDataMrt = [
     line: "NSL",
     color: "#e1251b",
     data: [
-      { month: "Aug-25", value: 1650000 },
-      { month: "Sep-25", value: 1240000 },
       { month: "Oct-25", value: 1240000 },
       { month: "Nov-25", value: 1240000 },
       { month: "Dec-25", value: 1100000 },
@@ -17,15 +15,15 @@ const mkbfDataMrt = [
       { month: "Apr-26", value: 1420000 },
       { month: "May-26", value: 1650000 },
       { month: "Jun-26", value: 1650000 },
-      { month: "Jul-26", value: 1650000 }
+      { month: "Jul-26", value: 1650000 },
+      { month: "Aug-26", value: 1650000 },
+      { month: "Sep-26", value: 2480000 }
     ]
   },
   {
     line: "EWL",
     color: "#00953b",
     data: [
-      { month: "Aug-25", value: 1680000 },
-      { month: "Sep-25", value: 1690000 },
       { month: "Oct-25", value: 1690000 },
       { month: "Nov-25", value: 1450000 },
       { month: "Dec-25", value: 1270000 },
@@ -35,15 +33,15 @@ const mkbfDataMrt = [
       { month: "Apr-26", value: 2020000 },
       { month: "May-26", value: 2020000 },
       { month: "Jun-26", value: 2020000 },
-      { month: "Jul-26", value: 2020000 }
+      { month: "Jul-26", value: 2020000 },
+      { month: "Aug-26", value: 2520000 },
+      { month: "Sep-26", value: 3360000 }
     ]
   },
   {
     line: "NEL",
     color: "#9e28b5",
     data: [
-      { month: "Aug-25", value: 2140000 },
-      { month: "Sep-25", value: 2160000 },
       { month: "Oct-25", value: 2170000 },
       { month: "Nov-25", value: 2190000 },
       { month: "Dec-25", value: 2200000 },
@@ -53,15 +51,15 @@ const mkbfDataMrt = [
       { month: "Apr-26", value: 4450000 },
       { month: "May-26", value: 4460000 },
       { month: "Jun-26", value: 4460000 },
-      { month: "Jul-26", value: 4470000 }
+      { month: "Jul-26", value: 4470000 },
+      { month: "Aug-26", value: 4480000 },
+      { month: "Sep-26", value: 4500000 }
     ]
   },
   {
     line: "CCL",
     color: "#ff9e18",
     data: [
-      { month: "Aug-25", value: 1250000 },
-      { month: "Sep-25", value: 1490000 },
       { month: "Oct-25", value: 1490000 },
       { month: "Nov-25", value: 1480000 },
       { month: "Dec-25", value: 2460000 },
@@ -71,15 +69,15 @@ const mkbfDataMrt = [
       { month: "Apr-26", value: 2360000 },
       { month: "May-26", value: 2370000 },
       { month: "Jun-26", value: 2400000 },
-      { month: "Jul-26", value: 2450000 }
+      { month: "Jul-26", value: 2450000 },
+      { month: "Aug-26", value: 2510000 },
+      { month: "Sep-26", value: 2570000 }
     ]
   },
   {
     line: "DTL",
     color: "#0055b8",
     data: [
-      { month: "Aug-25", value: 2760000 },
-      { month: "Sep-25", value: 2770000 },
       { month: "Oct-25", value: 2780000 },
       { month: "Nov-25", value: 2780000 },
       { month: "Dec-25", value: 2790000 },
@@ -89,17 +87,17 @@ const mkbfDataMrt = [
       { month: "Apr-26", value: 4200000 },
       { month: "May-26", value: 4200000 },
       { month: "Jun-26", value: 4200000 },
-      { month: "Jul-26", value: 4200000 }
+      { month: "Jul-26", value: 4200000 },
+      { month: "Aug-26", value: 8370000 },
+      { month: "Sep-26", value: 4190000 }
     ]
   },
-    {
+  {
     line: "TEL",
     color: "#9d5918",
     data: [
-      { month: "Aug-25", value: 311000 },
-      { month: "Sep-25", value: 287000 },
       { month: "Oct-25", value: 299000 },
-      { month: "Nov-25", value: 287800 },
+      { month: "Nov-25", value: 287000 },
       { month: "Dec-25", value: 325000 },
       { month: "Jan-26", value: 373000 },
       { month: "Feb-26", value: 415000 },
@@ -107,7 +105,9 @@ const mkbfDataMrt = [
       { month: "Apr-26", value: 356000 },
       { month: "May-26", value: 355000 },
       { month: "Jun-26", value: 355000 },
-      { month: "Jul-26", value: 373000 }
+      { month: "Jul-26", value: 373000 },
+      { month: "Aug-26", value: 415000 },
+      { month: "Sep-26", value: 498000 }
     ]
   }
 ];

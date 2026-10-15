@@ -92,6 +92,7 @@ function renderDisruptionsByMonth() {
     // Prepare from-to pairs for multiple routes
     let fromArr = Array.isArray(item.from) ? item.from : [item.from];
     let toArr = Array.isArray(item.to) ? item.to : [item.to];
+    const routeArrow = item.oneWay ? '→' : '⇄';
     let routeBadges = '';
     for (let i = 0; i < Math.max(fromArr.length, toArr.length); i++) {
       let from = fromArr[i] || '';
@@ -113,7 +114,7 @@ function renderDisruptionsByMonth() {
       routeBadges += `
         <span class="route-badge">
           <img src="assets/caplets/${capletFile}" alt="${item.line}" style="height: 35px; width: auto;">
-          <span class="route">${from} ⇄ ${to}</span>
+          <span class="route">${from} ${routeArrow} ${to}</span>
         </span>
       `;
     }
