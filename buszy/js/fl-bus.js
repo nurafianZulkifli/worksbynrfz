@@ -83,6 +83,33 @@ document.addEventListener('DOMContentLoaded', async () => {
     const servicesContainer = document.getElementById('servicesContainer');
     const clearSearch = document.getElementById('clearSearch');
     const resultsCount = document.getElementById('resultsCount');
+    const stopResults = document.getElementById('stopResults');
+
+    const escapeHtml = value => String(value || '')
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+
+    function renderStopResults(stops) {
+        stopResults.innerHTML = stops.slice(0, 50).map(stop => `
+            <button type="button" class="fl-stop-result" data-code="${escapeHtml(stop.BusStopCode)}">
+                <span class="bus-stop-code">
+                    <img src="assets/bus-icon.png" alt="" class="bus-icon-img">
+                    <span class="bus-stop-code-text">${escapeHtml(stop.BusStopCode)}</span>
+                </span>
+                <span class="fl-stop-result-name">${escapeHtml(stop.Description)}</span>
+            </button>`).join('');
+    }
+
+    function selectStop(code) {
+        busStopDropdown.value = code;
+        stopResults.innerHTML = '';
+        displayBusStop(code);
+    }
+
+    stopResults.addEventListener('click', (e) => {
+        const item = e.target.closest('[data-code]');
+        if (item) selectStop(item.dataset.code);
+    });
 
     // Load bus stops from localStorage or fetch from API
     async function loadBusStops() {
@@ -165,6 +192,23 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         populateDropdown(filteredStops);
+
+        stopResults.innerHTML = '';
+        if (query === '') {
+            contentSection.classList.remove('active');
+            return;
+        }
+
+        // Exact code or a single match opens immediately; otherwise list the matches
+        const exact = filteredStops.find(stop => stop.BusStopCode.toLowerCase() === query);
+        const match = exact || (filteredStops.length === 1 ? filteredStops[0] : null);
+        if (match) {
+            selectStop(match.BusStopCode);
+        } else {
+            contentSection.classList.remove('active');
+            busStopDropdown.value = '';
+            renderStopResults(filteredStops);
+        }
     });
 
     // Clear search

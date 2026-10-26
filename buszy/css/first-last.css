@@ -58,6 +58,10 @@
     display: block;
 }
 
+.pdf-section .container {
+    padding-bottom: 7em;
+}
+
 .empty-state-placeholder {
     display: flex;
     flex-direction: column;
@@ -132,7 +136,7 @@ body.dark-mode .bus-stop-code {
 
 .bus-stop-code-text,
 body.dark-mode .bus-stop-code-text {
-    font-size: 20px;
+    font-size: 15px;
     font-weight: bold;
     color: #000;
     background-color: #fff;
@@ -384,10 +388,64 @@ body.dark-mode .service-card.highlighted {
     display: block;
 }
 
+.fl-stop-results {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 4em;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.fl-stop-result {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    width: 100%;
+    padding: 16px 16px 16px;
+    text-align: left;
+    color: #000;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 28px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.fl-stop-result:hover {
+    transform: translateY(-2px);
+}
+
+.fl-stop-result .bus-stop-code {
+    flex-shrink: 0;
+    font-size: 17px;
+}
+
+.fl-stop-result .bus-stop-code img {
+    width: 28px;
+}
+
+.fl-stop-result .bus-stop-code-text {
+    font-size: 17px;
+}
+
+.fl-stop-result-name {
+    font-size: 16px;
+    font-weight: 500;
+    margin-left: 2px;
+}
+
+body.dark-mode .fl-stop-result {
+    color: #fff;
+    background: #1f3540;
+    border-color: #3a4a53;
+}
+
 .search-results-count {
     font-size: 0.85rem;
     color: #999;
-    margin-top: 1em;
+    margin-top: 2em;
     display: block;
     margin-left: 0;
 }
