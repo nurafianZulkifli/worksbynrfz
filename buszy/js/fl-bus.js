@@ -103,6 +103,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     function selectStop(code) {
         busStopDropdown.value = code;
         stopResults.innerHTML = '';
+        resultsCount.textContent = '';
         displayBusStop(code);
     }
 

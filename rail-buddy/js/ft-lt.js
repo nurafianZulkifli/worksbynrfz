@@ -404,6 +404,7 @@
             const clearButton = document.getElementById('clearSearch');
             const resultsCount = document.getElementById('resultsCount');
             const dropdown = document.getElementById('stationDropdown');
+            const stationResults = document.getElementById('stationResults');
 
             // Build all stations list
             buildAllStationsList();
@@ -416,20 +417,28 @@
                 if (query.length > 0) {
                     filterStations(query);
                     updateDropdownFromFiltered();
-                    resultsCount.textContent = '';
-                    
-                    // Auto-display results if exactly one station is found
-                    if (filteredStations.length === 1) {
-                        displayStationData(filteredStations[0].value);
-                        dropdown.classList.remove('highlight');
-                    } else if (filteredStations.length > 1) {
-                        // Highlight dropdown to prompt selection
-                        dropdown.classList.add('highlight');
+                    resultsCount.textContent = `${filteredStations.length} result${filteredStations.length !== 1 ? 's' : ''} found`;
+                    stationResults.innerHTML = '';
+
+                    // Exact code/name or a single match opens immediately; otherwise list the matches
+                    const exact = filteredStations.find(station => {
+                        const codes = (smrtStationCodes[station.name] || '').toLowerCase().split('/');
+                        return station.name.toLowerCase() === query || codes.includes(query);
+                    });
+                    const match = exact || (filteredStations.length === 1 ? filteredStations[0] : null);
+                    if (match) {
+                        dropdown.value = match.value;
+                        resultsCount.textContent = '';
+                        displayStationData(match.value);
+                    } else {
+                        document.getElementById('contentSection').classList.remove('active');
+                        renderStationResults(filteredStations);
                     }
                 } else {
                     filteredStations = [];
                     populateDropdown();
                     resultsCount.textContent = '';
+                    stationResults.innerHTML = '';
                     dropdown.classList.remove('highlight');
                     // Clear displayed data when search is cleared
                     document.getElementById('contentSection').classList.remove('active');
@@ -443,10 +452,40 @@
                 filteredStations = [];
                 populateDropdown();
                 resultsCount.textContent = '';
+                stationResults.innerHTML = '';
                 dropdown.classList.remove('highlight');
                 document.getElementById('contentSection').classList.remove('active');
                 searchInput.focus();
             });
+
+            stationResults.addEventListener('click', (e) => {
+                const item = e.target.closest('[data-value]');
+                if (!item) return;
+                dropdown.value = item.dataset.value;
+                stationResults.innerHTML = '';
+                resultsCount.textContent = '';
+                displayStationData(item.dataset.value);
+            });
+        }
+
+        function renderStationResults(stations) {
+            const escapeHtml = value => String(value || '')
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+            document.getElementById('stationResults').innerHTML = stations.map(station => {
+                let name = station.name;
+                let codes = (smrtStationCodes[name] || '').split('/').filter(Boolean);
+                // SBS station names carry their code(s) as a prefix, e.g. "DT 18 Telok Ayer"
+                const prefixed = name.match(/^((?:[A-Za-z]{2}\s*\d+\s+)+)(.+)$/);
+                if (prefixed) {
+                    codes = (prefixed[1].match(/[A-Za-z]{2}\s*\d+/g) || []).map(c => c.replace(/\s+/g, ''));
+                    name = prefixed[2];
+                }
+                return `<button type="button" class="fl-station-result" data-value="${escapeHtml(station.value)}">
+                    <span class="fl-station-result-codes">${renderCodeCaplet(codes)}</span>
+                    <span class="fl-station-result-name">${escapeHtml(name)}</span>
+                </button>`;
+            }).join('');
         }
 
         // Build a flat list of all stations

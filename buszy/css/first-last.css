@@ -5,6 +5,7 @@
     margin-bottom: 30px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease-in-out;
+    padding-bottom: 30px;
 }
 
 .selector-section label {
@@ -321,13 +322,11 @@ body.dark-mode .service-card.highlighted {
 
 .search-container {
     position: relative;
-    margin-bottom: 15px;
-    height: 40px;
 }
 
 .search-input-wrapper {
     position: relative;
-    height: 100%;
+    height: 40px;
 }
 
 .search-input {
@@ -392,7 +391,7 @@ body.dark-mode .service-card.highlighted {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    margin-top: 4em;
+    margin-top: 12px;
     max-height: 60vh;
     overflow-y: auto;
 }
@@ -413,9 +412,9 @@ body.dark-mode .service-card.highlighted {
     transition: transform 0.2s ease;
 }
 
-.fl-stop-result:hover {
+/* .fl-stop-result:hover {
     transform: translateY(-2px);
-}
+} */
 
 .fl-stop-result .bus-stop-code {
     flex-shrink: 0;
@@ -445,9 +444,14 @@ body.dark-mode .fl-stop-result {
 .search-results-count {
     font-size: 0.85rem;
     color: #999;
-    margin-top: 2em;
+    margin-top: 1.75em;
     display: block;
     margin-left: 0;
+}
+
+.search-results-count:empty,
+.fl-stop-results:empty {
+    display: none;
 }
 
 body.dark-mode .selector-section {
