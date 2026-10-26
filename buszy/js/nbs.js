@@ -494,7 +494,7 @@ function displayBusStops(busStops, isCached = true) {
                     <div class="bus-stop-details">
                     <span class="bus-stop-description">${busStop.Description}</span>&nbsp;&nbsp;|&nbsp;
                     <span class="road-name">${busStop.RoadName}</span>
-                    &nbsp;&nbsp;&nbsp;<span class="distance-desktop">${distanceBadgeHtml}</span>
+                    <span class="distance-desktop">&nbsp;&nbsp;&nbsp;${distanceBadgeHtml}</span>
                     </div>
                 </div>
                 <div class="bus-stop-actions-controls">

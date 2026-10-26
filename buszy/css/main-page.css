@@ -147,6 +147,7 @@
       align-items: center;
       flex-wrap: wrap;
       flex: 1;
+      min-width: 0;
   }
 
   #did-you-mean {
@@ -569,8 +570,8 @@
       border: 1px solid #ddd;
       border-radius: 25px;
       background-color: #fbfdff;
-      padding-top: 0.96em;
-      padding-bottom: 0.96em;
+      padding-top: 0.6em;
+      padding-bottom: 0.6em;
       position: relative;
   }
 
@@ -595,10 +596,7 @@
       align-items: center;
       gap: 0.5rem;
       flex-shrink: 0;
-      position: absolute;
-      top: 50%;
-      right: 1em;
-      transform: translateY(-50%);
+      align-self: center;
   }
 
   .bus-stop-actions-controls .btn-unpin,
@@ -640,7 +638,7 @@
       width: 100%;
       margin-top: 0;
       padding-top: 0;
-      border-top: 1px solid transparent;
+      border-top: 0 solid transparent;
   }
 
   .bus-stop-options-collapse.show {
@@ -1000,6 +998,8 @@
 
   .bus-stop-details {
       padding-right: 1em;
+      min-width: 0;
+      overflow-wrap: anywhere;
   }
 
   .road-name {
