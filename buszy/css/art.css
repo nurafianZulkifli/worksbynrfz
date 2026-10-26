@@ -101,7 +101,7 @@
 .service-no-collapsible-btn:hover .service-no {
     transform: translateY(-2px);
     transition-duration: 500ms;
-    background-color: #c7e3fb;
+    background-color: #a9e1f1;
 }
 
 .service-no-collapsible-btn i {
@@ -335,7 +335,7 @@ body.dark-mode .bus-stop-description {
 a.ib-svc:hover {
     transform: translateY(-3px) !important;
     color: #000 !important;
-    background-color: #c7e3fb !important;
+    background-color: #a9e1f1 !important;
     font-weight: bold;
 }
 

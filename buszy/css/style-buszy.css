@@ -2348,6 +2348,22 @@ body.dark-mode .form-check-input {
     border-color: #ffffff3b;
 }
 
+.nav-link:hover {
+    color: #000;
+    transform: translateY(-2px);
+    background-color: #a9e1f1;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+li.breadcrumb-item a:hover {
+    padding: 10px;
+    border-radius: 25px;
+    color: #000;
+    transform: translateY(-2px);
+    background-color: #a9e1f1;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.082);
+}
+
 /* Toggle Switch */
 .toggle-switch {
     position: relative;
@@ -2400,6 +2416,15 @@ body.dark-mode .toggle-slider {
 
 body.dark-mode .toggle-switch input:checked+.toggle-slider {
     background-color: #1f84a2;
+}
+
+body.dark-mode li.breadcrumb-item a:hover {
+    padding: 10px;
+    border-radius: 25px;
+    color: #fff;
+    transform: translateY(-2px);
+    background-color: #1b5e72;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.082);
 }
 
 /* ===== Icon Rounding ===== */
