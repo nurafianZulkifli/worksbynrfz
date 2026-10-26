@@ -19,7 +19,7 @@ function linkify(text) {
 const ALERTS_API_DATA_KEY = 'buszy_alerts_api_data';
 let alertsFetchInProgress = false; // Debounce flag
 
-function fetchAndUpdateAlerts() {
+function fetchAndUpdateAlerts(forceRefresh = false) {
     // Skip if already fetching
     if (alertsFetchInProgress) return;
     
@@ -27,7 +27,7 @@ function fetchAndUpdateAlerts() {
     const cached = JSON.parse(localStorage.getItem(ALERTS_CACHE_KEY) || 'null');
     const cacheIsFresh = cached !== null && (Date.now() - cached.ts < ALERTS_CACHE_TTL);
     
-    if (cacheIsFresh) {
+    if (cacheIsFresh && !forceRefresh) {
         const cachedData = JSON.parse(localStorage.getItem(ALERTS_API_DATA_KEY) || 'null');
         if (cachedData) {
             processAlertsData(cachedData);
@@ -36,7 +36,9 @@ function fetchAndUpdateAlerts() {
         return;
     }
 
-    fetch('https://bat-lta-9eb7bbf231a2.herokuapp.com/train-service-alerts')
+    fetch('https://bat-lta-9eb7bbf231a2.herokuapp.com/train-service-alerts', {
+        cache: forceRefresh ? 'no-cache' : 'default'
+    })
         .then(r => r.json())
         .then(data => {
             // Always update cache and display with fresh data
@@ -227,6 +229,7 @@ function processAlertsData(data) {
     if (busAlerts.length === 0) {
         showNoAlerts();
     } else {
+        busAlerts.sort((a, b) => new Date(b.createdDate) - new Date(a.createdDate));
         displayAlerts(busAlerts);
     }
 }

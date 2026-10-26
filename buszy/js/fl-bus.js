@@ -20,9 +20,13 @@ async function loadBusServiceTerminals() {
         if (Array.isArray(services)) {
             services.forEach((service) => {
                 const serviceNo = service.n || service.ServiceNo;
-                const terminalName = service.te || service.direction_routes?.[1]?.te || service.direction_routes?.['1']?.te;
-                if (serviceNo && terminalName) {
-                    terminalMap[String(serviceNo)] = terminalName;
+                const directionRoutes = service.direction_routes;
+                const terminalName = service.te || directionRoutes?.[1]?.te || directionRoutes?.['1']?.te;
+                if (serviceNo && (terminalName || directionRoutes)) {
+                    terminalMap[String(serviceNo)] = {
+                        terminalName,
+                        directions: directionRoutes || {}
+                    };
                 }
             });
         }
@@ -287,7 +291,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             servicesContainer.innerHTML = '';
 
             busServices.forEach(service => {
-                const card = createServiceCard(service, serviceTerminals);
+                const card = createServiceCard(service, serviceTerminals, busStopCode);
                 servicesContainer.appendChild(card);
             });
 
@@ -342,7 +346,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // Create service card
-    function createServiceCard(service, serviceTerminals) {
+    function createServiceCard(service, serviceTerminals, busStopCode) {
         const card = document.createElement('div');
         card.className = 'service-card';
         card.setAttribute('data-service', service.service);
@@ -367,7 +371,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Route name with "To" prefix - prefer the service terminal from bus-service-data.json
         const routeName = document.createElement('div');
         routeName.className = 'service-route';
-        const destinationName = serviceTerminals[String(service.service)] || service.routeName;
+        const serviceRoute = serviceTerminals[String(service.service)];
+        const matchingDirections = Object.values(serviceRoute?.directions || {}).filter(route =>
+            Array.isArray(route.st) && route.st.some(stopCode => String(stopCode) === String(busStopCode))
+        );
+        const destinationName = matchingDirections.length === 1
+            ? matchingDirections[0].te
+            : serviceRoute?.terminalName || service.routeName;
         routeName.innerHTML = destinationName ? `<i class="fa-kit fa-lta-to-right"></i>&nbsp;${capitalizeWords(destinationName)}` : '';
         card.appendChild(routeName);
 

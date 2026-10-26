@@ -413,12 +413,9 @@ if (document.readyState === 'loading') {
                         document.title = 'Bus Service Alerts | Buszy';
                         if (markAsReadBtn) markAsReadBtn.style.display = 'none';
                         if (alertsLastUpdatedTop) alertsLastUpdatedTop.style.display = 'block';
-                        // Load alerts when tab is clicked
-                        loadAlerts();
+                        // Refresh alerts through the shared loader when the tab is opened.
+                        fetchAndUpdateAlerts(true);
                     }
                 });
             });
-
-            // Load alerts on page load if needed
-            loadAlerts();
         });

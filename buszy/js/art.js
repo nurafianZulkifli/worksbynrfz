@@ -90,7 +90,7 @@ async function loadBusServiceTerminals() {
 }
 
 // Determine which direction serves a specific bus stop for a service
-async function determineServiceDirection(serviceNo, busStopCode) {
+async function determineServiceDirection(serviceNo, busStopCode, destinationCode = null) {
     await loadBusServiceTerminals(); // Ensure data is loaded
     
     if (!busServiceDirectionStopsCache || !busServiceDirectionStopsCache[String(serviceNo)]) {
@@ -99,9 +99,26 @@ async function determineServiceDirection(serviceNo, busStopCode) {
     
     const directionStops = busServiceDirectionStopsCache[String(serviceNo)];
     
+    if (destinationCode) {
+        const terminalDirection = Object.entries(directionStops).find(([, stops]) =>
+            Array.isArray(stops) && stops.length > 0 &&
+            String(stops[stops.length - 1]) === String(destinationCode)
+        );
+        if (terminalDirection) {
+            return terminalDirection[0];
+        }
+
+        const matchingDirections = Object.entries(directionStops).filter(([, stops]) =>
+            Array.isArray(stops) && stops.some(stop => String(stop) === String(destinationCode))
+        );
+        if (matchingDirections.length === 1) {
+            return matchingDirections[0][0];
+        }
+    }
+
     // Check which direction contains this stop
     for (const [dir, stops] of Object.entries(directionStops)) {
-        if (Array.isArray(stops) && stops.includes(busStopCode)) {
+        if (Array.isArray(stops) && stops.some(stop => String(stop) === String(busStopCode))) {
             return dir;
         }
     }
@@ -167,6 +184,7 @@ let currentLocationMarker = null; // Track the current location marker across bu
 let currentLocationCircle = null; // Track the current location accuracy circle
 let busStopMarker = null; // Track the marker for the currently selected bus stop
 let activeMapServiceNo = null; // Track which service is currently shown on the map
+let activeMapDestinationCode = null;
 let keepStopMapCentered = false; // Keep the initial map view centered on the requested stop
 let scrollToServiceNo = new URLSearchParams(window.location.search).get('ServiceNo') || null; // Scroll to this service on first render
 let busMarkers = []; // [{marker, lat, lng, estimatedArrival, busLabel}] for live position updates
@@ -209,7 +227,11 @@ async function refreshActiveMapMarkers() {
         if (!response.ok) return;
         const data = await response.json();
 
-        const activeService = data.Services?.find(s => s.ServiceNo === activeMapServiceNo);
+        const activeService = data.Services?.find(s =>
+            s.ServiceNo === activeMapServiceNo &&
+            (!activeMapDestinationCode || s.NextBus?.DestinationCode === activeMapDestinationCode ||
+                s.NextBus2?.DestinationCode === activeMapDestinationCode)
+        );
         if (!activeService) return;
 
         const freshLocations = [];
@@ -876,27 +898,44 @@ async function fetchBusArrivals() {
             incomingSection.style.display = 'none';
         }
 
-        // If the same bus stop and same set of services are already rendered,
+        const busStopCode = document.getElementById('bus-stop-search').value.trim();
+        const directionOccurrences = new Map();
+        const serviceCards = [];
+        for (const service of data.Services) {
+            const destinationCode = service.NextBus?.DestinationCode || service.NextBus2?.DestinationCode || null;
+            const direction = await determineServiceDirection(service.ServiceNo, busStopCode, destinationCode);
+            const directionKey = `${service.ServiceNo}:${direction}`;
+            const occurrence = (directionOccurrences.get(directionKey) || 0) + 1;
+            directionOccurrences.set(directionKey, occurrence);
+            serviceCards.push({
+                service,
+                direction,
+                key: `${directionKey}:${occurrence}`,
+                destinationCode
+            });
+        }
+
+        // If the same bus stop and same set of service directions are already rendered,
         // only update arrival times and load icons in-place — no DOM rebuild.
-        const existingCards = container.querySelectorAll('.card-bt[data-service]');
-        const existingServiceSet = new Set([...existingCards].map(el => el.dataset.service));
-        const newServiceSet = new Set(data.Services.map(s => s.ServiceNo));
+        const existingCards = container.querySelectorAll('.card-bt[data-card-key]');
+        const existingServiceSet = new Set([...existingCards].map(el => el.dataset.cardKey));
+        const newServiceSet = new Set(serviceCards.map(entry => entry.key));
         const canRefreshInPlace = renderedBusStopCode === searchInput &&
-            existingServiceSet.size === newServiceSet.size && [...newServiceSet].every(s => existingServiceSet.has(s));
+            existingServiceSet.size === newServiceSet.size && [...newServiceSet].every(key => existingServiceSet.has(key));
 
         if (canRefreshInPlace) {
             // Re-order cards in the DOM to match sorted service order
             if (sortByArrival) {
-                data.Services.forEach(service => {
-                    const card = container.querySelector(`.card-bt[data-service="${service.ServiceNo}"]`);
+                serviceCards.forEach(({ key }) => {
+                    const card = container.querySelector(`.card-bt[data-card-key="${key}"]`);
                     if (card) container.appendChild(card);
                 });
             }
             // Only update span.bus-time and load indicators in place
-            data.Services.forEach((service) => {
+            serviceCards.forEach(({ service, key }) => {
                 const hasNextBus = service.NextBus && typeof service.NextBus === 'object' && Object.keys(service.NextBus).length > 0;
                 const hasNextBus2 = service.NextBus2 && typeof service.NextBus2 === 'object' && Object.keys(service.NextBus2).length > 0;
-                const cardBt = container.querySelector(`.card-bt[data-service="${service.ServiceNo}"]`);
+                const cardBt = container.querySelector(`.card-bt[data-card-key="${key}"]`);
                 if (!cardBt) return;
                 const busTimeSpans = cardBt.querySelectorAll('span.bus-time');
                 const loadContainers = cardBt.querySelectorAll('span.load-icon-container');
@@ -924,31 +963,22 @@ async function fetchBusArrivals() {
 
         // Build new content
         const tempContainer = document.createElement('div');
-        const busStopCode = document.getElementById('bus-stop-search').value.trim();
 
-        // Pre-determine direction for each service based on which direction serves this stop
-        const serviceDirections = {};
-        for (const service of data.Services) {
-            serviceDirections[service.ServiceNo] = await determineServiceDirection(service.ServiceNo, busStopCode);
-        }
-
-        data.Services.forEach((service) => {
+        serviceCards.forEach(({ service, direction: serviceDirection, key: cardKey, destinationCode }) => {
             const card = document.createElement('div');
             card.classList.add('col-12', 'col-md-4', 'col-xl-3', 'card-bt'); // Add col-sm-6 for 2 cards per row on small screens
             card.dataset.service = service.ServiceNo;
+            card.dataset.cardKey = cardKey;
 
             // Safely check if NextBus exists and has required properties
             const hasNextBus = service.NextBus && typeof service.NextBus === 'object' && Object.keys(service.NextBus).length > 0;
             const hasNextBus2 = service.NextBus2 && typeof service.NextBus2 === 'object' && Object.keys(service.NextBus2).length > 0;
             
-            // Use pre-determined direction
-            const serviceDirection = serviceDirections[service.ServiceNo] || '1';
-
             card.innerHTML = `
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center" style="flex-wrap: nowrap;">
                         <div style="min-width: 0; padding-right: 15px; flex: 1;">
-                            <button class="service-no-collapsible-btn" data-service="${service.ServiceNo}" title="Click to view options">
+                            <button class="service-no-collapsible-btn" data-service="${service.ServiceNo}" data-card-key="${cardKey}" title="Click to view options">
                                 <span class="service-no">${service.ServiceNo}</span>
                                 <i class="fa-regular fa-chevron-down" style="transition: transform 0.3s ease; margin-left: 0.5rem;"></i>
                             </button>
@@ -978,9 +1008,9 @@ async function fetchBusArrivals() {
                             ` : ''}
                         </div>
                     </div>
-                    <div class="service-options-collapse" data-service="${service.ServiceNo}" style="display: none; max-height: 0; overflow: hidden; transition: max-height 0.3s ease;">
+                    <div class="service-options-collapse" data-service="${service.ServiceNo}" data-card-key="${cardKey}" style="display: none; max-height: 0; overflow: hidden; transition: max-height 0.3s ease;">
                         <div style="display: flex; gap: 1rem; padding: 0.5rem 0; margin-top: 0.5rem; padding-top: 0.5rem; flex-wrap: wrap; justify-content: center;">
-                            <button class="btn btn-busloc btn-sm view-location-btn-consolidated" data-service="${service.ServiceNo}" title="View bus location on map"
+                            <button class="btn btn-busloc btn-sm view-location-btn-consolidated" data-service="${service.ServiceNo}" data-card-key="${cardKey}" data-destination-code="${destinationCode || ''}" title="View bus location on map"
                                 ${!((service.NextBus?.Latitude !== "0.0" && service.NextBus?.Longitude !== "0.0") || (hasNextBus2 && service.NextBus2?.Latitude !== "0.0" && service.NextBus2?.Longitude !== "0.0")) ? 'disabled' : ''}>
                                 <i class="fa-kit fa-lta-location"></i>
                             </button>
@@ -1005,7 +1035,7 @@ async function fetchBusArrivals() {
             // Save expanded service options before DOM update
             const expandedServices = new Set();
             document.querySelectorAll('.service-options-collapse.show').forEach(el => {
-                expandedServices.add(el.getAttribute('data-service'));
+                expandedServices.add(el.getAttribute('data-card-key'));
             });
 
             container.innerHTML = newHTML;
@@ -1028,8 +1058,8 @@ async function fetchBusArrivals() {
 
             // Restore expanded state without animation
             expandedServices.forEach(serviceNo => {
-                const collapseSection = document.querySelector(`.service-options-collapse[data-service="${serviceNo}"]`);
-                const button = document.querySelector(`.service-no-collapsible-btn[data-service="${serviceNo}"]`);
+                const collapseSection = document.querySelector(`.service-options-collapse[data-card-key="${serviceNo}"]`);
+                const button = document.querySelector(`.service-no-collapsible-btn[data-card-key="${serviceNo}"]`);
                 if (collapseSection) {
                     collapseSection.style.display = 'block';
                     collapseSection.style.maxHeight = collapseSection.scrollHeight + 'px';
@@ -1049,8 +1079,8 @@ async function fetchBusArrivals() {
             collapsibleButtons.forEach((button) => {
                 button.addEventListener('click', (event) => {
                     event.preventDefault();
-                    const serviceNo = button.getAttribute('data-service');
-                    const collapseSection = document.querySelector(`.service-options-collapse[data-service="${serviceNo}"]`);
+                    const cardKey = button.getAttribute('data-card-key');
+                    const collapseSection = document.querySelector(`.service-options-collapse[data-card-key="${cardKey}"]`);
 
                     if (collapseSection) {
                         const isVisible = collapseSection.classList.contains('show');
@@ -1093,7 +1123,7 @@ async function fetchBusArrivals() {
 
             // Store location data for each service to enable cycling
             const serviceLocations = {};
-            data.Services.forEach((service) => {
+            serviceCards.forEach(({ service, key }) => {
                 const locations = [];
                 if (service.NextBus && service.NextBus.Latitude !== "0.0" && service.NextBus.Longitude !== "0.0") {
                     locations.push({
@@ -1114,7 +1144,7 @@ async function fetchBusArrivals() {
                     });
                 }
                 if (locations.length > 0) {
-                    serviceLocations[service.ServiceNo] = {
+                    serviceLocations[key] = {
                         locations: locations,
                         currentIndex: 0
                     };
@@ -1131,7 +1161,8 @@ async function fetchBusArrivals() {
                     }
 
                     const serviceNo = button.getAttribute('data-service');
-                    const serviceData = serviceLocations[serviceNo];
+                    const cardKey = button.getAttribute('data-card-key');
+                    const serviceData = serviceLocations[cardKey];
 
                     if (!serviceData || serviceData.locations.length === 0) {
                         alert('Bus location not available.');
@@ -1163,6 +1194,7 @@ async function fetchBusArrivals() {
 
                         // Set active service so subsequent refreshes can update markers in-place
                         activeMapServiceNo = serviceNo;
+                        activeMapDestinationCode = button.getAttribute('data-destination-code') || null;
                         // Kick off an immediate map position refresh
                         refreshActiveMapMarkers();
 
@@ -1357,7 +1389,11 @@ async function fetchBusArrivals() {
         if (activeMapServiceNo && map && busMarkers.length > 0) {
             const mapSection = document.querySelector('.bus-location-section');
             if (mapSection && mapSection.style.display !== 'none') {
-                const activeService = data.Services.find(s => s.ServiceNo === activeMapServiceNo);
+                const activeService = data.Services.find(s =>
+                    s.ServiceNo === activeMapServiceNo &&
+                    (!activeMapDestinationCode || s.NextBus?.DestinationCode === activeMapDestinationCode ||
+                        s.NextBus2?.DestinationCode === activeMapDestinationCode)
+                );
                 if (activeService) {
                     const freshLocations = [];
                     if (activeService.NextBus && activeService.NextBus.Latitude !== "0.0" && activeService.NextBus.Longitude !== "0.0") {
