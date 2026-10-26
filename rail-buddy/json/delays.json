@@ -1,4 +1,18 @@
 [
+        {
+        "type": "Delay",
+        "title": "EWL Minor Delay - Buona Vista to Outram Park (Towards Pasir Ris)",
+        "line": "EWL",
+        "from": "Buona Vista",
+        "to": "Outram Park",
+        "oneWay": true,
+        "start": "2026-10-21",
+        "end": "2026-10-21",
+        "status": "Resolved",
+        "tags": [
+            "Delay"
+        ]
+    },
     {
         "type": "Delay",
         "title": "DTL Minor Delay - Fort Canning to Bencoolen (Towards Bukit Panjang)",
