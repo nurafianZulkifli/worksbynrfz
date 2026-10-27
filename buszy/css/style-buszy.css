@@ -1849,6 +1849,24 @@ body.dark-mode .alerts-indicator-dot {
     transform: translateY(0);
 }
 
+.guide-overlay {
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+.guide-overlay .guide-sheet {
+    box-sizing: border-box;
+    width: min(520px, 100%);
+    max-height: calc(100dvh - 32px);
+    border-radius: 24px;
+    transform: translateY(12px);
+}
+
+.guide-overlay.open .guide-sheet {
+    transform: translateY(0);
+}
+
 body.dark-mode .guide-sheet {
     background: #0f222c;
     border: 1px solid #2b2b2b33;

@@ -301,7 +301,7 @@
     </main>
 
     <!-- First-Time Guide Overlay -->
-    <div class="overlay" id="guideOverlay">
+    <div class="overlay guide-overlay" id="guideOverlay">
         <div class="guide-sheet">
             <div class="guide-steps-wrap" id="guideStepsWrap">
 
@@ -310,7 +310,7 @@
                     <div class="guide-icon-wrap guide-icon-green">
                         <i class="fa-sharp fa-regular fa-thumbtack-angle"></i>
                     </div>
-                    <div class="guide-step-label">Step 1 of 5</div>
+                    <div class="guide-step-label">Step 1 of 4</div>
                     <div class="guide-step-title">Pin a Bus Stop</div>
                     <div class="guide-step-body">
                         Click the <strong>search bar</strong> to find any bus stop by name, code, or service number, then tap the
@@ -328,7 +328,7 @@
                     <div class="guide-icon-wrap guide-icon-blue">
                         <i class="fa-regular fa-bus-simple"></i>
                     </div>
-                    <div class="guide-step-label">Step 2 of 5</div>
+                    <div class="guide-step-label">Step 2 of 4</div>
                     <div class="guide-step-title">Check Live Timings</div>
                     <div class="guide-step-body">
                         Tap any pinned bus stop to view <strong>real-time arrival timings</strong>, including
@@ -346,7 +346,7 @@
                     <div class="guide-icon-wrap guide-icon-orange">
                         <i class="fa-regular fa-triangle-exclamation"></i>
                     </div>
-                    <div class="guide-step-label">Step 3 of 5</div>
+                    <div class="guide-step-label">Step 3 of 4</div>
                     <div class="guide-step-title">Updates &amp; More</div>
                     <div class="guide-step-body">
                         Tap <strong>Updates</strong> in the menu to see bus service alerts and announcements. Switch to the <strong>Alerts</strong> tab to view disruptions and route changes. Use <strong>Timings</strong> to look up first and last bus times for any stop.
@@ -362,33 +362,15 @@
                     <div class="guide-icon-wrap guide-icon-teal">
                         <i class="fa-regular fa-gear"></i>
                     </div>
-                    <div class="guide-step-label">Step 4 of 5</div>
+                    <div class="guide-step-label">Step 4 of 4</div>
                     <div class="guide-step-title">Customise Settings</div>
                     <div class="guide-step-body">
                         Head to <strong>Menu &gt; Settings</strong> to change the time format, toggle display
-                        options like fleet legend and incoming buses, and control notification behaviour.
+                        options like fleet legend and incoming buses.
                         <div class="guide-tip">
                             <i class="fa-regular fa-lightbulb"></i>
                             You can adjust what you want to see and the way Bus Service information is displayed, and
                             export your pinned stops as a backup from the Settings page.
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Step 5: Bus Arrival Notifications -->
-                <div class="guide-step" id="guideStep5">
-                    <div class="guide-icon-wrap guide-icon-blue">
-                        <i class="fa-regular fa-bell"></i>
-                    </div>
-                    <div class="guide-step-label">Step 5 of 5</div>
-                    <div class="guide-step-title">Bus Arrival Notifications</div>
-                    <div class="guide-step-body">
-                        On any bus arrival timings page, tap the <strong>Notify button</strong>
-                        to get notified when that bus is approaching your stop.
-                        <div class="guide-tip">
-                            <i class="fa-regular fa-lightbulb"></i>
-                            Control how long Buszy watches for your bus under <strong>Menu &gt; Settings &gt; Notify
-                                Mode</strong> &mdash; choose once, 24 hours, or always-on.
                         </div>
                     </div>
                 </div>
@@ -401,7 +383,6 @@
                 <span class="guide-dot" id="guideDot2"></span>
                 <span class="guide-dot" id="guideDot3"></span>
                 <span class="guide-dot" id="guideDot4"></span>
-                <span class="guide-dot" id="guideDot5"></span>
             </div>
 
             <!-- Actions -->
@@ -806,7 +787,7 @@
         (function () {
             var _guideStep = 1;
             var GUIDE_KEY = 'buszy-guide-done';
-            var TOTAL_STEPS = 5;
+            var TOTAL_STEPS = 4;
 
             function lockScroll() {
                 document.documentElement.style.overflow = 'hidden';
