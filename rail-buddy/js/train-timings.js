@@ -16,6 +16,53 @@
     TEL: '#926437', NEL: '#9d27b5', BP: '#708472', SK: '#708472', PG: '#708472'
   };
 
+  // Same joined-pill caplet style as first-last.html
+  function renderCodeCaplet(codes) {
+    if (!codes || !codes.length) return '';
+    return `<span class="tt-caplets">${codes.map((code, i) => {
+      const prefix = (code.match(/[A-Za-z]+/) || [''])[0].toUpperCase();
+      const lineKey = LINE_PREFIX_MAP[prefix];
+      const bg = LINE_COLORS[lineKey] || '#666666';
+      const color = lineKey === 'CCL' ? '#000' : '#fff';
+      const isFirst = i === 0;
+      const isLast = i === codes.length - 1;
+      const radius = codes.length === 1 ? '13.6px / 19.2px'
+        : isFirst ? '13.6px 0 0 13.6px / 19.2px 0 0 19.2px'
+        : isLast ? '0 13.6px 13.6px 0 / 0 19.2px 19.2px 0' : '0';
+      const border = codes.length === 1 ? 'border: 2px solid #fff;'
+        : isFirst ? 'border: 2px solid #fff; border-right: none;'
+        : isLast ? 'border: 2px solid #fff; border-left: none;'
+        : 'border-top: 2px solid #fff; border-bottom: 2px solid #fff;';
+      const label = code.replace(/^([A-Za-z]+)\s*(\d+)$/, '$1 $2');
+      return `<span style="background:${bg};color:${color};font-weight:bold;border-radius:${radius};padding:4px 7px;font-size:0.7em;letter-spacing:0.5px;${border}">${esc(label)}</span>`;
+    }).join('')}</span>`;
+  }
+
+  // Station codes aren't in the GTFS names reliably, so combine the stop IDs with the
+  // codes already bundled for first-last.html (SMRT lookup + SBS "DT 18 Name" prefixes).
+  const codesByName = new Map();
+  const normName = n => String(n).toLowerCase().replace(/\b(mrt|lrt)\s+station\b/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
+
+  async function loadStationCodes() {
+    try {
+      const [smrt, sbs] = await Promise.all([
+        fetch('json/smrt-station-codes.json').then(r => (r.ok ? r.json() : {})),
+        fetch('json/sbs-transit-ft-lt.json').then(r => (r.ok ? r.json() : []))
+      ]);
+      Object.entries(smrt).forEach(([name, c]) => codesByName.set(normName(name), c.split('/').filter(Boolean)));
+      sbs.forEach(s => {
+        const m = String(s.station).match(/^((?:[A-Za-z]{2}\s*\d+\s+)+)(.+)$/);
+        if (m) codesByName.set(normName(m[2]), (m[1].match(/[A-Za-z]{2}\s*\d+/g) || []).map(c => c.replace(/\s+/g, '')));
+      });
+    } catch (e) { /* caplets are optional */ }
+  }
+
+  function codesFor(station) {
+    const fromIds = station.stopIds.map(id => (id.match(/^[A-Za-z]{2}\d+/) || [''])[0].toUpperCase()).filter(Boolean);
+    if (fromIds.length) return [...new Set(fromIds)];
+    return codesByName.get(normName(station.name)) || [];
+  }
+
   const $ = id => document.getElementById(id);
   const searchInput = $('stationSearch');
   const clearBtn = $('clearSearch');
@@ -188,7 +235,7 @@
   function renderStation() {
     if (!selected) return;
     const now = sgNow();
-    $('stationTitle').textContent = selected.name;
+    $('stationTitle').innerHTML = `${renderCodeCaplet(codesFor(selected))} ${esc(selected.name)}`;
     $('flLink').href = 'first-last.html?station=' + encodeURIComponent(selected.name);
     $('stationSubtitle').textContent = 'Scheduled departures (timetable, not live)';
     const dirs = nextTrains(selected, now);
@@ -247,7 +294,7 @@
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'tt-result';
-      btn.textContent = s.name;
+      btn.innerHTML = `${renderCodeCaplet(codesFor(s))} <span>${esc(s.name)}</span>`;
       btn.addEventListener('click', () => selectStation(s));
       results.appendChild(btn);
     });
@@ -259,6 +306,7 @@
       const res = await fetch('json/train-timetable.json');
       if (!res.ok) throw new Error(res.status);
       data = await res.json();
+      await loadStationCodes();
     } catch (e) {
       placeholder.querySelector('p').textContent = 'Train timetable data is unavailable right now.';
       return;

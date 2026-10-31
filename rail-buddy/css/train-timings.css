@@ -316,3 +316,14 @@ body.dark-mode .tt-next-hint.tt-arr {
     opacity: 0.6;
     text-decoration: line-through;
 }
+
+.tt-caplets {
+    display: inline-flex;
+    margin-right: 6px;
+    vertical-align: middle;
+}
+
+.tt-result {
+    display: flex;
+    align-items: center;
+}
