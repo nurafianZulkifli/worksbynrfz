@@ -63,7 +63,24 @@
         document.body.classList.toggle('ns-results-open', open);
         document.body.classList.toggle('ns-dismissed', dismissed);
     }
-    if (results) new MutationObserver(syncLock).observe(results, { childList: true });
+    let prevCount = 0;
+    function onResultsChange() {
+        const count = results.childElementCount;
+        if (mode && count === 0) {
+            // List closed: release the reserved space so no empty gap is left in the page
+            resultsHome.style.height = '';
+            const content = document.getElementById('contentSection');
+            if (prevCount > 0 && content && content.offsetParent !== null) {
+                requestAnimationFrame(() => {
+                    const top = content.getBoundingClientRect().top + window.scrollY - (desktop.matches ? 100 : 20);
+                    window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+                });
+            }
+        }
+        prevCount = count;
+        syncLock();
+    }
+    if (results) new MutationObserver(onResultsChange).observe(results, { childList: true });
 
     function undock() {
         container.insertBefore(wrapper, anchor.nextSibling);
