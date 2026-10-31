@@ -7,6 +7,28 @@
   let stations = []; // [{ name, stopIds }]
   let selected = null;
   let refreshTimer = null;
+  let clockOffset = 0; // server time minus device time, so a wrong device clock doesn't skew the timings
+
+  async function syncClock() {
+    try {
+      const res = await fetch(window.location.pathname, { method: 'HEAD', cache: 'no-store' });
+      const serverTime = Date.parse(res.headers.get('Date'));
+      if (!Number.isNaN(serverTime)) clockOffset = serverTime - Date.now();
+    } catch (e) { /* keep the previous offset */ }
+  }
+
+  // Re-render on every minute boundary (timers are throttled in background tabs, so also re-sync on wake)
+  function scheduleTick() {
+    clearTimeout(refreshTimer);
+    const msToNextMinute = 60000 - ((Date.now() + clockOffset) % 60000);
+    refreshTimer = setTimeout(() => { renderStation(); scheduleTick(); }, msToNextMinute + 250);
+  }
+
+  async function refreshNow() {
+    await syncClock();
+    renderStation();
+    scheduleTick();
+  }
   const LINE_PREFIX_MAP = {
     NS: 'NSL', EW: 'EWL', CG: 'EWL', CC: 'CCL', CE: 'CCL',
     DT: 'DTL', TE: 'TEL', NE: 'NEL', BP: 'BP', SE: 'SK', SW: 'SK', PE: 'PG', PW: 'PG'
@@ -78,7 +100,7 @@
     const p = Object.fromEntries(new Intl.DateTimeFormat('en-GB', {
       timeZone: TZ, hourCycle: 'h23', year: 'numeric', month: '2-digit', day: '2-digit',
       hour: '2-digit', minute: '2-digit', second: '2-digit'
-    }).formatToParts(new Date()).map(x => [x.type, x.value]));
+    }).formatToParts(new Date(Date.now() + clockOffset)).map(x => [x.type, x.value]));
     const date = new Date(Date.UTC(+p.year, +p.month - 1, +p.day));
     return { date, minutes: +p.hour * 60 + +p.minute + +p.second / 60 };
   }
@@ -279,8 +301,7 @@
     placeholder.style.display = 'none';
     try { localStorage.setItem('railbuddy_tt_station', station.name); } catch (e) { /* storage unavailable */ }
     renderStation();
-    clearInterval(refreshTimer);
-    refreshTimer = setInterval(renderStation, 30000);
+    scheduleTick();
   }
 
   function showResults(q) {
@@ -332,8 +353,11 @@
     if (match) selectStation(match);
   }
 
-  document.addEventListener('visibilitychange', () => { if (!document.hidden) renderStation(); });
-  init();
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) refreshNow(); });
+  window.addEventListener('focus', refreshNow);
+  window.addEventListener('pageshow', refreshNow);
+  window.addEventListener('online', refreshNow);
+  syncClock().then(init);
   loadAlerts();
   setInterval(loadAlerts, 5 * 60 * 1000);
 })();
