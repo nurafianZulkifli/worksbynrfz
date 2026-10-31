@@ -299,6 +299,7 @@
   function selectStation(station) {
     selected = station;
     searchInput.value = station.name;
+    clearBtn.classList.add('visible');
     results.innerHTML = '';
     resultsCount.textContent = '';
     contentSection.style.display = 'block';
@@ -310,7 +311,7 @@
 
   function showResults(q) {
     q = q.trim().toLowerCase();
-    clearBtn.style.display = q ? 'block' : 'none';
+    clearBtn.classList.toggle('visible', q.length > 0);
     if (!q) { results.innerHTML = ''; resultsCount.textContent = ''; return; }
     const matches = stations.filter(s => s.name.toLowerCase().includes(q));
     resultsCount.textContent = matches.length ? '' : 'No stations found';
@@ -348,6 +349,11 @@
     clearBtn.addEventListener('click', () => {
       searchInput.value = '';
       showResults('');
+      selected = null;
+      clearTimeout(refreshTimer);
+      contentSection.style.display = 'none';
+      placeholder.style.display = '';
+      try { localStorage.removeItem('railbuddy_tt_station'); } catch (e) { /* ignore */ }
       searchInput.focus();
     });
 
