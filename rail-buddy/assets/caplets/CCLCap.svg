@@ -7,7 +7,7 @@
    viewBox="0 0 105.65284 63.076313"
    version="1.1"
    id="svg41502"
-   inkscape:version="1.4.3 (0d15f75, 2025-12-25)"
+   inkscape:version="1.4.4 (dcaf3e7, 2026-05-05)"
    sodipodi:docname="CCLCap.svg"
    inkscape:export-filename="CCLCap.png"
    inkscape:export-xdpi="100"
@@ -28,11 +28,11 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:zoom="1.4770342"
-     inkscape:cx="205.47933"
+     inkscape:cx="205.81785"
      inkscape:cy="119.49622"
      inkscape:window-width="1920"
      inkscape:window-height="1009"
-     inkscape:window-x="1912"
+     inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
      inkscape:current-layer="layer1" />
@@ -58,7 +58,7 @@
            style="fill:#ffffff;fill-opacity:1;stroke:none"
            sodipodi:nodetypes="cccccccccccccccccc" />
         <path
-           style="fill:#fc9b24;fill-opacity:1;stroke:none;stroke-width:1.01852"
+           style="fill:#ff9e1a;fill-opacity:1;stroke:none;stroke-width:1.01852"
            d="m 2552.6247,20493.644 c -16.5421,-0.193 -29.8578,-0.568 -31.9879,-0.9 -3.9026,-0.611 -8.5372,-3.211 -11.9833,-6.721 -4.5942,-4.68 -8.0558,-10.856 -11.6001,-20.7 -3.5597,-9.889 -5.0782,-18.944 -5.0726,-30.25 0,-6.74 0.3333,-10.709 1.3746,-16.544 1.8676,-10.46 6.5732,-22.831 11.2683,-29.624 2.1566,-3.121 5.5993,-6.464 8.7471,-8.494 4.5475,-2.933 6.7646,-3.386 19.3781,-3.966 8.9214,-0.407 107.6579,-0.409 116.5657,0 12.754,0.585 15.5881,1.198 20.4589,4.436 7.355,4.888 13.6102,15.571 17.418,29.745 3.9331,14.642 4.4538,29.559 1.503,43.07 -4.2166,19.309 -12.109,32.467 -22.4463,37.419 -3.2808,1.572 -4.4791,1.836 -9.451,2.092 -11.6161,0.6 -69.4445,0.843 -104.1725,0.44 v 0 z"
            id="path18673-6-8"
            inkscape:connector-curvature="0" />

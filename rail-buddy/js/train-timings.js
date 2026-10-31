@@ -34,7 +34,7 @@
     DT: 'DTL', TE: 'TEL', NE: 'NEL', BP: 'BP', SE: 'SK', SW: 'SK', PE: 'PG', PW: 'PG'
   };
   const LINE_COLORS = {
-    NSL: '#c41e3a', EWL: '#009645', CCL: '#fa9e0d', DTL: '#005ec8',
+    NSL: '#e2211c', EWL: '#009645', CCL: '#fa9e0d', DTL: '#005ec8',
     TEL: '#926437', NEL: '#9d27b5', BP: '#708472', SK: '#708472', PG: '#708472'
   };
 

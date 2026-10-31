@@ -289,7 +289,7 @@
     transform: translateY(-50%);
     width: 10px;
     height: 10px;
-    background: #ff3b3b;
+    background: #e2211c;
     border-radius: 2px;
     z-index: -1;
 }
@@ -319,7 +319,7 @@
 
 /* Line colors for interchanges */
 .mrt-nsl {
-    background: #c41e3a;
+    background: #e2211c;
 }
 
 .mrt-ewl {
