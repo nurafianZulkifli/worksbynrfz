@@ -56,7 +56,7 @@
             if (cwMatch) {
                 const [, word, rest] = cwMatch;
                 const label = word[0].toUpperCase() + word.slice(1).toLowerCase();
-                return `${renderCodeCaplet(['CC'], ['CCL'])} ${label}${rest}`;
+                return `<img src="assets/caplets/CCLCap.png" alt="CCL" style="height: 26px; width: auto; margin-right: 6px; vertical-align: middle;"> ${label}${rest}`;
             }
 
             const match = description.match(/^(To\s+)((?:[A-Za-z]{2}\s*\d+\s*)+)(.+)$/);

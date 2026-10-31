@@ -319,7 +319,7 @@
       box.innerHTML = visible.map(d => {
         const lineKey = LINE_PREFIX_MAP[d.prefix];
         const badge = lineKey
-          ? `<img class="tt-badge tt-badge-img" src="assets/caplets/${lineKey}Cap.svg" alt="${lineKey}" onerror="this.outerHTML='<span class=&quot;tt-badge&quot; style=&quot;background:${LINE_COLORS[lineKey]};color:${lineKey === 'CCL' ? '#000' : '#fff'}&quot;>${lineKey}</span>'">`
+          ? `<img class="tt-badge tt-badge-img" src="assets/caplets/${lineKey}Cap.png" alt="${lineKey}" onerror="this.outerHTML='<span class=&quot;tt-badge&quot; style=&quot;background:${LINE_COLORS[lineKey]};color:${lineKey === 'CCL' ? '#000' : '#fff'}&quot;>${lineKey}</span>'">`
           : '<span class="tt-badge tt-badge-generic"><i class="fa-regular fa-train-subway"></i></span>';
         const waits = d.times.map(t => Math.max(0, Math.round(t - now.minutes)));
         const key = d.prefix + '|' + d.dest;

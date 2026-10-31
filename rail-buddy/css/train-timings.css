@@ -462,6 +462,4 @@ body.dark-mode .tt-next-hint.tt-arr {
   .tt-beta { position: static; }
   .tt-beta::after { top: calc(100% + 6px); left: 0; right: 0; width: auto; max-width: none; transform: translateY(-4px); }
   .tt-beta:hover::after, .tt-beta:focus::after { transform: none; }
-  /* Reserve room so the tooltip pushes the content down instead of covering the search bar */
-  .tt-title-row:has(.tt-beta:hover, .tt-beta:focus) { margin-bottom: 64px; }
 }
