@@ -50,6 +50,18 @@
     touch-action: manipulation;
 }
 
+/* No blue focus ring / tap box on the mobile bottom nav (Android) */
+.mobile-bottom-nav a,
+.mobile-bottom-nav a:focus,
+.mobile-bottom-nav a:active,
+.mobile-bottom-nav a:focus-visible {
+    outline: none !important;
+    box-shadow: none;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+}
+
 html,
 body {
     overflow-x: hidden;
