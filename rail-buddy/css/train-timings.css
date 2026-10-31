@@ -452,9 +452,16 @@ body.dark-mode .tt-next-hint.tt-arr {
 
 
 /* Beta notice icon */
-.tt-title-row { position: relative; display: flex; align-items: center; gap: 10px; }
+.tt-title-row { position: relative; z-index: 1100; display: flex; align-items: center; gap: 10px; }
 .tt-title-row .page-title { margin: 0; }
-.tt-beta { display: inline-flex; align-items: center; font-size: 1.25rem; opacity: 0.7; cursor: help; outline: none; }
+.tt-beta { position: relative; display: inline-flex; align-items: center; font-size: 1.25rem; opacity: 0.7; cursor: help; outline: none; }
 .tt-beta:hover, .tt-beta:focus { opacity: 1; }
-.tt-beta::after { content: attr(data-tip); position: absolute; top: calc(100% + 10px); left: 0; width: max-content; max-width: min(260px, calc(100vw - 48px)); padding: 8px 12px; border-radius: 10px; background: #2a2420; color: #f0d1a9; border: 1px solid #574c47; font-size: 0.8rem; font-weight: 500; line-height: 1.35; box-shadow: 0 6px 18px rgba(0,0,0,0.3); opacity: 0; visibility: hidden; transform: translateY(-4px); transition: opacity .15s, transform .15s, visibility .15s; z-index: 50; pointer-events: none; }
-.tt-beta:hover::after, .tt-beta:focus::after { opacity: 1; visibility: visible; transform: none; }
+.tt-beta::after { content: attr(data-tip); position: absolute; top: 50%; left: calc(100% + 10px); width: max-content; max-width: clamp(140px, calc(100vw - 270px), 260px); padding: 8px 12px; border-radius: 10px; background: #2a2420; color: #f0d1a9; border: 1px solid #574c47; font-size: 0.8rem; font-weight: 500; line-height: 1.35; box-shadow: 0 6px 18px rgba(0,0,0,0.3); opacity: 0; visibility: hidden; transform: translate(-4px, -50%); transition: opacity .15s, transform .15s, visibility .15s; z-index: 50; pointer-events: none; }
+.tt-beta:hover::after, .tt-beta:focus::after { opacity: 1; visibility: visible; transform: translate(0, -50%); }
+@media (max-width: 600px) {
+  .tt-beta { position: static; }
+  .tt-beta::after { top: calc(100% + 6px); left: 0; right: 0; width: auto; max-width: none; transform: translateY(-4px); }
+  .tt-beta:hover::after, .tt-beta:focus::after { transform: none; }
+  /* Reserve room so the tooltip pushes the content down instead of covering the search bar */
+  .tt-title-row:has(.tt-beta:hover, .tt-beta:focus) { margin-bottom: 64px; }
+}
