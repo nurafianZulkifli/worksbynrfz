@@ -1,0 +1,241 @@
+/* Search input docked into the navbar on scroll */
+.navbar .search-input-wrapper {
+    flex: 1;
+    min-width: 0;
+    height: 40px;
+    margin: 0 1rem;
+}
+
+.navbar .search-input {
+    height: 40px;
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.navbar .search-input::placeholder {
+    color: #999;
+}
+
+.navbar .search-icon,
+.navbar .search-input-wrapper > i {
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+}
+
+.navbar .clear-search {
+    top: 20px;
+    font-size: 28px;
+}
+
+body.dark-mode .navbar .search-input {
+    color: #fff;
+}
+
+@keyframes nsIn {
+    from { opacity: 0; transform: translateY(8px) scale(0.97); }
+    to { opacity: 1; transform: none; }
+}
+
+@keyframes nsOut {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: none; }
+}
+
+@keyframes nsPanel {
+    from { opacity: 0; transform: translateY(8px) scale(0.97); }
+    to { opacity: 1; transform: none; }
+}
+
+.search-input-wrapper.ns-in {
+    animation: nsIn 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.search-input-wrapper.ns-out {
+    animation: nsOut 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+body.nav-search-on .fl-station-results:not(:empty),
+body.nav-search-on .fl-stop-results:not(:empty) {
+    animation: nsPanel 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: transform, opacity;
+}
+
+/* The navbar's hover lift moved the bar but not the list below it */
+body.nav-search-on .navbar:hover {
+    transform: none;
+}
+
+body.nav-search-on .fl-station-result,
+body.nav-search-on .fl-stop-result {
+    transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .search-input-wrapper.ns-in,
+    .search-input-wrapper.ns-out,
+    body.nav-search-on .fl-station-results,
+    body.nav-search-on .fl-stop-results {
+        animation: none;
+    }
+}
+
+/* A transformed ancestor re-anchors fixed children, which made the panel jump on hover */
+body.nav-search-on .selector-section,
+body.nav-search-on .selector-section:hover {
+    transform: none !important;
+    transition: none;
+}
+
+/* Results open: blurred backdrop + no page scroll */
+.ns-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.25);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+body.ns-results-open .ns-backdrop {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+html.ns-lock {
+    overflow: hidden;
+    scrollbar-gutter: stable;
+}
+
+html.ns-lock body {
+    overflow: hidden;
+    touch-action: none;
+}
+
+.fl-station-results,
+.fl-stop-results {
+    overscroll-behavior: contain;
+    touch-action: pan-y;
+}
+
+/* Mobile/tablet: bar floats above the bottom nav, results open upwards */
+.ns-mobile-dock {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: calc(90px + env(safe-area-inset-bottom));
+    z-index: 1030;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 0 20px;
+    pointer-events: none;
+}
+
+.ns-mobile-dock:empty {
+    display: none;
+}
+
+.ns-mobile-dock > * {
+    pointer-events: auto;
+    width: 100%;
+    max-width: 440px;
+    box-sizing: border-box;
+}
+
+.ns-mobile-dock .search-input-wrapper {
+    flex: none;
+    height: 40px;
+    margin: 0;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    border-radius: 25px;
+}
+
+.ns-mobile-dock .search-input {
+    height: 40px;
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.ns-mobile-dock .search-icon,
+.ns-mobile-dock .search-input-wrapper > i {
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+}
+
+.ns-mobile-dock .clear-search {
+    top: 20px;
+    font-size: 28px;
+}
+
+.ns-mobile-dock .fl-station-results,
+.ns-mobile-dock .fl-stop-results {
+    order: -1;
+    margin: 0;
+    max-height: min(45vh, 320px);
+    overflow-y: auto;
+    padding: 10px;
+    border-radius: 20px;
+    background: #fff;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.ns-mobile-dock .fl-station-results:empty,
+.ns-mobile-dock .fl-stop-results:empty {
+    display: none;
+}
+
+body.dark-mode .ns-mobile-dock .search-input {
+    color: #fff;
+}
+
+body.dark-mode .ns-mobile-dock .fl-station-results {
+    background: #2a2420;
+    border: 1px solid #574c47;
+}
+
+body.dark-mode .ns-mobile-dock .fl-stop-results {
+    background: #1e2529;
+}
+
+/* Results drop below the bar; the list sits inside the fixed navbar container so it moves with it */
+body.nav-search-on .fl-station-results,
+body.nav-search-on .fl-stop-results {
+    position: absolute;
+    left: 0;
+    max-height: min(50vh, 360px);
+    overflow-y: auto;
+    margin: 0;
+    padding: 10px;
+    border-radius: 20px;
+    background: #fff;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    z-index: 1005;
+    box-sizing: border-box;
+}
+
+body.nav-search-on .fl-station-results:empty,
+body.nav-search-on .fl-stop-results:empty {
+    display: none;
+}
+
+body.dark-mode.nav-search-on .fl-station-results {
+    background: #2a2420;
+    border: 1px solid #574c47;
+}
+
+body.dark-mode.nav-search-on .fl-stop-results {
+    background: #1e2529;
+}
+
+body.ns-dismissed .fl-station-results,
+body.ns-dismissed .fl-stop-results {
+    display: none !important;
+}

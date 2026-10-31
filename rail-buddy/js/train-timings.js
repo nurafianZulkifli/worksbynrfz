@@ -279,7 +279,7 @@
     const codes = codesFor(selected);
     const lineOf = c => LINE_PREFIX_MAP[(c.match(/[A-Za-z]+/) || [''])[0].toUpperCase()];
     const ordered = lineFilter === 'ALL' ? codes : [...codes.filter(c => lineOf(c) === lineFilter), ...codes.filter(c => lineOf(c) !== lineFilter)];
-    $('stationTitle').innerHTML = `${renderCodeCaplet(ordered)} ${esc(selected.name)}`;
+    $('stationTitle').innerHTML = `${renderCodeCaplet(ordered)}<span class="tt-name"> ${esc(selected.name)}</span>`;
     const visible = (lineFilter === 'ALL' ? dirs : dirs.filter(d => (LINE_PREFIX_MAP[d.prefix] || d.prefix) === lineFilter))
       .slice()
       .sort((a, b) => (a.times[0] ?? Infinity) - (b.times[0] ?? Infinity) || a.prefix.localeCompare(b.prefix) || a.dest.localeCompare(b.dest));
@@ -327,6 +327,7 @@
     results.innerHTML = '';
     resultsCount.textContent = '';
     contentSection.style.display = 'block';
+    $('ttToolbar').hidden = false;
     placeholder.style.display = 'none';
     try { localStorage.setItem('railbuddy_tt_station', station.name); } catch (e) { /* storage unavailable */ }
     renderStation();
@@ -376,6 +377,7 @@
       selected = null;
       clearTimeout(refreshTimer);
       contentSection.style.display = 'none';
+      $('ttToolbar').hidden = true;
       placeholder.style.display = '';
       try { localStorage.removeItem('railbuddy_tt_station'); } catch (e) { /* ignore */ }
       searchInput.focus();

@@ -660,4 +660,9 @@ body.dark-mode .time-value {
     .day-label {
         font-size: 0.75rem;
     }
+
+    .content-section {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
 }

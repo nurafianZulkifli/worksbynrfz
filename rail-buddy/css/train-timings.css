@@ -174,12 +174,7 @@ body.dark-mode .tt-train {
     color: var(--chip-fg, #fff);
 }
 
-/* Desktop: tabs sit on the right; mobile: they drop below the title and scroll sideways */
-@media (max-width: 575px) {
-    .tt-filter {
-        flex: 1 1 100%;
-    }
-}
+/* Desktop: tabs sit on the right, beside the button */
 
 .tt-head {
     cursor: pointer;
@@ -248,10 +243,19 @@ body.dark-mode .tt-next-hint {
     order: 1;
 }
 
-/* Mobile: filter tabs take their own full row; the button stays beside the title */
+/* Mobile: title on its own row; line tabs (scrollable) and the button share the next row, button on the right */
 @media (max-width: 575px) {
     .tt-top-text {
-        flex-basis: 0;
+        flex: 1 1 100%;
+    }
+
+    .tt-filter {
+        flex: 1 1 0;
+        min-width: 0;
+    }
+
+    .tt-fl-btn {
+        margin-left: auto;
     }
 }
 
@@ -335,4 +339,103 @@ body.dark-mode .tt-next-hint.tt-arr {
 .tt-result {
     display: flex;
     align-items: center;
+}
+/* Mobile: caplet on its own line, station name underneath */
+@media (max-width: 575px) {
+    #stationTitle .tt-caplets {
+        display: flex;
+        width: fit-content;
+        margin: 0 0 8px;
+    }
+
+    #stationTitle .tt-name {
+        display: block;
+    }
+}
+
+/* Mobile: tighter cards so the destination keeps room on one line */
+@media (max-width: 575px) {
+    .tt-card {
+        padding: 10px;
+        border-radius: 28px;
+    }
+
+    .tt-head {
+        flex-wrap: wrap;
+        gap: 6px 10px;
+        padding: 10px 14px;
+        border-radius: 20px;
+    }
+
+    .tt-badge {
+        min-width: 46px;
+        padding: 6px 8px;
+        font-size: 1rem;
+    }
+
+    .tt-dest {
+        flex: 1 1 0;
+        min-width: 0;
+        font-size: 0.95rem;
+        line-height: 1.25;
+    }
+
+    .tt-dest .fa-circle-arrow-right {
+        margin-right: 4px;
+    }
+
+    .tt-next-hint {
+        flex: none;
+        font-size: 0.8rem;
+    }
+
+    .tt-times {
+        padding: 14px 4px 4px;
+    }
+
+    .tt-mins {
+        font-size: 1.25rem;
+    }
+
+    .tt-time {
+        gap: 8px;
+    }
+
+    .tt-train {
+        font-size: 1.3rem;
+    }
+}
+
+/* Toolbar above the station card: line tabs plus the First & Last button, button always on the right */
+.tt-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.tt-toolbar[hidden] {
+    display: none;
+}
+
+.tt-toolbar .tt-filter {
+    order: 1;
+    flex: 0 1 auto;
+    min-width: 0;
+}
+
+.tt-toolbar .tt-fl-btn {
+    order: 2;
+    margin-left: 0;
+}
+
+@media (max-width: 575px) {
+    .tt-toolbar .tt-filter {
+        flex: 1 1 0;
+    }
+
+    .tt-toolbar .tt-fl-btn {
+        margin-left: auto;
+    }
 }

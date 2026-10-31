@@ -35,6 +35,7 @@
     <link rel="stylesheet" href="./css/style-tdt.css">
     <link rel="stylesheet" href="./css/fl-train.css">
     <link rel="stylesheet" href="./css/train-timings.css">
+    <link rel="stylesheet" href="../css/navbar-search.css">
 
 </head>
 
@@ -195,16 +196,19 @@
                 </select>
             </div>
 
+            <div class="tt-toolbar" id="ttToolbar" hidden>
+                <div class="tt-filter" id="lineFilter" role="tablist" aria-label="Filter by line"></div>
+                <a class="tt-fl-btn" id="flLink" href="first-last.html" title="First &amp; last trains" aria-label="First and last trains">
+                    <i class="fa-regular fa-clock"></i>
+                </a>
+            </div>
+
             <div class="content-section" id="contentSection">
                 <div class="tt-top">
                     <div class="tt-top-text">
                         <div class="station-title" id="stationTitle">--</div>
                         <div class="station-subtitle" id="stationSubtitle">Select a station to begin</div>
                     </div>
-                    <a class="tt-fl-btn" id="flLink" href="first-last.html" title="First &amp; last trains" aria-label="First and last trains">
-                        <i class="fa-regular fa-clock"></i>
-                    </a>
-                    <div class="tt-filter" id="lineFilter" role="tablist" aria-label="Filter by line"></div>
                 </div>
                 <div class="tt-meta" id="ttMeta"></div>
                 <div class="tt-banner" id="disruptionBanner" hidden></div>
@@ -250,6 +254,7 @@
     <script src="../js/utils.js"></script>
 
     <script src="js/train-timings.js"></script>
+    <script src="../js/navbar-search.js"></script>
     <script src="./js/ann-indicator.js"></script>
 
     <!-- <script src="../js/back-to-top.js"></script> -->
