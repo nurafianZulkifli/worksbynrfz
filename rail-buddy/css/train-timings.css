@@ -1,0 +1,318 @@
+.tt-result {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 12px 16px;
+    margin-top: 6px;
+    border: 0;
+    border-radius: 18px;
+    background: #f4f6f8;
+    color: #000;
+    font-weight: 500;
+}
+
+.tt-result:hover,
+.tt-result:focus {
+    background: #e6ebf0;
+}
+
+.tt-card {
+    background: #fff;
+    border-radius: 34px;
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.tt-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 16px;
+    border-radius: 22px;
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.tt-badge {
+    flex: none;
+    min-width: 52px;
+    padding: 8px 10px;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: 800;
+    font-size: 1.1rem;
+}
+
+.tt-badge-generic {
+    background: #607d96;
+    color: #fff;
+}
+
+.tt-dest {
+    font-weight: 700;
+    color: #555;
+}
+
+.tt-times {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 12px;
+    padding: 18px 8px 6px;
+}
+
+.tt-time {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.tt-mins {
+    font-weight: 800;
+    font-size: 1.5rem;
+    color: #000;
+}
+
+.tt-mins small {
+    font-size: 0.65em;
+    font-weight: 700;
+}
+
+.tt-train {
+    color: #2ea44f;
+    font-size: 1.6rem;
+}
+
+.tt-none,
+.tt-meta {
+    color: #777;
+    font-size: 0.85em;
+}
+
+.tt-meta {
+    margin: 4px 0 16px;
+}
+
+body.dark-mode .tt-result {
+    background: #3a3330;
+    color: #fff;
+}
+
+body.dark-mode .tt-result:hover,
+body.dark-mode .tt-result:focus {
+    background: #4a423e;
+}
+
+body.dark-mode .tt-card {
+    background: #3F3835;
+    border: 1px solid #2b2b2b33;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+body.dark-mode .tt-head {
+    background: rgba(255, 255, 255, 0.07);
+}
+
+body.dark-mode .tt-dest {
+    color: #ddd;
+}
+
+body.dark-mode .tt-mins {
+    color: #fff;
+}
+
+body.dark-mode .tt-none,
+body.dark-mode .tt-meta {
+    color: #bbb;
+}
+
+.tt-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.tt-top-text {
+    min-width: 0;
+    flex: 1 1 200px;
+}
+
+.tt-filter {
+    display: flex;
+    gap: 8px;
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+}
+
+.tt-filter::-webkit-scrollbar {
+    display: none;
+}
+
+.tt-chip {
+    flex: none;
+    border: 2px solid var(--chip, #607d96);
+    background: transparent;
+    color: var(--chip, #607d96);
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.tt-chip.active {
+    background: var(--chip, #607d96);
+    color: var(--chip-fg, #fff);
+}
+
+/* Desktop: tabs sit on the right; mobile: they drop below the title and scroll sideways */
+@media (max-width: 575px) {
+    .tt-filter {
+        flex: 1 1 100%;
+    }
+}
+
+.tt-head {
+    cursor: pointer;
+}
+
+.tt-dest {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.tt-next-hint {
+    display: none;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: #777;
+    white-space: nowrap;
+}
+
+.tt-chevron {
+    flex: none;
+    color: #607d96;
+    transition: transform 0.2s ease;
+}
+
+.tt-card.collapsed .tt-times {
+    display: none;
+}
+
+.tt-card.collapsed .tt-next-hint {
+    display: inline;
+}
+
+.tt-card.collapsed .tt-chevron {
+    transform: rotate(-90deg);
+}
+
+body.dark-mode .tt-next-hint {
+    color: #bbb;
+}
+
+.tt-fl-btn {
+    order: 2;
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #607d96;
+    color: #fff;
+    font-size: 1rem;
+    text-decoration: none;
+}
+
+.tt-fl-btn:hover,
+.tt-fl-btn:focus {
+    color: #fff;
+    opacity: 0.9;
+    text-decoration: none;
+}
+
+.tt-filter {
+    order: 1;
+}
+
+/* Mobile: filter tabs take their own full row; the button stays beside the title */
+@media (max-width: 575px) {
+    .tt-top-text {
+        flex-basis: 0;
+    }
+}
+
+body.dark-mode .tt-fl-btn {
+    background: #f0d1a9;
+    color: #2b2220;
+}
+
+body.dark-mode .tt-fl-btn:hover,
+body.dark-mode .tt-fl-btn:focus {
+    color: #2b2220;
+}
+
+.tt-mins.tt-arr,
+.tt-next-hint.tt-arr,
+body.dark-mode .tt-mins.tt-arr,
+body.dark-mode .tt-next-hint.tt-arr {
+    color: #f5a623;
+}
+
+.tt-banner {
+    border-radius: 22px;
+    padding: 14px 18px;
+    margin-bottom: 16px;
+    font-size: 0.9rem;
+    color: #000;
+    background: #ffb300;
+}
+
+.tt-banner[hidden] {
+    display: none;
+}
+
+.tt-banner-major {
+    background: #e53935;
+    color: #fff;
+}
+
+.tt-banner-title {
+    font-weight: 800;
+    margin-bottom: 6px;
+}
+
+.tt-banner-msg {
+    margin-top: 6px;
+    white-space: pre-line;
+    word-break: break-word;
+}
+
+.tt-flag {
+    display: inline-block;
+    margin-left: 10px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: #ffb300;
+    color: #000;
+    font-size: 0.7rem;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.tt-card.tt-disrupted .tt-times {
+    opacity: 0.45;
+    filter: grayscale(1);
+}
+
+.tt-card.tt-disrupted .tt-next-hint {
+    opacity: 0.6;
+    text-decoration: line-through;
+}

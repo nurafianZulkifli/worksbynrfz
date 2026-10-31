@@ -92,7 +92,14 @@
                 mergeData();
                 populateDropdown();
                 initSearchFunctionality();
-                
+
+                // Deep link from train-timings.html: ?station=<name> runs the normal search
+                const preset = new URLSearchParams(window.location.search).get('station');
+                if (preset) {
+                    const input = document.getElementById('stationSearch');
+                    input.value = preset;
+                    input.dispatchEvent(new Event('input'));
+                }
                 // Clear any error messages on successful load
                 const dropdown = document.getElementById('stationDropdown');
                 if (dropdown) {

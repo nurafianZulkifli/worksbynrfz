@@ -1,0 +1,263 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Scheduled train timings for Singapore MRT and LRT stations">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover, user-scalable=no">
+    <meta name="color-scheme" content="light">
+    <title>Train Timings | RailBuddy</title>
+    <meta property="og:image" content="https://i.imgur.com/i8n9KYs.png" />
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="RailBuddy">
+    <meta name="theme-color" content="#ffffff">
+
+    <link rel="manifest" href="./manifest.json">
+
+    <link rel="icon" href="./assets/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="./assets/icon-512.png">
+    
+    <link rel="apple-touch-startup-image" href="../img/bg-img/hero-railbuddy-dark.png">
+
+    <script src="https://kit.fontawesome.com/965e82ac01.js" crossorigin="anonymous"></script>
+
+    <!-- Core Stylesheet -->
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/style-breakpoints.css">
+    <link rel="stylesheet" href="../css/pwa-styles.css">
+    <link rel="stylesheet" href="../css/dark-mode.css">
+    <link rel="stylesheet" href="../css/ios-safari.css">
+
+    <!-- Page Specific Stylesheet -->
+    <link rel="stylesheet" href="./css/style-tdt.css">
+    <link rel="stylesheet" href="./css/fl-train.css">
+    <link rel="stylesheet" href="./css/train-timings.css">
+
+</head>
+
+<body>
+    <!-- Fixed Breadcrumb at very top (mobile/tablet only) -->
+    <div class="breadcrumb-fixed-placeholder">
+        <nav aria-label="breadcrumb" style="margin-bottom:0;">
+            <ol class="breadcrumb breadcrumb-fixed" id="floating-breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="index.html"><i class="fa-regular fa-home"></i>
+                    </a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="menu.html"><i class="fa-regular fa-clock"></i>
+                    </a>
+                </li>
+            </ol>
+        </nav>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar-container">
+        <div class="navbar">
+            <!-- Logo -->
+            <a href="index.html"><img src="assets/logo.png" alt="logo" class="logo" /></a>
+
+            <!-- Navigation Links -->
+            <ul class="navbar-nav" id="navbarNav">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">
+                        <i class="fa-sharp fa-regular fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="history.html" class="nav-link">
+                        <i class="fa-regular fa-clock-rotate-left"></i>
+                        <span>History</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="train-timings.html" class="nav-link active">
+                        <i class="fa-regular fa-clock"></i>
+                        <span>Timings</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="menu.html" class="nav-link">
+                        <i class="fa-regular fa-bars"></i>
+                        <span>Menu</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+    </nav>
+
+    <!-- Mobile Bottom Navigation Bar -->
+    <nav class="mobile-bottom-nav">
+        <ul>
+            <li>
+                <a href="index.html">
+                    <span class="icon">
+                        <i class="fa-sharp fa-regular fa-home"></i>
+                    </span>
+                    <span class="label">Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="history.html">
+                    <span class="icon">
+                        <i class="fa-regular fa-clock-rotate-left"></i>
+                    </span>
+                    <span class="label">History</span>
+                </a>
+            </li>
+            <li class="active">
+                <a href="train-timings.html">
+                    <span class="icon">
+                        <i class="fa-regular fa-clock"></i>
+                    </span>
+                    <span class="label">Timings</span>
+                </a>
+            </li>
+            <li>
+                <a href="menu.html">
+                    <span class="icon">
+                        <i class="fa-regular fa-bars"></i>
+                    </span>
+                    <span class="label">Menu</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+
+
+    <!------------------------------------------------------------------------ Start of Sections ------------------------------------------------------------------------>
+
+
+    <!-- Title/Breadcrumbs -->
+    <section class="about-me-sum clearfix">
+        <div class="wbnrfz_eicw">
+            <div class="page-header-section">
+                <div class="container container-xxl container-mobile container-mobile-header">
+                    <div class="breadcrumb-wrapper">
+                        <nav aria-label="breadcrumb" class="breadcrumb-desktop" style="display:none;">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="index.html">
+                                        <i class="fa-regular fa-house"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="train-timings.html"><i class="fa-regular fa-clock"></i>
+                                    </a>
+                                </li>
+                            </ol>
+                        </nav>
+                        <div class="page-title-wrapper">
+                            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;"
+                                >
+                                <div>
+                                    <h1 class="page-title" id="filter-title">Train Timings</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Section Contents -->
+    <section class="pdf-section">
+        <div class="container">
+            <div class="header">
+            </div>
+
+            <div class="selector-section">
+                <div class="search-container">
+                    <div class="search-input-wrapper">
+                        <i class="fa-regular fa-search"
+                            style="position: absolute; left: 12px; top: 65%; transform: translateY(-65%); color: #cccccc; z-index: 1;"></i>
+                        <input type="text" id="stationSearch" class="search-input"
+                            placeholder="Enter station name or code" autocomplete="on">
+                        <button class="clear-search" id="clearSearch" title="Clear search">&times;</button>
+                    </div>
+                    <div class="search-results-count" id="resultsCount"></div>
+                </div>
+
+                <div class="fl-station-results" id="stationResults"></div>
+                <select id="stationDropdown" hidden>
+                    <option value="">Loading stations...</option>
+                </select>
+            </div>
+
+            <div class="content-section" id="contentSection">
+                <div class="tt-top">
+                    <div class="tt-top-text">
+                        <div class="station-title" id="stationTitle">--</div>
+                        <div class="station-subtitle" id="stationSubtitle">Select a station to begin</div>
+                    </div>
+                    <a class="tt-fl-btn" id="flLink" href="first-last.html" title="First &amp; last trains" aria-label="First and last trains">
+                        <i class="fa-regular fa-clock"></i>
+                    </a>
+                    <div class="tt-filter" id="lineFilter" role="tablist" aria-label="Filter by line"></div>
+                </div>
+                <div class="tt-meta" id="ttMeta"></div>
+                <div class="tt-banner" id="disruptionBanner" hidden></div>
+                <div id="directionsContainer"></div>
+            </div>
+
+            <div class="empty-state-placeholder" id="emptyStatePlaceholder">
+                <i class="fa-kit fa-lta-train" aria-hidden="true"></i>
+                <p>Search or select a station above to see its scheduled train timings.</p>
+            </div>
+        </div>
+    </section>
+
+
+    <script type="text/javascript" id="cookiebanner" src="../js/cookies-banner.js" data-position="bottom"
+        data-bg="#f2f3e5" data-fg="#000" data-font-family="Outfit, sans-serif" data-zindex="12345111111"
+        data-message="This website uses cookies to provide necessary site functionality and to improve your experience. By using this website, you agree to our use of cookies.">
+        </script>
+
+    <script src="../js/cookies-theme-sync.js"></script>
+
+    <script src="js/mob-navtabs.js"></script>
+
+    <script src="js/mob-navtabs-tooltip.js"></script>
+    <script src="js/haptic.js"></script>
+
+    <script src="tdt-subp.js"></script>
+
+    <script src="../js/jquery.min.js"></script>
+
+    <script src="../js/popper.min.js"></script>
+
+    <script src="../js/bootstrap.min.js"></script>
+
+    <script src="../js/pw.bundle.js"></script>
+
+    <script src="../js/default-assets/active.js"></script>
+
+    <script src="../js/isotope.pkgd.min.js"></script>
+
+    <script src="../js/dstabs.js"></script>
+
+    <script src="../js/utils.js"></script>
+
+    <script src="js/train-timings.js"></script>
+    <script src="./js/ann-indicator.js"></script>
+
+    <!-- <script src="../js/back-to-top.js"></script> -->
+
+    <script src="./js/pull-to-refresh.js"></script>
+    <script src="../js/ios-pwa-pull-to-refresh-init.js"></script>
+    
+    <script src="../js/ios-pwa-warning.js"></script>
+</body>
+
+</html>
