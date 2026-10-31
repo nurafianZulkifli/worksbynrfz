@@ -257,12 +257,16 @@
   function renderStation() {
     if (!selected) return;
     const now = sgNow();
-    $('stationTitle').innerHTML = `${renderCodeCaplet(codesFor(selected))} ${esc(selected.name)}`;
     $('flLink').href = 'first-last.html?station=' + encodeURIComponent(selected.name);
     $('stationSubtitle').textContent = 'Scheduled departures (timetable, not live)';
     const dirs = nextTrains(selected, now);
     renderBanner([...new Set(dirs.map(d => LINE_PREFIX_MAP[d.prefix]).filter(Boolean))]);
     renderFilter(dirs);
+    // Put the selected line's code first in the title caplet (e.g. "BP 1 | NS 4" vs "NS 4 | BP 1")
+    const codes = codesFor(selected);
+    const lineOf = c => LINE_PREFIX_MAP[(c.match(/[A-Za-z]+/) || [''])[0].toUpperCase()];
+    const ordered = lineFilter === 'ALL' ? codes : [...codes.filter(c => lineOf(c) === lineFilter), ...codes.filter(c => lineOf(c) !== lineFilter)];
+    $('stationTitle').innerHTML = `${renderCodeCaplet(ordered)} ${esc(selected.name)}`;
     const visible = (lineFilter === 'ALL' ? dirs : dirs.filter(d => (LINE_PREFIX_MAP[d.prefix] || d.prefix) === lineFilter))
       .slice()
       .sort((a, b) => (a.times[0] ?? Infinity) - (b.times[0] ?? Infinity) || a.prefix.localeCompare(b.prefix) || a.dest.localeCompare(b.dest));
@@ -279,7 +283,7 @@
         const key = d.prefix + '|' + d.dest;
         const collapsed = cardState.has(key) ? !cardState.get(key) : !(waits.length && waits[0] <= SOON_MINUTES);
         const times = waits.map(wait =>
-          `<div class="tt-time"><span class="tt-mins${wait === 0 ? ' tt-arr' : ''}">${wait === 0 ? 'Arr' : `${wait}<small> min${wait === 1 ? '' : 's'}</small>`}</span><i class="fa-regular fa-train-subway tt-train"></i></div>`
+          `<div class="tt-time"><span class="tt-mins${wait === 0 ? ' tt-arr' : ''}">${wait === 0 ? 'Arr' : `${wait}<small> min${wait === 1 ? '' : 's'}</small>`}</span><i class="fa-kit fa-lta-train tt-train"></i></div>`
         ).join('');
         const next = waits.length ? (waits[0] === 0 ? 'Arr' : `${waits[0]} min${waits[0] === 1 ? '' : 's'}`) : '';
         const disrupted = lineKey && disruptions[lineKey];

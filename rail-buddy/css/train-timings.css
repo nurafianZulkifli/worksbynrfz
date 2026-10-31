@@ -79,7 +79,7 @@
 }
 
 .tt-train {
-    color: #2ea44f;
+    color: #000;
     font-size: 1.6rem;
 }
 
@@ -124,6 +124,10 @@ body.dark-mode .tt-mins {
 body.dark-mode .tt-none,
 body.dark-mode .tt-meta {
     color: #bbb;
+}
+
+body.dark-mode .tt-train {
+    color: #fff;
 }
 
 .tt-top {
