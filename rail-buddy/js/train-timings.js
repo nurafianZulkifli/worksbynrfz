@@ -194,7 +194,9 @@
     const dirs = nextTrains(selected, now);
     renderBanner([...new Set(dirs.map(d => LINE_PREFIX_MAP[d.prefix]).filter(Boolean))]);
     renderFilter(dirs);
-    const visible = lineFilter === 'ALL' ? dirs : dirs.filter(d => (LINE_PREFIX_MAP[d.prefix] || d.prefix) === lineFilter);
+    const visible = (lineFilter === 'ALL' ? dirs : dirs.filter(d => (LINE_PREFIX_MAP[d.prefix] || d.prefix) === lineFilter))
+      .slice()
+      .sort((a, b) => (a.times[0] ?? Infinity) - (b.times[0] ?? Infinity) || a.prefix.localeCompare(b.prefix) || a.dest.localeCompare(b.dest));
     const box = $('directionsContainer');
     if (!visible.length) {
       box.innerHTML = '<div class="tt-card"><div class="tt-none">No more scheduled trains for today.</div></div>';
