@@ -108,11 +108,24 @@
   const ymd = d => d.toISOString().slice(0, 10).replace(/-/g, '');
   const addDays = (d, n) => new Date(d.getTime() + n * 86400000);
 
+  // Dates outside every service's range (timetable expired or not yet valid) fall back to the regular weekly pattern
+  let dataRange = null;
+  function getDataRange() {
+    if (!dataRange) {
+      const starts = data.services.map(s => s.start).filter(Boolean).sort();
+      const ends = data.services.map(s => s.end).filter(Boolean).sort();
+      dataRange = { first: starts[0] || '', last: ends[ends.length - 1] || '' };
+    }
+    return dataRange;
+  }
+
   function serviceActive(svc, date) {
     const key = ymd(date);
     if (svc.remove.includes(key)) return false;
     if (svc.add.includes(key)) return true;
-    if (!svc.start || key < svc.start || key > svc.end) return false;
+    const { first, last } = getDataRange();
+    const outsideAll = key > last || key < first;
+    if (!outsideAll && (!svc.start || key < svc.start || key > svc.end)) return false;
     return svc.days[(date.getUTCDay() + 6) % 7] === 1;
   }
 
@@ -291,9 +304,20 @@
         return `<div class="tt-card${collapsed ? ' collapsed' : ''}${disrupted ? ' tt-disrupted' : ''}" data-key="${esc(key)}"><div class="tt-head" role="button" tabindex="0" aria-expanded="${!collapsed}">${badge}<span class="tt-dest"><i class="fa-solid fa-circle-arrow-right"></i> ${esc(d.dest)}${flag}</span><span class="tt-next-hint${waits[0] === 0 ? ' tt-arr' : ''}">${next}</span><i class="fa-regular fa-chevron-down tt-chevron"></i></div><div class="tt-times">${times || '<span class="tt-none">No more trains today.</span>'}</div></div>`;
       }).join('');
     }
-    // $('ttMeta').textContent = data.generated
-    //   ? 'Timetable data generated ' + new Date(data.generated).toLocaleDateString('en-SG', { timeZone: TZ })
-    //   : '';
+    renderExpiryNotice();
+  }
+
+  // Warns when the bundled timetable is about to run out (or already has), since the page would silently show no trains
+  function renderExpiryNotice() {
+    const ends = data.services.map(s => s.end).filter(Boolean).sort();
+    const el = $('ttMeta');
+    if (!ends.length) { el.textContent = ''; return; }
+    const last = ends[ends.length - 1];
+    const lastDate = new Date(Date.UTC(+last.slice(0, 4), +last.slice(4, 6) - 1, +last.slice(6, 8)));
+    const daysLeft = Math.floor((lastDate - sgNow().date) / 86400000);
+    if (daysLeft < 0) el.textContent = 'This timetable has expired. Showing the regular weekly timings; public holidays may differ.';
+    else if (daysLeft <= 7) el.textContent = `Timetable data ends in ${daysLeft} day${daysLeft === 1 ? '' : 's'}; after that the regular weekly timings are shown.`;
+    else el.textContent = '';
   }
 
   function selectStation(station) {

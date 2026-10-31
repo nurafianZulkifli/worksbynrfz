@@ -1,0 +1,60 @@
+name: Refresh train timetable
+
+on:
+  schedule:
+    - cron: '0 20 * * 0' # Mondays 04:00 SGT
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write # needed to trigger the Pages deploy after committing
+
+concurrency:
+  group: refresh-train-timetable
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build timetable from LTA GTFS
+        env:
+          LTA_API_KEY: ${{ secrets.LTA_API_KEY }}
+        run: node scripts/build-train-timetable.js
+
+      - name: Commit if changed
+        id: commit
+        run: |
+          if git diff --quiet -- rail-buddy/json/train-timetable.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Timetable unchanged."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add rail-buddy/json/train-timetable.json
+          git commit -m "Refresh train timetable from LTA GTFS"
+          git push
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Alert if the timetable is close to expiring
+        if: always()
+        run: node scripts/build-train-timetable.js --check
+
+      # Pushes made with GITHUB_TOKEN don't trigger other workflows, so deploy explicitly
+      - name: Deploy to GitHub Pages
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run pages.yml --ref main

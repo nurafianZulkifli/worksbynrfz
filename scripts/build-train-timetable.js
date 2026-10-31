@@ -67,6 +67,20 @@ async function getZip() {
 }
 
 (async () => {
+  // --check: fail when the bundled timetable ends within 14 days (used by the weekly workflow to raise an alert)
+  if (process.argv.includes('--check')) {
+    const cur = JSON.parse(fs.readFileSync(OUT, 'utf8'));
+    const last = cur.services.map(s => s.end).filter(Boolean).sort().pop();
+    const end = new Date(Date.UTC(+last.slice(0, 4), +last.slice(4, 6) - 1, +last.slice(6, 8)));
+    const daysLeft = Math.floor((end - Date.now()) / 86400000);
+    console.log(`Timetable valid until ${last} (${daysLeft} days left)`);
+    if (daysLeft < 14) {
+      console.error('Timetable is about to expire (or has) and LTA has not published a newer one.');
+      process.exit(1);
+    }
+    return;
+  }
+
   const zip = new AdmZip(await getZip());
   const read = name => {
     const e = zip.getEntries().find(x => x.entryName === name || x.entryName.endsWith('/' + name));
@@ -141,6 +155,26 @@ async function getZip() {
     });
   }
 
-  fs.writeFileSync(OUT, JSON.stringify({ generated: new Date().toISOString(), services, stops, tt }));
-  console.log(`Wrote ${OUT} (${(fs.statSync(OUT).size / 1024).toFixed(0)} KB, ${Object.keys(tt).length} stops)`);
+  const OUT_FILE = OUT;
+  const payload = { generated: new Date().toISOString(), services, stops, tt };
+
+  // Skip the write when only the timestamp would change, so scheduled runs don't create noise commits
+  if (fs.existsSync(OUT_FILE)) {
+    try {
+      const prev = JSON.parse(fs.readFileSync(OUT_FILE, 'utf8'));
+      const strip = o => JSON.stringify({ services: o.services, stops: o.stops, tt: o.tt });
+      if (strip(prev) === strip(payload)) {
+        console.log('Timetable unchanged; leaving existing file in place.');
+        return;
+      }
+    } catch (e) { /* unreadable previous file: overwrite */ }
+  }
+
+  // Refuse to replace a good file with an obviously broken download
+  if (Object.keys(tt).length < 50 || !services.length) {
+    throw new Error(`Suspiciously small timetable (${Object.keys(tt).length} stops); not writing.`);
+  }
+
+  fs.writeFileSync(OUT_FILE, JSON.stringify(payload));
+  console.log(`Wrote ${OUT_FILE} (${(fs.statSync(OUT_FILE).size / 1024).toFixed(0)} KB, ${Object.keys(tt).length} stops)`);
 })().catch(e => { console.error(e.message); process.exit(1); });
