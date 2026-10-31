@@ -450,3 +450,11 @@ body.dark-mode .tt-next-hint.tt-arr {
     background: none;
 }
 
+
+/* Beta notice icon */
+.tt-title-row { position: relative; display: flex; align-items: center; gap: 10px; }
+.tt-title-row .page-title { margin: 0; }
+.tt-beta { display: inline-flex; align-items: center; font-size: 1.25rem; opacity: 0.7; cursor: help; outline: none; }
+.tt-beta:hover, .tt-beta:focus { opacity: 1; }
+.tt-beta::after { content: attr(data-tip); position: absolute; top: calc(100% + 10px); left: 0; width: max-content; max-width: min(260px, calc(100vw - 48px)); padding: 8px 12px; border-radius: 10px; background: #2a2420; color: #f0d1a9; border: 1px solid #574c47; font-size: 0.8rem; font-weight: 500; line-height: 1.35; box-shadow: 0 6px 18px rgba(0,0,0,0.3); opacity: 0; visibility: hidden; transform: translateY(-4px); transition: opacity .15s, transform .15s, visibility .15s; z-index: 50; pointer-events: none; }
+.tt-beta:hover::after, .tt-beta:focus::after { opacity: 1; visibility: visible; transform: none; }
