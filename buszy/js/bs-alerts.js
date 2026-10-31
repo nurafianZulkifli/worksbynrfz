@@ -24,20 +24,9 @@ function fetchAndUpdateAlerts(forceRefresh = false) {
     if (alertsFetchInProgress) return;
     
     alertsFetchInProgress = true;
-    const cached = JSON.parse(localStorage.getItem(ALERTS_CACHE_KEY) || 'null');
-    const cacheIsFresh = cached !== null && (Date.now() - cached.ts < ALERTS_CACHE_TTL);
-    
-    if (cacheIsFresh && !forceRefresh) {
-        const cachedData = JSON.parse(localStorage.getItem(ALERTS_API_DATA_KEY) || 'null');
-        if (cachedData) {
-            processAlertsData(cachedData);
-        }
-        alertsFetchInProgress = false;
-        return;
-    }
 
     fetch('https://bat-lta-9eb7bbf231a2.herokuapp.com/train-service-alerts', {
-        cache: forceRefresh ? 'no-cache' : 'default'
+        cache: 'no-store'
     })
         .then(r => r.json())
         .then(data => {

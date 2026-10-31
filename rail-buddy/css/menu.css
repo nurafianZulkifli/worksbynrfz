@@ -239,7 +239,7 @@ body.dark-mode .other-apps-heading {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 50%;
+    border-radius: 0%;
 }
 
 .other-apps-name {

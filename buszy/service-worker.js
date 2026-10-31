@@ -143,6 +143,24 @@ self.addEventListener('fetch', event => {
     return;
   }
   
+  // Network first for HTML/JS/CSS so updates aren't masked by stale cache
+  if (/\.(js|css|html)$/.test(url.pathname) || url.pathname.endsWith('/')) {
+    event.respondWith(
+      fetch(request).then(response => {
+        if (response && response.status === 200) {
+          const respCopy = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(request, respCopy));
+        }
+        return response;
+      }).catch(() => caches.match(request).then(cached => cached || new Response('Offline - content not available', {
+        status: 503,
+        statusText: 'Service Unavailable',
+        headers: new Headers({ 'Content-Type': 'text/plain' })
+      })))
+    );
+    return;
+  }
+
   // Cache first strategy
   event.respondWith(
     caches.match(request).then(response => {
