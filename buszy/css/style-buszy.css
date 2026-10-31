@@ -2452,12 +2452,12 @@ link[rel="apple-touch-icon"],
 link[rel="shortcut icon"],
 .favicon,
 .app-icon {
-    border-radius: 50%;
+    border-radius: 0%;
 }
 
 img[src*="icon"],
 img[src*="favicon"] {
-    border-radius: 50%;
+    border-radius: 0%;
 }
 
 /* ===== Nav scroll behaviour (matches nurafianzulkifli.com) ===== */

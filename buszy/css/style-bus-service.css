@@ -631,6 +631,63 @@ body.dark-mode .terminal-name a.terminal-link {
     gap: 0.5rem;
 }
 
+/* Desktop: search bar inside the navbar */
+@media (min-width: 995px) {
+    .navbar .stops-search-container {
+        flex: 1;
+        margin: 0 1.5rem;
+    }
+
+    .navbar .stops-search-wrapper {
+        padding: 0.4rem 1rem;
+        box-shadow: none;
+        background: rgba(0, 0, 0, 0.05);
+    }
+
+    body.dark-mode .navbar .stops-search-wrapper {
+        background: #1e2529;
+        border: 1px solid #3f4e57;
+    }
+}
+
+/* Mobile: float the search bar above the bottom nav */
+@media (max-width: 994px) {
+    .stops-search-container {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: calc(100px + env(safe-area-inset-bottom));
+        margin: 0;
+        padding: 0 20px;
+        z-index: 1030;
+        display: flex !important;
+        justify-content: center;
+        pointer-events: none;
+    }
+
+    .stops-search-container[style*="display: none"] {
+        display: none !important;
+    }
+
+    .stops-search-wrapper {
+        width: 100%;
+        max-width: 440px;
+        pointer-events: auto;
+        background: rgba(255, 255, 255, 0.85);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        backdrop-filter: blur(20px) saturate(180%);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    body.dark-mode .stops-search-wrapper {
+        background: rgba(30, 37, 41, 0.85);
+    }
+
+    .stops-section {
+        padding-bottom: 80px;
+    }
+}
+
 body.dark-mode .stops-search-wrapper {
     background-color: #1e2529;
     border: 2px solid #3f4e57;

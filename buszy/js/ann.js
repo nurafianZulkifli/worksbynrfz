@@ -350,21 +350,8 @@ if (document.readyState === 'loading') {
                 }
             }
 
-            // Check cache
-            const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
-            const cacheIsFresh = cached !== null && (Date.now() - cached.ts < CACHE_TTL);
-
-            // Show cached data if available
-            if (cacheIsFresh) {
-                const cachedData = JSON.parse(localStorage.getItem(DATA_KEY) || 'null');
-                if (cachedData) {
-                    processAlerts(cachedData);
-                    return; // Don't fetch again if cache is fresh
-                }
-            }
-
-            // Fetch only if cache is stale
-            fetch('https://bat-lta-9eb7bbf231a2.herokuapp.com/train-service-alerts')
+            // Always fetch fresh data; cache is only an offline fallback
+            fetch('https://bat-lta-9eb7bbf231a2.herokuapp.com/train-service-alerts', { cache: 'no-store' })
                 .then(r => r.json())
                 .then(data => {
                     localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now() }));
@@ -374,7 +361,10 @@ if (document.readyState === 'loading') {
                 .catch(err => {
                     console.error('Error fetching alerts:', err);
                     // Show error only if we have no cached fallback
-                    if (!cacheIsFresh && !JSON.parse(localStorage.getItem(DATA_KEY) || 'null')) {
+                    const fallback = JSON.parse(localStorage.getItem(DATA_KEY) || 'null');
+                    if (fallback) {
+                        processAlerts(fallback);
+                    } else {
                         showErrorMessage('Failed to load alerts. Please try again later.');
                     }
                 });

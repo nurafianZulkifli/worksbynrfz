@@ -150,12 +150,12 @@ function renderMkbfLineChart() {
       maintainAspectRatio: !isMobile,
       aspectRatio: isMobile ? undefined : 2.5,
       plugins: {
-        legend: { display: true, labels: { color: isDark ? '#fff' : '#222', font: { family: 'Onest, sans-serif', weight: 'bold' } } },
+        legend: { display: true, labels: { color: isDark ? '#fff' : '#222', font: { family: 'Outfit, sans-serif', weight: 'bold' } } },
         title: {
           display: false,
           text: 'Mean Distance Travelled between Delays > 5 min (train-km)\nMRT Lines - 12 Month Moving Average (MMA)',
           color: isDark ? '#fff' : '#222',
-          font: { size: 16, family: 'Onest, sans-serif', weight: 'bold' }
+          font: { size: 16, family: 'Outfit, sans-serif', weight: 'bold' }
         },
         tooltip: {
           backgroundColor: isDark ? '#222' : '#fff',
@@ -163,8 +163,8 @@ function renderMkbfLineChart() {
           bodyColor: isDark ? '#fff' : '#222',
           borderColor: isDark ? '#444' : '#ccc',
           borderWidth: 1,
-          titleFont: { family: 'Onest, sans-serif', weight: 'bold' },
-          bodyFont: { family: 'Onest, sans-serif' }
+          titleFont: { family: 'Outfit, sans-serif', weight: 'bold' },
+          bodyFont: { family: 'Outfit, sans-serif' }
         }
       },
       layout: {
@@ -176,14 +176,14 @@ function renderMkbfLineChart() {
           border: { color: isDark ? '#444' : '#ccc' },
           ticks: {
             color: isDark ? '#fff' : '#222',
-            font: { weight: 'bold', family: 'Onest, sans-serif' }
+            font: { weight: 'bold', family: 'Outfit, sans-serif' }
           }
         },
         y: {
           beginAtZero: true,
           ticks: {
             color: isDark ? '#fff' : '#222',
-            font: { family: 'Onest, sans-serif' },
+            font: { family: 'Outfit, sans-serif' },
             callback: function (value) {
               return value.toLocaleString();
             }

@@ -826,7 +826,7 @@ async function fetchBusArrivals() {
             return destinationCode;
         }
 
-        // Sort services by soonest NextBus arrival if setting is enabled
+        // Sort services by soOutfit NextBus arrival if setting is enabled
         const sortByArrival = localStorage.getItem('sortByArrival') !== 'disabled';
         if (sortByArrival) {
             data.Services.sort((a, b) => {

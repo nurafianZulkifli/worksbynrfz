@@ -1016,7 +1016,11 @@ function populateBusStops(stops, highlightStop = null) {
     const searchContainer = document.getElementById('stops-search-container');
     if (!searchContainer) return;
     searchContainer.style.display = 'block';
-
+    placeSearchBar();
+    if (!window._searchBarMqBound) {
+        window._searchBarMqBound = true;
+        window.matchMedia('(min-width: 995px)').addEventListener('change', placeSearchBar);
+    }
     // Reset search state (e.g. when direction changes)
     const searchInput = document.getElementById('stops-search-input');
     const clearButton = document.getElementById('stops-search-clear');
@@ -1053,6 +1057,20 @@ function populateBusStops(stops, highlightStop = null) {
             await updateStopsForDirection(lastActiveDirection);
         }
     });
+}
+
+// Desktop: search bar lives inside the navbar; mobile: floats above the bottom nav
+function placeSearchBar() {
+    const container = document.getElementById('stops-search-container');
+    const navbar = document.querySelector('.navbar-container .navbar');
+    const navList = document.getElementById('navbarNav');
+    const section = document.querySelector('.stops-section');
+    if (!container || !navbar || !navList || !section) return;
+    if (window.matchMedia('(min-width: 995px)').matches) {
+        if (container.parentNode !== navbar) navbar.insertBefore(container, navList);
+    } else if (container.parentNode !== section) {
+        section.insertBefore(container, document.getElementById('stops-container'));
+    }
 }
 
 // Populate short bus service links
