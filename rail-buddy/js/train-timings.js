@@ -305,8 +305,9 @@
         const waits = d.times.map(t => Math.max(0, Math.round(t - now.minutes)));
         const key = d.prefix + '|' + d.dest;
         const collapsed = cardState.has(key) ? !cardState.get(key) : !(waits.length && waits[0] <= SOON_MINUTES);
+        const trainIcon = ['BP', 'SK', 'PG'].includes(lineKey) ? 'fa-lta-lrt' : 'fa-lta-train';
         const times = waits.map(wait =>
-          `<div class="tt-time"><span class="tt-mins${wait === 0 ? ' tt-arr' : ''}">${wait === 0 ? 'Arr' : `${wait}<small> min${wait === 1 ? '' : 's'}</small>`}</span><i class="fa-kit fa-lta-train tt-train"></i></div>`
+          `<div class="tt-time"><span class="tt-mins${wait === 0 ? ' tt-arr' : ''}">${wait === 0 ? 'Arr' : `${wait}<small> min${wait === 1 ? '' : 's'}</small>`}</span><i class="fa-kit ${trainIcon} tt-train"></i></div>`
         ).join('');
         const next = waits.length ? (waits[0] === 0 ? 'Arr' : `${waits[0]} min${waits[0] === 1 ? '' : 's'}`) : '';
         const disrupted = lineKey && disruptions[lineKey];
