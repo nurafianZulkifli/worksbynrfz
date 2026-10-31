@@ -139,6 +139,19 @@
     return String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0');
   }
 
+  function timeFormat() {
+    return localStorage.getItem('rbTimeFormat') || 'mins';
+  }
+
+  function fmtTime(t, wait) {
+    const fmt = timeFormat();
+    if (fmt === 'mins') return wait === 0 ? 'Arr' : `${wait}<small> min${wait === 1 ? '' : 's'}</small>`;
+    if (fmt === '24-hour') return fmtClock(t);
+    const m = Math.floor(t) % 1440;
+    const h = Math.floor(m / 60);
+    return `${h % 12 || 12}:${String(m % 60).padStart(2, '0')}<small> ${h < 12 ? 'AM' : 'PM'}</small>`;
+  }
+
   // Next departures per destination. GTFS times past 24:00 belong to the previous service day,
   // so yesterday's services are also checked with a -1440 offset.
   function nextTrains(station, now) {
@@ -156,9 +169,13 @@
             // Sengkang/Punggol interchange LRT platforms are STC/PTC in the data
             const prefix = raw === 'STC' ? 'SE' : raw === 'PTC' ? 'PE' : (raw.length === 2 ? raw : '');
             // LRT loops share one destination name in both directions, so split them by platform
-            const plat = /^(BP|SE|SW|PE|PW)$/.test(prefix) ? ((stopId.match(/_([A-Z])$/) || [])[1] || '') : '';
+            let plat = /^(BP|SE|SW|PE|PW)$/.test(prefix) ? ((stopId.match(/_([A-Z])$/) || [])[1] || '') : '';
+            // Bukit Panjang LRT (except Choa Chu Kang, BP1) has its platforms the other way round: Platform 1 = B, Platform 2 = A
+            const svc = prefix === 'BP' && !/^BP1_/i.test(stopId) ? plat : '';
+            const loop = /^(SE|SW|PE|PW)\d/i.test(stopId) ? (plat === 'A' ? 'Outer Loop' : plat === 'B' ? 'Inner Loop' : '') : '';
+            if (prefix === 'BP' && !/^BP1_/i.test(stopId)) plat = plat === 'A' ? 'B' : plat === 'B' ? 'A' : plat;
             const key = prefix + '|' + dest + '|' + plat;
-            if (!byDest.has(key)) byDest.set(key, { dest, prefix, plat, set: new Set() });
+            if (!byDest.has(key)) byDest.set(key, { dest, prefix, plat, svc, loop, set: new Set() });
             byDest.get(key).set.add(Math.round(mins));
           }
         }
@@ -167,7 +184,9 @@
     const platCount = new Map();
     for (const d of byDest.values()) platCount.set(d.prefix + '|' + d.dest, (platCount.get(d.prefix + '|' + d.dest) || 0) + 1);
     return [...byDest.values()].map(d => ({
-      dest: d.plat && platCount.get(d.prefix + '|' + d.dest) > 1 ? `${d.dest} (Platform ${d.plat === 'A' ? 1 : d.plat === 'B' ? 2 : d.plat})` : d.dest,
+      dest: d.plat && platCount.get(d.prefix + '|' + d.dest) > 1
+        ? `${d.svc ? 'Service ' + d.svc : d.loop || d.dest} (Platform ${d.plat === 'A' ? 1 : d.plat === 'B' ? 2 : d.plat})`
+        : d.dest,
       prefix: d.prefix,
       times: [...d.set].sort((a, b) => a - b).slice(0, MAX_PER_DIRECTION)
     }))
@@ -306,10 +325,10 @@
         const key = d.prefix + '|' + d.dest;
         const collapsed = cardState.has(key) ? !cardState.get(key) : !(waits.length && waits[0] <= SOON_MINUTES);
         const trainIcon = ['BP', 'SK', 'PG'].includes(lineKey) ? 'fa-lta-lrt' : 'fa-lta-train';
-        const times = waits.map(wait =>
-          `<div class="tt-time"><span class="tt-mins${wait === 0 ? ' tt-arr' : ''}">${wait === 0 ? 'Arr' : `${wait}<small> min${wait === 1 ? '' : 's'}</small>`}</span><i class="fa-kit ${trainIcon} tt-train"></i></div>`
+        const times = waits.map((wait, i) =>
+          `<div class="tt-time"><span class="tt-mins${wait === 0 ? ' tt-arr' : ''}">${fmtTime(d.times[i], wait)}</span><i class="fa-kit ${trainIcon} tt-train"></i></div>`
         ).join('');
-        const next = waits.length ? (waits[0] === 0 ? 'Arr' : `${waits[0]} min${waits[0] === 1 ? '' : 's'}`) : '';
+        const next = waits.length ? fmtTime(d.times[0], waits[0]).replace(/<\/?small>/g, '') : '';
         const disrupted = lineKey && disruptions[lineKey];
         const flag = disrupted ? '<span class="tt-flag"><i class="fa-regular fa-diamond-exclamation"></i> Disrupted</span>' : '';
         return `<div class="tt-card${collapsed ? ' collapsed' : ''}${disrupted ? ' tt-disrupted' : ''}" data-key="${esc(key)}"><div class="tt-head" role="button" tabindex="0" aria-expanded="${!collapsed}">${badge}<span class="tt-dest"><i class="fa-solid fa-circle-arrow-right"></i> ${esc(d.dest)}${flag}</span><span class="tt-next-hint${waits[0] === 0 ? ' tt-arr' : ''}">${next}</span><i class="fa-regular fa-chevron-down tt-chevron"></i></div><div class="tt-times">${times || '<span class="tt-none">No more trains today.</span>'}</div></div>`;

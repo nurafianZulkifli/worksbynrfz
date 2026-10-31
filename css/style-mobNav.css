@@ -175,7 +175,7 @@ body.dark-mode .mobile-bottom-nav {
 
     /* Floating breadcrumb only on mobile/tablet */
     .breadcrumb-fixed-placeholder {
-        padding-top: 4em;
+        padding-top: 5em;
     }
 
     .breadcrumb.breadcrumb-fixed {

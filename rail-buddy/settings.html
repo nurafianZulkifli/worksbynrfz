@@ -56,15 +56,7 @@
     <div class="breadcrumb-fixed-placeholder">
         <nav aria-label="breadcrumb" style="margin-bottom:0;">
             <ol class="breadcrumb breadcrumb-fixed" id="floating-breadcrumb">
-                </li>
-                <li class="breadcrumb-item">
-                    <a href="menu.html"><i class="fa-regular fa-bars"></i>
-                    </a>
-                </li>
-                <li class="breadcrumb-item">
-                    <a href="settings.html"><i class="fa-regular fa-gear"></i>
-                    </a>
-                </li>
+                <li class="breadcrumb-item"><a href="./menu.html" class="breadcrumb-back" aria-label="Back"><i class="fa-regular fa-arrow-left"></i></a></li>
             </ol>
         </nav>
     </div>
@@ -156,14 +148,7 @@
                     <div class="breadcrumb-wrapper">
                         <nav aria-label="breadcrumb" class="breadcrumb-desktop" style="display:none;">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item">
-                                    <a href="menu.html"><i class="fa-regular fa-bars"></i>
-                                    </a>
-                                </li>
-                                <li class="breadcrumb-item">
-                                    <a href="settings.html"><i class="fa-regular fa-gear"></i>
-                                    </a>
-                                </li>
+                                <li class="breadcrumb-item"><a href="./menu.html" class="breadcrumb-back" aria-label="Back"><i class="fa-regular fa-arrow-left"></i></a></li>
                             </ol>
                         </nav>
                         <div class="page-title-wrapper">
@@ -185,6 +170,21 @@
     <section class="settings-content clearfix" style="padding-bottom: 5em;">
 
         <div class="container">
+
+            <div class="settings-page-section">
+                <div class="settings-section-title">
+                    <i class="fa-regular fa-clock"></i>
+                    Time Formats
+                </div>
+                <div class="theme-selector time-format-selector" role="group" aria-label="Time format">
+                    <button type="button" class="theme-selector-option" data-time-format="12-hour"
+                        aria-pressed="false">12 Hour</button>
+                    <button type="button" class="theme-selector-option" data-time-format="24-hour"
+                        aria-pressed="false">24 Hour</button>
+                    <button type="button" class="theme-selector-option" data-time-format="mins"
+                        aria-pressed="false">Mins</button>
+                </div>
+            </div>
 
             <div class="settings-page-section">
                 <div class="settings-section-title">

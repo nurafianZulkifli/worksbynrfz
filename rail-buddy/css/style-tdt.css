@@ -541,7 +541,7 @@ body.dark-mode .ann-header-btn {
 
     /* Floating breadcrumb only on mobile/tablet */
     .breadcrumb-fixed-placeholder {
-        padding-top: 4em;
+        padding-top: 5em;
     }
 
     .breadcrumb.breadcrumb-fixed {

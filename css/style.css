@@ -3038,7 +3038,7 @@ li.breadcrumb-item a:hover {
 
 .nav-link.active {
     background: #007093;
-    background: linear-gradient(47deg,rgba(105, 132, 166, 1) 0%, rgba(51, 151, 161, 1) 100%);
+    background: linear-gradient(47deg, rgba(105, 132, 166, 1) 0%, rgba(51, 151, 161, 1) 100%);
     box-shadow:
         inset 0 1px 0 rgba(255, 255, 255, 0.3),
         0 4px 12px rgba(0, 0, 0, 0.1);
@@ -3464,4 +3464,61 @@ img[src*="icon"],
 img[src*="favicon"],
 img[src*="logo"] {
     border-radius: 30%;
+}
+
+/* ------------------------------------------ Back button (replaces breadcrumbs) ------------------------------------------ */
+
+.breadcrumb .breadcrumb-item {
+    padding: 0;
+}
+
+li.breadcrumb-item a.breadcrumb-back,
+li.breadcrumb-item a.breadcrumb-back:hover,
+body.dark-mode li.breadcrumb-item a.breadcrumb-back,
+body.dark-mode li.breadcrumb-item a.breadcrumb-back:hover {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    margin: 0;
+    border-radius: 50%;
+    font-size: 1.1rem;
+    line-height: 1;
+    transition: background 0.2s ease, transform 0.15s ease;
+}
+
+li.breadcrumb-item a.breadcrumb-back {
+    background: rgba(0, 0, 0, 0.06);
+}
+
+body.dark-mode li.breadcrumb-item a.breadcrumb-back {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(25px);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+li.breadcrumb-item a.breadcrumb-back:active {
+    transform: scale(0.92);
+}
+
+/* Floating back button: the pill collapses into a circle */
+#floating-breadcrumb.breadcrumb-fixed {
+    padding: 0;
+    width: 44px;
+    height: 44px;
+    max-width: none;
+    justify-content: center;
+}
+
+#floating-breadcrumb.breadcrumb-fixed.at-top {
+    top: 20px;
+    padding: 0;
+    left: 20px;
+}
+
+#floating-breadcrumb.breadcrumb-fixed:not(.at-top) li.breadcrumb-item a.breadcrumb-back,
+body.dark-mode #floating-breadcrumb.breadcrumb-fixed:not(.at-top) li.breadcrumb-item a.breadcrumb-back {
+    background: transparent;
 }

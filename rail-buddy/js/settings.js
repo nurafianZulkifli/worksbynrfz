@@ -93,3 +93,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+// :: Time Format
+document.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.querySelectorAll('[data-time-format]');
+    const update = () => {
+        const selected = localStorage.getItem('rbTimeFormat') || 'mins';
+        buttons.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.timeFormat === selected)));
+    };
+    buttons.forEach(b => b.addEventListener('click', () => {
+        localStorage.setItem('rbTimeFormat', b.dataset.timeFormat);
+        update();
+    }));
+    update();
+});
