@@ -291,9 +291,9 @@
         return `<div class="tt-card${collapsed ? ' collapsed' : ''}${disrupted ? ' tt-disrupted' : ''}" data-key="${esc(key)}"><div class="tt-head" role="button" tabindex="0" aria-expanded="${!collapsed}">${badge}<span class="tt-dest"><i class="fa-solid fa-circle-arrow-right"></i> ${esc(d.dest)}${flag}</span><span class="tt-next-hint${waits[0] === 0 ? ' tt-arr' : ''}">${next}</span><i class="fa-regular fa-chevron-down tt-chevron"></i></div><div class="tt-times">${times || '<span class="tt-none">No more trains today.</span>'}</div></div>`;
       }).join('');
     }
-    $('ttMeta').textContent = data.generated
-      ? 'Timetable data generated ' + new Date(data.generated).toLocaleDateString('en-SG', { timeZone: TZ })
-      : '';
+    // $('ttMeta').textContent = data.generated
+    //   ? 'Timetable data generated ' + new Date(data.generated).toLocaleDateString('en-SG', { timeZone: TZ })
+    //   : '';
   }
 
   function selectStation(station) {
