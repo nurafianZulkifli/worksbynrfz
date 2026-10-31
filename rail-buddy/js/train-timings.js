@@ -152,15 +152,25 @@
           for (const t of decode(enc)) {
             const mins = t - offset;
             if (mins < now.minutes - 0.5) continue;
-            const prefix = (stopId.match(/^[A-Za-z]{2}(?=\d)/) || [''])[0].toUpperCase();
-            const key = prefix + '|' + dest;
-            if (!byDest.has(key)) byDest.set(key, { dest, prefix, set: new Set() });
+            const raw = (stopId.match(/^[A-Za-z]+(?=\d|_|$)/) || [''])[0].toUpperCase();
+            // Sengkang/Punggol interchange LRT platforms are STC/PTC in the data
+            const prefix = raw === 'STC' ? 'SE' : raw === 'PTC' ? 'PE' : (raw.length === 2 ? raw : '');
+            // LRT loops share one destination name in both directions, so split them by platform
+            const plat = /^(BP|SE|SW|PE|PW)$/.test(prefix) ? ((stopId.match(/_([A-Z])$/) || [])[1] || '') : '';
+            const key = prefix + '|' + dest + '|' + plat;
+            if (!byDest.has(key)) byDest.set(key, { dest, prefix, plat, set: new Set() });
             byDest.get(key).set.add(Math.round(mins));
           }
         }
       }
     }
-    return [...byDest.values()].map(d => ({ dest: d.dest, prefix: d.prefix, times: [...d.set].sort((a, b) => a - b).slice(0, MAX_PER_DIRECTION) }))
+    const platCount = new Map();
+    for (const d of byDest.values()) platCount.set(d.prefix + '|' + d.dest, (platCount.get(d.prefix + '|' + d.dest) || 0) + 1);
+    return [...byDest.values()].map(d => ({
+      dest: d.plat && platCount.get(d.prefix + '|' + d.dest) > 1 ? `${d.dest} (Platform ${d.plat === 'A' ? 1 : d.plat === 'B' ? 2 : d.plat})` : d.dest,
+      prefix: d.prefix,
+      times: [...d.set].sort((a, b) => a - b).slice(0, MAX_PER_DIRECTION)
+    }))
       .sort((a, b) => a.prefix.localeCompare(b.prefix) || a.dest.localeCompare(b.dest));
   }
 
@@ -290,7 +300,7 @@
       box.innerHTML = visible.map(d => {
         const lineKey = LINE_PREFIX_MAP[d.prefix];
         const badge = lineKey
-          ? `<span class="tt-badge" style="background:${LINE_COLORS[lineKey]};color:${lineKey === 'CCL' ? '#000' : '#fff'}">${lineKey}</span>`
+          ? `<img class="tt-badge tt-badge-img" src="assets/caplets/${lineKey}Cap.svg" alt="${lineKey}" onerror="this.outerHTML='<span class=&quot;tt-badge&quot; style=&quot;background:${LINE_COLORS[lineKey]};color:${lineKey === 'CCL' ? '#000' : '#fff'}&quot;>${lineKey}</span>'">`
           : '<span class="tt-badge tt-badge-generic"><i class="fa-regular fa-train-subway"></i></span>';
         const waits = d.times.map(t => Math.max(0, Math.round(t - now.minutes)));
         const key = d.prefix + '|' + d.dest;

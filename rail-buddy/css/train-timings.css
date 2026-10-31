@@ -439,3 +439,14 @@ body.dark-mode .tt-next-hint.tt-arr {
         margin-left: auto;
     }
 }
+
+/* Image caplet badge */
+.tt-badge.tt-badge-img {
+    min-width: 0;
+    padding: 0;
+    height: 40px;
+    width: auto;
+    border-radius: 0;
+    background: none;
+}
+
