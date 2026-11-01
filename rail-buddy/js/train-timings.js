@@ -325,7 +325,12 @@
         const key = d.prefix + '|' + d.dest;
         const collapsed = cardState.has(key) ? !cardState.get(key) : !(waits.length && waits[0] <= SOON_MINUTES);
         const trainIcon = ['BP', 'SK', 'PG'].includes(lineKey) ? 'fa-lta-lrt' : 'fa-lta-train';
-        const times = waits.map((wait, i) =>
+        let displayedWaits = waits;
+        if (waits[0] === 0) {
+          const longGapIndex = waits.findIndex((wait, i) => i > 0 && wait - waits[i - 1] > SOON_MINUTES);
+          if (longGapIndex > 0) displayedWaits = waits.slice(0, longGapIndex);
+        }
+        const times = displayedWaits.map((wait, i) =>
           `<div class="tt-time"><span class="tt-mins${wait === 0 ? ' tt-arr' : ''}">${fmtTime(d.times[i], wait)}</span><i class="fa-kit ${trainIcon} tt-train"></i></div>`
         ).join('');
         const next = waits.length ? fmtTime(d.times[0], waits[0]).replace(/<\/?small>/g, '') : '';

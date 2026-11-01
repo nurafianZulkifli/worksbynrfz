@@ -232,7 +232,7 @@
         function renderLoanList() {
             const list = document.getElementById('loanList');
             if (!state.loans.length) {
-                list.innerHTML = `<div style="padding:16px; text-align:center; color:#6b7280; font-size:0.85rem;">No loans yet. Add one below.</div>`;
+                list.innerHTML = `<div style="padding:16px; text-align:center; color:#9ca3af; font-size:0.85rem;">No loans yet. Add one below.</div>`;
                 return;
             }
             list.innerHTML = state.loans.map(l => {

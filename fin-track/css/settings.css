@@ -1,25 +1,359 @@
-   #sync-copy-btn {
-       background: none;
-       border: 1px solid #ccc;
-       border-radius: 8px;
-       padding: 0.45rem 0.65rem;
-       cursor: pointer;
-       font-size: 14px;
-       flex-shrink: 0;
-       color: #000;
-   }
+.settings-content {
+    padding-bottom: 9em;
+}
 
-   body.dark-mode #sync-copy-btn {
-       border-color: #555;
-       color: #fff;
-   }
+.settings-page-section {
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 34px;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
 
-   body.dark-mode #sync-code-input {
-       background: #252840;
-       color: #e0e0f0;
-       border-color: #3a3f58 !important;
-   }
+body.dark-mode .settings-page-section {
+    border: 1px solid #2b2b2b33;
+    background: #20251d;
+    color: #fff !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 4px 12px rgba(0, 0, 0, 0.1);
+}
 
-   body.dark-mode .page-header-section {
-       background: #121521 !important;
-   }
+.settings-section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+    color: #1f2937;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+body.dark-mode .settings-section-title {
+    color: #e0e0f0;
+}
+
+body.dark-mode .page-header-section {
+    background: #0a1108;
+}
+
+body.dark-mode .page-header-section hr {
+    border-color: #0a1108;
+}
+
+body.dark-mode .about-me-sum .wbnrfz_eicw {
+    background: #0a1108;
+    padding-bottom: 20px;
+}
+
+body.dark-mode .about-me-sum + hr {
+    margin: 0;
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+body.dark-mode .settings-content {
+    padding-top: 20px;
+}
+
+body.dark-mode .page-header-section .container-mobile-header {
+    background: #0a1108;
+}
+
+.settings-info-box {
+    margin-bottom: 12px;
+    padding: 12px 14px;
+    border: 1px solid #bfdbfe;
+    border-radius: 12px;
+    background: #eff6ff;
+    color: #1d4ed8;
+    font-size: 0.83rem;
+    font-weight: 500;
+}
+
+body.dark-mode .settings-info-box {
+    border-color: #6c885e;
+    background: #3c4637;
+    color: #9bbe8a;
+}
+
+.settings-form-group {
+    margin-bottom: 16px;
+}
+
+.settings-form-group label,
+.settings-control-label {
+    display: block;
+    margin-bottom: 6px;
+    color: #374151;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+body.dark-mode .settings-form-group label,
+body.dark-mode .settings-control-label {
+    color: #e0e0f0;
+}
+
+.settings-form-group input,
+.settings-form-group select,
+#sync-code-input {
+    width: 100%;
+    min-height: 46px;
+    padding: 10px 12px;
+    border: 1.5px solid #d1d5db;
+    border-radius: 12px;
+    background: #f9fafb;
+    color: #111827;
+    font: inherit;
+    font-size: 0.9rem;
+}
+
+.settings-form-group input:focus,
+.settings-form-group select:focus,
+#sync-code-input:focus {
+    outline: none;
+    border-color: #1f84a2;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(31, 132, 162, 0.14);
+}
+
+body.dark-mode .settings-form-group input,
+body.dark-mode .settings-form-group select,
+body.dark-mode #sync-code-input {
+    border-color: #6c885e;
+    background: #1c2019;
+    color: #e0e0e0;
+}
+
+.settings-form-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.settings-action-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 1.5rem;
+}
+
+.settings-action-buttons button,
+.import-export-btn,
+#sync-copy-btn {
+    min-height: 46px;
+    border-radius: 14px;
+    font: inherit;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+
+.settings-action-buttons button {
+    flex: 1;
+    padding: 12px;
+    border: 1.5px solid transparent;
+}
+
+.settings-action-buttons button:hover,
+.import-export-btn:hover {
+    transform: translateY(-1px);
+}
+
+.settings-btn-primary {
+    background: linear-gradient(90deg, #42c07e 0%, #239690 100%);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.settings-btn-danger {
+    border-color: #fca5a5 !important;
+    background: #ffc7c7;
+    color: #dc2626;
+}
+
+.theme-selector {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+    margin-top: 1rem;
+    padding: 6px;
+    border-radius: 24px;
+    background: #e5e8ed;
+}
+
+.theme-selector-option {
+    min-height: 44px;
+    padding: 0.65rem 0.5rem;
+    border: 0;
+    border-radius: 22px;
+    background: transparent;
+    color: #667085;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.theme-selector-option[aria-pressed="true"] {
+    background: #00658c33;
+    color: #1d313b;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.14);
+}
+
+.theme-selector-option:focus-visible,
+.settings-action-buttons button:focus-visible,
+.import-export-btn:focus-visible,
+#sync-copy-btn:focus-visible {
+    outline: 2px solid #1f84a2;
+    outline-offset: 2px;
+}
+
+body.dark-mode .theme-selector {
+    background: #2b3127;
+}
+
+body.dark-mode .theme-selector-option {
+    color: #b8c4cc;
+}
+
+body.dark-mode .theme-selector-option[aria-pressed="true"] {
+    background: #fff3;
+    color: #fff;
+}
+
+.import-export-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.import-export-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px;
+    border: 1.5px solid #d1d5db;
+    background: #e5e8ed;
+    color: #374151;
+    text-align: center;
+}
+
+.import-export-btn:hover {
+    border-color: #51a7be;
+    background: #f3f4f6;
+}
+
+body.dark-mode .import-export-btn {
+    border: 1px solid #2b2b2b33;
+    background: #555a52;
+    color: #e0e0f0;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+body.dark-mode .import-export-btn:hover {
+    background: #1b5e72;
+}
+
+.sync-generate-action {
+    margin-bottom: 12px;
+}
+
+.sync-generate-action .import-export-btn,
+.sync-disconnect-btn {
+    width: 100%;
+}
+
+.sync-divider-label {
+    margin: 0.75rem 0 0.5rem;
+    color: #888;
+    font-size: 13px;
+    text-align: center;
+}
+
+.sync-connect-row,
+.sync-code-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+#sync-code-input {
+    min-width: 0;
+    flex: 1;
+    font-family: monospace;
+    letter-spacing: 1px;
+}
+
+#sync-connect-btn {
+    min-width: unset;
+    flex: 0 0 auto;
+    padding-right: 1rem;
+    padding-left: 1rem;
+}
+
+.sync-code-title {
+    margin-bottom: 0.5rem;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.sync-code-row {
+    margin-bottom: 0.5rem;
+}
+
+#sync-code-display {
+    display: block;
+    min-width: 0;
+    flex: 1;
+    overflow-wrap: anywhere;
+    padding: 0.45rem 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1.1em;
+    letter-spacing: 3px;
+    text-align: center;
+}
+
+body.dark-mode #sync-code-display {
+    border-color: #555;
+}
+
+#sync-copy-btn {
+    display: grid;
+    width: 44px;
+    flex: 0 0 44px;
+    place-items: center;
+    padding: 0.45rem 0.65rem;
+    border: 1px solid #ccc;
+    background: transparent;
+    color: inherit;
+}
+
+body.dark-mode #sync-copy-btn {
+    border-color: #555;
+    color: #fff;
+}
+
+#sync-last-synced {
+    margin-bottom: 0.75rem;
+    color: #888;
+    font-size: 13px;
+}
+
+.sync-disconnect-btn {
+    margin-top: 0.75rem;
+    color: #dc2626;
+}
+
+body.dark-mode .sync-disconnect-btn {
+    color: #fca5a5;
+}
+
+@media (max-width: 575px) {
+    .settings-action-buttons {
+        flex-direction: column;
+    }
+
+    .import-export-buttons {
+        grid-template-columns: 1fr;
+    }
+}

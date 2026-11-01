@@ -1,8 +1,32 @@
 /* ------------------------------------------*/
 
+body.dark-mode {
+    background: #0a1108 !important;
+}
+
+body.dark-mode .navbar {
+    background: #20251dc0 !important;
+    backdrop-filter: blur(25px);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 50px;
+    padding: 10px 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: relative;
+    overflow: hidden;
+}
+
+body.dark-mode .nav-link:hover {
+    color: #fff;
+    transform: translateY(-2px);
+    background-color: #1b5e72;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
 /* Mobile: hide navbar */
 @media (max-width: 994px) {
-
     .navbar-container,
     body.dark-mode .navbar-container,
     .navbar,
@@ -38,9 +62,18 @@
 body.dark-mode #cv-ft,
 body.dark-mode #cv-rp {
     background:
-        linear-gradient(135deg, rgba(40, 124, 81, 0.82) 0%, rgba(16, 80, 77, 0.82) 100%),
+        linear-gradient(to bottom, rgba(40, 124, 81, 0.82) 0%, #0a1108 100%),
         url('../assets/hero-bg-dark.png') center center / cover no-repeat;
 }
+
+body.dark-mode .settings-content {
+    background: #0a1108;
+}
+
+body.dark-mode hr {
+    border-color: #fff !important;
+}
+
 
 /* Greeting */
 .ft-greeting {
@@ -87,13 +120,13 @@ body.dark-mode #cv-rp {
 body.dark-mode #cv-ft::before,
 body.dark-mode #cv-rp::before {
     background: linear-gradient(to bottom,
-            rgba(18, 21, 33, 0) 0%,
-            rgba(18, 21, 33, 0) 40%,
-            rgba(18, 21, 33, 0.3) 55%,
-            rgba(18, 21, 33, 0.6) 68%,
-            rgba(18, 21, 33, 0.85) 80%,
-            rgba(18, 21, 33, 1) 90%,
-            rgba(18, 21, 33, 1) 100%);
+            rgba(10, 17, 8, 0) 0%,
+            rgba(10, 17, 8, 0) 40%,
+            rgba(10, 17, 8, 0.3) 55%,
+            rgba(10, 17, 8, 0.6) 68%,
+            rgba(10, 17, 8, 0.85) 80%,
+            rgba(10, 17, 8, 1) 90%,
+            rgba(10, 17, 8, 1) 100%);
 }
 
 #cv-ft .container,
@@ -232,7 +265,7 @@ body.dark-mode .month-scroll-indicator:hover {
 }
 
 body.dark-mode .month-btn {
-    background-color: #393e53;
+    background-color: #444e3e;
     color: #ffffff;
 }
 
@@ -268,7 +301,7 @@ body.dark-mode .month-btn.active {
 }
 
 body.dark-mode .balance-card {
-    background: #1c1f2b;
+    background: #20251d;
     border: 1px solid #2b2b2b33;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
 }
@@ -343,7 +376,7 @@ body.dark-mode .balance-amount {
 }
 
 body.dark-mode .progress-wrap {
-    background: #2e3244;
+    background: #444e3e;
 }
 
 .ft-progress-bar {
@@ -743,7 +776,7 @@ body.dark-mode .empty-state {
 }
 
 body.dark-mode .ft-modal-content {
-    background: #1c1f2b;
+    background: #444e3e;
 }
 
 .overlay.open {
@@ -829,8 +862,8 @@ body.dark-mode .form-group label {
 
 body.dark-mode .form-group input,
 body.dark-mode .form-group select {
-    background: #252840;
-    border-color: #3a3f58;
+    background: #20251d;
+    border-color: #6c885e;
     color: #e0e0f0;
 }
 
@@ -842,7 +875,7 @@ body.dark-mode .form-group select {
 
 body.dark-mode .form-group input:focus,
 body.dark-mode .form-group select:focus {
-    background: #2e3250;
+    background: #33412d;
 }
 
 .form-row {
@@ -876,9 +909,9 @@ body.dark-mode .form-group select:focus {
 }
 
 body.dark-mode .type-btn {
-    background: #252840;
-    border-color: #3a3f58;
-    color: #a0a0b0;
+    background: #708662;
+    border-color: #b3d89d;
+    color: #fff;
 }
 
 .type-btn.active-debit {
@@ -949,9 +982,9 @@ body.dark-mode .type-btn.active-credit {
 }
 
 body.dark-mode .sht-btn-ghost {
-    background: #252840;
-    color: #e0e0f0;
-    border-color: #3a3f58;
+    color: #fff;
+    background: #5a6d4f;
+    border-color: #b3d89d;
 }
 
 .sht-btn-danger {
@@ -1056,8 +1089,8 @@ body.dark-mode .settings-info {
 }
 
 body.dark-mode .cmt-trigger-btn {
-    background: #252840;
-    border-color: #3a3f58;
+    background: #444e3e;
+    border-color: #6d8063;
     color: #e0e0f0;
 }
 
@@ -1392,8 +1425,8 @@ body.dark-mode .acct-dropdown-overlay {
 }
 
 body.dark-mode .acct-dropdown {
-    background: #1e2236;
-    border-color: #2e3455;
+    background: #444e3e;
+    border-color: #708067;
 }
 
 .acct-switcher-btn {
@@ -1446,7 +1479,7 @@ body.dark-mode .acct-dropdown {
 }
 
 body.dark-mode .acct-switcher-btn {
-    background-color: #393e53de;
+    background-color: #444e3e;
     border: 1px solid #2b2b2b33;
     color: #fff;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -1463,8 +1496,8 @@ body.dark-mode .acct-item:hover {
 }
 
 body.dark-mode .acct-item.active {
-    border-color: #51a7be;
-    background: #1a2440;
+    border-color: #8b9e80;
+    background: #293025;
 }
 
 .acct-item-icon {
@@ -2083,8 +2116,12 @@ body.dark-mode .guide-skip-btn {
 }
 
 body.dark-mode .about-me-summ {
-    background-color: transparent !important;
+    background-color: #0a1108 !important;
     transition: all 0.5s ease;
+}
+
+body.dark-mode .about-me-sum .wbnrfz_eicw {
+    box-shadow: none;
 }
 
 /* ===== MEDIA QUERIES ===== */
@@ -2136,12 +2173,12 @@ link[rel="apple-touch-icon"],
 link[rel="shortcut icon"],
 .favicon,
 .app-icon {
-    border-radius: 50%;
+    border-radius: 0%;
 }
 
 img[src*="icon"],
 img[src*="favicon"] {
-    border-radius: 50%;
+    border-radius: 0%;
 }
 
 @media (max-width: 768px) {
