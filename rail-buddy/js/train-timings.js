@@ -1,6 +1,6 @@
 (function () {
   const TZ = 'Asia/Singapore';
-  const MAX_PER_DIRECTION = 4;
+  const MAX_PER_DIRECTION = 2;
   const MAX_RESULTS = 8;
 
   let data = null;
