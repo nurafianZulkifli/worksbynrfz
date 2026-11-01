@@ -62,6 +62,8 @@
         document.documentElement.classList.toggle('ns-lock', open);
         document.body.classList.toggle('ns-results-open', open);
         document.body.classList.toggle('ns-dismissed', dismissed);
+        // A dismissed list is hidden, so don't keep its reserved space as an empty gap
+        if (resultsHome) resultsHome.style.display = mode && dismissed ? 'none' : '';
     }
     let prevCount = 0;
     function onResultsChange() {
