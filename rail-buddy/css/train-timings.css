@@ -195,8 +195,12 @@ body.dark-mode .tt-train {
 
 .tt-chevron {
     flex: none;
-    color: #607d96;
+    color: #000;
     transition: transform 0.2s ease;
+}
+
+body.dark-mode .tt-chevron {
+    color: #fff;
 }
 
 .tt-card.collapsed .tt-times {
