@@ -16,6 +16,11 @@
     padding: 0 0 1rem;
 }
 
+.stop-direction-arrow {
+    color: #7db603 !important;
+    font-size: 1.05rem !important;
+}
+
 .live-map-section {
     position: relative;
     margin-bottom: 1.25rem;
@@ -225,7 +230,7 @@ D
 
 .onboard-stops-list {
     display: grid;
-    gap: 1.75rem;
+    gap: 3rem;
     margin: 0;
     padding: 0 0 0 2.35rem;
     list-style: none;
@@ -282,11 +287,29 @@ body.dark-mode .current-stop-timings-link {
 .onboard-stops-list li:not(:last-child)::after {
     position: absolute;
     top: 1.75rem;
-    bottom: -1.8rem;
+    bottom: -3.05rem;
     left: -1.55rem;
     width: 4px;
-    background: #1f84a2;
+    /* Leave a gap where the arrow sits so the line doesn't show through its cutout */
+    background: linear-gradient(#1f84a2 0 .5rem, transparent .5rem 1.95rem, #1f84a2 1.95rem);
     content: '';
+}
+
+/* Arrow on each connector shows the direction of travel */
+.stop-direction-arrow {
+    position: absolute;
+    z-index: 1;
+    top: 2.075rem;
+    left: -1.55rem;
+    width: 1.8rem;
+    height: 1.8rem;
+    transform: translateX(calc(-50% + 2px));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1f84a2;
+    font-size: 1.4rem;
+    line-height: 1;
 }
 
 .full-route-link {
