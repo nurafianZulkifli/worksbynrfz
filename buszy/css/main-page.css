@@ -1541,6 +1541,12 @@
       }
   }
 
+  @media (display-mode: standalone) {
+      #cv-bat .hero-intro {
+          margin-top: 16px;
+      }
+  }
+
   @media (min-width: 995px) {
       .inline-search-view {
           top: 180px !important;

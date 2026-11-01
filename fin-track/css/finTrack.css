@@ -1486,8 +1486,8 @@ body.dark-mode .acct-switcher-btn {
 }
 
 body.dark-mode .acct-item {
-    background: #1e2236;
-    border-color: #2e3455;
+    background: #545f4e;
+    border-color: #8b9e80;
 }
 
 body.dark-mode .acct-item:hover {
