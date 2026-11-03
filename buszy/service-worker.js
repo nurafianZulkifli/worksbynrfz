@@ -15,14 +15,14 @@ const BASE_PATH = (() => {
 })();
 
 // Default cache version (fallback if version.json is unavailable)
-let CACHE_VERSION = 'v6.0.1';
+let CACHE_VERSION = 'v6.0.6';
 let CACHE_NAME = `buszy-cache-${CACHE_VERSION}`;
 
 // Fetch version from version.json
 async function loadCacheVersion() {
   try {
     const versionPath = BASE_PATH + 'js/version.json';
-    const response = await fetch(versionPath);
+    const response = await fetch(versionPath, { cache: 'no-store' });
     if (response.ok) {
       const data = await response.json();
       const version = data.buszy || '4.5.2';

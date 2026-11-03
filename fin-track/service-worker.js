@@ -15,17 +15,17 @@ const BASE_PATH = (() => {
 })();
 
 // Default cache version (fallback if version.json is unavailable)
-let CACHE_VERSION = 'v1.1.0';
+let CACHE_VERSION = 'v2.1.6';
 let CACHE_NAME = `fintrack-cache-${CACHE_VERSION}`;
 
 // Fetch version from version.json
 async function loadCacheVersion() {
   try {
     const versionPath = BASE_PATH + 'js/version.json';
-    const response = await fetch(versionPath);
+    const response = await fetch(versionPath, { cache: 'no-store' });
     if (response.ok) {
       const data = await response.json();
-      const version = data.fintrack || '1.0.0';
+      const version = data['fin-track'] || '2.1.6';
       CACHE_VERSION = `v${version}`;
       CACHE_NAME = `fintrack-cache-${CACHE_VERSION}`;
       console.log('[FinTrack SW] Cache version loaded:', CACHE_VERSION);
