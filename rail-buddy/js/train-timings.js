@@ -2,12 +2,14 @@
   const TZ = 'Asia/Singapore';
   const MAX_PER_DIRECTION = 2;
   const MAX_RESULTS = 8;
+  const ARR_DELAY_MS = 25000;
 
   let data = null;
   let stations = []; // [{ name, stopIds }]
   let selected = null;
   let refreshTimer = null;
   let clockOffset = 0; // server time minus device time, so a wrong device clock doesn't skew the timings
+  const arrTriggerTimes = new Map();
 
   async function syncClock() {
     try {
@@ -21,7 +23,11 @@
   function scheduleTick() {
     clearTimeout(refreshTimer);
     const msToNextMinute = 60000 - ((Date.now() + clockOffset) % 60000);
-    refreshTimer = setTimeout(() => { renderStation(); scheduleTick(); }, msToNextMinute + 250);
+    const msToArr = Math.min(...arrTriggerTimes.values()) - Date.now();
+    const delay = Number.isFinite(msToArr) && msToArr > 0
+      ? Math.min(msToNextMinute + 250, msToArr)
+      : msToNextMinute + 250;
+    refreshTimer = setTimeout(() => { renderStation(); scheduleTick(); }, delay);
   }
 
   async function refreshNow() {
@@ -299,9 +305,21 @@
   function renderStation() {
     if (!selected) return;
     const now = sgNow();
+    const minutesFormat = timeFormat() === 'mins';
     $('flLink').href = 'first-last.html?station=' + encodeURIComponent(selected.name);
     $('stationSubtitle').textContent = 'Scheduled departures (timetable, not live)';
     const dirs = nextTrains(selected, now);
+    const activeArrKeys = new Set();
+    for (const d of minutesFormat ? dirs : []) {
+      for (const t of d.times) {
+        if (Math.max(0, Math.round(t - now.minutes)) === 1) {
+          activeArrKeys.add(`${selected.name}|${d.prefix}|${d.dest}|${t}`);
+        }
+      }
+    }
+    for (const key of arrTriggerTimes.keys()) {
+      if (!activeArrKeys.has(key)) arrTriggerTimes.delete(key);
+    }
     renderBanner([...new Set(dirs.map(d => LINE_PREFIX_MAP[d.prefix]).filter(Boolean))]);
     renderFilter(dirs);
     // Put the selected line's code first in the title caplet (e.g. "BP 1 | NS 4" vs "NS 4 | BP 1")
@@ -321,7 +339,17 @@
         const badge = lineKey
           ? `<img class="tt-badge tt-badge-img" src="assets/caplets/${lineKey}Cap.png" alt="${lineKey}" onerror="this.outerHTML='<span class=&quot;tt-badge&quot; style=&quot;background:${LINE_COLORS[lineKey]};color:${lineKey === 'CCL' ? '#000' : '#fff'}&quot;>${lineKey}</span>'">`
           : '<span class="tt-badge tt-badge-generic"><i class="fa-regular fa-train-subway"></i></span>';
-        const waits = d.times.map(t => Math.max(0, Math.round(t - now.minutes)));
+        const nowMs = Date.now();
+        const waits = d.times.map(t => {
+          const wait = Math.max(0, Math.round(t - now.minutes));
+          const arrKey = `${selected.name}|${d.prefix}|${d.dest}|${t}`;
+          if (!minutesFormat || wait !== 1) {
+            arrTriggerTimes.delete(arrKey);
+            return wait;
+          }
+          if (!arrTriggerTimes.has(arrKey)) arrTriggerTimes.set(arrKey, nowMs + ARR_DELAY_MS);
+          return nowMs >= arrTriggerTimes.get(arrKey) ? 0 : wait;
+        });
         const key = d.prefix + '|' + d.dest;
         const collapsed = cardState.has(key) ? !cardState.get(key) : !(waits.length && waits[0] <= SOON_MINUTES);
         const trainIcon = ['BP', 'SK', 'PG'].includes(lineKey) ? 'fa-lta-lrt' : 'fa-lta-train';
@@ -357,6 +385,7 @@
 
   function selectStation(station) {
     selected = station;
+    arrTriggerTimes.clear();
     searchInput.value = station.name;
     clearBtn.classList.add('visible');
     results.innerHTML = '';
@@ -410,6 +439,7 @@
       searchInput.value = '';
       showResults('');
       selected = null;
+      arrTriggerTimes.clear();
       clearTimeout(refreshTimer);
       contentSection.style.display = 'none';
       $('ttToolbar').hidden = true;
