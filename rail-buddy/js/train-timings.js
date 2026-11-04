@@ -19,14 +19,14 @@
     } catch (e) { /* keep the previous offset */ }
   }
 
-  // Re-render on every minute boundary (timers are throttled in background tabs, so also re-sync on wake)
+  // Re-render on every 30-second boundary (timers are throttled in background tabs, so also re-sync on wake)
   function scheduleTick() {
     clearTimeout(refreshTimer);
-    const msToNextMinute = 60000 - ((Date.now() + clockOffset) % 60000);
+    const msToNextHalfMinute = 30000 - ((Date.now() + clockOffset) % 30000);
     const msToArr = Math.min(...arrTriggerTimes.values()) - Date.now();
     const delay = Number.isFinite(msToArr) && msToArr > 0
-      ? Math.min(msToNextMinute + 250, msToArr)
-      : msToNextMinute + 250;
+      ? Math.min(msToNextHalfMinute + 250, msToArr)
+      : msToNextHalfMinute + 250;
     refreshTimer = setTimeout(() => { renderStation(); scheduleTick(); }, delay);
   }
 
@@ -312,7 +312,7 @@
     const activeArrKeys = new Set();
     for (const d of minutesFormat ? dirs : []) {
       for (const t of d.times) {
-        if (Math.max(0, Math.round(t - now.minutes)) === 1) {
+        if (Math.max(0, Math.floor(t - now.minutes)) === 1) {
           activeArrKeys.add(`${selected.name}|${d.prefix}|${d.dest}|${t}`);
         }
       }
@@ -341,7 +341,7 @@
           : '<span class="tt-badge tt-badge-generic"><i class="fa-regular fa-train-subway"></i></span>';
         const nowMs = Date.now();
         const waits = d.times.map(t => {
-          const wait = Math.max(0, Math.round(t - now.minutes));
+          const wait = Math.max(0, Math.floor(t - now.minutes));
           const arrKey = `${selected.name}|${d.prefix}|${d.dest}|${t}`;
           if (!minutesFormat || wait !== 1) {
             arrTriggerTimes.delete(arrKey);
