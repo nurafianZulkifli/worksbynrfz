@@ -234,7 +234,7 @@
             const code = smrtStationCodes[stationData.station];
             const titleCodes = (code || '').split(/[\/\s]+/).filter(c => /^[A-Za-z]{2}\d+$/.test(c));
             document.getElementById('stationTitle').innerHTML = titleCodes.length > 0
-                ? `${renderCodeCaplet(titleCodes)} ${stationData.station}`
+                ? `${renderCodeCaplet(titleCodes)}<div style="margin-top: 8px;">${stationData.station}</div>`
                 : stationData.station;
             document.getElementById('stationSubtitle').textContent = `Last updated: ${new Date(stationData.scraped_at).toLocaleDateString('en-SG')}`;
 
@@ -262,7 +262,7 @@
             // SBS station strings look like "DT1 Bukit Panjang", "DT 1 Bukit Panjang" or "East Loop"
             const codeMatch = stationData.station.match(/^([A-Za-z]{2})\s*(\d+)\s+(.+)$/);
             document.getElementById('stationTitle').innerHTML = codeMatch
-                ? `${renderCodeCaplet([`${codeMatch[1]}${codeMatch[2]}`])} ${codeMatch[3]}`
+                ? `${renderCodeCaplet([`${codeMatch[1]}${codeMatch[2]}`])}<div style="margin-top: 8px;">${codeMatch[3]}</div>`
                 : stationData.station;
             
             // Get the latest scraped_at timestamp from directions
