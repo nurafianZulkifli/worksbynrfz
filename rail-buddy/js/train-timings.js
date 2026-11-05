@@ -2,7 +2,7 @@
   const TZ = 'Asia/Singapore';
   const MAX_PER_DIRECTION = 2;
   const MAX_RESULTS = 8;
-  const ARR_DELAY_MS = 25000;
+  const ARR_DELAY_MS = 45000;
 
   let data = null;
   let stations = []; // [{ name, stopIds }]
