@@ -15,7 +15,7 @@ const BASE_PATH = (() => {
 })();
 
 // Default cache version (fallback if version.json is unavailable)
-let CACHE_VERSION = 'v6.0.6';
+let CACHE_VERSION = 'v6.0.7';
 let CACHE_NAME = `rail-buddy-cache-${CACHE_VERSION}`;
 
 // Fetch version from version.json

@@ -3,37 +3,55 @@
   const MAX_PER_DIRECTION = 2;
   const MAX_RESULTS = 8;
   const ARR_DELAY_MS = 45000;
+  const CLOCK_SYNC_TIMEOUT_MS = 8000;
 
   let data = null;
   let stations = []; // [{ name, stopIds }]
   let selected = null;
   let refreshTimer = null;
   let clockOffset = 0; // server time minus device time, so a wrong device clock doesn't skew the timings
+  let clockSyncPending = false;
   const arrTriggerTimes = new Map();
 
   async function syncClock() {
+    if (clockSyncPending) return;
+    clockSyncPending = true;
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), CLOCK_SYNC_TIMEOUT_MS);
     try {
-      const res = await fetch(window.location.pathname, { method: 'HEAD', cache: 'no-store' });
+      const res = await fetch(window.location.pathname, { method: 'HEAD', cache: 'no-store', signal: controller.signal });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const serverTime = Date.parse(res.headers.get('Date'));
-      if (!Number.isNaN(serverTime)) clockOffset = serverTime - Date.now();
-    } catch (e) { /* keep the previous offset */ }
+      if (Number.isNaN(serverTime)) throw new Error('Missing or invalid server Date header');
+      clockOffset = serverTime - Date.now();
+    } catch (e) {
+      console.warn('Could not synchronize the train timings clock:', e);
+      return;
+    } finally {
+      clearTimeout(timeout);
+      clockSyncPending = false;
+    }
+    renderStation();
+    scheduleTick();
   }
 
-  // Re-render on every 30-second boundary (timers are throttled in background tabs, so also re-sync on wake)
+  // Re-render on every 30-second boundary; also refresh immediately on wake.
   function scheduleTick() {
     clearTimeout(refreshTimer);
+    if (!selected) return;
     const msToNextHalfMinute = 30000 - ((Date.now() + clockOffset) % 30000);
-    const msToArr = Math.min(...arrTriggerTimes.values()) - Date.now();
+    const now = Date.now();
+    const msToArr = Math.min(...[...arrTriggerTimes.values()].filter(time => time > now)) - now;
     const delay = Number.isFinite(msToArr) && msToArr > 0
       ? Math.min(msToNextHalfMinute + 250, msToArr)
       : msToNextHalfMinute + 250;
     refreshTimer = setTimeout(() => { renderStation(); scheduleTick(); }, delay);
   }
 
-  async function refreshNow() {
-    await syncClock();
+  function refreshNow() {
     renderStation();
     scheduleTick();
+    syncClock();
   }
   const LINE_PREFIX_MAP = {
     NS: 'NSL', EW: 'EWL', CG: 'EWL', CC: 'CCL', CE: 'CCL',
@@ -458,7 +476,8 @@
   window.addEventListener('focus', refreshNow);
   window.addEventListener('pageshow', refreshNow);
   window.addEventListener('online', refreshNow);
-  syncClock().then(init);
+  syncClock();
+  init();
   loadAlerts();
-  setInterval(loadAlerts, 5 * 60 * 1000);
+  setInterval(() => { refreshNow(); loadAlerts(); }, 5 * 60 * 1000);
 })();
