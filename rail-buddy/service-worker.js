@@ -181,7 +181,8 @@ self.addEventListener('fetch', event => {
 // Determine if URL should be cached
 function shouldCache(url) {
   const cacheableExtensions = ['.js', '.css', '.png', '.jpg', '.jpeg', '.svg', '.gif', '.json'];
-  return cacheableExtensions.some(ext => url.endsWith(ext)) || url.endsWith('/');
+  const pathname = new URL(url).pathname;
+  return cacheableExtensions.some(ext => pathname.endsWith(ext)) || pathname.endsWith('/');
 }
 
 // Message handler

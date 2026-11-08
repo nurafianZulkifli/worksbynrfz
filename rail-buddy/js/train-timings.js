@@ -2,7 +2,6 @@
   const TZ = 'Asia/Singapore';
   const MAX_PER_DIRECTION = 2;
   const MAX_RESULTS = 8;
-  const ARR_DELAY_MS = 45000;
   const CLOCK_SYNC_TIMEOUT_MS = 8000;
 
   let data = null;
@@ -11,7 +10,6 @@
   let refreshTimer = null;
   let clockOffset = 0; // server time minus device time, so a wrong device clock doesn't skew the timings
   let clockSyncPending = false;
-  const arrTriggerTimes = new Map();
 
   async function syncClock() {
     if (clockSyncPending) return;
@@ -35,16 +33,13 @@
     scheduleTick();
   }
 
-  // Re-render on every 30-second boundary; also refresh immediately on wake.
+  // Countdown changes at :00, :30 and :55; expired departures disappear at :31.
   function scheduleTick() {
     clearTimeout(refreshTimer);
     if (!selected) return;
-    const msToNextHalfMinute = 30000 - ((Date.now() + clockOffset) % 30000);
-    const now = Date.now();
-    const msToArr = Math.min(...[...arrTriggerTimes.values()].filter(time => time > now)) - now;
-    const delay = Number.isFinite(msToArr) && msToArr > 0
-      ? Math.min(msToNextHalfMinute + 250, msToArr)
-      : msToNextHalfMinute + 250;
+    const msIntoMinute = ((Date.now() + clockOffset) % 60000 + 60000) % 60000;
+    const nextBoundary = [0, 30000, 31000, 55000, 60000].find(ms => ms > msIntoMinute);
+    const delay = nextBoundary - msIntoMinute + 20;
     refreshTimer = setTimeout(() => { renderStation(); scheduleTick(); }, delay);
   }
 
@@ -174,6 +169,14 @@
     const m = Math.floor(t) % 1440;
     const h = Math.floor(m / 60);
     return `${h % 12 || 12}:${String(m % 60).padStart(2, '0')}<small> ${h < 12 ? 'AM' : 'PM'}</small>`;
+  }
+
+  function minutesWait(t, nowMinutes) {
+    const seconds = Math.round((t - nowMinutes) * 60);
+    // At 2 minutes remaining, show 2 for 30 seconds, then 1 for 25 seconds.
+    if (seconds <= 65) return 0;
+    if (seconds <= 90) return 1;
+    return Math.ceil(seconds / 60);
   }
 
   // Next departures per destination. GTFS times past 24:00 belong to the previous service day,
@@ -327,17 +330,6 @@
     $('flLink').href = 'first-last.html?station=' + encodeURIComponent(selected.name);
     $('stationSubtitle').textContent = 'Scheduled departures (timetable, not live)';
     const dirs = nextTrains(selected, now);
-    const activeArrKeys = new Set();
-    for (const d of minutesFormat ? dirs : []) {
-      for (const t of d.times) {
-        if (Math.max(0, Math.floor(t - now.minutes)) === 1) {
-          activeArrKeys.add(`${selected.name}|${d.prefix}|${d.dest}|${t}`);
-        }
-      }
-    }
-    for (const key of arrTriggerTimes.keys()) {
-      if (!activeArrKeys.has(key)) arrTriggerTimes.delete(key);
-    }
     renderBanner([...new Set(dirs.map(d => LINE_PREFIX_MAP[d.prefix]).filter(Boolean))]);
     renderFilter(dirs);
     // Put the selected line's code first in the title caplet (e.g. "BP 1 | NS 4" vs "NS 4 | BP 1")
@@ -357,17 +349,9 @@
         const badge = lineKey
           ? `<img class="tt-badge tt-badge-img" src="assets/caplets/${lineKey}Cap.png" alt="${lineKey}" onerror="this.outerHTML='<span class=&quot;tt-badge&quot; style=&quot;background:${LINE_COLORS[lineKey]};color:${lineKey === 'CCL' ? '#000' : '#fff'}&quot;>${lineKey}</span>'">`
           : '<span class="tt-badge tt-badge-generic"><i class="fa-regular fa-train-subway"></i></span>';
-        const nowMs = Date.now();
-        const waits = d.times.map(t => {
-          const wait = Math.max(0, Math.floor(t - now.minutes));
-          const arrKey = `${selected.name}|${d.prefix}|${d.dest}|${t}`;
-          if (!minutesFormat || wait !== 1) {
-            arrTriggerTimes.delete(arrKey);
-            return wait;
-          }
-          if (!arrTriggerTimes.has(arrKey)) arrTriggerTimes.set(arrKey, nowMs + ARR_DELAY_MS);
-          return nowMs >= arrTriggerTimes.get(arrKey) ? 0 : wait;
-        });
+        const waits = d.times.map(t => minutesFormat
+          ? minutesWait(t, now.minutes)
+          : Math.max(0, Math.floor(t - now.minutes)));
         const key = d.prefix + '|' + d.dest;
         const collapsed = cardState.has(key) ? !cardState.get(key) : !(waits.length && waits[0] <= SOON_MINUTES);
         const trainIcon = ['BP', 'SK', 'PG'].includes(lineKey) ? 'fa-lta-lrt' : 'fa-lta-train';
@@ -403,7 +387,6 @@
 
   function selectStation(station) {
     selected = station;
-    arrTriggerTimes.clear();
     searchInput.value = station.name;
     clearBtn.classList.add('visible');
     results.innerHTML = '';
@@ -457,7 +440,6 @@
       searchInput.value = '';
       showResults('');
       selected = null;
-      arrTriggerTimes.clear();
       clearTimeout(refreshTimer);
       contentSection.style.display = 'none';
       $('ttToolbar').hidden = true;
