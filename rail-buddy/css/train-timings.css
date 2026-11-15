@@ -312,6 +312,10 @@ body.dark-mode .tt-next-hint.tt-arr {
     word-break: break-word;
 }
 
+body.dark-mode .tt-banner:not(.tt-banner-major) strong {
+    color: #000;
+}
+
 .tt-flag {
     display: inline-block;
     margin-left: 10px;
