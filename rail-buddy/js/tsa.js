@@ -30,9 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
   })();
   const FALLBACK_API_SERVER = 'https://bat-lta-9eb7bbf231a2.herokuapp.com';
 
-  const ALERTS_CACHE_KEY = 'railbuddy_tsa_alerts_cache';
-  const ALERTS_DATA_KEY = 'railbuddy_tsa_alerts_data';
-  const CACHE_TTL = 30 * 60 * 1000; // 30 minutes
+  const REFRESH_INTERVAL = 5 * 60 * 1000;
 
   function getAlerts(data) {
     if (Array.isArray(data)) return data;
@@ -40,12 +38,19 @@ document.addEventListener('DOMContentLoaded', function() {
     if (Array.isArray(data?.data)) return data.data;
     if (data?.value && typeof data.value === 'object') return [data.value];
     if (data?.data && typeof data.data === 'object') return [data.data];
-    return [];
+    if (data && typeof data === 'object' && 'Status' in data) return [data];
+    return null;
   }
 
   function processAlerts(data, timings) {
     const alerts = getAlerts(data);
-    if (!alerts.length) return false;
+    if (!alerts) throw new Error('Invalid train service alerts response');
+    document.querySelectorAll('.alert-message-box').forEach(box => box.remove());
+    document.querySelectorAll('.custom-list-item .status-icon').forEach(icon => {
+      icon.style.background = '';
+      icon.style.color = '';
+      icon.innerHTML = '<i class="fa-regular fa-check"></i>';
+    });
     // Map line names to codes used in your HTML
     const lineMap = {
       'North-South Line': 'NSL',
@@ -166,9 +171,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       }
     });
-    // Add styles for alert message box
-    const style = document.createElement('style');
-    style.innerHTML = `
+  }
+
+  // Add styles for alert message box
+  const style = document.createElement('style');
+  style.innerHTML = `
     .alert-message-box {
       background: #f8f8f8;
       border-radius: 40px;
@@ -192,47 +199,33 @@ document.addEventListener('DOMContentLoaded', function() {
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
     }
     `;
-    document.head.appendChild(style);
-    return true;
-  }
+  document.head.appendChild(style);
 
   // Load train timings
   fetch('json/ft-lt.json').then(r => r.json()).then(timings => {
-    // Check alerts cache
-    let cached = null;
-    try { cached = JSON.parse(localStorage.getItem(ALERTS_CACHE_KEY) || 'null'); } catch (error) { cached = null; }
-    const cacheIsFresh = cached !== null && (Date.now() - cached.ts < CACHE_TTL);
+    const fetchAlerts = (server, allowFallback = true) => fetch(`${server}/train-service-alerts`)
+      .then(response => {
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return response.json();
+      })
+      .catch(error => {
+        if (allowFallback && server !== FALLBACK_API_SERVER) {
+          return fetchAlerts(FALLBACK_API_SERVER, false);
+        }
+        throw error;
+      });
 
-    // Show cached alerts if available
-    let hasUsableCachedAlerts = false;
-    if (cacheIsFresh) {
-      let cachedData = null;
-      try { cachedData = JSON.parse(localStorage.getItem(ALERTS_DATA_KEY) || 'null'); } catch (error) { cachedData = null; }
-      hasUsableCachedAlerts = Boolean(cachedData && processAlerts(cachedData, timings));
-    }
-
-    // Fetch alerts when the cache is stale, missing, or unusable.
-    if (!hasUsableCachedAlerts) {
-      const fetchAlerts = (server, allowFallback = true) => fetch(`${server}/train-service-alerts`)
-        .then(response => {
-          if (!response.ok) throw new Error(`HTTP ${response.status}`);
-          return response.json();
-        })
-        .catch(error => {
-          if (allowFallback && server !== FALLBACK_API_SERVER) {
-            return fetchAlerts(FALLBACK_API_SERVER, false);
-          }
-          throw error;
-        });
-
+    let loading = false;
+    function refreshAlerts() {
+      if (loading) return;
+      loading = true;
       fetchAlerts(API_SERVER)
-        .then(data => {
-          if (processAlerts(data, timings)) {
-            localStorage.setItem(ALERTS_CACHE_KEY, JSON.stringify({ ts: Date.now() }));
-            localStorage.setItem(ALERTS_DATA_KEY, JSON.stringify(data));
-          }
-        })
-        .catch(err => console.warn('[RailBuddy] Train service alerts unavailable:', err));
+        .then(data => processAlerts(data, timings))
+        .catch(err => console.warn('[RailBuddy] Train service alerts unavailable:', err))
+        .finally(() => { loading = false; });
     }
-  }).catch(err => {});
+
+    refreshAlerts();
+    setInterval(refreshAlerts, REFRESH_INTERVAL);
+  }).catch(err => console.warn('[RailBuddy] Train operating hours unavailable:', err));
 });
