@@ -1,5 +1,19 @@
 [
-        {
+    {
+        "type": "Delay",
+        "title": "NSL Minor Delay - Between Bishan and Woodlands",
+        "line": "NSL",
+        "from": "Bishan",
+        "to": "Woodlands",
+        "oneWay": false,
+        "start": "2026-11-15",
+        "end": "2026-11-15",
+        "status": "Resolved",
+        "tags": [
+            "Delay"
+        ]
+    },
+    {
         "type": "Delay",
         "title": "EWL Minor Delay - Buona Vista to Outram Park (Towards Pasir Ris)",
         "line": "EWL",
