@@ -328,6 +328,10 @@ body.dark-mode .tt-banner:not(.tt-banner-major) strong {
     white-space: nowrap;
 }
 
+body.dark-mode .tt-flag {
+    color: #000;
+}
+
 .tt-card.tt-disrupted .tt-times {
     opacity: 0.45;
     filter: grayscale(1);
