@@ -38,6 +38,11 @@ body.dark-mode .navbar .search-input {
     to { opacity: 1; transform: none; }
 }
 
+@keyframes nsMobileIn {
+    from { opacity: 1; transform: translateY(8px) scale(0.97); }
+    to { opacity: 1; transform: none; }
+}
+
 @keyframes nsOut {
     from { opacity: 0; transform: translateY(-8px); }
     to { opacity: 1; transform: none; }
@@ -152,8 +157,13 @@ html.ns-lock body {
     flex: none;
     height: 40px;
     margin: 0;
+    background-color: #fff;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
     border-radius: 25px;
+}
+
+.ns-mobile-dock .search-input-wrapper.ns-in {
+    animation-name: nsMobileIn;
 }
 
 .ns-mobile-dock .search-input {
@@ -194,6 +204,10 @@ html.ns-lock body {
 
 body.dark-mode .ns-mobile-dock .search-input {
     color: #fff;
+}
+
+body.dark-mode .ns-mobile-dock .search-input-wrapper {
+    background-color: #1d1712;
 }
 
 body.dark-mode .ns-mobile-dock .fl-station-results {
