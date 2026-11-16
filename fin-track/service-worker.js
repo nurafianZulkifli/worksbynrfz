@@ -16,7 +16,7 @@ const BASE_PATH = (() => {
 
 // Default cache version (fallback if version.json is unavailable)
 let CACHE_VERSION = 'v2.1.6';
-let CACHE_NAME = `fintrack-cache-${CACHE_VERSION}`;
+let CACHE_NAME = `fintrack-cache-${CACHE_VERSION}-glass1`;
 
 // Fetch version from version.json
 async function loadCacheVersion() {
@@ -27,7 +27,7 @@ async function loadCacheVersion() {
       const data = await response.json();
       const version = data['fin-track'] || '2.1.6';
       CACHE_VERSION = `v${version}`;
-      CACHE_NAME = `fintrack-cache-${CACHE_VERSION}`;
+      CACHE_NAME = `fintrack-cache-${CACHE_VERSION}-glass1`;
       console.log('[FinTrack SW] Cache version loaded:', CACHE_VERSION);
     }
   } catch (error) {
@@ -53,12 +53,14 @@ const STATIC_ASSETS = [
   
   // FinTrack scripts
   buildPath('fin-track/js/finTrack.js'),
+  buildPath('fin-track/js/mob-navtabs.js'),
   
   // FinTrack assets
   buildPath('fin-track/assets/'),
   
   // Shared utilities
   buildPath('js/utils.js'),
+  buildPath('js/liquid-glass.js'),
   buildPath('js/pwa-helper.js'),
   buildPath('js/pwa-config.js'),
   buildPath('js/cookies-theme-sync.js'),
@@ -86,8 +88,10 @@ self.addEventListener('install', event => {
   event.waitUntil(
     loadCacheVersion().then(() => {
       return caches.open(CACHE_NAME).then(cache => {
-        return cache.addAll(STATIC_ASSETS).catch(err => {
-          console.warn('[FinTrack SW] Some assets could not be cached:', err);
+        return cache.add(buildPath('js/liquid-glass.js')).then(() => {
+          return cache.addAll(STATIC_ASSETS).catch(err => {
+            console.warn('[FinTrack SW] Some assets could not be cached:', err);
+          });
         });
       });
     })
@@ -119,6 +123,21 @@ self.addEventListener('fetch', event => {
   const { request } = event;
   const url = new URL(request.url);
   const fintrackScope = BASE_PATH + 'fin-track/';
+
+  if (request.method === 'GET' && url.origin === self.location.origin &&
+      url.pathname === new URL(buildPath('js/liquid-glass.js'), self.location).pathname) {
+    event.respondWith(
+      fetch(request).then(response => {
+        if (response.ok) {
+          const copy = response.clone();
+          event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.put(request, copy)));
+        }
+        return response;
+      }).catch(() => caches.open(CACHE_NAME).then(cache => cache.match(request)).then(cached =>
+        cached || new Response('Offline - content not available', { status: 503 })))
+    );
+    return;
+  }
   
   // Only handle GET requests within FinTrack scope
   if (request.method !== 'GET' || !url.pathname.startsWith(fintrackScope)) {

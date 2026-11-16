@@ -16,7 +16,7 @@ const BASE_PATH = (() => {
 
 // Default cache version (fallback if version.json is unavailable)
 let CACHE_VERSION = 'v6.0.8';
-let CACHE_NAME = `rail-buddy-cache-${CACHE_VERSION}`;
+let CACHE_NAME = `rail-buddy-cache-${CACHE_VERSION}-glass1`;
 
 // Fetch version from version.json
 async function loadCacheVersion() {
@@ -27,7 +27,7 @@ async function loadCacheVersion() {
       const data = await response.json();
       const version = data.railbuddy || '4.5.2';
       CACHE_VERSION = `v${version}`;
-      CACHE_NAME = `rail-buddy-cache-${CACHE_VERSION}`;
+      CACHE_NAME = `rail-buddy-cache-${CACHE_VERSION}-glass1`;
       console.log('[RailBuddy SW] Cache version loaded:', CACHE_VERSION);
     }
   } catch (error) {
@@ -50,6 +50,7 @@ const STATIC_ASSETS = [
   
   // RailBuddy styles
   buildPath('rail-buddy/css/style-tdt.css'),
+  buildPath('rail-buddy/css/main-page.css'),
   buildPath('rail-buddy/css/where-am-i.css'),
   
   // RailBuddy scripts
@@ -76,6 +77,7 @@ const STATIC_ASSETS = [
   
   // Shared utilities
   buildPath('js/utils.js'),
+  buildPath('js/liquid-glass.js'),
   buildPath('js/pwa-helper.js'),
   
   // Shared CSS
@@ -104,8 +106,10 @@ self.addEventListener('install', event => {
   event.waitUntil(
     loadCacheVersion().then(() => {
       return caches.open(CACHE_NAME).then(cache => {
-        return cache.addAll(STATIC_ASSETS).catch(err => {
-          console.warn('[RailBuddy SW] Some assets could not be cached:', err);
+        return cache.add(buildPath('js/liquid-glass.js')).then(() => {
+          return cache.addAll(STATIC_ASSETS).catch(err => {
+            console.warn('[RailBuddy SW] Some assets could not be cached:', err);
+          });
         });
       });
     })
@@ -137,6 +141,21 @@ self.addEventListener('fetch', event => {
   const { request } = event;
   const url = new URL(request.url);
   const railBuddyScope = BASE_PATH + 'rail-buddy/';
+
+  if (request.method === 'GET' && url.origin === self.location.origin &&
+      url.pathname === new URL(buildPath('js/liquid-glass.js'), self.location).pathname) {
+    event.respondWith(
+      fetch(request).then(response => {
+        if (response.ok) {
+          const copy = response.clone();
+          event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.put(request, copy)));
+        }
+        return response;
+      }).catch(() => caches.open(CACHE_NAME).then(cache => cache.match(request)).then(cached =>
+        cached || new Response('Offline - content not available', { status: 503 })))
+    );
+    return;
+  }
   
   // Only handle GET requests within RailBuddy scope
   if (request.method !== 'GET' || !url.pathname.startsWith(railBuddyScope)) {

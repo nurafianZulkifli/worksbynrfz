@@ -1,3 +1,11 @@
+if (!document.querySelector('script[data-liquid-glass]')) {
+    var glassScript = document.createElement('script');
+    glassScript.dataset.liquidGlass = 'true';
+    glassScript.src = new URL('../../js/liquid-glass.js', document.currentScript.src).href;
+    glassScript.onerror = function () { console.error('Unable to load liquid glass effects'); };
+    document.head.appendChild(glassScript);
+}
+
 // Collapse desktop navbar labels on scroll down, restore on scroll up
 (function () {
     var navbar = document.querySelector('.navbar-container');

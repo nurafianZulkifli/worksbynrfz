@@ -179,7 +179,14 @@ body.dark-mode #pwa-splash .splash-hero {
 }
 
 .navbar {
-    background-color: #f5faffa2;
+    background-color: #f5faff80;
+}
+
+.navbar-container .navbar {
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    -webkit-backdrop-filter: blur(25px) saturate(150%);
+    backdrop-filter: blur(25px) saturate(150%);
+    box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.25), 0 8px 32px rgba(0, 0, 0, 0.14);
 }
 
 body.dark-mode {
@@ -187,7 +194,11 @@ body.dark-mode {
 }
 
 body.dark-mode .navbar {
-    background: #1f2f38af !important;
+    background: #1f2f388c !important;
+}
+
+body.dark-mode .navbar-container .navbar {
+    border-color: rgba(255, 255, 255, 0.07);
 }
 
 body.dark-mode .page-header-section {
@@ -1641,11 +1652,12 @@ body.dark-mode .alerts-indicator-dot {
     }
 
     .mobile-bottom-nav ul {
-        background: rgba(255, 255, 255, 0.6);
+        background: rgba(255, 255, 255, 0.48);
+        border: 1px solid rgba(255, 255, 255, 0.18);
         -webkit-backdrop-filter: blur(40px) saturate(180%);
         backdrop-filter: blur(40px) saturate(180%);
         border-radius: 50px;
-        box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+        box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.25), 0 8px 32px rgba(0, 0, 0, 0.14);
         display: flex;
         margin: 20px 20px;
         padding: 0 4px;
@@ -1663,9 +1675,10 @@ body.dark-mode .alerts-indicator-dot {
     }
 
     body.dark-mode .mobile-bottom-nav ul {
-        background: #1f2f38af;
+        background: #1f2f3899;
+        border-color: rgba(255, 255, 255, 0.07);
         backdrop-filter: blur(40px) saturate(180%);
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.233), 0 4px 12px rgba(0, 0, 0, 0.1);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
     .mobile-bottom-nav li {
