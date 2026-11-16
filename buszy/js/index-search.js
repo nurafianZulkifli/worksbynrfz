@@ -55,7 +55,7 @@
         recents.querySelectorAll('[data-query]').forEach(button => {
             button.addEventListener('click', () => {
                 searchInput.value = button.dataset.query;
-                performSearch();
+                searchInput.dispatchEvent(new Event('input', { bubbles: true }));
             });
         });
     }
@@ -78,7 +78,7 @@
             const servicesResponse = await fetch(new URL('./json/bus-service-data.json', window.location.href).href);
             if (servicesResponse.ok) services = await servicesResponse.json();
             loaded = true;
-            results.innerHTML = '';
+            performSearch();
         } catch (error) {
             results.innerHTML = '<p class="inline-search-status">Search data is unavailable right now.</p>';
         }
@@ -156,7 +156,7 @@
     });
     clearButton.addEventListener('click', () => {
         searchInput.value = '';
-        performSearch();
+        searchInput.dispatchEvent(new Event('input', { bubbles: true }));
         searchInput.focus();
     });
     filters?.querySelectorAll('[data-filter]').forEach(button => {
