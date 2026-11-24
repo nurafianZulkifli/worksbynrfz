@@ -2329,3 +2329,49 @@
           font-size: 0.85rem;
       }
   }
+
+.train-nearby-station-title {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.train-nearby-station-title h2 {
+    margin: 4px 0 0;
+}
+
+.train-station-code {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 4px;
+    padding: 4px 8px;
+    border: 2px solid #fff;
+    border-radius: 12px;
+    background: var(--station-line-color, #607d96);
+    color: var(--station-code-color, #fff);
+    font-size: 0.72em;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.train-station-code[hidden] {
+    display: none;
+}
+
+body.dark-mode .train-station-code {
+    border-color: #fff;
+}
+
+.train-onemap-attribution {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 0.75rem;
+}
+
+.train-onemap-attribution a {
+    color: inherit;
+    text-decoration: underline;
+}

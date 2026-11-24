@@ -318,10 +318,16 @@
                     <i class="fa-kit fa-lta-location" aria-hidden="true"></i>
                     <div>
                         <span class="train-section-label">Nearby train station</span>
-                        <h2 id="nearest-train-name">Find a station near you</h2>
+                        <div class="train-nearby-station-title">
+                            <span class="train-station-code" id="nearest-train-code" hidden></span>
+                            <h2 id="nearest-train-name">Find a station near you</h2>
+                        </div>
                     </div>
                 </div>
-                <p id="nearest-train-status">Allow location access to find the nearest MRT or LRT station.</p>
+                <p>
+                    <span id="nearest-train-status">Allow location access to find the nearest MRT or LRT station.</span>
+                    <small class="train-onemap-attribution">Station locations by <a href="https://www.onemap.gov.sg/" target="_blank" rel="noopener noreferrer">OneMap</a></small>
+                </p>
                 <button class="train-locate-button" id="train-locate-button" type="button">
                     <i class="fa-regular fa-location-crosshairs" aria-hidden="true"></i>
                     Find nearby station

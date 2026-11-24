@@ -6,11 +6,16 @@
     const trainStatusUpdated = document.getElementById('train-status-updated');
     const trainLocateButton = document.getElementById('train-locate-button');
     const nearestTrainName = document.getElementById('nearest-train-name');
+    const nearestTrainCode = document.getElementById('nearest-train-code');
     const nearestTrainStatus = document.getElementById('nearest-train-status');
     if (!transportTabs.length || !busContent || !trainContent) return;
 
-    const stationCacheKey = 'railbuddy_station_locations_v2';
     const transportModeKey = 'buszy-transport-mode';
+    const lineColors = {
+        NS: '#e2211c', EW: '#009645', CC: '#fa9e0d', DT: '#005ec8',
+        TE: '#926437', NE: '#9d27b5', BP: '#708472', SE: '#708472',
+        SW: '#708472', PE: '#708472', PW: '#708472'
+    };
     const apiServer = window.location.hostname === 'localhost'
         ? (window.location.port === '3000' ? window.location.origin : 'http://localhost:3000')
         : 'https://bat-lta-9eb7bbf231a2.herokuapp.com';
@@ -55,46 +60,22 @@
         if (stationLocations) return stationLocations;
         if (stationLoading) return stationLoading;
         stationLoading = (async () => {
-            try {
-                const cached = JSON.parse(localStorage.getItem(stationCacheKey) || 'null');
-                if (Array.isArray(cached) && cached.length) {
-                    stationLocations = cached;
-                    return stationLocations;
-                }
-            } catch (error) {
-                localStorage.removeItem(stationCacheKey);
+            const response = await fetch('json/rail-station-locations.json');
+            if (!response.ok) throw new Error(`OneMap station data request failed: ${response.status}`);
+            const payload = await response.json();
+            if (payload.source !== 'OneMap' || !Array.isArray(payload.stations) || payload.stations.length < 50) {
+                throw new Error('OneMap station data is invalid or incomplete');
             }
-
-            const directionsResponse = await fetch('../rail-buddy/json/line-directions.json');
-            if (!directionsResponse.ok) throw new Error(`Line directions request failed: ${directionsResponse.status}`);
-            const directions = await directionsResponse.json();
-            const lineData = await Promise.all((directions.lines || []).map(line =>
-                fetch(`../rail-buddy/json/${line.stationDataFile}`).then(response => {
-                    if (!response.ok) throw new Error(`Station data request failed: ${response.status}`);
-                    return response.json();
-                })
-            ));
-            const stations = [];
-            lineData.forEach(line => line.branches.forEach(branch => branch.stations.forEach(station => {
-                const item = { name: station.name, code: String(station.code).replace(/\s+/g, '') };
-                if (!stations.some(existing => existing.name === item.name)) stations.push(item);
-            })));
-
-            const locations = await Promise.allSettled(stations.map(async station => {
-                const url = new URL(`${apiServer}/station-location`);
-                url.searchParams.set('name', station.name);
-                const response = await fetch(url);
-                if (!response.ok) throw new Error(`Station location request failed: ${response.status}`);
-                const location = await response.json();
-                return { ...station, latitude: Number(location.latitude), longitude: Number(location.longitude) };
+            stationLocations = payload.stations.map(station => ({
+                name: station.name,
+                code: station.code,
+                latitude: Number(station.latitude),
+                longitude: Number(station.longitude)
             }));
-            stationLocations = locations
-                .filter(result => result.status === 'fulfilled'
-                    && Number.isFinite(result.value.latitude)
-                    && Number.isFinite(result.value.longitude))
-                .map(result => result.value);
-            if (!stationLocations.length) throw new Error('No train station locations were returned');
-            localStorage.setItem(stationCacheKey, JSON.stringify(stationLocations));
+            if (stationLocations.some(station => !station.name || !station.code
+                || !Number.isFinite(station.latitude) || !Number.isFinite(station.longitude))) {
+                throw new Error('OneMap station data contains invalid coordinates');
+            }
             return stationLocations;
         })().finally(() => {
             stationLoading = null;
@@ -103,6 +84,7 @@
     }
 
     function findNearbyStation() {
+        nearestTrainCode.hidden = true;
         if (!navigator.geolocation) {
             nearestTrainStatus.textContent = 'Location is not supported by this browser.';
             trainLocateButton.disabled = true;
@@ -121,7 +103,15 @@
                     .map(station => ({ ...station, distance: distanceMetres(currentPosition, station) }))
                     .sort((first, second) => first.distance - second.distance)[0];
                 nearestTrainName.textContent = nearest.name;
-                nearestTrainStatus.textContent = `${nearest.code} · ${formatDistance(nearest.distance)}`;
+                const code = String(nearest.code || '').trim();
+                const codeParts = code.match(/^([A-Z]+)\s*(\d+[A-Z]?)$/i);
+                const linePrefix = codeParts ? codeParts[1].toUpperCase() : '';
+                const lineKey = linePrefix === 'CG' ? 'EW' : linePrefix === 'CE' ? 'CC' : linePrefix;
+                nearestTrainCode.textContent = codeParts ? `${linePrefix} ${codeParts[2]}` : code;
+                nearestTrainCode.style.setProperty('--station-line-color', lineColors[lineKey] || '#607d96');
+                nearestTrainCode.style.setProperty('--station-code-color', lineKey === 'CC' ? '#111' : '#fff');
+                nearestTrainCode.hidden = !code;
+                nearestTrainStatus.textContent = formatDistance(nearest.distance);
             } catch (error) {
                 nearestTrainStatus.textContent = 'Nearby train stations are unavailable right now.';
                 console.warn('[RailBuszy] Unable to find nearby train station:', error);
