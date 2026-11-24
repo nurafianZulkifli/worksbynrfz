@@ -1,0 +1,449 @@
+{
+  "line": "Circle Line",
+  "code": "CCL",
+  "color": "#fa9e0d",
+  "operator": "SMRT",
+  "opened": "28 May 2009",
+  "length_km": 35.7,
+  "total_stations": 30,
+  "branches": [
+    {
+      "id": "clockwise",
+      "name": "Clockwise (Spur)",
+      "stations": [
+        {
+          "code": "CC 1",
+          "name": "Dhoby Ghaut",
+          "interchanges": [
+            { "code": "NS 24", "lineClass": "mrt-nsl" },
+            { "code": "NE 6", "lineClass": "mrt-nel" }
+          ]
+        },
+        {
+          "code": "CC 2",
+          "name": "Bras Basah",
+          "interchanges": []
+        },
+        {
+          "code": "CC 3",
+          "name": "Esplanade",
+          "interchanges": []
+        },
+        {
+          "code": "CC 4",
+          "name": "Promenade",
+          "interchanges": [
+            { "code": "DT 15", "lineClass": "mrt-dtl" }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "anticlockwise",
+      "name": "Anticlockwise (Spur)",
+      "stations": [
+        {
+          "code": "CC 4",
+          "name": "Promenade",
+          "interchanges": [
+            { "code": "DT 15", "lineClass": "mrt-dtl" }
+          ]
+        },
+        {
+          "code": "CC 3",
+          "name": "Esplanade",
+          "interchanges": []
+        },
+        {
+          "code": "CC 2",
+          "name": "Bras Basah",
+          "interchanges": []
+        },
+        {
+          "code": "CC 1",
+          "name": "Dhoby Ghaut",
+          "interchanges": [
+            { "code": "NS 24", "lineClass": "mrt-nsl" },
+            { "code": "NE 6", "lineClass": "mrt-nel" }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "anticlockwiseLoop",
+      "name": "Anticlockwise Loop",
+      "stations": [
+        {
+          "code": "CC 4",
+          "name": "Promenade",
+          "interchanges": [
+            { "code": "DT 15", "lineClass": "mrt-dtl" }
+          ]
+        },
+        {
+          "code": "CC 5",
+          "name": "Nicoll Highway",
+          "interchanges": []
+        },
+        {
+          "code": "CC 6",
+          "name": "Stadium",
+          "interchanges": []
+        },
+        {
+          "code": "CC 7",
+          "name": "Mountbatten",
+          "interchanges": []
+        },
+        {
+          "code": "CC 8",
+          "name": "Dakota",
+          "interchanges": []
+        },
+        {
+          "code": "CC 9",
+          "name": "Paya Lebar",
+          "interchanges": [
+            { "code": "EW 8", "lineClass": "mrt-ewl" }
+          ]
+        },
+        {
+          "code": "CC 10",
+          "name": "MacPherson",
+          "interchanges": [
+            { "code": "DT 26", "lineClass": "mrt-dtl" }
+          ]
+        },
+        {
+          "code": "CC 11",
+          "name": "Tai Seng",
+          "interchanges": []
+        },
+        {
+          "code": "CC 12",
+          "name": "Bartley",
+          "interchanges": []
+        },
+        {
+          "code": "CC 13",
+          "name": "Serangoon",
+          "interchanges": [
+            { "code": "NE 12", "lineClass": "mrt-nel" }
+          ]
+        },
+        {
+          "code": "CC 14",
+          "name": "Lorong Chuan",
+          "interchanges": []
+        },
+        {
+          "code": "CC 15",
+          "name": "Bishan",
+          "interchanges": [
+            { "code": "NS 17", "lineClass": "mrt-nsl" }
+          ]
+        },
+        {
+          "code": "CC 16",
+          "name": "Marymount",
+          "interchanges": []
+        },
+        {
+          "code": "CC 17",
+          "name": "Caldecott",
+          "interchanges": [
+            { "code": "TE 9", "lineClass": "mrt-tel" }
+          ]
+        },
+        {
+          "code": "CC 19",
+          "name": "Botanic Gardens",
+          "interchanges": [
+            { "code": "DT 9", "lineClass": "mrt-dtl" }
+          ]
+        },
+        {
+          "code": "CC 20",
+          "name": "Farrer Road",
+          "interchanges": []
+        },
+        {
+          "code": "CC 21",
+          "name": "Holland Village",
+          "interchanges": []
+        },
+        {
+          "code": "CC 22",
+          "name": "Buona Vista",
+          "interchanges": [
+            { "code": "EW 21", "lineClass": "mrt-ewl" }
+          ]
+        },
+        {
+          "code": "CC 23",
+          "name": "one-north",
+          "interchanges": []
+        },
+        {
+          "code": "CC 24",
+          "name": "Kent Ridge",
+          "interchanges": []
+        },
+        {
+          "code": "CC 25",
+          "name": "Haw Par Villa",
+          "interchanges": []
+        },
+        {
+          "code": "CC 26",
+          "name": "Pasir Panjang",
+          "interchanges": []
+        },
+        {
+          "code": "CC 27",
+          "name": "Labrador Park",
+          "interchanges": []
+        },
+        {
+          "code": "CC 28",
+          "name": "Telok Blangah",
+          "interchanges": []
+        },
+        {
+          "code": "CC 29",
+          "name": "HarbourFront",
+          "interchanges": [
+            { "code": "NE 1", "lineClass": "mrt-nel" }
+          ]
+        },
+        {
+          "code": "CC 30",
+          "name": "Keppel",
+          "interchanges": []
+        },
+        {
+          "code": "CC 31",
+          "name": "Cantonment",
+          "interchanges": []
+        },
+        {
+          "code": "CC 32",
+          "name": "Prince Edward Road",
+          "interchanges": []
+        },
+        {
+          "code": "CC 33",
+          "name": "Marina Bay",
+          "interchanges": [
+            { "code": "NS 27", "lineClass": "mrt-nsl" },
+            { "code": "TE 20", "lineClass": "mrt-tel" }
+          ]
+        },
+        {
+          "code": "CC 34",
+          "name": "Bayfront",
+          "interchanges": [
+            { "code": "DT 16", "lineClass": "mrt-dtl" }
+          ]
+        },
+        {
+          "code": "CC 4",
+          "name": "Promenade",
+          "interchanges": [
+            { "code": "DT 15", "lineClass": "mrt-dtl" }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "clockwiseLoop",
+      "name": "Clockwise Loop",
+      "stations": [
+        {
+          "code": "CC 4",
+          "name": "Promenade",
+          "interchanges": [
+            { "code": "DT 15", "lineClass": "mrt-dtl" }
+          ]
+        },
+        {
+          "code": "CC34",
+          "name": "Bayfront",
+          "interchanges": [
+            { "code": "DT 16", "lineClass": "mrt-dtl" }
+          ]
+        },
+        {
+          "code": "CC 33",
+          "name": "Marina Bay",
+          "interchanges": [
+            { "code": "NS 27", "lineClass": "mrt-nsl" },
+            { "code": "TE 20", "lineClass": "mrt-tel" }
+          ]
+        },
+        {
+          "code": "CC 32",
+          "name": "Prince Edward Road",
+          "interchanges": []
+        },
+        {
+          "code": "CC 31",
+          "name": "Cantonment",
+          "interchanges": []
+        },
+        {
+          "code": "CC 30",
+          "name": "Keppel",
+          "interchanges": []
+        },
+        {
+          "code": "CC 29",
+          "name": "HarbourFront",
+          "interchanges": [
+            { "code": "NE 1", "lineClass": "mrt-nel" }
+          ]
+        },
+        {
+          "code": "CC 28",
+          "name": "Telok Blangah",
+          "interchanges": []
+        },
+        {
+          "code": "CC 27",
+          "name": "Labrador Park",
+          "interchanges": []
+        },
+        {
+          "code": "CC 26",
+          "name": "Pasir Panjang",
+          "interchanges": []
+        },
+        {
+          "code": "CC 25",
+          "name": "Haw Par Villa",
+          "interchanges": []
+        },
+        {
+          "code": "CC 24",
+          "name": "Kent Ridge",
+          "interchanges": []
+        },
+        {
+          "code": "CC 23",
+          "name": "one-north",
+          "interchanges": []
+        },
+        {
+          "code": "CC 22",
+          "name": "Buona Vista",
+          "interchanges": [
+            { "code": "EW 21", "lineClass": "mrt-ewl" }
+          ]
+        },
+        {
+          "code": "CC 21",
+          "name": "Holland Village",
+          "interchanges": []
+        },
+        {
+          "code": "CC 20",
+          "name": "Farrer Road",
+          "interchanges": []
+        },
+        {
+          "code": "CC 19",
+          "name": "Botanic Gardens",
+          "interchanges": [
+            { "code": "DT 9", "lineClass": "mrt-dtl" }
+          ]
+        },
+        {
+          "code": "CC 17",
+          "name": "Caldecott",
+          "interchanges": [
+            { "code": "TE 9", "lineClass": "mrt-tel" }
+          ]
+        },
+        {
+          "code": "CC 16",
+          "name": "Marymount",
+          "interchanges": []
+        },
+        {
+          "code": "CC 15",
+          "name": "Bishan",
+          "interchanges": [
+            { "code": "NS 17", "lineClass": "mrt-nsl" }
+          ]
+        },
+        {
+          "code": "CC 14",
+          "name": "Lorong Chuan",
+          "interchanges": []
+        },
+        {
+          "code": "CC 13",
+          "name": "Serangoon",
+          "interchanges": [
+            { "code": "NE 12", "lineClass": "mrt-nel" }
+          ]
+        },
+        {
+          "code": "CC 12",
+          "name": "Bartley",
+          "interchanges": []
+        },
+        {
+          "code": "CC 11",
+          "name": "Tai Seng",
+          "interchanges": []
+        },
+        {
+          "code": "CC 10",
+          "name": "MacPherson",
+          "interchanges": [
+            { "code": "DT 26", "lineClass": "mrt-dtl" }
+          ]
+        },
+        {
+          "code": "CC 9",
+          "name": "Paya Lebar",
+          "interchanges": [
+            { "code": "EW 8", "lineClass": "mrt-ewl" }
+          ]
+        },
+        {
+          "code": "CC 8",
+          "name": "Dakota",
+          "interchanges": []
+        },
+        {
+          "code": "CC 7",
+          "name": "Mountbatten",
+          "interchanges": []
+        },
+        {
+          "code": "CC 6",
+          "name": "Stadium",
+          "interchanges": []
+        },
+        {
+          "code": "CC 5",
+          "name": "Nicoll Highway",
+          "interchanges": []
+        },
+        {
+          "code": "CC 4",
+          "name": "Promenade",
+          "interchanges": [
+            { "code": "DT 15", "lineClass": "mrt-dtl" }
+          ]
+        }
+
+      ]
+    }
+  ]
+}

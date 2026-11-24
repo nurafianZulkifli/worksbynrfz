@@ -1,0 +1,252 @@
+﻿<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="57TuruPNu5wqSSia_cUehl5t9Gh1AbxrHNPcMiFx-aQ" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover, user-scalable=no">
+    <meta name="color-scheme" content="light">
+    <meta name="theme-color" content="#ffffff">
+    <title>First & Last Bus | Buszy</title>
+    <meta content="Check the first and last bus timings with Buszy" name="description">
+    <meta content="first bus, last bus, bus timings" name="keywords">
+    <meta property="og:image" content="https://i.imgur.com/i8n9KYs.png" />
+
+    <link rel="icon" href="./assets/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="./assets/icon-512.png">
+
+    <script src="https://kit.fontawesome.com/965e82ac01.js" crossorigin="anonymous"></script>
+
+    <!-- Core Stylesheet -->
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/style-breakpoints.css">
+    <link rel="stylesheet" href="../css/dark-mode.css">
+    <link rel="stylesheet" href="../css/ios-safari.css">
+
+    <!-- Page Specific Stylesheet -->
+    <link rel="stylesheet" href="./css/style-buszy.css">
+    <link rel="stylesheet" href="./css/first-last.css">
+    <link rel="stylesheet" href="../css/navbar-search.css">
+
+</head>
+
+
+
+<body>
+    <!-- Fixed Breadcrumb at very top (mobile/tablet only) -->
+    <div class="breadcrumb-fixed-placeholder">
+        <nav aria-label="breadcrumb" style="margin-bottom: 0">
+            <ol class="breadcrumb breadcrumb-fixed" id="floating-breadcrumb">
+                <li class="breadcrumb-item"><a href="./index.html" class="breadcrumb-back" aria-label="Back"><i class="fa-regular fa-arrow-left"></i></a></li>
+            </ol>
+        </nav>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar-container">
+        <div class="navbar">
+            <!-- Logo -->
+            <a href="./"><img src="./assets/logo.png" alt="logo" class="logo" /></a>
+
+            <!-- Navigation Links -->
+            <ul class="navbar-nav" id="navbarNav">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">
+                        <i class="fa-sharp fa-regular fa-house"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="./first-last.html" class="nav-link active">
+                        <i class="fa-regular fa-clock"></i>
+                        <span>Timings</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="./ann.html" class="nav-link">
+                        <i class="fa-regular fa-arrows-rotate"></i>
+                        <span>Updates</span>
+                        <span class="alerts-indicator-dot"></span>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a href="./menu.html" class="nav-link">
+                        <i class="fa-regular fa-bars"></i>
+                        <span>Menu</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Mobile Bottom Navigation Bar -->
+    <nav class="mobile-bottom-nav">
+        <ul>
+            <li>
+                <a href="index.html">
+                    <span class="icon">
+                        <i class="fa-sharp fa-regular fa-house"></i>
+                    </span>
+                        <span class="label">Home</span>
+                </a>
+            </li>
+            <li class="active">
+                <a href="#">
+                    <span class="icon">
+                        <i class="fa-regular fa-clock"></i>
+                    </span>
+                    <span class="label">Timings</span>
+                </a>
+            </li>
+            <li>
+                <a href="./ann.html">
+                    <span class="icon">
+                        <i class="fa-regular fa-arrows-rotate"></i>
+                        <span class="alerts-indicator-dot"></span>
+                    </span>
+                    <span class="label">Updates</span>
+                </a>
+            </li>
+            <li>
+                <a href="./menu.html">
+                    <span class="icon">
+                        <i class="fa-regular fa-bars"></i>
+                    </span>
+                    <span class="label">Menu</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!------------------------------------------------------------------------ Start of Sections ------------------------------------------------------------------------>
+
+    <!-- Title/Breadcrumbs -->
+    <section class="about-me-sum clearfix">
+        <div class="wbnrfz_eicw">
+            <div class="page-header-section">
+                <div class="container container-xxl container-mobile container-mobile-header">
+                    <div class="breadcrumb-wrapper">
+                        <nav aria-label="breadcrumb" class="breadcrumb-desktop" style="display: none">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="./index.html" class="breadcrumb-back" aria-label="Back"><i class="fa-regular fa-arrow-left"></i></a></li>
+                            </ol>
+                        </nav>
+                        <div class="page-title-wrapper">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                                <div>
+                                    <h1 class="page-title" id="filter-title">
+                                        First & Last Bus
+                                    </h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Contents -->
+    <section class="pdf-section">
+        <div class="container">
+            <div class="header"></div>
+            <div class="selector-section">
+                <div class="search-container">
+                    <div class="search-input-wrapper">
+                        <i class="fa-regular fa-search"
+                            style="position: absolute; left: 12px; top: 65%; transform: translateY(-65%); color: #cccccc; z-index: 1;">
+                        </i>
+                        <input autocomplete="on" class="search-input" id="busStopSearch"
+                            placeholder="Enter bus stop code or name" type="text" />
+                        <button class="clear-search" id="clearSearch" title="Clear search">
+                            &times;
+                        </button>
+                    </div>
+                    <div class="search-results-count" id="resultsCount"></div>
+                </div>
+                <div class="fl-stop-results" id="stopResults"></div>
+                <select id="busStopDropdown" hidden>
+                    <option value>Loading bus stops...</option>
+                </select>
+            </div>
+            <div class="content-section" id="contentSection">
+                <div class="bus-stop-info">
+                    <div class="bus-stop-code">
+                        <img alt="bus icon" src="assets/bus-icon.png" class="bus-icon-img" />
+                        <span class="bus-stop-code-text" id="busStopCode">
+                            --
+                        </span>
+                    </div>
+                    <div class="bus-stop-description" id="busStopDescription">
+                        --
+                    </div>
+                </div>
+                <!-- <div class="bus-stop-subtitle" id="busStopSubtitle">
+                    Select a bus stop to begin
+                </div> -->
+                <div class="services-grid" id="servicesContainer"></div>
+            </div>
+
+            <div class="empty-state-placeholder" id="emptyStatePlaceholder">
+                <i class="fa-kit fa-lta-bus" aria-hidden="true"></i>
+                <p>Search or select a bus stop above to see its first and last bus timings.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- <footer style="padding-top: 2em; padding-bottom: 8em">
+        <p style="text-align: center">
+            Timings obtained from
+            <a class="hyperlink" href="https://datamall.lta.gov.sg/" target="_blank">
+                LTA DataMall
+            </a>
+        </p>
+    </footer> -->
+
+    <script data-bg="#f2f3e5" data-fg="#000" data-font-family="Outfit, sans-serif"
+        data-message="This website uses cookies to provide necessary site functionality and to improve your experience. By using this website, you agree to our use of cookies."
+        data-position="bottom" data-zindex="12345111111" id="cookiebanner" src="../js/cookies-banner.js"
+        type="text/javascript">
+        </script>
+
+    <script src="../js/cookies-theme-sync.js"></script>
+
+    <script src="js/mob-navtabs.js"></script>
+    <script src="js/mob-navtabs-tooltip.js"></script>
+    <script src="js/haptic.js"></script>
+    <script src="buszy-subp.js"></script>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/pw.bundle.js"></script>
+    <script src="../js/default-assets/active.js"></script>
+    <script src="../js/isotope.pkgd.min.js"></script>
+    <script src="../js/dstabs.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/pwa-config.js"></script>
+    <script>
+        // Fix image paths for GitHub Pages and Heroku compatibility
+        document.addEventListener('DOMContentLoaded', () => {
+            const busIconImg = document.querySelector('.bus-icon-img');
+            if (busIconImg && window.PWAConfig) {
+                const basePath = window.PWAConfig.basePath;
+                busIconImg.src = basePath + 'buszy/assets/bus-icon.png';
+            }
+        });
+    </script>
+    <script src="js/shared-arrivals.js"></script>
+    <script src="js/fl-bus.js"></script>
+    <script src="../js/navbar-search.js"></script>
+
+    <script src="./js/ann-indicator.js"></script>
+    <script src="./js/alerts-indicator.js"></script>
+
+    <script src="../js/ios-pwa-warning.js"></script>
+
+</body>
+</html>

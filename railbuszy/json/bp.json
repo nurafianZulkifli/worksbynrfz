@@ -1,0 +1,46 @@
+{
+  "line": "Bukit Panjang LRT",
+  "code": "BPLRT",
+  "color": "#708472",
+  "operator": "SMRT",
+  "branches": [
+    {
+      "id": "serviceA",
+      "name": "Service A (via Senja)",
+      "stations": [
+        { "code": "BP 1", "name": "Choa Chu Kang", "interchanges": [{ "code": "NS 4", "lineClass": "mrt-nsl" }] },
+        { "code": "BP 2", "name": "South View", "interchanges": [] },
+        { "code": "BP 3", "name": "Keat Hong", "interchanges": [] },
+        { "code": "BP 4", "name": "Teck Whye", "interchanges": [] },
+        { "code": "BP 5", "name": "Phoenix", "interchanges": [] },
+        { "code": "BP 6", "name": "Bukit Panjang", "interchanges": [{ "code": "DT 1", "lineClass": "mrt-dtl" }] },
+        { "code": "BP 13", "name": "Senja", "interchanges": [] },
+        { "code": "BP 12", "name": "Jelapang", "interchanges": [] },
+        { "code": "BP 11", "name": "Segar", "interchanges": [] },
+        { "code": "BP 10", "name": "Fajar", "interchanges": [] },
+        { "code": "BP 9", "name": "Bangkit", "interchanges": [] },
+        { "code": "BP 8", "name": "Pending", "interchanges": [] },
+        { "code": "BP 7", "name": "Petir", "interchanges": [] }
+      ]
+    },
+    {
+      "id": "serviceB",
+      "name": "Service B (via Petir)",
+      "stations": [
+        { "code": "BP 1", "name": "Choa Chu Kang", "interchanges": [{ "code": "NS 4", "lineClass": "mrt-nsl" }] },
+        { "code": "BP 2", "name": "South View", "interchanges": [] },
+        { "code": "BP 3", "name": "Keat Hong", "interchanges": [] },
+        { "code": "BP 4", "name": "Teck Whye", "interchanges": [] },
+        { "code": "BP 5", "name": "Phoenix", "interchanges": [] },
+        { "code": "BP 6", "name": "Bukit Panjang", "interchanges": [{ "code": "DT 1", "lineClass": "mrt-dtl" }] },
+        { "code": "BP 7", "name": "Petir", "interchanges": [] },
+        { "code": "BP 8", "name": "Pending", "interchanges": [] },
+        { "code": "BP 9", "name": "Bangkit", "interchanges": [] },
+        { "code": "BP 10", "name": "Fajar", "interchanges": [] },
+        { "code": "BP 11", "name": "Segar", "interchanges": [] },
+        { "code": "BP 12", "name": "Jelapang", "interchanges": [] },
+        { "code": "BP 13", "name": "Senja", "interchanges": [] }
+      ]
+    }
+  ]
+}

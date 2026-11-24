@@ -1,0 +1,320 @@
+﻿<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="57TuruPNu5wqSSia_cUehl5t9Gh1AbxrHNPcMiFx-aQ" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover, user-scalable=no">
+    <meta name="color-scheme" content="light">
+    <meta name="theme-color" content="#ffffff">
+    <title>Arrival Timings | Buszy</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    <meta property="og:image" content="https://i.imgur.com/i8n9KYs.png" />
+
+    <link rel="icon" href="../buszy/assets/logo.png" />
+    <link rel="apple-touch-icon" href="./assets/icon-512.png">
+
+    <script src="https://kit.fontawesome.com/965e82ac01.js" crossorigin="anonymous"></script>
+
+    <!-- Core Stylesheet -->
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/style-breakpoints.css">
+    <link rel="stylesheet" href="../css/pwa-styles.css">
+    <link rel="stylesheet" href="../css/dark-mode.css">
+    <link rel="stylesheet" href="../css/ios-safari.css">
+
+    <!-- Page Specific Stylesheet -->
+    <link rel="stylesheet" href="./css/style-buszy.css">
+    <link rel="stylesheet" href="./css/art.css">
+
+    <link crossorigin href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet" />
+    <script crossorigin src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+    </script>
+
+</head>
+
+<body>
+    <!-- Fixed Breadcrumb at very top (mobile/tablet only) -->
+    <div class="breadcrumb-fixed-placeholder">
+        <nav aria-label="breadcrumb" style="margin-bottom:0;">
+            <ol class="breadcrumb breadcrumb-fixed" id="floating-breadcrumb">
+                <li class="breadcrumb-item"><a href="./index.html" class="breadcrumb-back" aria-label="Back"><i class="fa-regular fa-arrow-left"></i></a></li>
+            </ol>
+        </nav>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar-container">
+        <div class="navbar">
+            <!-- Logo -->
+            <a href="./"><img src="./assets/logo.png" alt="logo" class="logo" /></a>
+
+            <!-- Navigation Links -->
+            <ul class="navbar-nav" id="navbarNav">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link active">
+                        <i class="fa-sharp fa-regular fa-house"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="./first-last.html" class="nav-link">
+                        <i class="fa-regular fa-clock"></i>
+                        <span>Timings</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="./ann.html" class="nav-link" id="ann-nav-desktop">
+                        <i class="fa-regular fa-arrows-rotate"></i>
+                        <span>Updates</span>
+                        <span class="alerts-indicator-dot"></span>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a href="./menu.html" class="nav-link">
+                        <i class="fa-regular fa-bars"></i>
+                        <span>Menu</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Mobile Bottom Navigation Bar -->
+    <nav class="mobile-bottom-nav">
+        <ul>
+            <li class="active">
+                <a href="index.html">
+                    <span class="icon">
+                        <i class="fa-sharp fa-regular fa-house"></i>
+                    </span>
+                    <span class="label">Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="./first-last.html">
+                    <span class="icon">
+                        <i class="fa-regular fa-clock"></i>
+                    </span>
+                    <span class="label">Timings</span>
+                </a>
+            </li>
+            <li>
+                <a href="./ann.html" id="ann-nav-mobile">
+                    <span class="icon">
+                        <i class="fa-regular fa-arrows-rotate"></i>
+                        <span class="alerts-indicator-dot"></span>
+                    </span>
+                    <span class="label">Updates</span>
+                </a>
+            </li>
+            <li>
+                <a href="./menu.html">
+                    <span class="icon">
+                        <i class="fa-regular fa-bars"></i>
+                    </span>
+                    <span class="label">Menu</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!------------------------------------------------------------------------ Start of Sections ------------------------------------------------------------------------>
+
+    <!-- Title/Breadcrumbs -->
+    <section class="about-me-sum clearfix">
+        <div class="wbnrfz_eicw">
+            <div class="page-header-section">
+                <div class="container container-xxl container-mobile container-mobile-header">
+                    <div class="breadcrumb-wrapper">
+                        <nav aria-label="breadcrumb" class="breadcrumb-desktop" style="display:none;">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="./index.html" class="breadcrumb-back" aria-label="Back"><i class="fa-regular fa-arrow-left"></i></a></li>
+                            </ol>
+                        </nav>
+                        <div class="page-title-wrapper">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                                <div>
+                                    <h1 class="page-title" id="filter-title">
+                                        Arrival Timings
+                                    </h1>
+                                </div>
+                                <div style="position: relative; max-width: 400px; margin-top: 5px; display: none;">
+                                    <i class="fa-regular fa-search"
+                                        style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #cccccc; z-index: 1;">
+                                    </i>
+                                    <input class="form-control" id="bus-stop-search" placeholder=" Search Bus Stop Code"
+                                        style="padding-left: 35px; width: 100%;" type="text" />
+                                </div>
+                                <!-- All Bus Services Timings -->
+                                <div id="all-timings-section" class="all-timings-section" style="display: none;">
+                                    <a id="all-timings-link" href="javascript:void(0)"
+                                        class="btn btn-busloc btn-busloc2 btn-sm" aria-label="First and last bus timings"
+                                        title="First and last bus timings">
+                                        <i class="fa-regular fa-clock" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+            </div>
+        </div>
+    </section>
+
+    <!-- Container for the map -->
+    <section class="bus-location-section">
+        <div class="container">
+            <div class="map-controls-bar" role="group" aria-label="Map controls">
+                <button class="btn btn-busloc btn-sm" id="collapse-map-btn" title="Collapse Map">
+                    <i class="fa-regular fa-close"></i>
+                </button>
+                <button class="btn btn-busloc btn-sm" id="current-location-btn" title="Go to Current Location">
+                    <i class="fa-kit fa-lta-location"></i>
+                </button>
+                <button class="btn btn-busloc btn-sm" id="recenter-map-btn" title="Re-center map to show all buses">
+                    <i class="fa-regular fa-expand"></i>
+                </button>
+            </div>
+            <div id="bus-map" style="height: 400px; width: 100%;"></div>
+        </div>
+    </section>
+
+    <section class="about-me-summ clearfix" style="padding-bottom: 9em;">
+        <div class="container">
+            <!-- Offline Banner -->
+            <div id="art-offline-banner">
+                <svg class="spinner" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="status">
+                    <circle cx="50" cy="50" r="45">
+                        <animateTransform attributeName="transform" type="rotate" values="-90;810" keyTimes="0;1"
+                            dur="2s" repeatCount="indefinite" />
+                        <animate attributeName="stroke-dashoffset" values="0%;0%;-157.080%" calcMode="spline"
+                            keySplines="0.61, 1, 0.88, 1; 0.12, 0, 0.39, 0" keyTimes="0;0.5;1" dur="2s"
+                            repeatCount="indefinite" />
+                        <animate attributeName="stroke-dasharray" values="0% 314.159%;157.080% 157.080%;0% 314.159%"
+                            calcMode="spline" keySplines="0.61, 1, 0.88, 1; 0.12, 0, 0.39, 0" keyTimes="0;0.5;1"
+                            dur="2s" repeatCount="indefinite" />
+                    </circle>
+                </svg>
+                <span style="font-size:0.9rem; font-weight:500;">Connection lost &mdash; showing last available data.
+                    Retrying&hellip;</span>
+            </div>
+
+            <!-- Combined Legend Container -->
+            <div class="bus-load-legend">
+                <!-- Fleet Legend -->
+                <div class="fleet-legend">
+                    <span>
+                        <i class="fa-kit fa-lta-bus"></i> Single
+                    </span>
+                    <span style="gap: 2px;">
+                        <i class="fa-kit fa-lta-bb"></i>&nbsp; Bendy
+                    </span>
+                    <span>
+                        <i class="fa-kit fa-lta-dd"></i> Double
+                    </span>
+                </div>
+
+                <!-- Bus Load Legend -->
+                <div class="load-indicators-group">
+                    <span class="load-indicator empty">
+                        Seats Available
+                    </span>
+                    <span class="load-indicator moderate">
+                        Standing Available
+                    </span>
+                    <span class="load-indicator full">
+                        Limited Standing
+                    </span>
+                </div>
+            </div>
+
+            <!-- Incoming Buses Section -->
+            <div id="incoming-buses-section" style="display: none; margin-bottom: 1em;">
+                <h3 style="font-weight: bold; margin-bottom: 0.5rem;">
+                    Incoming Buses
+                </h3>
+                <p style="font-size: 0.9rem; color: #999; margin-bottom: 1rem; text-align: left;">
+                    *Buses might not
+                    arrive in exact order
+                </p>
+                <div id="incoming-buses-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;">
+                    <!-- Incoming buses will be populated here -->
+                </div>
+            </div>
+
+            <!-- Responsive Cards -->
+            <div class="row" id="bus-arrivals-container">
+                <div class="col-12 text-center">
+                    <p id="loading-message" style="display: flex; align-items: center; justify-content: center;">
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <script data-bg="#f2f3e5" data-fg="#000" data-font-family="Outfit, sans-serif"
+        data-message="This website uses cookies to provide necessary site functionality and to improve your experience. By using this website, you agree to our use of cookies."
+        data-position="bottom" data-zindex="12345111111" id="cookiebanner" src="../js/cookies-banner.js"
+        type="text/javascript">
+        </script>
+
+    <script src="../js/cookies-theme-sync.js"></script>
+
+    <script src="js/mob-navtabs.js"></script>
+
+    <script src="js/mob-navtabs-tooltip.js"></script>
+
+    <script src="js/haptic.js"></script>
+    <script src="js/wake-lock.js"></script>
+
+    <script src="buszy-subp.js"></script>
+
+    <script src="../js/jquery.min.js"></script>
+
+    <script src="../js/popper.min.js"></script>
+
+    <script src="../js/bootstrap.min.js"></script>
+
+    <script src="../js/pw.bundle.js"></script>
+
+    <script src="../js/default-assets/active.js"></script>
+
+    <script src="../js/isotope.pkgd.min.js"></script>
+
+    <script src="../js/dstabs.js"></script>
+
+    <script src="../js/utils.js"></script>
+
+    <script src="../js/pwa-config.js"></script>
+
+    <script src="js/onemap-config.js"></script>
+
+    <script src="js/shared-arrivals.js"></script>
+
+    <script src="js/art.js"></script>
+
+    <script>
+        // Collapse map button logic
+        const collapseBtn = document.getElementById('collapse-map-btn');
+        const mapSection = document.querySelector('.bus-location-section');
+        if (collapseBtn && mapSection) {
+            collapseBtn.addEventListener('click', () => {
+                mapSection.style.display = 'none';
+            });
+        }
+    </script>
+
+    <script src="./js/ann-indicator.js"></script>
+    <script src="./js/alerts-indicator.js"></script>
+
+    <script src="../js/ios-pwa-warning.js"></script>
+
+</body>
+</html>

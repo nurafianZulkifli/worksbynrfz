@@ -1,4 +1,4 @@
-// Builds rail-buddy/json/train-timetable.json from LTA DataMall's GTFSScheduleTrain dataset.
+// Builds both apps' train timetable data from LTA DataMall's GTFSScheduleTrain dataset.
 //
 //   LTA_API_KEY=xxxx node scripts/build-train-timetable.js          (downloads the GTFS zip)
 //   node scripts/build-train-timetable.js --zip path\to\gtfs.zip    (uses a local zip)
@@ -15,7 +15,10 @@ const path = require('path');
 const axios = require('axios');
 const AdmZip = require('adm-zip');
 
-const OUT = path.join(__dirname, '..', 'rail-buddy', 'json', 'train-timetable.json');
+const OUT_FILES = [
+  path.join(__dirname, '..', 'railbuszy', 'json', 'train-timetable.json'),
+  path.join(__dirname, '..', 'rail-buddy', 'json', 'train-timetable.json')
+];
 
 function parseCSV(text) {
   const rows = [];
@@ -69,7 +72,7 @@ async function getZip() {
 (async () => {
   // --check: fail when the bundled timetable ends within 14 days (used by the weekly workflow to raise an alert)
   if (process.argv.includes('--check')) {
-    const cur = JSON.parse(fs.readFileSync(OUT, 'utf8'));
+    const cur = JSON.parse(fs.readFileSync(OUT_FILES[0], 'utf8'));
     const last = cur.services.map(s => s.end).filter(Boolean).sort().pop();
     const end = new Date(Date.UTC(+last.slice(0, 4), +last.slice(4, 6) - 1, +last.slice(6, 8)));
     const daysLeft = Math.floor((end - Date.now()) / 86400000);
@@ -155,26 +158,27 @@ async function getZip() {
     });
   }
 
-  const OUT_FILE = OUT;
   const payload = { generated: new Date().toISOString(), services, stops, tt };
-
-  // Skip the write when only the timestamp would change, so scheduled runs don't create noise commits
-  if (fs.existsSync(OUT_FILE)) {
-    try {
-      const prev = JSON.parse(fs.readFileSync(OUT_FILE, 'utf8'));
-      const strip = o => JSON.stringify({ services: o.services, stops: o.stops, tt: o.tt });
-      if (strip(prev) === strip(payload)) {
-        console.log('Timetable unchanged; leaving existing file in place.');
-        return;
-      }
-    } catch (e) { /* unreadable previous file: overwrite */ }
-  }
 
   // Refuse to replace a good file with an obviously broken download
   if (Object.keys(tt).length < 50 || !services.length) {
     throw new Error(`Suspiciously small timetable (${Object.keys(tt).length} stops); not writing.`);
   }
 
-  fs.writeFileSync(OUT_FILE, JSON.stringify(payload));
-  console.log(`Wrote ${OUT_FILE} (${(fs.statSync(OUT_FILE).size / 1024).toFixed(0)} KB, ${Object.keys(tt).length} stops)`);
+  const strip = o => JSON.stringify({ services: o.services, stops: o.stops, tt: o.tt });
+  let wrote = false;
+  for (const outFile of OUT_FILES) {
+    if (fs.existsSync(outFile)) {
+      try {
+        const previous = JSON.parse(fs.readFileSync(outFile, 'utf8'));
+        if (strip(previous) === strip(payload)) continue;
+      } catch (e) { /* unreadable previous file: overwrite */ }
+    }
+
+    fs.mkdirSync(path.dirname(outFile), { recursive: true });
+    fs.writeFileSync(outFile, JSON.stringify(payload));
+    console.log(`Wrote ${outFile} (${(fs.statSync(outFile).size / 1024).toFixed(0)} KB, ${Object.keys(tt).length} stops)`);
+    wrote = true;
+  }
+  if (!wrote) console.log('Timetable unchanged; leaving existing files in place.');
 })().catch(e => { console.error(e.message); process.exit(1); });

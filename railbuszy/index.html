@@ -1,0 +1,959 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="57TuruPNu5wqSSia_cUehl5t9Gh1AbxrHNPcMiFx-aQ" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover, user-scalable=no">
+    <meta name="color-scheme" content="light">
+    <title>Pinned Bus Stops | Buszy</title>
+    <meta property="og:image" content="https://i.imgur.com/i8n9KYs.png" />
+    <meta name="description" content="Real-time bus timings, alerts, and pinned bus stops for Singapore buses">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Buszy">
+    <meta name="theme-color" content="#ffffff">
+
+    <link rel="manifest" href="./manifest.json?v=20260912-1">
+    <link rel="icon" href="./assets/logo.png" type="image/png">
+
+    <link rel="apple-touch-icon" href="./assets/icon-512.png">
+    <link rel="preload" href="./assets/icon-512.png" as="image" type="image/png" fetchpriority="high">
+
+    <!-- iOS PWA Startup Image -->
+    <link rel="apple-touch-startup-image" href="../img/bg-img/hero-buszy-dark.png">
+
+
+    <script src="https://kit.fontawesome.com/965e82ac01.js" crossorigin="anonymous"></script>
+
+    <!-- Core Stylesheet -->
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/style-breakpoints.css">
+    <link rel="stylesheet" href="../css/pwa-styles.css">
+    <link rel="stylesheet" href="../css/dark-mode.css">
+    <link rel="stylesheet" href="../css/ios-safari.css">
+
+    <!-- Page Specific Stylesheet -->
+    <link rel="stylesheet" href="./css/style-buszy.css">
+    <link rel="stylesheet" href="./css/main-page.css">
+
+    <!-- Bus Service Tab Styling -->
+    <style>
+        .bus-service-tab,
+        .bus-service-tab.active {
+            background-color: #94d40b !important;
+            color: #000 !important;
+        }
+    </style>
+
+</head>
+
+<body>
+    <!-- Apply dark mode before splash renders to avoid flash -->
+    <script>
+        (function () {
+            var pref = localStorage.getItem('theme-preference') || 'system';
+            var isDark = pref === 'dark' || (pref === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            var mode = isDark ? 'dark' : 'light';
+            document.documentElement.style.colorScheme = mode;
+            document.body.style.colorScheme = mode;
+            var colorMeta = document.querySelector('meta[name="color-scheme"]');
+            if (colorMeta) colorMeta.setAttribute('content', mode);
+            if (isDark) document.body.classList.add('dark-mode');
+        })();
+    </script>
+
+    <!-- PWA Splash Screen: only show on fresh launch -->
+    <script>
+        if (sessionStorage.getItem('splashShown')) {
+            document.documentElement.style.setProperty('--splash-display', 'none');
+        }
+    </script>
+    <div id="pwa-splash" style="display: var(--splash-display, flex);">
+        <div class="splash-content">
+            <img src="./assets/icon-512.png" alt="Buszy" class="splash-icon">
+            <span class="splash-name">Buszy</span>
+        </div>
+        <div class="splash-hero"></div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar-container">
+        <div class="navbar">
+            <!-- Logo -->
+            <a href="./"><img src="./assets/logo.png" alt="logo" class="logo" /></a>
+
+            <!-- Navigation Links -->
+            <ul class="navbar-nav" id="navbarNav">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active">
+                        <i class="fa-sharp fa-regular fa-house"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="./first-last.html" class="nav-link">
+                        <i class="fa-regular fa-clock"></i>
+                        <span>Timings</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="./ann.html" class="nav-link" id="ann-nav-desktop">
+                        <i class="fa-regular fa-arrows-rotate"></i>
+                        <span>Updates</span>
+                        <span class="alerts-indicator-dot"></span>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a href="./menu.html" class="nav-link">
+                        <i class="fa-regular fa-bars"></i>
+                        <span>Menu</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Mobile Bottom Navigation Bar -->
+    <nav class="mobile-bottom-nav">
+        <ul>
+            <li class="active">
+                <a href="#">
+                    <span class="icon">
+                        <i class="fa-sharp fa-regular fa-house"></i>
+                    </span>
+                    <span class="label">Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="./first-last.html">
+                    <span class="icon">
+                        <i class="fa-regular fa-clock"></i>
+                    </span>
+                    <span class="label">Timings</span>
+                </a>
+            </li>
+            <li>
+                <a href="./ann.html" id="ann-nav-mobile">
+                    <span class="icon">
+                        <i class="fa-regular fa-arrows-rotate"></i>
+                        <span class="alerts-indicator-dot"></span>
+                    </span>
+                    <span class="label">Updates</span>
+                </a>
+            </li>
+            <li>
+                <a href="./menu.html">
+                    <span class="icon">
+                        <i class="fa-regular fa-bars"></i>
+                    </span>
+                    <span class="label">Menu</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!------------------------------------------------------------------------ Start of Sections ------------------------------------------------------------------------>
+
+    <!-- Cover Header -->
+    <section class="breadcrumb-area-eicw-cover bg-img" id="cv-bat">
+        <div class="container">
+            <div class="row h-100 align-items-center justify-content-center">
+                <div class="col-12" style="padding-left: 0em; padding-right: 0em;">
+                    <div class="cover-search-wrapper">
+                        <div class="hero-intro">
+                            <h1 id="day-greeting">Hello World!</h1>
+                        </div>
+
+                        <div class="search-container">
+                            <span class="search-label">Search bus stop, road, or code</span>
+                            <div class="search-wrapper">
+                                <div class="search-input-wrapper">
+                                    <i class="fa-regular fa-magnifying-glass search-icon"></i>
+                                    <input type="text" class="search-box" id="bus-stop-search"
+                                        placeholder="Where do you want to go?" onclick="navigateToSearch()">
+                                    <button class="search-clear" id="search-clear" aria-label="Clear search">
+                                        <i class="fa-regular fa-xmark"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="transport-tabs" role="tablist" aria-label="Transport mode">
+                                <button class="transport-tab" type="button" role="tab" aria-selected="false"
+                                    aria-controls="train-content" data-transport-mode="rail">
+                                    <i class="fa-regular fa-train-subway" aria-hidden="true"></i>
+                                    <span>MRT/LRT</span>
+                                </button>
+                                <button class="transport-tab active" type="button" role="tab" aria-selected="true"
+                                    aria-controls="pinned" data-transport-mode="bus">
+                                    <i class="fa-regular fa-bus-simple" aria-hidden="true"></i>
+                                    <span>BUS</span>
+                                </button>
+                            </div>
+                            <div class="category-tabs-container">
+                                <div class="category-tabs" id="category-tabs">
+                                    <button class="bus-service-tab" id="bus-service-tab"
+                                        style="display: none; background-color: #94d40b; color: #000;">
+                                        <i class="fa-kit fa-lta-bus"></i>&nbsp;
+                                        Bus Service
+                                    </button>
+                                    <button class="category-tab active" data-category="nearby">
+                                        <i class="fa-kit fa-lta-location"></i>&nbsp;
+                                        
+                                    </button>
+                                    <button class="category-tab" data-category="pinned">
+                                        <i class="fa-sharp fa-regular fa-thumbtack-angle"></i>&nbsp;
+                                        
+                                    </button>
+                                    <button class="category-tab" data-category="all">
+                                        <i class="fa-kit fa-lta-bus-stop"></i>&nbsp;
+                                        
+                                    </button>
+                                </div>
+                                <button class="scroll-indicator" id="scroll-indicator" aria-label="Scroll tabs">
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </button>
+                            </div>
+                            <div id="did-you-mean" style="display:none;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="inline-search-view" id="inline-search-view" aria-hidden="true">
+        <div class="container">
+            <button class="inline-search-exit" type="button" aria-label="Exit search" title="Exit search" onclick="closeInlineSearch()">
+                <i class="fa-regular fa-xmark"></i>
+            </button>
+            <div class="inline-search-header">
+                <div>
+                    <span class="search-label">Search bus stop, road, or code</span>
+                    <h2>Find your next stop</h2>
+                </div>
+                <button class="inline-search-close" type="button" aria-label="Close search" onclick="closeInlineSearch()">
+                    <i class="fa-regular fa-xmark"></i>
+                </button>
+            </div>
+            <div class="inline-search-input-wrap search-input-wrapper">
+                <i class="fa-regular fa-magnifying-glass search-icon"></i>
+                <input type="search" id="inline-search-input" placeholder="Where do you want to go?" autocomplete="off">
+                <button class="search-clear" id="inline-search-clear" type="button" aria-label="Clear search">
+                    <i class="fa-regular fa-xmark"></i>
+                </button>
+            </div>
+            <div class="inline-search-filters" id="inline-search-filters">
+                <button class="category-tab active" type="button" data-filter="all">All</button>
+                <button class="category-tab" type="button" data-filter="stops">Bus Stops</button>
+                <button class="category-tab" type="button" data-filter="services">Bus Services</button>
+            </div>
+            <div class="inline-search-recents" id="inline-search-recents"></div>
+            <div class="inline-search-results" id="inline-search-results"></div>
+        </div>
+    </section>
+
+    <section class="pinned" id="pinned">
+        <div class="container">
+            <h2 class="list-section-heading" id="list-section-heading">
+                <i class="fa-kit fa-lta-location" aria-hidden="true"></i>
+                <span>Nearby</span>
+            </h2>
+            <!-- All Tab (Search all bus stops) -->
+            <div id="all-content" class="tab-content">
+                <section class="about-me-summ clearfix" style="padding-bottom: 9em;">
+                    <div class="list-group">
+                        <p class="pin-msg" id="loading-message"
+                            style="display: flex; align-items: center; justify-content: center;">
+                            <svg class="spinner" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="status"
+                                style="margin-right: 1em;">
+                                <circle cx="50" cy="50" r="45" stroke-dasharray="0% 314.159%">
+                                    <animateTransform attributeName="transform" type="rotate" values="-90;810"
+                                        keyTimes="0;1" dur="2s" repeatCount="indefinite" />
+                                    <animate attributeName="stroke-dashoffset" values="0%;0%;-157.080%"
+                                        calcMode="spline" keySplines="0.61, 1, 0.88, 1; 0.12, 0, 0.39, 0"
+                                        keyTimes="0;0.5;1" dur="2s" repeatCount="indefinite" />
+                                    <animate attributeName="stroke-dasharray"
+                                        values="0% 314.159%;157.080% 157.080%;0% 314.159%" calcMode="spline"
+                                        keySplines="0.61, 1, 0.88, 1; 0.12, 0, 0.39, 0" keyTimes="0;0.5;1" dur="2s"
+                                        repeatCount="indefinite" />
+                                </circle>
+                            </svg>Loading Data...
+                        </p>
+                    </div>
+                    <div class="pagination-buttons"
+                        style="display: none; gap: 3em; justify-content: center; margin-top: 2em; flex-wrap: nowrap;">
+                        <button id="prev-button" class="btn pw-btn-prev btn-2 mt-15" style="display: none;"><i
+                                class="fa-solid fa-arrow-left"></i></button>
+                        <button id="next-button" class="btn pw-btn-next btn-2 mt-15" style="display: none;"><i
+                                class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Pinned Tab -->
+            <div id="pinned-content" class="tab-content">
+                <section class="about-me-summ clearfix" style="padding-bottom: 9em;">
+                    <div id="bookmarks-container" class="list-group"></div>
+                </section>
+            </div>
+
+            <!-- Nearby Tab -->
+            <div id="nearby-content" class="tab-content active">
+                <section class="about-me-summ clearfix" style="padding-bottom: 9em;">
+
+                    <div id="bus-stops"></div>
+
+                </section>
+            </div>
+        </div>
+    </section>
+
+    <section class="train-content" id="train-content" hidden>
+        <div class="container">
+            <div class="train-nearby-card" id="nearby-train-station">
+                <div class="train-nearby-card-heading">
+                    <i class="fa-kit fa-lta-location" aria-hidden="true"></i>
+                    <div>
+                        <span class="train-section-label">Nearby train station</span>
+                        <h2 id="nearest-train-name">Find a station near you</h2>
+                    </div>
+                </div>
+                <p id="nearest-train-status">Allow location access to find the nearest MRT or LRT station.</p>
+                <button class="train-locate-button" id="train-locate-button" type="button">
+                    <i class="fa-regular fa-location-crosshairs" aria-hidden="true"></i>
+                    Find nearby station
+                </button>
+            </div>
+
+            <section class="train-status-section" aria-labelledby="train-status-heading">
+                <div class="train-status-heading">
+                    <h2 id="train-status-heading">Line Status</h2>
+                    <span id="train-status-updated"></span>
+                </div>
+                <div class="network-tabs" role="tablist" aria-label="Transit network">
+                    <button class="network-tab active" id="rail-mrt-tab" type="button" role="tab"
+                        aria-controls="rail-mrt-panel" aria-selected="true" data-network-tab="mrt">
+                        <i class="fa-kit fa-lta-train" aria-hidden="true"></i> MRT
+                    </button>
+                    <button class="network-tab" id="rail-lrt-tab" type="button" role="tab"
+                        aria-controls="rail-lrt-panel" aria-selected="false" data-network-tab="lrt">
+                        <i class="fa-kit fa-lta-lrt" aria-hidden="true"></i> LRT
+                    </button>
+                </div>
+                <div class="network-panel active" id="rail-mrt-panel" role="tabpanel"
+                    aria-labelledby="rail-mrt-tab" data-network-panel="mrt">
+                    <a class="custom-list-item" href="../rail-buddy/networks/nsl.html" data-train-line="NSL">
+                        <img src="../rail-buddy/assets/caplets/NSLCap.png" alt="NSL">
+                        <span class="line-name">North-South Line</span>
+                        <span class="status-icon pulse"><i class="fa-regular fa-check"></i></span>
+                    </a>
+                    <a class="custom-list-item" href="../rail-buddy/networks/ewl.html" data-train-line="EWL">
+                        <img src="../rail-buddy/assets/caplets/EWLCap.png" alt="EWL">
+                        <span class="line-name">East-West Line</span>
+                        <span class="status-icon pulse"><i class="fa-regular fa-check"></i></span>
+                    </a>
+                    <a class="custom-list-item" href="../rail-buddy/networks/nel.html" data-train-line="NEL">
+                        <img src="../rail-buddy/assets/caplets/NELCap.png" alt="NEL">
+                        <span class="line-name">North East Line</span>
+                        <span class="status-icon pulse"><i class="fa-regular fa-check"></i></span>
+                    </a>
+                    <a class="custom-list-item" href="../rail-buddy/networks/ccl.html" data-train-line="CCL">
+                        <img src="../rail-buddy/assets/caplets/CCLCap.png" alt="CCL">
+                        <span class="line-name">Circle Line</span>
+                        <span class="status-icon pulse"><i class="fa-regular fa-check"></i></span>
+                    </a>
+                    <a class="custom-list-item" href="../rail-buddy/networks/dtl.html" data-train-line="DTL">
+                        <img src="../rail-buddy/assets/caplets/DTLCap.png" alt="DTL">
+                        <span class="line-name">Downtown Line</span>
+                        <span class="status-icon pulse"><i class="fa-regular fa-check"></i></span>
+                    </a>
+                    <a class="custom-list-item" href="../rail-buddy/networks/tel.html" data-train-line="TEL">
+                        <img src="../rail-buddy/assets/caplets/TELCap.png" alt="TEL">
+                        <span class="line-name">Thomson-East Coast Line</span>
+                        <span class="status-icon pulse"><i class="fa-regular fa-check"></i></span>
+                    </a>
+                </div>
+                <div class="network-panel" id="rail-lrt-panel" role="tabpanel" aria-labelledby="rail-lrt-tab"
+                    data-network-panel="lrt" hidden>
+                    <a class="custom-list-item" href="../rail-buddy/networks/bp.html" data-train-line="BPLRT">
+                        <img src="../rail-buddy/assets/caplets/BPCap.png" alt="BPLRT">
+                        <span class="line-name">Bukit Panjang LRT</span>
+                        <span class="status-icon pulse"><i class="fa-regular fa-check"></i></span>
+                    </a>
+                    <a class="custom-list-item" href="../rail-buddy/networks/sk.html" data-train-line="SKLRT">
+                        <img src="../rail-buddy/assets/caplets/SKCap.png" alt="SKLRT">
+                        <span class="line-name">Sengkang LRT</span>
+                        <span class="status-icon pulse"><i class="fa-regular fa-check"></i></span>
+                    </a>
+                    <a class="custom-list-item" href="../rail-buddy/networks/pg.html" data-train-line="PGLRT">
+                        <img src="../rail-buddy/assets/caplets/PGCap.png" alt="PGLRT">
+                        <span class="line-name">Punggol LRT</span>
+                        <span class="status-icon pulse"><i class="fa-regular fa-check"></i></span>
+                    </a>
+                </div>
+            </section>
+        </div>
+    </section>
+    </main>
+
+    <!-- First-Time Guide Overlay -->
+    <div class="overlay guide-overlay" id="guideOverlay">
+        <div class="guide-sheet">
+            <div class="guide-steps-wrap" id="guideStepsWrap">
+
+                <!-- Step 1: Pin a Bus Stop -->
+                <div class="guide-step active" id="guideStep1">
+                    <div class="guide-icon-wrap guide-icon-green">
+                        <i class="fa-sharp fa-regular fa-thumbtack-angle"></i>
+                    </div>
+                    <div class="guide-step-label">Step 1 of 4</div>
+                    <div class="guide-step-title">Pin a Bus Stop</div>
+                    <div class="guide-step-body">
+                        Click the <strong>search bar</strong> to find any bus stop by name, code, or service number, then tap the
+                        <strong>pin icon</strong> on a result to save it here for quick access.
+                        <div class="guide-tip">
+                            <i class="fa-regular fa-lightbulb"></i>
+                            Switch to the <strong>Nearby</strong> tab to discover stops around your current location
+                            without searching.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Check Live Timings -->
+                <div class="guide-step" id="guideStep2">
+                    <div class="guide-icon-wrap guide-icon-blue">
+                        <i class="fa-regular fa-bus-simple"></i>
+                    </div>
+                    <div class="guide-step-label">Step 2 of 4</div>
+                    <div class="guide-step-title">Check Live Timings</div>
+                    <div class="guide-step-body">
+                        Tap any pinned bus stop to view <strong>real-time arrival timings</strong>, including
+                        the next few buses and their seat load status.
+                        <div class="guide-tip">
+                            <i class="fa-regular fa-lightbulb"></i>
+                            Timings auto-refresh every 2 seconds by default. You can adjust this interval in the
+                            Settings page.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Alerts & First/Last Bus -->
+                <div class="guide-step" id="guideStep3">
+                    <div class="guide-icon-wrap guide-icon-orange">
+                        <i class="fa-regular fa-triangle-exclamation"></i>
+                    </div>
+                    <div class="guide-step-label">Step 3 of 4</div>
+                    <div class="guide-step-title">Updates &amp; More</div>
+                    <div class="guide-step-body">
+                        Tap <strong>Updates</strong> in the menu to see bus service alerts and announcements. Switch to the <strong>Alerts</strong> tab to view disruptions and route changes. Use <strong>Timings</strong> to look up first and last bus times for any stop.
+                        <div class="guide-tip">
+                            <i class="fa-regular fa-lightbulb"></i>
+                            The updates icon in the menu will pulse when there's a new alert or announcement.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Settings -->
+                <div class="guide-step" id="guideStep4">
+                    <div class="guide-icon-wrap guide-icon-teal">
+                        <i class="fa-regular fa-gear"></i>
+                    </div>
+                    <div class="guide-step-label">Step 4 of 4</div>
+                    <div class="guide-step-title">Customise Settings</div>
+                    <div class="guide-step-body">
+                        Head to <strong>Menu &gt; Settings</strong> to change the time format, toggle display
+                        options like fleet legend and incoming buses.
+                        <div class="guide-tip">
+                            <i class="fa-regular fa-lightbulb"></i>
+                            You can adjust what you want to see and the way Bus Service information is displayed, and
+                            export your pinned stops as a backup from the Settings page.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Dots -->
+            <div class="guide-dots">
+                <span class="guide-dot active" id="guideDot1"></span>
+                <span class="guide-dot" id="guideDot2"></span>
+                <span class="guide-dot" id="guideDot3"></span>
+                <span class="guide-dot" id="guideDot4"></span>
+            </div>
+
+            <!-- Actions -->
+            <div class="guide-actions">
+                <button class="sht-btn sht-btn-ghost" id="guidePrevBtn" onclick="guidePrev()" style="display:none;">
+                    <i class="fa-regular fa-chevron-left"></i> Back
+                </button>
+                <button class="sht-btn sht-btn-ghost guide-skip-btn" onclick="guideFinish()"><i
+                        class="fa-regular fa-x"></i> Skip</button>
+                <button class="sht-btn sht-btn-primary" id="guideNextBtn" onclick="guideNext()">
+                    Next <i class="fa-regular fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" id="cookiebanner" src="../js/cookies-banner.js" data-position="bottom"
+        data-bg="#f2f3e5" data-fg="#000" data-font-family="Outfit, sans-serif" data-zindex="12345111111"
+        data-message="This website uses cookies to provide necessary site functionality and to improve your experience. By using this website, you agree to our use of cookies.">
+        </script>
+
+    <script src="../js/cookies-theme-sync.js"></script>
+
+    <script src="./js/mob-navtabs.js"></script>
+
+    <script src="./js/mob-navtabs-tooltip.js"></script>
+
+    <script src="./js/haptic.js"></script>
+
+    <script src="./buszy-subp.js"></script>
+
+    <script src="../js/jquery.min.js"></script>
+
+    <script src="../js/popper.min.js"></script>
+
+    <script src="../js/bootstrap.min.js"></script>
+
+    <script src="../js/pw.bundle.js"></script>
+
+    <script src="../js/default-assets/active.js"></script>
+
+    <script src="../js/isotope.pkgd.min.js"></script>
+
+    <script src="../js/dstabs.js"></script>
+
+    <script src="../js/utils.js"></script>
+
+    <script src="../js/pwa-config.js"></script>
+
+    <script src="./js/shared-arrivals.js"></script>
+    <script src="./js/nbs.js"></script>
+
+    <script>
+        if (window.PWAConfig) {
+            const basePath = window.PWAConfig.basePath;
+            const bgElement = document.getElementById('cv-bat');
+
+            // Check dark mode preference using the same logic as buszy.js
+            const _themePreference = localStorage.getItem('theme-preference') || 'system';
+            const _prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            let isDarkMode = false;
+
+            if (_themePreference === 'dark') {
+                isDarkMode = true;
+            } else if (_themePreference === 'light') {
+                isDarkMode = false;
+            } else if (_themePreference === 'system') {
+                isDarkMode = _prefersDark;
+            }
+
+            function updateHeroTheme() {
+                const imageName = document.body.classList.contains('dark-mode') ? 'hero-buszy-dark.png' : 'hero-buszy.png';
+                const imageUrl = new URL('../img/bg-img/' + imageName, window.location.href).href;
+                if (bgElement) bgElement.style.backgroundImage = `url('${imageUrl}')`;
+            }
+
+            updateHeroTheme();
+            window.addEventListener('buszythemechange', updateHeroTheme);
+            new MutationObserver(updateHeroTheme).observe(document.body, { attributes: true, attributeFilter: ['class'] });
+        }
+    </script>
+
+    <script src="../js/pwa-helper.js"></script>
+
+    <script src="../js/pwa-migration.js"></script>
+
+    <script src="./js/pwa-init.js"></script>
+
+    <script src="./js/bus-stops-preloader.js"></script>
+
+    <script src="./js/buszy-main.js"></script>
+    <script src="./js/index-search.js"></script>
+    <script src="./js/search-placeholder.js"></script>
+    <script src="./js/transport-mode.js"></script>
+
+    <script src="./js/ann-indicator.js"></script>
+    <script src="./js/alerts-indicator.js"></script>
+
+    <script>
+        function navigateToSearch() {
+            const searchView = document.getElementById('inline-search-view');
+            const searchInput = document.getElementById('inline-search-input');
+            if (!searchView || !searchInput) return;
+            window.scrollTo(0, 0);
+            searchView.classList.remove('closing');
+            searchView.classList.add('open');
+            searchView.setAttribute('aria-hidden', 'false');
+            document.documentElement.classList.add('search-overlay-open');
+            document.body.classList.add('search-overlay-open');
+            document.body.style.top = '0px';
+            searchInput.focus();
+        }
+
+        function closeInlineSearch() {
+            const searchView = document.getElementById('inline-search-view');
+            if (!searchView) return;
+            searchView.classList.remove('open');
+            searchView.classList.add('closing');
+            searchView.setAttribute('aria-hidden', 'true');
+            document.documentElement.classList.remove('search-overlay-open');
+            document.body.classList.remove('search-overlay-open');
+            document.body.style.top = '';
+            window.scrollTo(0, 0);
+        }
+    </script>
+
+    <script>
+        // Bus Service Search Detection and Button Toggle
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('bus-stop-search');
+            const busServiceTab = document.getElementById('bus-service-tab');
+            const didYouMeanEl = document.getElementById('did-you-mean');
+
+            if (!searchInput || !busServiceTab) return;
+
+            // Load service numbers from JSON for exact-case lookup
+            let serviceNumbers = [];
+            const basePath = (window.PWAConfig && window.PWAConfig.basePath) ? window.PWAConfig.basePath : '/';
+            fetch(basePath + 'buszy/json/bus-service-data.json')
+                .then(r => r.json())
+                .then(data => {
+                    serviceNumbers = data.map(s => s.n);
+                    // Re-run after data loads in case input was already restored
+                    if (searchInput.value) updateDidYouMean(searchInput.value);
+                })
+                .catch(() => { });
+
+            // Clear any leftover search state from bus service page
+            sessionStorage.removeItem('lastServiceSearch');
+
+            // Detect if input looks like a service number
+            function isServiceNumber(text) {
+                const cleaned = text.trim();
+                return /^\d{1,4}[a-zA-Z]?$/.test(cleaned);
+            }
+
+            // Find exact or suggested service number from loaded data
+            function resolveServiceNumber(typed) {
+                const trimmed = typed.trim();
+                if (serviceNumbers.includes(trimmed)) return { exact: trimmed, suggestion: null };
+                const lower = trimmed.toLowerCase();
+                const match = serviceNumbers.find(n => n.toLowerCase() === lower);
+                if (match) return { exact: null, suggestion: match };
+                return { exact: null, suggestion: null };
+            }
+
+            function navigateToService(serviceNo) {
+                sessionStorage.setItem('lastServiceSearch', serviceNo);
+                searchInput.select();
+                setTimeout(() => {
+                    window.location.href = `${basePath}buszy/bus-service.html?service=${encodeURIComponent(serviceNo)}`;
+                }, 100);
+            }
+
+            function updateDidYouMean(val) {
+                if (!didYouMeanEl || serviceNumbers.length === 0) return;
+                const { exact, suggestion } = resolveServiceNumber(val);
+                if (suggestion) {
+                    didYouMeanEl.style.display = 'block';
+                    didYouMeanEl.innerHTML = `Did you mean Bus Service <a id="dym-link">${suggestion}</a>?`;
+                    document.getElementById('dym-link').addEventListener('click', (e) => {
+                        e.preventDefault();
+                        navigateToService(suggestion);
+                    });
+                    busServiceTab.disabled = true;
+                    busServiceTab.style.opacity = '0.4';
+                    busServiceTab.style.cursor = 'not-allowed';
+                } else {
+                    didYouMeanEl.style.display = 'none';
+                    busServiceTab.disabled = false;
+                    busServiceTab.style.opacity = '';
+                    busServiceTab.style.cursor = '';
+                }
+            }
+
+            // Update button and did-you-mean on input change
+            searchInput.addEventListener('input', () => {
+                const val = searchInput.value;
+                const otherCategoryTabs = document.querySelectorAll('.category-tab:not(.bus-service-tab)');
+                
+                if (!isServiceNumber(val)) {
+                    busServiceTab.style.display = 'none';
+                    if (didYouMeanEl) didYouMeanEl.style.display = 'none';
+                    // Re-enable other tabs when not searching for service
+                    otherCategoryTabs.forEach(tab => {
+                        tab.disabled = false;
+                        tab.style.opacity = '';
+                        tab.style.cursor = '';
+                    });
+                    return;
+                }
+                
+                busServiceTab.style.display = 'inline-flex';
+                updateDidYouMean(val);
+                
+                // Disable other tabs when searching for service
+                otherCategoryTabs.forEach(tab => {
+                    tab.disabled = true;
+                    tab.style.opacity = '0.4';
+                    tab.style.cursor = 'not-allowed';
+                });
+                
+                // Make Bus Service tab active
+                const tabContents = document.querySelectorAll('.tab-content');
+                otherCategoryTabs.forEach(t => t.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                busServiceTab.classList.add('active');
+            });
+
+            // Handle Bus Service button click - use exact or suggested casing, never force uppercase
+            busServiceTab.addEventListener('click', (e) => {
+                e.preventDefault();
+                const val = searchInput.value.trim();
+                if (!isServiceNumber(val)) return;
+                const { exact, suggestion } = resolveServiceNumber(val);
+                navigateToService(exact || suggestion || val);
+            });
+        });
+
+        // Scroll indicator for category tabs
+        const categoryTabsContainer = document.getElementById('category-tabs');
+        const scrollIndicator = document.getElementById('scroll-indicator');
+
+        function updateScrollIndicator() {
+            if (categoryTabsContainer) {
+                const hasScroll = categoryTabsContainer.scrollWidth > categoryTabsContainer.clientWidth;
+                const isAtEnd = categoryTabsContainer.scrollLeft >=
+                    categoryTabsContainer.scrollWidth - categoryTabsContainer.clientWidth - 10;
+
+                if (hasScroll && !isAtEnd) {
+                    scrollIndicator.classList.add('visible');
+                } else {
+                    scrollIndicator.classList.remove('visible');
+                }
+            }
+        }
+
+        // Expose to window for cross-script access
+        window.updateScrollIndicator = updateScrollIndicator;
+
+        if (scrollIndicator && categoryTabsContainer) {
+            // Check on load
+            setTimeout(updateScrollIndicator, 100);
+
+            // Check on window resize
+            window.addEventListener('resize', updateScrollIndicator);
+
+            // Check on scroll
+            categoryTabsContainer.addEventListener('scroll', updateScrollIndicator);
+
+            // Handle scroll indicator click
+            scrollIndicator.addEventListener('click', () => {
+                categoryTabsContainer.scrollBy({
+                    left: 150,
+                    behavior: 'smooth'
+                });
+            });
+        }
+
+        // Category tab switching functionality
+        const categoryTabs = document.querySelectorAll('.category-tab:not(.bus-service-tab)');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        categoryTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Don't switch tabs if they are disabled
+                if (tab.disabled) {
+                    return;
+                }
+                
+                const category = tab.getAttribute('data-category');
+                const sectionHeading = document.getElementById('list-section-heading');
+
+                // Remove active class from all tabs and contents
+                categoryTabs.forEach(t => t.classList.remove('active'));
+                const busServiceTab = document.getElementById('bus-service-tab');
+                if (busServiceTab) busServiceTab.classList.remove('active');
+                tabContents.forEach(content => content.classList.remove('active'));
+
+                // Add active class to clicked tab and corresponding content
+                tab.classList.add('active');
+                const contentElement = document.getElementById(category + '-content');
+                if (contentElement) {
+                    contentElement.classList.add('active');
+                }
+
+                if (sectionHeading) {
+                    const headingIcon = sectionHeading.querySelector('i');
+                    const headingText = sectionHeading.querySelector('span');
+                    const tabDetails = {
+                        nearby: { label: 'Nearby', icon: 'fa-kit fa-lta-location' },
+                        pinned: { label: 'Pinned', icon: 'fa-sharp fa-regular fa-thumbtack-angle' },
+                        all: { label: 'All', icon: 'fa-kit fa-lta-bus-stop' }
+                    }[category];
+
+                    if (tabDetails && headingIcon && headingText) {
+                        headingIcon.className = tabDetails.icon;
+                        headingText.textContent = tabDetails.label;
+                    }
+                }
+
+                const paginationButtons = document.querySelector('.pagination-buttons');
+                if (paginationButtons) {
+                    paginationButtons.style.display = category === 'all' ? 'flex' : 'none';
+                }
+
+                // Auto-refresh nearby bus stops when nearby tab is clicked
+                if (category === 'nearby' && typeof refreshNearbyBusStops === 'function') {
+                    refreshNearbyBusStops();
+                }
+
+                const listSection = document.getElementById('pinned');
+                if (listSection) {
+                    listSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Add hidden class styling for filtered items
+        const style = document.createElement('style');
+        style.textContent = '.list-group-item.hidden { display: none; }';
+        document.head.appendChild(style);
+    </script>
+
+
+    <!-- Import pinned bus stops from URL parameter if present (TEMP) -->
+    <script>
+        // Check for importPinned parameter and restore data to localStorage
+        (function () {
+            const params = new URLSearchParams(window.location.search);
+            const importedPinned = params.get('importPinned');
+
+            if (importedPinned) {
+                try {
+                    // Decode the base64 data
+                    const decodedData = atob(importedPinned);
+
+                    // Restore to localStorage - this will overwrite existing data
+                    localStorage.setItem('bookmarkedBusStops', decodedData);
+
+                    // Clean up the URL parameter to avoid re-importing on page refresh
+                    window.history.replaceState({}, document.title, window.location.pathname);
+
+                    console.log('Pinned bus stops successfully imported from menu');
+                } catch (error) {
+                    console.error('Error importing pinned bus stops:', error);
+                }
+            }
+        })();
+    </script>
+
+    <!-- Include scripts for all three functionalities -->
+    <script src="./js/abs.js"></script>
+    <script src="./js/pinned.js"></script>
+
+    <script>
+        // Dismiss PWA splash screen after page load
+        (function () {
+            function hideSplash() {
+                var splash = document.getElementById('pwa-splash');
+                if (!splash) return;
+                sessionStorage.setItem('splashShown', '1');
+                splash.classList.add('hide');
+                setTimeout(function () {
+                    if (splash.parentNode) splash.parentNode.removeChild(splash);
+                }, 500);
+            }
+            if (sessionStorage.getItem('splashShown')) return;
+            if (document.readyState === 'complete') {
+                setTimeout(hideSplash, 600);
+            } else {
+                window.addEventListener('load', function () {
+                    setTimeout(hideSplash, 600);
+                });
+            }
+        })();
+    </script>
+
+    
+
+    <script>
+        // â”€â”€ First-Time Guide â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        (function () {
+            var _guideStep = 1;
+            var GUIDE_KEY = 'buszy-guide-done';
+            var TOTAL_STEPS = 4;
+
+            function lockScroll() {
+                document.documentElement.style.overflow = 'hidden';
+                document.body.style.overflow = 'hidden';
+            }
+
+            function unlockScroll() {
+                document.documentElement.style.overflow = '';
+                document.body.style.overflow = '';
+            }
+
+            function openGuideOverlay() {
+                document.getElementById('guideOverlay').classList.add('open');
+                lockScroll();
+            }
+
+            function closeGuideOverlay() {
+                document.getElementById('guideOverlay').classList.remove('open');
+                unlockScroll();
+            }
+
+            window.guideTo = function (step) {
+                _guideStep = step;
+                for (var i = 1; i <= TOTAL_STEPS; i++) {
+                    var s = document.getElementById('guideStep' + i);
+                    var d = document.getElementById('guideDot' + i);
+                    if (s) s.classList.toggle('active', i === step);
+                    if (d) d.classList.toggle('active', i === step);
+                }
+                var prevBtn = document.getElementById('guidePrevBtn');
+                var nextBtn = document.getElementById('guideNextBtn');
+                if (prevBtn) prevBtn.style.display = step > 1 ? '' : 'none';
+                if (nextBtn) {
+                    if (step === TOTAL_STEPS) {
+                        nextBtn.innerHTML = '<i class="fa-regular fa-check"></i> Done';
+                        nextBtn.onclick = window.guideFinish;
+                    } else {
+                        nextBtn.innerHTML = 'Next <i class="fa-regular fa-chevron-right"></i>';
+                        nextBtn.onclick = window.guideNext;
+                    }
+                }
+            };
+
+            window.guideNext = function () {
+                if (_guideStep < TOTAL_STEPS) window.guideTo(_guideStep + 1);
+                else window.guideFinish();
+            };
+
+            window.guidePrev = function () {
+                if (_guideStep > 1) window.guideTo(_guideStep - 1);
+            };
+
+            window.guideFinish = function () {
+                localStorage.setItem(GUIDE_KEY, '1');
+                closeGuideOverlay();
+            };
+
+            if (!localStorage.getItem(GUIDE_KEY)) {
+                window.guideTo(1);
+                setTimeout(openGuideOverlay, 800);
+            }
+        })();
+    </script>
+
+
+    <script src="./js/mob-nav-scroll.js"></script>
+</body>
+
+</html>

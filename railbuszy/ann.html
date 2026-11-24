@@ -1,0 +1,264 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="57TuruPNu5wqSSia_cUehl5t9Gh1AbxrHNPcMiFx-aQ" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover, user-scalable=no">
+    <meta name="color-scheme" content="light">
+    <meta name="theme-color" content="#ffffff">
+    <title>Updates | Buszy</title>
+    <meta content="Stay updated with the latest announcements from LTA" name="description">
+    <meta content="announcements, updates, news" name="keywords">
+    <meta property="og:image" content="https://i.imgur.com/i8n9KYs.png" />
+
+    <link rel="icon" href="../buszy/assets/logo.png">
+    <link rel="apple-touch-icon" href="./assets/icon-512.png">
+
+    <script src="https://kit.fontawesome.com/965e82ac01.js" crossorigin="anonymous"></script>
+
+    <!-- Core Stylesheet -->
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/style-breakpoints.css">
+    <link rel="stylesheet" href="../css/pwa-styles.css">
+    <link rel="stylesheet" href="../css/dark-mode.css">
+    <link rel="stylesheet" href="../css/ios-safari.css">
+
+    <!-- Page Specific Stylesheet -->
+    <link rel="stylesheet" href="./css/style-buszy.css">
+    <link rel="stylesheet" href="./css/updates.css">
+
+</head>
+
+
+<body>
+    <!-- Fixed Breadcrumb at very top (mobile/tablet only) -->
+    <div class="breadcrumb-fixed-placeholder">
+        <nav aria-label="breadcrumb" style="margin-bottom:0;">
+            <ol class="breadcrumb breadcrumb-fixed" id="floating-breadcrumb">
+                <li class="breadcrumb-item"><a href="#" class="breadcrumb-back" aria-label="Back"><i class="fa-regular fa-arrow-left"></i></a></li>
+            </ol>
+        </nav>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar-container">
+        <div class="navbar">
+            <!-- Logo -->
+            <a href="./"><img src="./assets/logo.png" alt="logo" class="logo" /></a>
+
+            <!-- Navigation Links -->
+            <ul class="navbar-nav" id="navbarNav">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">
+                        <i class="fa-sharp fa-regular fa-house"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="./first-last.html" class="nav-link">
+                        <i class="fa-regular fa-clock"></i>
+                        <span>Timings</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link active">
+                        <i class="fa-regular fa-arrows-rotate"></i>
+                        <span>Updates</span>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a href="./menu.html" class="nav-link">
+                        <i class="fa-regular fa-bars"></i>
+                        <span>Menu</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Mobile Bottom Navigation Bar -->
+    <nav class="mobile-bottom-nav">
+        <ul>
+            <li>
+                <a href="index.html">
+                    <span class="icon">
+                        <i class="fa-sharp fa-regular fa-house"></i>
+                    </span>
+                    <span class="label">Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="./first-last.html">
+                    <span class="icon">
+                        <i class="fa-regular fa-clock"></i>
+                    </span>
+                    <span class="label">Timings</span>
+                </a>
+            </li>
+            <li class="active">
+                <a href="#" id="ann-nav-mobile">
+                    <span class="icon">
+                        <i class="fa-regular fa-arrows-rotate"></i>
+                    </span>
+                    <span class="label">Updates</span>
+                </a>
+            </li>
+            <li>
+                <a href="./menu.html">
+                    <span class="icon">
+                        <i class="fa-regular fa-bars"></i>
+                    </span>
+                    <span class="label">Menu</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+
+
+    <!------------------------------------------------------------------------ Start of Sections ------------------------------------------------------------------------>
+
+    <!-- Title/Breadcrumbs -->
+    <section class="about-me-sum clearfix">
+        <div class="wbnrfz_eicw">
+            <div class="page-header-section">
+                <div class="container container-xxl container-mobile container-mobile-header">
+                    <div class="breadcrumb-wrapper">
+                        <nav aria-label="breadcrumb" class="breadcrumb-desktop" style="display:none;">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="./index.html" class="breadcrumb-back" aria-label="Back"><i class="fa-regular fa-arrow-left"></i></a></li>
+                            </ol>
+                        </nav>
+                        <div class="page-title-wrapper">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; align-items: flex-start;">
+                                <div>
+                                    <h1 class="page-title" id="filter-title">Bus Service Alerts</h1>
+                                    <!-- Tab buttons -->
+                                    <div class="ann-alerts-tabs">
+                                        <button class="tab-button active" data-tab="alerts">
+                                            <i class="fa-regular fa-triangle-exclamation"></i>&nbsp;
+                                            Alerts
+                                        </button>
+                                        <button class="tab-button" data-tab="train-alerts">
+                                            <i class="fa-kit fa-lta-train" aria-hidden="true"></i>&nbsp;
+                                            Train Alerts
+                                        </button>
+                                        <button class="tab-button" data-tab="announcements">
+                                            <i class="fa-regular fa-bullhorn"></i>&nbsp;
+                                            Announcements
+                                        </button>
+                                    </div>
+                                </div>
+                                <div
+                                    style="display: flex; flex-direction: column; align-items: flex-start; gap: 0.5rem;">
+                                    <div id="alerts-last-updated-top" style="font-size: 0.85rem; color: #666;"></div>
+                                    <button id="mark-as-read-btn" class="btn btn-mar badges-btn"
+                                        style="margin: 0; cursor: pointer; display: none;">
+                                        <i class="fa-regular fa-check"></i> Mark as Read
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Contents -->
+    <section class="about-me-summ clearfix" style="padding-bottom: 9em;">
+        <div class="container">
+            <!-- Announcements Tab Content -->
+            <div id="announcements-content" class="tab-content-section">
+                <div class="list-group announcements-list">
+                    <div class="fetch">Loading announcements...</div>
+                </div>
+            </div>
+
+            <!-- Alerts Tab Content -->
+            <div id="alerts-content-section" class="tab-content-section active">
+
+                <div class="list-group" id="alerts-content">
+                    <div class="alerts-loading"
+                        style="text-align: center; padding: 3em 1em; display: flex; align-items: center; justify-content: center; gap: 1em; color: inherit;">
+                        <svg class="spinner" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="status"
+                            style="margin-right: 1em;">
+                            <circle cx="50" cy="50" r="45" stroke-dasharray="0% 314.159%">
+                                <animateTransform attributeName="transform" type="rotate" values="-90;810"
+                                    keyTimes="0;1" dur="2s" repeatCount="indefinite" />
+                                <animate attributeName="stroke-dashoffset" values="0%;0%;-157.080%" calcMode="spline"
+                                    keySplines="0.61, 1, 0.88, 1; 0.12, 0, 0.39, 0" keyTimes="0;0.5;1" dur="2s"
+                                    repeatCount="indefinite" />
+                                <animate attributeName="stroke-dasharray"
+                                    values="0% 314.159%;157.080% 157.080%;0% 314.159%" calcMode="spline"
+                                    keySplines="0.61, 1, 0.88, 1; 0.12, 0, 0.39, 0" keyTimes="0;0.5;1" dur="2s"
+                                    repeatCount="indefinite" />
+                            </circle>
+                        </svg>
+                        Loading Alerts...
+                    </div>
+                </div>
+            </div>
+
+            <div id="train-alerts-content-section" class="tab-content-section">
+                <div class="list-group" id="train-alerts-content" aria-live="polite">
+                    <p class="train-alert-status">Select Train Alerts to load current service alerts.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <script type="text/javascript" id="cookiebanner" src="../js/cookies-banner.js" data-position="bottom"
+        data-bg="#f2f3e5" data-fg="#000" data-font-family="Outfit, sans-serif" data-zindex="12345111111"
+        data-message="This website uses cookies to provide necessary site functionality and to improve your experience. By using this website, you agree to our use of cookies.">
+        </script>
+
+    <script src="../js/cookies-theme-sync.js"></script>
+
+    <script src="js/mob-navtabs.js"></script>
+
+    <script src="js/mob-navtabs-tooltip.js"></script>
+
+    <script src="js/haptic.js"></script>
+
+    <script src="buszy-subp.js"></script>
+
+    <script src="../js/jquery.min.js"></script>
+
+    <script src="../js/popper.min.js"></script>
+
+    <script src="../js/bootstrap.min.js"></script>
+
+    <script src="../js/pw.bundle.js"></script>
+
+    <script src="../js/default-assets/active.js"></script>
+
+    <script src="../js/isotope.pkgd.min.js"></script>
+
+    <script src="../js/dstabs.js"></script>
+
+    <script src="../js/utils.js"></script>
+
+    <script src="../js/announcements.js"></script>
+
+    <script src="js/ann.js"></script>
+    <script src="js/train-alerts.js"></script>
+
+    <script src="js/ann-indicator.js"></script>
+
+    <script src="js/alerts-indicator.js"></script>
+
+    <script src="js/bs-alerts.js"></script>
+
+    <script src="../js/ios-pwa-warning.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Scheduled train timings for Singapore MRT and LRT stations">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover">
+    <meta name="color-scheme" content="light">
+    <meta name="theme-color" content="#ffffff">
+    <title>Train Timings | RailBuszy</title>
+
+    <link rel="icon" href="./assets/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="./assets/icon-512.png">
+
+    <script src="https://kit.fontawesome.com/965e82ac01.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/style-breakpoints.css">
+    <link rel="stylesheet" href="../css/dark-mode.css">
+    <link rel="stylesheet" href="../css/ios-safari.css">
+    <link rel="stylesheet" href="./css/style-buszy.css">
+    <link rel="stylesheet" href="./css/fl-train.css">
+    <link rel="stylesheet" href="./css/train-timings.css">
+    <link rel="stylesheet" href="../css/navbar-search.css">
+</head>
+
+<body>
+    <div class="breadcrumb-fixed-placeholder">
+        <nav aria-label="breadcrumb" style="margin-bottom: 0">
+            <ol class="breadcrumb breadcrumb-fixed" id="floating-breadcrumb">
+                <li class="breadcrumb-item"><a href="./index.html" class="breadcrumb-back" aria-label="Back"><i class="fa-regular fa-arrow-left"></i></a></li>
+            </ol>
+        </nav>
+    </div>
+
+    <nav class="navbar-container">
+        <div class="navbar">
+            <a href="./index.html"><img src="./assets/logo.png" alt="RailBuszy" class="logo"></a>
+            <ul class="navbar-nav" id="navbarNav">
+                <li class="nav-item">
+                    <a href="./index.html" class="nav-link">
+                        <i class="fa-sharp fa-regular fa-house"></i><span>Home</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="./first-last.html" class="nav-link active">
+                        <i class="fa-regular fa-clock"></i><span>Timings</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="./ann.html" class="nav-link">
+                        <i class="fa-regular fa-arrows-rotate"></i><span>Updates</span><span class="alerts-indicator-dot"></span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="./menu.html" class="nav-link">
+                        <i class="fa-regular fa-bars"></i><span>Menu</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <nav class="mobile-bottom-nav">
+        <ul>
+            <li>
+                <a href="./index.html">
+                    <span class="icon"><i class="fa-sharp fa-regular fa-house"></i></span>
+                    <span class="label">Home</span>
+                </a>
+            </li>
+            <li class="active">
+                <a href="./first-last.html">
+                    <span class="icon"><i class="fa-regular fa-clock"></i></span>
+                    <span class="label">Timings</span>
+                </a>
+            </li>
+            <li>
+                <a href="./ann.html">
+                    <span class="icon">
+                        <i class="fa-regular fa-arrows-rotate"></i>
+                        <span class="alerts-indicator-dot"></span>
+                    </span>
+                    <span class="label">Updates</span>
+                </a>
+            </li>
+            <li>
+                <a href="./menu.html">
+                    <span class="icon"><i class="fa-regular fa-bars"></i></span>
+                    <span class="label">Menu</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <section class="about-me-sum clearfix">
+        <div class="wbnrfz_eicw">
+            <div class="page-header-section">
+                <div class="container container-xxl container-mobile container-mobile-header">
+                    <div class="breadcrumb-wrapper">
+                        <nav aria-label="breadcrumb" class="breadcrumb-desktop" style="display: none">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="./index.html" class="breadcrumb-back" aria-label="Back"><i class="fa-regular fa-arrow-left"></i></a></li>
+                            </ol>
+                        </nav>
+                        <div class="page-title-wrapper">
+                            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                                <div class="tt-title-row">
+                                    <h1 class="page-title" id="filter-title">Train Timings</h1>
+                                    <span class="tt-beta" tabindex="0" role="note" aria-label="Scheduled timings may be inaccurate." data-tip="Scheduled timings are based on the published timetable and may be inaccurate.">
+                                        <i class="fa-regular fa-circle-info"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            </div>
+        </div>
+    </section>
+
+    <section class="pdf-section">
+        <div class="container">
+            <div class="selector-section">
+                <div class="search-container">
+                    <div class="search-input-wrapper">
+                        <i class="fa-regular fa-search" style="position: absolute; left: 12px; top: 65%; transform: translateY(-65%); color: #cccccc; z-index: 1;"></i>
+                        <input type="text" id="stationSearch" class="search-input" placeholder="Enter station name or code" autocomplete="on">
+                        <button class="clear-search" id="clearSearch" title="Clear search">&times;</button>
+                    </div>
+                    <div class="search-results-count" id="resultsCount"></div>
+                </div>
+                <div class="fl-station-results" id="stationResults"></div>
+                <select id="stationDropdown" hidden>
+                    <option value="">Loading stations...</option>
+                </select>
+            </div>
+
+            <div class="tt-toolbar" id="ttToolbar" hidden>
+                <div class="tt-filter" id="lineFilter" role="tablist" aria-label="Filter by line"></div>
+                <a class="tt-fl-btn" id="flLink" href="../rail-buddy/first-last.html" title="First &amp; last trains" aria-label="First and last trains">
+                    <i class="fa-regular fa-clock"></i>
+                </a>
+            </div>
+
+            <div class="content-section" id="contentSection">
+                <div class="tt-top">
+                    <div class="tt-top-text">
+                        <div class="station-title" id="stationTitle">--</div>
+                        <div class="station-subtitle" id="stationSubtitle">Select a station to begin</div>
+                    </div>
+                </div>
+                <div class="tt-meta" id="ttMeta"></div>
+                <div class="tt-banner" id="disruptionBanner" hidden></div>
+                <div id="directionsContainer"></div>
+            </div>
+
+            <div class="empty-state-placeholder" id="emptyStatePlaceholder">
+                <i class="fa-kit fa-lta-train" aria-hidden="true"></i>
+                <p>Search or select a station above to see its scheduled train timings.</p>
+            </div>
+        </div>
+    </section>
+
+    <script id="cookiebanner" src="../js/cookies-banner.js" type="text/javascript" data-position="bottom" data-bg="#f2f3e5" data-fg="#000" data-font-family="Outfit, sans-serif" data-zindex="12345111111"></script>
+    <script src="../js/cookies-theme-sync.js"></script>
+    <script src="js/mob-navtabs.js"></script>
+    <script src="js/mob-navtabs-tooltip.js"></script>
+    <script src="js/haptic.js"></script>
+    <script src="buszy-subp.js"></script>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/pw.bundle.js"></script>
+    <script src="../js/default-assets/active.js"></script>
+    <script src="../js/isotope.pkgd.min.js"></script>
+    <script src="../js/dstabs.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/pwa-config.js"></script>
+    <script src="js/train-timings.js?v=3"></script>
+    <script src="../js/navbar-search.js"></script>
+    <script src="./js/ann-indicator.js"></script>
+    <script src="./js/alerts-indicator.js"></script>
+</body>
+
+</html>
